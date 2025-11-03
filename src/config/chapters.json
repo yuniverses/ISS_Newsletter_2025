@@ -1,0 +1,78 @@
+{
+  "title": "服務聲 2025",
+  "year": 2025,
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "order": 1,
+      "title": "分號之間：我們的話",
+      "description": "從語言符號到關係設計，從對話的延續感到學習的延續。",
+      "htmlFile": "/chapters/chapter-01.html",
+      "authors": ["胡舜筑 / 主編 設計", "胡舜筑 / 採訪"],
+      "theme": "light"
+    },
+    {
+      "id": "chapter-02",
+      "order": 2,
+      "title": "出走與回歸：交換與留學的革命學",
+      "description": "探索學習旅程中的成長與反思。",
+      "htmlFile": "/chapters/chapter-02.html",
+      "authors": [],
+      "theme": "light"
+    },
+    {
+      "id": "chapter-03",
+      "order": 3,
+      "title": "Chapter 03",
+      "description": "待編輯的章節內容。",
+      "htmlFile": "/chapters/chapter-03.html",
+      "authors": [],
+      "theme": "light"
+    },
+    {
+      "id": "chapter-04",
+      "order": 4,
+      "title": "Chapter 04",
+      "description": "待編輯的章節內容。",
+      "htmlFile": "/chapters/chapter-04.html",
+      "authors": [],
+      "theme": "light"
+    },
+    {
+      "id": "chapter-05",
+      "order": 5,
+      "title": "Chapter 05",
+      "description": "待編輯的章節內容。",
+      "htmlFile": "/chapters/chapter-05.html",
+      "authors": [],
+      "theme": "light"
+    },
+    {
+      "id": "chapter-06",
+      "order": 6,
+      "title": "Chapter 06",
+      "description": "待編輯的章節內容。",
+      "htmlFile": "/chapters/chapter-06.html",
+      "authors": [],
+      "theme": "light"
+    },
+    {
+      "id": "chapter-07",
+      "order": 7,
+      "title": "Chapter 07",
+      "description": "待編輯的章節內容。",
+      "htmlFile": "/chapters/chapter-07.html",
+      "authors": [],
+      "theme": "light"
+    },
+    {
+      "id": "chapter-08",
+      "order": 8,
+      "title": "Chapter 08",
+      "description": "待編輯的章節內容。",
+      "htmlFile": "/chapters/chapter-08.html",
+      "authors": [],
+      "theme": "light"
+    }
+  ]
+}
