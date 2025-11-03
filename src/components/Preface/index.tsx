@@ -1,21 +1,20 @@
 export default function Preface() {
   return (
     <section className="relative w-full bg-black text-white">
-      {/* Main content with top and bottom margin */}
-      <div className="min-h-screen px-8 md:px-16 lg:px-32 py-32 md:py-40">
-        <div className="max-w-4xl mx-auto">
-          {/* Section label */}
-          <div className="text-sm text-gray-400 mb-12 tracking-wider">
-            前言
-          </div>
+      {/* Main content - centered and focused like a slogan */}
+      <div className="min-h-screen flex flex-col items-center justify-center px-8 py-32 md:py-40">
+        <div className="max-w-3xl w-full text-center">
+          {/* Section label - centered */}
 
-          {/* Main title */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-light mb-16 leading-relaxed max-w-2xl">
-            對話的延續，是篇章的連接，一個延續一個的故事。
+          {/* Main title - centered and prominent */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-20 leading-relaxed">
+            對話的延續，是篇章的<br />
+            連接，一個延續一<br />
+            個的故事。
           </h1>
 
-          {/* Content paragraphs */}
-          <div className="max-w-2xl space-y-6 text-lg text-gray-300 leading-relaxed mb-20">
+          {/* Content paragraphs - left aligned with max width for readability */}
+          <div className="max-w-2xl mx-auto space-y-8 text-base md:text-lg text-gray-300 leading-loose mb-24 text-left">
             <p>
               分號「 ; 」存在於語句之間，不急著終止，也不任意中斷。它讓思考有餘韻，讓文字有呼吸，正如服務科學在每一次互動之間，找尋那持續的關係、未完的價值。
             </p>
@@ -27,13 +26,13 @@ export default function Preface() {
             </p>
           </div>
 
-          {/* Editors section */}
-          <div className="max-w-2xl border-t border-gray-800 pt-8">
+          {/* Editors section - centered */}
+          <div className="border-t border-gray-800 pt-10">
             <p className="text-sm text-gray-500 mb-6">
               編輯的話
             </p>
 
-            <div className="space-y-4 text-sm text-gray-400">
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-gray-400">
               <div>
                 <span className="text-white">陳冠宇</span> / 主編 設計
               </div>
