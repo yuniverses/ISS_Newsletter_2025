@@ -98,7 +98,7 @@ export default function Cover({ onEnter }: CoverProps) {
       {/* Large shared text display - continuous text from bottom */}
       <div
         ref={textDisplayRef}
-        className="absolute inset-0 overflow-hidden pointer-events-none z-0"
+        className="absolute inset-0 overflow-hidden pointer-events-none z-0 animate-text-fade-in"
       >
         <div className="absolute bottom-0 left-0 right-0 pointer-events-auto">
           <div className="inline-block max-w-full">
@@ -153,95 +153,72 @@ export default function Cover({ onEnter }: CoverProps) {
 
       {/* Top section: Main cover area (0-100vh) */}
       <div className="absolute top-0 left-0 right-0 h-screen">
-        {/* Decorative connected blocks - stacked pattern */}
-        <div className="absolute left-[3%] top-[20vh] w-[85vw] h-auto">
-          {/* Row 1 - Bottom layer */}
-          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-0 top-0 w-[14.5%]" />
-          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-[14.5%] top-0 w-[70.9%]" />
-          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[85.4%] top-0 w-[14.6%]" />
+        {/* Decorative connected blocks - from SVG design */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[85vw] max-w-[1200px] aspect-[1152/382]">
+          {/* Black blocks - rgba(0, 0, 0, 0.5) with flicker animation */}
+          <div className="absolute backdrop-blur-lg left-0 top-0 w-[14.55%] h-[10.05%] animate-block-flicker-black" />
+          <div className="absolute backdrop-blur-lg left-0 top-[30.05%] w-[85.45%] h-[10.05%] animate-block-flicker-black" style={{ animationDelay: '0.1s' }} />
+          <div className="absolute backdrop-blur-lg left-[14.55%] top-[20%] w-[85.45%] h-[10.05%] animate-block-flicker-black" style={{ animationDelay: '0.2s' }} />
+          <div className="absolute backdrop-blur-lg left-[85.45%] top-[39.85%] w-[14.55%] h-[10.05%] animate-block-flicker-black" style={{ animationDelay: '0.3s' }} />
+          <div className="absolute backdrop-blur-lg left-0 top-[70.05%] w-[85.45%] h-[10.05%] animate-block-flicker-black" style={{ animationDelay: '0.4s' }} />
+          <div className="absolute backdrop-blur-lg left-[14.55%] top-[60%] w-[85.45%] h-[10.05%] animate-block-flicker-black" style={{ animationDelay: '0.5s' }} />
+          <div className="absolute backdrop-blur-lg left-[85.45%] top-[89.95%] w-[14.55%] h-[10.05%] animate-block-flicker-black" style={{ animationDelay: '0.6s' }} />
+          <div className="absolute backdrop-blur-lg left-0 top-[50%] w-[14.55%] h-[10.05%] animate-block-flicker-black" style={{ animationDelay: '0.7s' }} />
 
-          {/* Row 2 */}
-          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-0 top-[3vh] w-[14.5%]" />
-          <div className="absolute backdrop-blur-md bg-gray-400/40 h-[3vh] left-[14.5%] top-[3vh] w-[70.9%]" />
-          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-[85.4%] top-[3vh] w-[14.6%]" />
-
-          {/* Row 3 */}
-          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-0 top-[6vh] w-[14.5%]" />
-          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[14.5%] top-[6vh] w-[70.9%]" />
-          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-[85.4%] top-[6vh] w-[14.6%]" />
-
-          {/* Row 4 */}
-          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-0 top-[9vh] w-[85.4%]" />
-          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[85.4%] top-[9vh] w-[14.6%]" />
-
-          {/* Row 5 */}
-          <div className="absolute backdrop-blur-md bg-gray-400/40 h-[3vh] left-0 top-[12vh] w-[85.4%]" />
-          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-[85.4%] top-[12vh] w-[14.6%]" />
-
-          {/* Row 6 */}
-          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-0 top-[15vh] w-[14.5%]" />
-          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-[14.5%] top-[15vh] w-[70.9%]" />
-          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-[85.4%] top-[15vh] w-[14.6%]" />
-
-          {/* Row 7 */}
-          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-0 top-[18vh] w-[14.5%]" />
-          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[14.5%] top-[18vh] w-[70.9%]" />
-          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[85.4%] top-[18vh] w-[14.6%]" />
-
-          {/* Row 8 */}
-          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-0 top-[21vh] w-[14.5%]" />
-          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-[14.5%] top-[21vh] w-[70.9%]" />
-          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-[85.4%] top-[21vh] w-[14.6%]" />
-
-          {/* Row 9 */}
-          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-0 top-[24vh] w-[85.4%]" />
-          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-[85.4%] top-[24vh] w-[14.6%]" />
-
-          {/* Row 10 - Top layer */}
-          <div className="absolute backdrop-blur-md bg-gray-400/40 h-[3vh] left-0 top-[27vh] w-[85.4%]" />
-          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[85.4%] top-[27vh] w-[14.6%]" />
+          {/* White blocks - rgba(255, 255, 255, 0.21) with flicker animation */}
+          <div className="absolute backdrop-blur-lg left-0 top-[40.1%] w-[85.45%] h-[9.8%] animate-block-flicker-white" />
+          <div className="absolute backdrop-blur-lg left-[14.55%] top-[9.95%] w-[85.45%] h-[10.05%] animate-block-flicker-white" style={{ animationDelay: '0.1s' }} />
+          <div className="absolute backdrop-blur-lg left-[85.45%] top-[30.05%] w-[14.55%] h-[10.05%] animate-block-flicker-white" style={{ animationDelay: '0.2s' }} />
+          <div className="absolute backdrop-blur-lg left-0 top-[20%] w-[14.55%] h-[10.05%] animate-block-flicker-white" style={{ animationDelay: '0.3s' }} />
+          <div className="absolute backdrop-blur-lg left-0 top-[80.15%] w-[85.45%] h-[9.8%] animate-block-flicker-white" style={{ animationDelay: '0.4s' }} />
+          <div className="absolute backdrop-blur-lg left-[14.55%] top-[49.95%] w-[85.45%] h-[10.05%] animate-block-flicker-white" style={{ animationDelay: '0.5s' }} />
+          <div className="absolute backdrop-blur-lg left-[85.45%] top-[70.05%] w-[14.55%] h-[10.05%] animate-block-flicker-white" style={{ animationDelay: '0.6s' }} />
+          <div className="absolute backdrop-blur-lg left-0 top-[60%] w-[14.55%] h-[10.05%] animate-block-flicker-white" style={{ animationDelay: '0.7s' }} />
         </div>
 
-        {/* Description text */}
-        <p
-          className="absolute left-[705px] top-[395px] w-[237px] text-[13px] leading-normal text-white whitespace-pre-wrap z-10"
-          style={{ fontFamily: 'sans-serif' }}
-        >
-          Since 2008, the institute has adopted unique educational practices to embed humanity into the learning environment, to involve industries into the educational context, and to generate domain relevant research outputs with theoretical methodologies.
-        </p>
-
-        {/* Year 2025 */}
-        <p
-          className="absolute left-[219px] top-[431px] text-[20px] leading-normal text-white font-bold z-10"
-          style={{ fontFamily: 'sans-serif' }}
-        >
-          2025
-        </p>
-
-        {/* Main title image */}
-        <div className="absolute left-[221.91px] top-[295.17px] h-[52.982px] w-[239.861px] z-10">
-          <img
-            src="/assets/title.svg"
-            alt="服務聲 ISS Sounds Quarterly 醫"
-            className="block w-full h-full"
-          />
-        </div>
-
-        {/* Semicolon image - rotated */}
-        <div
-          className="absolute left-[705px] top-[282px] flex items-center justify-center mix-blend-luminosity z-10"
-          style={{
-            width: '91.212px',
-            height: '237px',
-          }}
-        >
-          <div className="rotate-90">
+        {/* Main content container - centered */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[85vw] max-w-[1200px] h-auto">
+          {/* Main title image */}
+          <div className="absolute left-[5%] top-[-10vh] h-[7vh] w-auto z-10">
             <img
-              src="/assets/semicolon-new.svg"
-              alt="semicolon"
-              className="w-[237px] h-[91.212px] block"
+              src="/assets/title.svg"
+              alt="服務聲 ISS Sounds Quarterly 醫"
+              className="h-full w-auto"
             />
           </div>
+
+          {/* Year 2025 */}
+          <p
+            className="absolute left-[5%] top-[2vh] text-[2.5vh] leading-normal text-white font-bold z-10"
+            style={{ fontFamily: 'sans-serif' }}
+          >
+            2025
+          </p>
+
+          {/* Semicolon image - rotated */}
+          <div
+            className="absolute right-[10%] top-[-12vh] flex items-center justify-center mix-blend-luminosity z-10"
+            style={{
+              width: '12vh',
+              height: '30vh',
+            }}
+          >
+            <div className="rotate-90">
+              <img
+                src="/assets/semicolon-new.svg"
+                alt="semicolon"
+                className="w-[30vh] h-auto block"
+              />
+            </div>
+          </div>
+
+          {/* Description text */}
+          <p
+            className="absolute right-[10%] top-[5vh] w-[25%] text-[1.6vh] leading-normal text-white whitespace-pre-wrap z-10"
+            style={{ fontFamily: 'sans-serif' }}
+          >
+            Since 2008, the institute has adopted unique educational practices to embed humanity into the learning environment, to involve industries into the educational context, and to generate domain relevant research outputs with theoretical methodologies.
+          </p>
         </div>
 
         {/* Scroll indicator */}

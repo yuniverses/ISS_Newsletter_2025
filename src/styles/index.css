@@ -56,4 +56,63 @@
   .animate-fadeIn {
     animation: fadeIn 0.5s ease-out forwards;
   }
+
+  @keyframes blockFlickerBlack {
+    0% {
+      background-color: rgba(255, 255, 255, 0.21);
+    }
+    25% {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    50% {
+      background-color: rgba(255, 255, 255, 0.21);
+    }
+    75% {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    100% {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  @keyframes blockFlickerWhite {
+    0% {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    25% {
+      background-color: rgba(255, 255, 255, 0.21);
+    }
+    50% {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    75% {
+      background-color: rgba(255, 255, 255, 0.21);
+    }
+    100% {
+      background-color: rgba(255, 255, 255, 0.21);
+    }
+  }
+
+  @keyframes textFadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .animate-block-flicker-black {
+    animation: blockFlickerBlack 1.5s ease-in-out forwards;
+  }
+
+  .animate-block-flicker-white {
+    animation: blockFlickerWhite 1.5s ease-in-out forwards;
+  }
+
+  .animate-text-fade-in {
+    opacity: 0;
+    animation: textFadeIn 2s ease-in forwards;
+    animation-delay: 1.5s;
+  }
 }
