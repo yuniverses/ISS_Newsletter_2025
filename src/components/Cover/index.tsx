@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
+import { db } from '@/lib/firebase'
+import { collection, addDoc, onSnapshot, query, orderBy, Timestamp } from 'firebase/firestore'
 
 interface CoverProps {
   onEnter?: () => void
+}
+
+interface SentenceDoc {
+  text: string
+  createdAt: Timestamp
 }
 
 export default function Cover({ onEnter }: CoverProps) {
@@ -9,18 +16,60 @@ export default function Cover({ onEnter }: CoverProps) {
   const textDisplayRef = useRef<HTMLDivElement>(null)
   const charRefs = useRef<(HTMLSpanElement | null)[]>([])
   const [userInput, setUserInput] = useState('')
-  const [sentences, setSentences] = useState<string[]>([
-    '服務聲既是一個社群；也是一份期刊',
-    '我們不滿意 服務只是一類，不是一顆上帝子殺人如麻 下輩子視機傳道 研究滿意度',
-    '我最不滿意 我做觀察被歸因：結果跟發了 服務只是一類，不是一顆上帝子殺人如麻',
-    '下輩子視機傳道 研究滿意度，我最不滿意 我做觀察被歸因',
-    '服務聲延續你的想法；邀請你一起創作',
-  ])
+  const [sentences, setSentences] = useState<string[]>([])
   const [charSpacings, setCharSpacings] = useState<{ letterSpacing: number; marginBottom: number; opacity: number }[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   // Join all text and split into characters
   const allText = sentences.join('；') + (sentences.length > 0 ? '；' : '')
   const characters = allText.split('')
+
+  // Load sentences from Firebase and listen for real-time updates
+  useEffect(() => {
+    const sentencesRef = collection(db, 'coverSentences')
+    const q = query(sentencesRef, orderBy('createdAt', 'asc'))
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const loadedSentences: string[] = []
+      snapshot.forEach((doc) => {
+        const data = doc.data() as SentenceDoc
+        loadedSentences.push(data.text)
+      })
+
+      // If no sentences exist, add default ones
+      if (loadedSentences.length === 0) {
+        const defaultSentences = [
+          '服務聲既是一個社群；也是一份期刊',
+          '我們不滿意 服務只是一類，不是一顆上帝子殺人如麻 下輩子視機傳道 研究滿意度',
+          '我最不滿意 我做觀察被歸因：結果跟發了 服務只是一類，不是一顆上帝子殺人如麻',
+          '下輩子視機傳道 研究滿意度，我最不滿意 我做觀察被歸因',
+          '服務聲延續你的想法；邀請你一起創作',
+        ]
+
+        // Add default sentences to Firebase
+        defaultSentences.forEach(async (sentence) => {
+          await addDoc(sentencesRef, {
+            text: sentence,
+            createdAt: Timestamp.now()
+          })
+        })
+      } else {
+        setSentences(loadedSentences)
+      }
+
+      setIsLoading(false)
+    }, (error) => {
+      console.error('Error loading sentences:', error)
+      // Fallback to default sentences if Firebase fails
+      setSentences([
+        '服務聲既是一個社群；也是一份期刊',
+        '服務聲延續你的想法；邀請你一起創作',
+      ])
+      setIsLoading(false)
+    })
+
+    return () => unsubscribe()
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,11 +134,22 @@ export default function Cover({ onEnter }: CoverProps) {
     setTimeout(calculateSpacings, 500)
   }, [characters.length])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (userInput.trim()) {
-      setSentences(prev => [...prev, userInput.trim()])
-      setUserInput('')
+      try {
+        const sentencesRef = collection(db, 'coverSentences')
+        await addDoc(sentencesRef, {
+          text: userInput.trim(),
+          createdAt: Timestamp.now()
+        })
+        setUserInput('')
+      } catch (error) {
+        console.error('Error adding sentence:', error)
+        // Fallback to local state if Firebase fails
+        setSentences(prev => [...prev, userInput.trim()])
+        setUserInput('')
+      }
     }
   }
 
