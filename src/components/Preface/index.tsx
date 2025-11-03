@@ -1,29 +1,60 @@
+import ScrollReveal from '../ScrollReveal'
+
 export default function Preface() {
   return (
     <section className="relative w-full bg-black text-white">
       {/* Main content - centered and focused like a slogan */}
       <div className="min-h-screen flex flex-col items-center justify-center px-8 py-32 md:py-40">
         <div className="max-w-3xl w-full text-center">
-          {/* Section label - centered */}
+          {/* Title - centered with scroll reveal effect */}
+          
+       
 
-          {/* Main title - centered and prominent */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-20 leading-relaxed">
-            對話的延續，是篇章的<br />
-            連接，一個延續一<br />
-            個的故事。
-          </h1>
+          {/* Content paragraphs - with scroll reveal effect */}
+          <div className="max-w-2xl mx-auto mb-24 text-left">
+            <ScrollReveal
+              baseOpacity={0.1}
+              enableBlur={true}
+              baseRotation={3}
+              blurStrength={8}
+              containerClassName="mb-8"
+              textClassName="text-base md:text-lg text-gray-300 leading-loose font-light"
+            >對話的延續，是篇章的連接，一個延續一個的故事。
 
-          {/* Content paragraphs - left aligned with max width for readability */}
-          <div className="max-w-2xl mx-auto space-y-8 text-base md:text-lg text-gray-300 leading-loose mb-24 text-left">
-            <p>
+            </ScrollReveal>
+            <ScrollReveal
+              baseOpacity={0.1}
+              enableBlur={true}
+              baseRotation={3}
+              blurStrength={8}
+              containerClassName="mb-8"
+              textClassName="text-base md:text-lg text-gray-300 leading-loose font-light"
+            >
+
               分號「 ; 」存在於語句之間，不急著終止，也不任意中斷。它讓思考有餘韻，讓文字有呼吸，正如服務科學在每一次互動之間，找尋那持續的關係、未完的價值。
-            </p>
-            <p>
+            </ScrollReveal>
+
+            <ScrollReveal
+              baseOpacity={0.1}
+              enableBlur={true}
+              baseRotation={3}
+              blurStrength={8}
+              containerClassName="mb-8"
+              textClassName="text-base md:text-lg text-gray-300 leading-loose font-light"
+            >
               在服科所，我們學習如何觀察與連結，理解使用者與系統、個體與社會的細微關係。每個研究、每場合作、每次討論，都是句與句之間的分號——延續思考，也預告新的開始。
-            </p>
-            <p>
+            </ScrollReveal>
+
+            <ScrollReveal
+              baseOpacity={0.1}
+              enableBlur={true}
+              baseRotation={3}
+              blurStrength={8}
+              containerClassName="mb-8"
+              textClassName="text-base md:text-lg text-gray-300 leading-loose font-light"
+            >
               本期《服務聲》，以「 ; 」為名。我們邀請你在閱讀的過程中，一同感受那份「未完待續」的節奏，看見每一次對話之後仍在流動的故事。
-            </p>
+            </ScrollReveal>
           </div>
 
           {/* Editors section - centered */}
