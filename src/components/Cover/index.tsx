@@ -7,6 +7,7 @@ interface CoverProps {
 export default function Cover({ onEnter }: CoverProps) {
   const coverRef = useRef<HTMLDivElement>(null)
   const textDisplayRef = useRef<HTMLDivElement>(null)
+  const charRefs = useRef<(HTMLSpanElement | null)[]>([])
   const [userInput, setUserInput] = useState('')
   const [sentences, setSentences] = useState<string[]>([
     '服務聲既是一個社群；也是一份期刊',
@@ -15,6 +16,11 @@ export default function Cover({ onEnter }: CoverProps) {
     '下輩子視機傳道 研究滿意度，我最不滿意 我做觀察被歸因',
     '服務聲延續你的想法；邀請你一起創作',
   ])
+  const [charSpacings, setCharSpacings] = useState<{ letterSpacing: number; marginBottom: number; opacity: number }[]>([])
+
+  // Join all text and split into characters
+  const allText = sentences.join('；') + (sentences.length > 0 ? '；' : '')
+  const characters = allText.split('')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,11 +37,53 @@ export default function Cover({ onEnter }: CoverProps) {
   }, [onEnter])
 
   useEffect(() => {
-    // Auto scroll to bottom when new sentence is added
-    if (textDisplayRef.current) {
-      textDisplayRef.current.scrollTop = textDisplayRef.current.scrollHeight
+    // Calculate spacing based on actual position in viewport
+    const calculateSpacings = () => {
+      if (!coverRef.current) return
+
+      const viewportHeight = window.innerHeight
+      const coverTop = coverRef.current.getBoundingClientRect().top
+
+      const newSpacings = charRefs.current.map((charEl) => {
+        if (!charEl) return { letterSpacing: 0.2, marginBottom: 1, opacity: 0.3 }
+
+        const charRect = charEl.getBoundingClientRect()
+        const charTop = charRect.top
+
+        // Calculate position relative to cover start (0vh = top of cover)
+        const positionFromCoverTop = charTop - coverTop
+        const positionInVh = positionFromCoverTop / viewportHeight
+
+        // 0-100vh: fixed dense spacing (spacingRatio = 0)
+        // 100-200vh: increasingly sparse (spacingRatio = 0 to 1)
+        let spacingRatio = 0
+        let opacity = 0.3
+
+        if (positionInVh > 1 && positionInVh <= 2) {
+          // In the 100-200vh range
+          spacingRatio = (positionInVh - 1) // 0 at 100vh to 1 at 200vh
+          opacity = 0.4 + (spacingRatio * 0.6) // 0.4 to 1.0
+        } else if (positionInVh > 2) {
+          // Beyond 200vh
+          spacingRatio = 1 // max spacing
+          opacity = 1.0
+        }
+        // else: positionInVh <= 1 (0-100vh), keep spacingRatio = 0, opacity = 0.3
+
+        const letterSpacing = 0.2 + (spacingRatio * 2.5) // 0.2em (dense) to 2.7em (sparse)
+        const marginBottom = 1 + (spacingRatio * 45) // 1px (dense) to 46px (sparse)
+
+        return { letterSpacing, marginBottom, opacity }
+      })
+
+      setCharSpacings(newSpacings)
     }
-  }, [sentences])
+
+    // Calculate on mount and when characters change
+    setTimeout(calculateSpacings, 100)
+    // Also recalculate after a bit more time to ensure layout is stable
+    setTimeout(calculateSpacings, 500)
+  }, [characters.length])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -50,110 +98,108 @@ export default function Cover({ onEnter }: CoverProps) {
       {/* Large shared text display - continuous text from bottom */}
       <div
         ref={textDisplayRef}
-        className="absolute inset-0 overflow-hidden pointer-events-none z-20"
+        className="absolute inset-0 overflow-hidden pointer-events-none z-0"
       >
-        {/* Gradient overlay for spacing effect */}
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '100vh' }}>
-          <div className="absolute bottom-0 left-0 right-0 px-8 md:px-16 pb-24 pointer-events-auto text-compress-container">
-            <div className="inline">
-              <p
-                className="text-gray-400 text-sm md:text-base inline pointer-events-none"
-                style={{
-                  fontFamily: 'Noto Sans TC, sans-serif',
-                  wordBreak: 'break-all',
-                }}
-              >
-                {sentences.join('；')}
-                {sentences.length > 0 && '；'}
-              </p>
-              <form onSubmit={handleSubmit} className="inline-block align-bottom ml-2 relative z-30">
-                <input
-                  type="text"
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  placeholder="輸入連接你的想法"
-                  className="bg-transparent border-b border-gray-600 focus:border-white outline-none py-1 text-sm md:text-base text-white placeholder-gray-500 placeholder-opacity-35 transition-colors relative z-30"
-                  style={{
-                    fontFamily: 'Noto Sans TC, sans-serif',
-                    width: '300px',
-                  }}
-                />
-              </form>
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-auto">
+          <div className="inline-block max-w-full">
+            <div
+              className="text-gray-400 text-sm md:text-base pointer-events-none"
+              style={{
+                fontFamily: 'Noto Sans TC, sans-serif',
+                wordBreak: 'break-all',
+                lineHeight: 0,
+              }}
+            >
+              {characters.map((char, index) => {
+                const spacing = charSpacings[index] || { letterSpacing: 0.2, marginBottom: 1, opacity: 0.3 }
+
+                return (
+                  <span
+                    key={index}
+                    ref={(el) => {
+                      charRefs.current[index] = el
+                    }}
+                    style={{
+                      letterSpacing: `${spacing.letterSpacing}em`,
+                      marginBottom: `${spacing.marginBottom}px`,
+                      opacity: spacing.opacity,
+                      display: 'inline-block',
+                      lineHeight: '1.5',
+                    }}
+                  >
+                    {char}
+                  </span>
+                )
+              })}
+              <span className="inline-block ml-1 pointer-events-auto">
+                <form onSubmit={handleSubmit} className="inline-block align-baseline relative z-30 pointer-events-auto">
+                  <input
+                    type="text"
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    placeholder="輸入連接你的想法"
+                    className="bg-transparent border-b border-gray-600 focus:border-white outline-none py-1 text-sm md:text-base text-white placeholder-gray-500 placeholder-opacity-35 transition-colors relative z-30 pointer-events-auto"
+                    style={{
+                      fontFamily: 'Noto Sans TC, sans-serif',
+                      width: '300px',
+                    }}
+                  />
+                </form>
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      <style>{`
-        .text-compress-container p {
-          letter-spacing: 0.8em;
-          line-height: 3.5;
-        }
-
-        @container (min-height: 50vh) {
-          .text-compress-container p {
-            letter-spacing: 0.5em;
-            line-height: 2.5;
-          }
-        }
-
-        @container (min-height: 100vh) {
-          .text-compress-container p {
-            letter-spacing: 0.3em;
-            line-height: 1.75;
-          }
-        }
-      `}</style>
-
       {/* Top section: Main cover area (0-100vh) */}
       <div className="absolute top-0 left-0 right-0 h-screen">
         {/* Decorative connected blocks - stacked pattern */}
-        <div className="absolute left-[39px] top-[166px] opacity-60">
+        <div className="absolute left-[3%] top-[20vh] w-[85vw] h-auto">
           {/* Row 1 - Bottom layer */}
-          <div className="absolute bg-gray-700 h-[38px] left-0 top-0 w-[167px]" />
-          <div className="absolute bg-gray-500 h-[38px] left-[167px] top-0 w-[817px]" />
-          <div className="absolute bg-gray-600 h-[38px] left-[984px] top-0 w-[168px]" />
+          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-0 top-0 w-[14.5%]" />
+          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-[14.5%] top-0 w-[70.9%]" />
+          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[85.4%] top-0 w-[14.6%]" />
 
           {/* Row 2 */}
-          <div className="absolute bg-gray-600 h-[38px] left-0 top-[38px] w-[167px]" />
-          <div className="absolute bg-gray-400 h-[38px] left-[167px] top-[38px] w-[817px]" />
-          <div className="absolute bg-gray-700 h-[38px] left-[984px] top-[38px] w-[168px]" />
+          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-0 top-[3vh] w-[14.5%]" />
+          <div className="absolute backdrop-blur-md bg-gray-400/40 h-[3vh] left-[14.5%] top-[3vh] w-[70.9%]" />
+          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-[85.4%] top-[3vh] w-[14.6%]" />
 
           {/* Row 3 */}
-          <div className="absolute bg-gray-500 h-[38px] left-0 top-[76px] w-[167px]" />
-          <div className="absolute bg-gray-600 h-[38px] left-[167px] top-[76px] w-[817px]" />
-          <div className="absolute bg-gray-500 h-[38px] left-[984px] top-[76px] w-[168px]" />
+          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-0 top-[6vh] w-[14.5%]" />
+          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[14.5%] top-[6vh] w-[70.9%]" />
+          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-[85.4%] top-[6vh] w-[14.6%]" />
 
           {/* Row 4 */}
-          <div className="absolute bg-gray-700 h-[38px] left-0 top-[115px] w-[984px]" />
-          <div className="absolute bg-gray-600 h-[38px] left-[984px] top-[115px] w-[168px]" />
+          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-0 top-[9vh] w-[85.4%]" />
+          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[85.4%] top-[9vh] w-[14.6%]" />
 
           {/* Row 5 */}
-          <div className="absolute bg-gray-400 h-[38px] left-0 top-[153px] w-[984px]" />
-          <div className="absolute bg-gray-700 h-[38px] left-[984px] top-[153px] w-[168px]" />
+          <div className="absolute backdrop-blur-md bg-gray-400/40 h-[3vh] left-0 top-[12vh] w-[85.4%]" />
+          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-[85.4%] top-[12vh] w-[14.6%]" />
 
           {/* Row 6 */}
-          <div className="absolute bg-gray-600 h-[38px] left-0 top-[191px] w-[167px]" />
-          <div className="absolute bg-gray-500 h-[38px] left-[167px] top-[191px] w-[817px]" />
-          <div className="absolute bg-gray-500 h-[38px] left-[984px] top-[191px] w-[168px]" />
+          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-0 top-[15vh] w-[14.5%]" />
+          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-[14.5%] top-[15vh] w-[70.9%]" />
+          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-[85.4%] top-[15vh] w-[14.6%]" />
 
           {/* Row 7 */}
-          <div className="absolute bg-gray-700 h-[38px] left-0 top-[229px] w-[167px]" />
-          <div className="absolute bg-gray-600 h-[38px] left-[167px] top-[229px] w-[817px]" />
-          <div className="absolute bg-gray-600 h-[38px] left-[984px] top-[229px] w-[168px]" />
+          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-0 top-[18vh] w-[14.5%]" />
+          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[14.5%] top-[18vh] w-[70.9%]" />
+          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[85.4%] top-[18vh] w-[14.6%]" />
 
           {/* Row 8 */}
-          <div className="absolute bg-gray-500 h-[38px] left-0 top-[268px] w-[167px]" />
-          <div className="absolute bg-gray-700 h-[38px] left-[167px] top-[268px] w-[817px]" />
-          <div className="absolute bg-gray-700 h-[38px] left-[984px] top-[268px] w-[168px]" />
+          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-0 top-[21vh] w-[14.5%]" />
+          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-[14.5%] top-[21vh] w-[70.9%]" />
+          <div className="absolute backdrop-blur-md bg-gray-700/40 h-[3vh] left-[85.4%] top-[21vh] w-[14.6%]" />
 
           {/* Row 9 */}
-          <div className="absolute bg-gray-600 h-[38px] left-0 top-[306px] w-[984px]" />
-          <div className="absolute bg-gray-500 h-[38px] left-[984px] top-[306px] w-[168px]" />
+          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-0 top-[24vh] w-[85.4%]" />
+          <div className="absolute backdrop-blur-md bg-gray-500/40 h-[3vh] left-[85.4%] top-[24vh] w-[14.6%]" />
 
           {/* Row 10 - Top layer */}
-          <div className="absolute bg-gray-400 h-[38px] left-0 top-[345px] w-[984px]" />
-          <div className="absolute bg-gray-600 h-[38px] left-[984px] top-[345px] w-[168px]" />
+          <div className="absolute backdrop-blur-md bg-gray-400/40 h-[3vh] left-0 top-[27vh] w-[85.4%]" />
+          <div className="absolute backdrop-blur-md bg-gray-600/40 h-[3vh] left-[85.4%] top-[27vh] w-[14.6%]" />
         </div>
 
         {/* Description text */}
@@ -205,27 +251,6 @@ export default function Cover({ onEnter }: CoverProps) {
         </div>
       </div>
 
-      {/* Bottom section: Logo area (100vh-200vh) */}
-      <div className="absolute bottom-0 left-0 right-0 h-screen">
-        {/* Small title and icon in top center */}
-        <div className="absolute left-1/2 top-[40px] -translate-x-1/2 flex items-center gap-4 z-10">
-          <div className="text-center">
-            <p className="text-[21px] tracking-[2.5px]" style={{ fontFamily: 'sans-serif' }}>
-              服務      聲
-            </p>
-            <p className="text-[5px] text-gray-400" style={{ fontFamily: 'sans-serif' }}>
-              ISS Community Annual Newsletter
-            </p>
-          </div>
-          <div className="rotate-90">
-            <img
-              src="/assets/semicolon-new.svg"
-              alt="semicolon"
-              className="w-[62px] h-[24px] block mix-blend-luminosity"
-            />
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
