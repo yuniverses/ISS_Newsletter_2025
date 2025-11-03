@@ -27,6 +27,10 @@
 
 在 Firestore 的「規則」頁面，使用以下規則：
 
+### 基本規則（僅允許讀取和創建）
+
+如果不需要管理功能，使用以下規則：
+
 \`\`\`
 rules_version = '2';
 service cloud.firestore {
@@ -42,6 +46,31 @@ service cloud.firestore {
   }
 }
 \`\`\`
+
+### 進階規則（啟用管理功能）
+
+如果需要使用管理頁面 (`/admin`) 來編輯和刪除內容，使用以下規則：
+
+\`\`\`
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /coverSentences/{document=**} {
+      // 允許所有人讀取
+      allow read: if true;
+      // 允許所有人創建新句子，但有長度限制
+      allow create: if request.resource.data.text.size() <= 200
+                    && request.resource.data.text.size() >= 1;
+      // 允許更新和刪除（由管理頁面的密碼保護）
+      allow update: if request.resource.data.text.size() <= 200
+                    && request.resource.data.text.size() >= 1;
+      allow delete: if true;
+    }
+  }
+}
+\`\`\`
+
+**注意**：管理頁面使用前端密碼保護（密碼：713580），但 Firestore 規則本身允許所有更新和刪除操作。這是一個簡化的安全模型，適合內部使用。如需更高安全性，建議使用 Firebase Authentication。
 
 ## 步驟 5：配置環境變數
 
@@ -143,3 +172,39 @@ service cloud.firestore {
 1. 前往 Firebase Console
 2. 選擇 Firestore Database
 3. 點擊「匯出」
+
+## 管理頁面使用
+
+### 訪問管理頁面
+
+1. 在瀏覽器中訪問 `http://localhost:5173/admin`（開發環境）
+2. 或訪問 `https://your-domain.com/admin`（生產環境）
+3. 輸入密碼：`713580`
+4. 點擊「登入」
+
+### 管理功能
+
+管理頁面提供以下功能：
+
+1. **查看所有內容**
+   - 顯示所有用戶提交的句子
+   - 按創建時間升序排列
+   - 顯示創建時間戳
+
+2. **編輯內容**
+   - 點擊任一內容的「編輯」按鈕
+   - 修改文字內容
+   - 點擊「儲存」保存更改，或「取消」放棄修改
+   - 實時同步到所有查看頁面的用戶
+
+3. **刪除內容**
+   - 點擊任一內容的「刪除」按鈕
+   - 確認刪除操作
+   - 刪除後所有用戶立即看到更新
+
+### 重要提醒
+
+- 管理頁面需要配置「進階規則」才能正常工作
+- 密碼僅在前端驗證，請妥善保管
+- 編輯和刪除操作會立即影響所有用戶
+- 刪除操作無法撤銷，請謹慎操作

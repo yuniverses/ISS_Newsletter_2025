@@ -26,49 +26,93 @@ export default function Cover({ onEnter }: CoverProps) {
 
   // Load sentences from Firebase and listen for real-time updates
   useEffect(() => {
-    const sentencesRef = collection(db, 'coverSentences')
-    const q = query(sentencesRef, orderBy('createdAt', 'asc'))
+    let unsubscribe: (() => void) | null = null
+    let retryCount = 0
+    const maxRetries = 3
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const loadedSentences: string[] = []
-      snapshot.forEach((doc) => {
-        const data = doc.data() as SentenceDoc
-        loadedSentences.push(data.text)
-      })
+    const setupListener = () => {
+      try {
+        const sentencesRef = collection(db, 'coverSentences')
+        const q = query(sentencesRef, orderBy('createdAt', 'asc'))
 
-      // If no sentences exist, add default ones
-      if (loadedSentences.length === 0) {
-        const defaultSentences = [
+        unsubscribe = onSnapshot(
+          q,
+          (snapshot) => {
+            const loadedSentences: string[] = []
+            snapshot.forEach((doc) => {
+              const data = doc.data() as SentenceDoc
+              loadedSentences.push(data.text)
+            })
+
+            // If no sentences exist, add default ones
+            if (loadedSentences.length === 0 && !isLoading) {
+              const defaultSentences = [
+                '服務聲既是一個社群；也是一份期刊',
+                '我們不滿意 服務只是一類，不是一顆上帝子殺人如麻 下輩子視機傳道 研究滿意度',
+                '我最不滿意 我做觀察被歸因：結果跟發了 服務只是一類，不是一顆上帝子殺人如麻',
+                '下輩子視機傳道 研究滿意度，我最不滿意 我做觀察被歸因',
+                '服務聲延續你的想法；邀請你一起創作',
+              ]
+
+              // Add default sentences to Firebase
+              Promise.all(
+                defaultSentences.map((sentence) =>
+                  addDoc(sentencesRef, {
+                    text: sentence,
+                    createdAt: Timestamp.now()
+                  }).catch(err => {
+                    console.warn('Failed to add default sentence:', err)
+                  })
+                )
+              ).catch(err => {
+                console.warn('Failed to add default sentences:', err)
+              })
+            } else if (loadedSentences.length > 0) {
+              setSentences(loadedSentences)
+            }
+
+            setIsLoading(false)
+            retryCount = 0 // Reset retry count on success
+          },
+          (error) => {
+            console.error('Error loading sentences:', error)
+
+            // Retry logic
+            if (retryCount < maxRetries) {
+              retryCount++
+              console.log(`Retrying... (${retryCount}/${maxRetries})`)
+              setTimeout(() => {
+                if (unsubscribe) unsubscribe()
+                setupListener()
+              }, 1000 * retryCount) // Exponential backoff
+            } else {
+              // Fallback to default sentences if all retries fail
+              setSentences([
+                '服務聲既是一個社群；也是一份期刊',
+                '服務聲延續你的想法；邀請你一起創作',
+              ])
+              setIsLoading(false)
+            }
+          }
+        )
+      } catch (error) {
+        console.error('Error setting up listener:', error)
+        // Fallback to default sentences
+        setSentences([
           '服務聲既是一個社群；也是一份期刊',
-          '我們不滿意 服務只是一類，不是一顆上帝子殺人如麻 下輩子視機傳道 研究滿意度',
-          '我最不滿意 我做觀察被歸因：結果跟發了 服務只是一類，不是一顆上帝子殺人如麻',
-          '下輩子視機傳道 研究滿意度，我最不滿意 我做觀察被歸因',
           '服務聲延續你的想法；邀請你一起創作',
-        ]
-
-        // Add default sentences to Firebase
-        defaultSentences.forEach(async (sentence) => {
-          await addDoc(sentencesRef, {
-            text: sentence,
-            createdAt: Timestamp.now()
-          })
-        })
-      } else {
-        setSentences(loadedSentences)
+        ])
+        setIsLoading(false)
       }
+    }
 
-      setIsLoading(false)
-    }, (error) => {
-      console.error('Error loading sentences:', error)
-      // Fallback to default sentences if Firebase fails
-      setSentences([
-        '服務聲既是一個社群；也是一份期刊',
-        '服務聲延續你的想法；邀請你一起創作',
-      ])
-      setIsLoading(false)
-    })
+    // Delay initial setup slightly to ensure Firebase is initialized
+    const timeoutId = setTimeout(setupListener, 100)
 
-    return () => unsubscribe()
+    return () => {
+      clearTimeout(timeoutId)
+      if (unsubscribe) unsubscribe()
+    }
   }, [])
 
   useEffect(() => {
@@ -137,18 +181,41 @@ export default function Cover({ onEnter }: CoverProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (userInput.trim()) {
-      try {
-        const sentencesRef = collection(db, 'coverSentences')
-        await addDoc(sentencesRef, {
-          text: userInput.trim(),
-          createdAt: Timestamp.now()
-        })
-        setUserInput('')
-      } catch (error) {
-        console.error('Error adding sentence:', error)
-        // Fallback to local state if Firebase fails
-        setSentences(prev => [...prev, userInput.trim()])
-        setUserInput('')
+      const text = userInput.trim()
+
+      // Check character limit
+      if (text.length > 200) {
+        alert('內容超過 200 字元限制，請縮短後再試。')
+        return
+      }
+
+      setUserInput('') // Clear input immediately for better UX
+
+      // Retry logic for adding sentence
+      let retries = 3
+      while (retries > 0) {
+        try {
+          const sentencesRef = collection(db, 'coverSentences')
+          await addDoc(sentencesRef, {
+            text: text,
+            createdAt: Timestamp.now()
+          })
+          // Success - exit retry loop
+          break
+        } catch (error) {
+          retries--
+          console.error(`Error adding sentence (${3 - retries}/3):`, error)
+
+          if (retries === 0) {
+            // All retries failed - fallback to local state
+            console.warn('All retries failed, adding to local state only')
+            setSentences(prev => [...prev, text])
+            alert('無法連接到伺服器，您的輸入已暫存在本地。請稍後重試。')
+          } else {
+            // Wait before retry (exponential backoff)
+            await new Promise(resolve => setTimeout(resolve, 1000 * (3 - retries)))
+          }
+        }
       }
     }
   }
@@ -193,17 +260,34 @@ export default function Cover({ onEnter }: CoverProps) {
               })}
               <span className="inline-block ml-1 pointer-events-auto">
                 <form onSubmit={handleSubmit} className="inline-block align-baseline relative z-30 pointer-events-auto">
-                  <input
-                    type="text"
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    placeholder="輸入連接你的想法"
-                    className="bg-transparent border-b border-gray-600 focus:border-white outline-none py-1 text-sm md:text-base text-white placeholder-gray-500 placeholder-opacity-35 transition-colors relative z-30 pointer-events-auto"
-                    style={{
-                      fontFamily: 'Noto Sans TC, sans-serif',
-                      width: '300px',
-                    }}
-                  />
+                  <div className="inline-block relative">
+                    <input
+                      type="text"
+                      value={userInput}
+                      onChange={(e) => setUserInput(e.target.value)}
+                      placeholder="輸入連接你的想法"
+                      className="bg-transparent border-b border-gray-600 focus:border-white outline-none py-1 text-sm md:text-base text-white placeholder-gray-500 placeholder-opacity-35 transition-colors relative z-30 pointer-events-auto"
+                      style={{
+                        fontFamily: 'Noto Sans TC, sans-serif',
+                        width: '300px',
+                      }}
+                    />
+                    {userInput.length > 0 && (
+                      <div
+                        className={`absolute left-0 top-full mt-1 pb-4 text-xs pointer-events-none ${
+                          userInput.length > 200
+                            ? 'text-red-400'
+                            : userInput.length > 180
+                            ? 'text-yellow-400'
+                            : 'text-gray-500'
+                        }`}
+                        style={{ fontFamily: 'Noto Sans TC, sans-serif' }}
+                      >
+                        {userInput.length}/200 字元
+                        {userInput.length > 200 && ' （超出限制）'}
+                      </div>
+                    )}
+                  </div>
                 </form>
               </span>
             </div>
