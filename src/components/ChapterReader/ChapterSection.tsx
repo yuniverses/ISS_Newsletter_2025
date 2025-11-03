@@ -16,6 +16,7 @@ export default function ChapterSection({
 
   return (
     <section
+      id={chapter.id}
       data-chapter-id={chapter.id}
       className={cn(
         'min-h-screen w-full transition-opacity duration-300',

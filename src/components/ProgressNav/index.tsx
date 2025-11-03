@@ -1,5 +1,4 @@
 import { Chapter } from '@/types'
-import { cn } from '@/utils/cn'
 
 interface ProgressNavProps {
   chapters: Chapter[]
@@ -12,51 +11,74 @@ export default function ProgressNav({
   currentChapterId,
   onChapterClick,
 }: ProgressNavProps) {
+  // Find current chapter index
+  const currentChapter = chapters.find(ch => ch.id === currentChapterId)
+  const currentOrder = currentChapter?.order || 1
+
+  // Split chapters into completed, current, and upcoming
+  const completedChapters = chapters.filter(ch => ch.order < currentOrder)
+  const upcomingChapters = chapters.filter(ch => ch.order > currentOrder)
+
   return (
-    <nav className="fixed right-8 top-1/2 -translate-y-1/2 z-50">
-      <div className="flex flex-col gap-6">
-        {chapters.map((chapter) => {
-          const isActive = chapter.id === currentChapterId
+    <nav className="fixed right-8 top-8 z-50">
+      <div className="flex flex-col gap-4">
+        {/* Completed chapters - at top */}
+        {completedChapters.map((chapter) => {
           const chapterNumber = String(chapter.order).padStart(2, '0')
 
           return (
             <button
               key={chapter.id}
               onClick={() => onChapterClick(chapter.id)}
-              className={cn(
-                "group relative text-right transition-all duration-300",
-                "hover:opacity-100",
-                isActive ? "opacity-100" : "opacity-30"
-              )}
+              className="group relative text-right transition-all duration-300 hover:opacity-100 opacity-40"
               aria-label={`前往章節 ${chapterNumber}: ${chapter.title}`}
             >
-              {/* Chapter Number */}
-              <div
-                className={cn(
-                  "text-sm font-light tracking-wider transition-all duration-300",
-                  isActive ? "text-black scale-110" : "text-gray-400"
-                )}
-              >
+              <div className="text-xs font-light tracking-wider text-gray-400 transition-all duration-300">
                 {chapterNumber}
               </div>
-
-              {/* Chapter Title - Vertical Text */}
-              {isActive && (
-                <div className="absolute right-8 top-0 -translate-y-1/4">
-                  <div
-                    className="text-xs font-light tracking-wide whitespace-nowrap"
-                    style={{
-                      writingMode: 'vertical-rl',
-                      textOrientation: 'upright'
-                    }}
-                  >
-                    {chapter.title}
-                  </div>
-                </div>
-              )}
             </button>
           )
         })}
+
+        {/* Current chapter - also at top, after completed */}
+        {currentChapter && (
+          <button
+            onClick={() => onChapterClick(currentChapter.id)}
+            className="group relative text-right transition-all duration-300"
+            aria-label={`當前章節 ${String(currentChapter.order).padStart(2, '0')}: ${currentChapter.title}`}
+          >
+            {/* Chapter Title - Vertical Text (only) */}
+            <div
+              className="text-xs font-light tracking-wide text-black whitespace-nowrap"
+              style={{
+                writingMode: 'vertical-rl',
+                textOrientation: 'mixed'
+              }}
+            >
+              {currentChapter.title}
+            </div>
+          </button>
+        )}
+
+        {/* Upcoming chapters - at bottom */}
+        <div className="mt-6 flex flex-col gap-4">
+          {upcomingChapters.map((chapter) => {
+            const chapterNumber = String(chapter.order).padStart(2, '0')
+
+            return (
+              <button
+                key={chapter.id}
+                onClick={() => onChapterClick(chapter.id)}
+                className="group relative text-right transition-all duration-300 hover:opacity-100 opacity-40"
+                aria-label={`前往章節 ${chapterNumber}: ${chapter.title}`}
+              >
+                <div className="text-xs font-light tracking-wider text-gray-400 transition-all duration-300">
+                  {chapterNumber}
+                </div>
+              </button>
+            )
+          })}
+        </div>
       </div>
     </nav>
   )

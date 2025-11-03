@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import Cover from './components/Cover'
+import Preface from './components/Preface'
+import TableOfContents from './components/TableOfContents'
 import ChapterReader from './components/ChapterReader'
 import ProgressNav from './components/ProgressNav'
 import { Newsletter } from './types'
@@ -31,6 +33,15 @@ function App() {
     <div className="min-h-screen">
       {/* Cover Page */}
       <Cover />
+
+      {/* Preface Section */}
+      <Preface />
+
+      {/* Table of Contents */}
+      <TableOfContents
+        chapters={newsletter.chapters}
+        onChapterClick={setCurrentChapterId}
+      />
 
       {/* Progress Navigation - appears after cover */}
       <ProgressNav
