@@ -23,8 +23,8 @@
     {
       "id": "chapter-03",
       "order": 3,
-      "title": "Chapter 03",
-      "description": "待編輯的章節內容。",
+      "title": "AI 時代的服務設計：AI的秘密身分",
+      "description": "四個正在重塑商業法則的反直覺真相：AI 作為模擬者、使用者、協作者與行動者。",
       "htmlFile": "/chapters/chapter-03.html",
       "authors": [],
       "theme": "light"
