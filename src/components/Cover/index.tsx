@@ -5,6 +5,7 @@ import { SemicolonLogo } from '../ui/SemicolonLogo'
 
 interface CoverProps {
   onEnter?: () => void
+  startAnimation?: boolean
 }
 
 interface SentenceDoc {
@@ -12,7 +13,7 @@ interface SentenceDoc {
   createdAt: Timestamp
 }
 
-export default function Cover({ onEnter }: CoverProps) {
+export default function Cover({ onEnter, startAnimation = true }: CoverProps) {
   const coverRef = useRef<HTMLDivElement>(null)
   const textDisplayRef = useRef<HTMLDivElement>(null)
   const charRefs = useRef<(HTMLSpanElement | null)[]>([])
@@ -233,6 +234,29 @@ export default function Cover({ onEnter }: CoverProps) {
       <div className="absolute top-0 left-0 right-0 h-screen flex items-center justify-center">
         <div className="relative w-[85vw] max-w-[1200px] h-screen flex flex-col items-center justify-center">
           
+          {/* Decorative connected blocks - Restored Main Visual */}
+          <div className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full aspect-[1152/382] pointer-events-none opacity-60 transition-opacity duration-1000 ${startAnimation ? 'opacity-60' : 'opacity-0'}`}>
+            {/* Black blocks - rgba(0, 0, 0, 0.5) with flicker animation */}
+            <div className={`absolute backdrop-blur-lg left-0 top-0 w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} />
+            <div className={`absolute backdrop-blur-lg left-0 top-[30.05%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.1s' }} />
+            <div className={`absolute backdrop-blur-lg left-[14.55%] top-[20%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.2s' }} />
+            <div className={`absolute backdrop-blur-lg left-[85.45%] top-[39.85%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.3s' }} />
+            <div className={`absolute backdrop-blur-lg left-0 top-[70.05%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.4s' }} />
+            <div className={`absolute backdrop-blur-lg left-[14.55%] top-[60%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.5s' }} />
+            <div className={`absolute backdrop-blur-lg left-[85.45%] top-[89.95%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.6s' }} />
+            <div className={`absolute backdrop-blur-lg left-0 top-[50%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.7s' }} />
+
+            {/* White blocks - rgba(255, 255, 255, 0.21) with flicker animation */}
+            <div className={`absolute backdrop-blur-lg left-0 top-[40.1%] w-[85.45%] h-[9.8%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} />
+            <div className={`absolute backdrop-blur-lg left-[14.55%] top-[9.95%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.1s' }} />
+            <div className={`absolute backdrop-blur-lg left-[85.45%] top-[30.05%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.2s' }} />
+            <div className={`absolute backdrop-blur-lg left-0 top-[20%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.3s' }} />
+            <div className={`absolute backdrop-blur-lg left-0 top-[80.15%] w-[85.45%] h-[9.8%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.4s' }} />
+            <div className={`absolute backdrop-blur-lg left-[14.55%] top-[49.95%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.5s' }} />
+            <div className={`absolute backdrop-blur-lg left-[85.45%] top-[70.05%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.6s' }} />
+            <div className={`absolute backdrop-blur-lg left-0 top-[60%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.7s' }} />
+          </div>
+
           {/* Centered Logo */}
           <div className="z-10 animate-fade-in-slow">
             <SemicolonLogo className="h-[30vh] w-auto" />

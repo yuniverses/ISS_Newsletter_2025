@@ -6,7 +6,11 @@ import ChapterReader from '../components/ChapterReader'
 import ProgressNav from '../components/ProgressNav'
 import { Newsletter } from '../types'
 
-export default function Home() {
+interface HomeProps {
+  isIntroComplete?: boolean
+}
+
+export default function Home({ isIntroComplete = true }: HomeProps) {
   const [newsletter, setNewsletter] = useState<Newsletter | null>(null)
   const [currentChapterId, setCurrentChapterId] = useState<string>('')
 
@@ -32,7 +36,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Cover Page */}
-      <Cover />
+      <Cover startAnimation={isIntroComplete} />
 
       {/* Preface Section */}
       <Preface />

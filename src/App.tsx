@@ -13,7 +13,7 @@ function App() {
       {showIntro && <SemicolonIntro onComplete={() => setShowIntro(false)} />}
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home isIntroComplete={!showIntro} />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/layouts-demo" element={<LayoutsDemo />} />
         </Routes>
