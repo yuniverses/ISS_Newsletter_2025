@@ -11,7 +11,7 @@ export interface SemicolonScene {
   fontClass: string;
 }
 
-const BASE_SIZE = "text-xl md:text-3xl";
+const BASE_SIZE = "text-sm sm:text-xl md:text-3xl";
 
 // --- Syntax Highlighting Helpers ---
 const K = ({ c }: { c: string }) => <span className="text-pink-400 font-bold">{c}</span>; // Keyword
