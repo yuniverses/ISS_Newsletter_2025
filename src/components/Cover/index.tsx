@@ -1,9 +1,26 @@
 import { useEffect, useRef, useState } from 'react'
 import { SemicolonLogo } from '../ui/SemicolonLogo'
+import Noise from '../Noise'
+import GridDistortion from '../GridDistortion'
 
 interface CoverProps {
   onEnter?: () => void
 }
+
+// Helper function to generate polygon clip-path based on number of sides
+const generatePolygonPath = (sides: number, rotation: number = 0): string => {
+  if (sides < 3) sides = 3;
+  if (sides > 50) return 'circle(45% at 50% 50%)'; // Becomes circle at high sides
+
+  const points: string[] = [];
+  for (let i = 0; i < sides; i++) {
+    const angle = (i * 2 * Math.PI / sides) - Math.PI / 2 + (rotation * Math.PI / 180);
+    const x = 50 + 45 * Math.cos(angle);
+    const y = 50 + 45 * Math.sin(angle);
+    points.push(`${x}% ${y}%`);
+  }
+  return `polygon(${points.join(', ')})`;
+};
 
 // Helper component for smooth crossfade looping
 const CrossfadeLoop = ({ src, className, style }: { src: string, className?: string, style?: React.CSSProperties }) => {
@@ -81,6 +98,10 @@ const CrossfadeLoop = ({ src, className, style }: { src: string, className?: str
 
 export default function Cover({ onEnter }: CoverProps) {
   const coverRef = useRef<HTMLDivElement>(null)
+  const video1Ref = useRef<HTMLDivElement>(null)
+  const video2Ref = useRef<HTMLDivElement>(null)
+  const [clipPath1, setClipPath1] = useState('polygon(0 0, 100% 0, 100% 100%, 0 100%)')
+  const [clipPath2, setClipPath2] = useState('polygon(0 0, 100% 0, 100% 100%, 0 100%)')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -95,6 +116,53 @@ export default function Cover({ onEnter }: CoverProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [onEnter])
 
+  // Handle mouse movement for dynamic shape morphing
+  const handleMouseMove1 = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width // 0 to 1
+    const y = (e.clientY - rect.top) / rect.height // 0 to 1
+
+    // Calculate distance from center
+    const centerX = 0.5, centerY = 0.5
+    const distanceFromCenter = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2))
+
+    // Map distance to number of sides (3 to 20, then circle)
+    // Close to center = more sides (smoother, closer to circle)
+    // Far from center = fewer sides (sharper polygon)
+    const sides = Math.round(3 + (1 - distanceFromCenter * 2) * 17)
+
+    // Calculate rotation based on mouse angle from center
+    const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI)
+
+    const newClipPath = generatePolygonPath(Math.max(3, Math.min(50, sides)), angle)
+    setClipPath1(newClipPath)
+  }
+
+  const handleMouseMove2 = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width
+    const y = (e.clientY - rect.top) / rect.height
+
+    // Different logic for second video: use quadrants
+    let sides = 4
+    if (x < 0.5 && y < 0.5) sides = 3  // Top-left: Triangle
+    else if (x >= 0.5 && y < 0.5) sides = 6  // Top-right: Hexagon
+    else if (x < 0.5 && y >= 0.5) sides = 8  // Bottom-left: Octagon
+    else sides = 12  // Bottom-right: Dodecagon
+
+    const angle = (x * 360) // Rotate based on horizontal position
+    const newClipPath = generatePolygonPath(sides, angle)
+    setClipPath2(newClipPath)
+  }
+
+  const handleMouseLeave1 = () => {
+    setClipPath1('polygon(0 0, 100% 0, 100% 100%, 0 100%)')
+  }
+
+  const handleMouseLeave2 = () => {
+    setClipPath2('polygon(0 0, 100% 0, 100% 100%, 0 100%)')
+  }
+
   const backgroundText = `In grammar, a semicolon connects two related but independently standing ideas. Similarly, at Semicolon Design, the semicolon symbolizes the bridge connecting visual art and storytelling. We believe that design is more than just creating aesthetic visuals - it is about conveying a profound story or message. `
   const repeatedText = Array(6).fill(backgroundText).join('')
 
@@ -102,10 +170,21 @@ export default function Cover({ onEnter }: CoverProps) {
     <div ref={coverRef} className="relative w-full h-screen bg-black text-white overflow-hidden font-sans">
       
       {/* Background Video Layer with Blur and Noise */}
-      <div className="absolute inset-0 z-0 overflow-hidden opacity-60 bg-gray-900 flex flex-col md:flex-row">
-          {/* Top/Left Video with Blur - Cropped to remove black edges */}
-          <div className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden">
-            <div className="absolute inset-0" style={{ transform: 'scale(1.1)' }}>
+      <div className="absolute inset-0 z-0 overflow-hidden opacity-60 bg-gray-900 flex flex-col md:flex-row pointer-events-auto">
+          {/* Top/Left Video - Dynamic polygon based on distance from center */}
+          <div
+            ref={video1Ref}
+            className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden pointer-events-auto cursor-crosshair"
+            onMouseMove={handleMouseMove1}
+            onMouseLeave={handleMouseLeave1}
+          >
+            <div
+              className="absolute inset-0 transition-all duration-300 ease-out"
+              style={{
+                transform: 'scale(1.1)',
+                clipPath: clipPath1
+              }}
+            >
               <CrossfadeLoop
                 src="dist/assets/vul.mp4"
                 className="relative w-full h-full overflow-hidden"
@@ -113,9 +192,20 @@ export default function Cover({ onEnter }: CoverProps) {
               />
             </div>
           </div>
-          {/* Bottom/Right Video (Vertically Flipped) with Blur - Cropped to remove black edges */}
-          <div className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden">
-            <div className="absolute inset-0" style={{ transform: 'scale(1.1) scaleY(-1)' }}>
+          {/* Bottom/Right Video - Quadrant-based shapes */}
+          <div
+            ref={video2Ref}
+            className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden pointer-events-auto cursor-crosshair"
+            onMouseMove={handleMouseMove2}
+            onMouseLeave={handleMouseLeave2}
+          >
+            <div
+              className="absolute inset-0 transition-all duration-300 ease-out"
+              style={{
+                transform: 'scale(1.1) scaleY(-1)',
+                clipPath: clipPath2
+              }}
+            >
               <CrossfadeLoop
                 src="dist/assets/vul.mp4"
                 className="relative w-full h-full overflow-hidden"
@@ -124,19 +214,19 @@ export default function Cover({ onEnter }: CoverProps) {
             </div>
           </div>
 
-          {/* Noise Overlay - Applied after blur and crop */}
-          <div
-            className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-30 z-10"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-              backgroundRepeat: 'repeat',
-              backgroundSize: '200px 200px'
-            }}
-          />
+          {/* Animated Noise Overlay - Applied after blur and crop */}
+          <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20 z-10">
+            <Noise
+              patternSize={250}
+              patternAlpha={25}
+              patternRefreshInterval={3}
+            />
+          </div>
       </div>
 
-      {/* Content Layer */}
-      <div className="relative z-10 h-full w-full flex flex-col box-border">
+      {/* Content Layer - pointer-events-none on container, auto on children */}
+      <div className="relative z-10 h-full w-full flex flex-col box-border pointer-events-none">
+        <div className="pointer-events-auto contents">
 
           {/* Top Left: Logo & Subtitle */}
           <div className="absolute top-[8vh] left-[6vw] flex flex-col gap-2 z-20">
@@ -202,7 +292,7 @@ export default function Cover({ onEnter }: CoverProps) {
             <div className="text-[10px] tracking-[0.2em] uppercase">Scroll</div>
             <div className="w-px h-8 bg-white" />
           </div>
-
+        </div>
       </div>
 
     </div>
