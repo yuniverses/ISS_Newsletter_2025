@@ -5,73 +5,104 @@
     {
       "id": "chapter-01",
       "order": 1,
-      "title": "分號之間：我們的話",
-      "description": "從語言符號到關係設計，從對話的延續感到學習的延續。",
+      "title": "認識服務科學研究所",
+      "description": "",
       "htmlFile": "/chapters/chapter-01.html",
-      "authors": ["胡舜筑 / 主編 設計", "胡舜筑 / 採訪"],
+      "authors": [],
+      "tag": "服務聲精選",
       "theme": "light"
     },
     {
       "id": "chapter-02",
       "order": 2,
-      "title": "出走與回歸：交換與留學的革命學",
-      "description": "探索學習旅程中的成長與反思。",
+      "title": "AI 時代的服務設計",
+      "description": "",
       "htmlFile": "/chapters/chapter-02.html",
       "authors": [],
+      "tag": "服務聲精選",
       "theme": "light"
     },
     {
       "id": "chapter-03",
       "order": 3,
-      "title": "AI 時代的服務設計：AI的秘密身分",
-      "description": "四個正在重塑商業法則的反直覺真相：AI 作為模擬者、使用者、協作者與行動者。",
+      "title": "AI時代，為何「懂人心」比「懂技術」更重要？",
+      "description": "",
       "htmlFile": "/chapters/chapter-03.html",
-      "authors": [],
+      "authors": ["Sunny 鄭晴元"],
       "theme": "light"
     },
     {
       "id": "chapter-04",
       "order": 4,
-      "title": "Chapter 04",
-      "description": "待編輯的章節內容。",
+      "title": "慈昱學姊時間管理心法",
+      "description": "",
       "htmlFile": "/chapters/chapter-04.html",
-      "authors": [],
+      "authors": ["慈昱學姊"],
       "theme": "light"
     },
     {
       "id": "chapter-05",
       "order": 5,
-      "title": "Chapter 05",
-      "description": "待編輯的章節內容。",
+      "title": "薐嘉學姊創業故事",
+      "description": "",
       "htmlFile": "/chapters/chapter-05.html",
-      "authors": [],
+      "authors": ["薐嘉學姊"],
       "theme": "light"
     },
     {
       "id": "chapter-06",
       "order": 6,
-      "title": "Chapter 06",
-      "description": "待編輯的章節內容。",
+      "title": "薩泰爾娛樂 全端工程師",
+      "description": "",
       "htmlFile": "/chapters/chapter-06.html",
-      "authors": [],
+      "authors": ["馮元詰"],
       "theme": "light"
     },
     {
       "id": "chapter-07",
       "order": 7,
-      "title": "Chapter 07",
-      "description": "待編輯的章節內容。",
+      "title": "ViewSonic UI/UX Designer",
+      "description": "",
       "htmlFile": "/chapters/chapter-07.html",
-      "authors": [],
+      "authors": ["曾婉婷"],
       "theme": "light"
     },
     {
       "id": "chapter-08",
       "order": 8,
-      "title": "Chapter 08",
-      "description": "待編輯的章節內容。",
+      "title": "設計就是政治",
+      "description": "",
       "htmlFile": "/chapters/chapter-08.html",
+      "authors": ["陳慕天"],
+      "theme": "light"
+    },
+    {
+      "id": "chapter-09",
+      "order": 9,
+      "title": "Opentaipei 2025打開台北",
+      "description": "",
+      "htmlFile": "/chapters/chapter-09.html",
+      "authors": ["徐千捷"],
+      "theme": "light"
+    },
+    {
+      "id": "chapter-10",
+      "order": 10,
+      "title": "ISS 年度活動",
+      "description": "",
+      "htmlFile": "/chapters/chapter-10.html",
       "authors": [],
+      "tag": "服務聲精選",
+      "theme": "light"
+    },
+    {
+      "id": "chapter-11",
+      "order": 11,
+      "title": "連結的分號",
+      "description": "",
+      "htmlFile": "/chapters/chapter-11.html",
+      "authors": [],
+      "tag": "服務聲精選",
       "theme": "light"
     }
   ]

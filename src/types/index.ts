@@ -4,6 +4,7 @@ export interface Chapter {
   description: string
   htmlFile: string
   authors?: string[]
+  tag?: string
   theme?: 'light' | 'dark'
   order: number
 }

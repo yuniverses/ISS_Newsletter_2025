@@ -1,6 +1,7 @@
 import { useRef, useEffect, useMemo } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Matter from 'matter-js'
 import { Chapter } from '../../types'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -27,29 +28,20 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
   const shapesContainerRef = useRef<HTMLDivElement>(null)
   const shapeRefs = useRef<(HTMLImageElement | null)[]>([])
   
-  // Track which particle to spawn next (0 to 7)
+  // Physics Refs
+  const engineRef = useRef<Matter.Engine | null>(null)
+  const bodiesRef = useRef<{ [key: number]: Matter.Body }>({})
+  const wallsRef = useRef<Matter.Body[]>([])
+  
+  // Track which particle to spawn next
   const nextParticleIndex = useRef(0)
   
-  // Track batched fires
-  const hasFiredBatch1 = useRef(false) // 0.4
-  const hasFiredBatch2 = useRef(false) // 0.55
-  const hasFiredBatch3 = useRef(false) // 0.7
-  
-  // Floor/Ground Offset from bottom (Set to 0 for absolute bottom edge)
-  const GROUND_OFFSET = 0
-  
-  // Create shuffled slots for landing positions to avoid overlap
-  const particleSlots = useRef<number[]>([])
-
-  useEffect(() => {
-    // Initialize shuffled slots for 8 particles
-    const slots = Array.from({ length: 8 }, (_, i) => i)
-    for (let i = slots.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [slots[i], slots[j]] = [slots[j], slots[i]];
-    }
-    particleSlots.current = slots
-  }, [])
+  // Track batched fires (5 stages)
+  const hasFiredBatch1 = useRef(false)
+  const hasFiredBatch2 = useRef(false)
+  const hasFiredBatch3 = useRef(false)
+  const hasFiredBatch4 = useRef(false)
+  const hasFiredBatch5 = useRef(false)
 
   const handleChapterClick = (chapterId: string) => {
     onChapterClick(chapterId)
@@ -61,15 +53,83 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
     }, 100)
   }
 
-  // Exact 8 particles
+  // Exact 12 particles
   const particles = useMemo(() => {
-    return Array.from({ length: 8 }).map((_, i) => ({
+    return Array.from({ length: 12 }).map((_, i) => ({
       id: i,
       src: SHAPES[i % SHAPES.length],
     }))
   }, [])
 
   useEffect(() => {
+    // 1. Setup Matter.js Engine
+    const engine = Matter.Engine.create()
+    engineRef.current = engine
+    const world = engine.world
+    
+    engine.gravity.y = 1
+
+    // 2. Setup Boundaries (Walls & Floor)
+    const updateBoundaries = () => {
+      if (!containerRef.current) return
+      
+      if (wallsRef.current.length > 0) {
+        Matter.World.remove(world, wallsRef.current)
+      }
+
+      const width = containerRef.current.offsetWidth
+      const height = containerRef.current.offsetHeight
+      const wallThickness = 1000
+
+      // Floor
+      const floor = Matter.Bodies.rectangle(width / 2, height + (wallThickness / 2) - 20, width * 2, wallThickness, { 
+        isStatic: true,
+        render: { visible: false }
+      })
+
+      // Left Wall
+      const leftWall = Matter.Bodies.rectangle(0 - (wallThickness / 2), height / 2, wallThickness, height * 2, { 
+        isStatic: true,
+        render: { visible: false }
+      })
+
+      // Right Wall
+      const rightWall = Matter.Bodies.rectangle(width + (wallThickness / 2), height / 2, wallThickness, height * 2, { 
+        isStatic: true,
+        render: { visible: false }
+      })
+
+      wallsRef.current = [floor, leftWall, rightWall]
+      Matter.World.add(world, wallsRef.current)
+    }
+
+    updateBoundaries()
+    window.addEventListener('resize', updateBoundaries)
+
+    // 3. Render Loop
+    const ticker = gsap.ticker.add((time, deltaTime, frame) => {
+      Matter.Engine.update(engine, 1000 / 60)
+
+      // Sync DOM elements
+      Object.keys(bodiesRef.current).forEach((key) => {
+        const index = parseInt(key)
+        const body = bodiesRef.current[index]
+        const el = shapeRefs.current[index]
+        
+        if (el && body) {
+          // Sync Position & Rotation (w-56 = 224px. Half = 112px)
+          const x = body.position.x - 112
+          const y = body.position.y - 112
+          const angle = body.angle 
+
+          el.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${angle}rad)`
+          el.style.opacity = '1'
+          el.style.display = 'block'
+        }
+      })
+    })
+
+    // 4. GSAP ScrollTrigger Logic
     const ctx = gsap.context(() => {
       const menu = menuRef.current
       const container = containerRef.current
@@ -83,30 +143,39 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
           const velocity = self.getVelocity() / 300
           
           if (velocity > 0) {
-             // Spray logic: Batched
-             // Batch 1: > 0.4 (Fire 3)
-             if (!hasFiredBatch1.current && self.progress > 0.4) {
-               spawnBatch(3, velocity)
+             // Spray logic: 5 Batches (Advanced timings)
+             // Batch 1: > 0.2
+             if (!hasFiredBatch1.current && self.progress > 0.2) {
+               spawnBatch(1, 0.1)
                hasFiredBatch1.current = true
              }
-             // Batch 2: > 0.55 (Fire 3)
-             if (!hasFiredBatch2.current && self.progress > 0.55) {
-               spawnBatch(3, velocity)
+             // Batch 2: > 0.35
+             if (!hasFiredBatch2.current && self.progress > 0.35) {
+               spawnBatch(2, 0.3)
                hasFiredBatch2.current = true
              }
-             // Batch 3: > 0.7 (Fire 2, remainder)
-             if (!hasFiredBatch3.current && self.progress > 0.7) {
-               spawnBatch(2, velocity)
+             // Batch 3: > 0.5
+             if (!hasFiredBatch3.current && self.progress > 0.5) {
+               spawnBatch(5, 0.5)
                hasFiredBatch3.current = true
+             }
+             // Batch 4: > 0.65
+             if (!hasFiredBatch4.current && self.progress > 0.65) {
+               spawnBatch(2, 0.7)
+               hasFiredBatch4.current = true
+             }
+             // Batch 5: > 0.8
+             if (!hasFiredBatch5.current && self.progress > 0.8) {
+               spawnBatch(2, 0.9)
+               hasFiredBatch5.current = true
              }
           }
         }
       })
 
-      // 2. Menu Lift (Climb from below to the bottom edge)
-      // Starts at y: 600 (off-screen bottom) and ends at y: 0 (touching bottom edge)
+      // Menu Lift Animation
       gsap.fromTo(menu, 
-        { y: 600 },
+        { y: 1200 },
         { 
           y: 0, 
           ease: "power1.out",
@@ -118,94 +187,61 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
           }
         }
       )
-
     }, containerRef)
 
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      window.removeEventListener('resize', updateBoundaries)
+      gsap.ticker.remove(ticker)
+      Matter.World.clear(world, false)
+      Matter.Engine.clear(engine)
+    }
   }, [])
 
-  const spawnBatch = (count: number, velocity: number) => {
+  const spawnBatch = (count: number, yRatio: number) => {
     for (let i = 0; i < count; i++) {
        setTimeout(() => {
-         spawnParticle(velocity)
-       }, i * 150)
+         spawnParticle(yRatio)
+       }, i * 100)
     }
   }
 
-  const spawnParticle = (velocity: number) => {
-    if (nextParticleIndex.current >= 8) return
-
+  const spawnParticle = (yRatio: number) => {
+    if (nextParticleIndex.current >= 12) return
     const index = nextParticleIndex.current
-    const slotIndex = particleSlots.current[index]
     nextParticleIndex.current++
 
-    const el = shapeRefs.current[index]
     const menu = menuRef.current
     const container = containerRef.current
-    
-    if (!el || !menu || !container) return
+    const engine = engineRef.current
+    if (!menu || !container || !engine) return
 
     const menuRect = menu.getBoundingClientRect()
     const containerRect = container.getBoundingClientRect()
     
     const relativeLeft = menuRect.left - containerRect.left
-    const relativeTop = (menuRect.top - containerRect.top) + menuRect.height
+    const relativeTop = (menuRect.top - containerRect.top)
     
-    // Spawn point
     const spawnX = relativeLeft + (menuRect.width * 0.5)
-    const spawnY = relativeTop - 30 
+    const spawnY = relativeTop + (menuRect.height * yRatio)
 
-    // Ground level for particles:
-    // Sitting ON the absolute bottom line.
-    const groundY = container.offsetHeight - 130
+    // Physics Body (Increased radius for w-56)
+    const radius = 100 
     
-    // Non-overlapping X slots
-    const startX = relativeLeft + menuRect.width + 100
-    const availableWidth = Math.max(container.offsetWidth - startX - 200, 800)
-    const slotWidth = availableWidth / 8
-    const targetX = startX + (slotIndex * slotWidth) + (Math.random() * (slotWidth * 0.3))
-
-    gsap.killTweensOf(el)
-    
-    gsap.set(el, {
-      x: spawnX,
-      y: spawnY,
-      opacity: 1,
-      scale: 0.9 + Math.random() * 0.3, 
-      rotation: Math.random() * 360,
-      display: 'block'
+    const body = Matter.Bodies.circle(spawnX, spawnY, radius, {
+      restitution: 0.6,
+      friction: 0.1,
+      density: 0.001,
+      angle: Math.random() * Math.PI * 2
     })
 
-    const duration = 1.3 + Math.random() * 0.5
+    const forceX = 0.1 + Math.random() * 0.1
+    const forceY = -0.06 - Math.random() * 0.06 
     
-    gsap.to(el, {
-      x: targetX,
-      duration: duration,
-      ease: "power1.out",
-    })
-
-    const jumpHeight = 150 + Math.random() * 100
-    const jumpDuration = 0.4
-    const fallDuration = duration - jumpDuration
+    Matter.Body.applyForce(body, body.position, { x: forceX, y: forceY })
+    Matter.World.add(engine.world, body)
     
-    gsap.to(el, {
-      y: spawnY - jumpHeight,
-      duration: jumpDuration,
-      ease: "power2.out",
-      onComplete: () => {
-         gsap.to(el, {
-            y: groundY,
-            duration: fallDuration,
-            ease: "bounce.out",
-         })
-      }
-    })
-
-    gsap.to(el, {
-       rotation: `+=${Math.random() * 360}`,
-       duration: duration,
-       ease: "power1.out"
-    })
+    bodiesRef.current[index] = body
   }
 
   return (
@@ -224,7 +260,8 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
             ref={(el) => (shapeRefs.current[i] = el)}
             src={p.src}
             alt=""
-            className="absolute hidden w-40 h-40 object-contain origin-center opacity-0"
+            // w-56 = 224px (approx 1.2x bigger than w-48)
+            className="absolute hidden w-56 h-56 object-contain origin-center opacity-0 will-change-transform"
             style={{ left: 0, top: 0 }}
           />
         ))}
@@ -241,42 +278,55 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
             
             {/* Group 1: Intro */}
             <div className="relative">
-               {/* Section Header */}
                <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
-                 <h2 className="text-2xl font-bold">/ 服科的入口 /</h2>
-                 <span className="text-sm font-light">NO. 01</span>
+                 <h2 className="text-xl font-bold">服科的入口</h2>
+                 <span className="text-xs font-light">GROUP 01</span>
                </div>
-               
-               {/* Chapters in this group */}
-               {chapters.filter(c => c.id === 'chapter-01').map(chapter => (
+               {chapters.filter(c => ['chapter-01'].includes(c.id)).map(chapter => (
                  <ChapterItem key={chapter.id} chapter={chapter} onClick={() => handleChapterClick(chapter.id)} />
                ))}
             </div>
 
             {/* Group 2: AI */}
             <div className="relative">
-               {/* Section Header */}
                <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
-                 <h2 className="text-2xl font-bold">? AI ?</h2>
-                 <span className="text-sm font-light">NO. 02</span>
+                 <h2 className="text-xl font-bold">AI</h2>
+                 <span className="text-xs font-light">GROUP 02</span>
                </div>
-               
-               {/* Chapters in this group */}
-               {chapters.filter(c => c.id === 'chapter-03').map(chapter => (
+               {chapters.filter(c => ['chapter-02', 'chapter-03'].includes(c.id)).map(chapter => (
                  <ChapterItem key={chapter.id} chapter={chapter} onClick={() => handleChapterClick(chapter.id)} />
                ))}
             </div>
 
             {/* Group 3: Alumni */}
             <div className="relative">
-               {/* Section Header */}
                <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
-                 <h2 className="text-2xl font-bold">@ 學長姐 救我 @</h2>
-                 <span className="text-sm font-light">NO. 03</span>
+                 <h2 className="text-xl font-bold">學長姐 救我</h2>
+                 <span className="text-xs font-light">GROUP 03</span>
                </div>
-               
-               {/* Chapters in this group (Ch 2 and others) */}
-               {chapters.filter(c => c.id !== 'chapter-01' && c.id !== 'chapter-03').map(chapter => (
+               {chapters.filter(c => ['chapter-04', 'chapter-05', 'chapter-06', 'chapter-07'].includes(c.id)).map(chapter => (
+                 <ChapterItem key={chapter.id} chapter={chapter} onClick={() => handleChapterClick(chapter.id)} />
+               ))}
+            </div>
+
+            {/* Group 4: Behind Scenes */}
+            <div className="relative">
+               <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
+                 <h2 className="text-xl font-bold">展開 幕後</h2>
+                 <span className="text-xs font-light">GROUP 04</span>
+               </div>
+               {chapters.filter(c => ['chapter-08', 'chapter-09'].includes(c.id)).map(chapter => (
+                 <ChapterItem key={chapter.id} chapter={chapter} onClick={() => handleChapterClick(chapter.id)} />
+               ))}
+            </div>
+
+            {/* Group 5: Events */}
+            <div className="relative">
+               <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
+                 <h2 className="text-xl font-bold">活動現場</h2>
+                 <span className="text-xs font-light">GROUP 05</span>
+               </div>
+               {chapters.filter(c => ['chapter-10', 'chapter-11'].includes(c.id)).map(chapter => (
                  <ChapterItem key={chapter.id} chapter={chapter} onClick={() => handleChapterClick(chapter.id)} />
                ))}
             </div>
@@ -300,9 +350,11 @@ function ChapterItem({ chapter, onClick }: { chapter: Chapter, onClick: () => vo
         <h3 className="text-base md:text-lg font-bold leading-tight max-w-[75%] group-hover:translate-x-1 transition-transform duration-300">
           {chapter.title}
         </h3>
-        <span className="text-[10px] md:text-xs font-light text-gray-500 whitespace-nowrap uppercase tracking-wider">
-          服務聲精選
-        </span>
+        {chapter.tag && (
+          <span className="text-[10px] md:text-xs font-light text-gray-500 whitespace-nowrap uppercase tracking-wider">
+            {chapter.tag}
+          </span>
+        )}
       </div>
 
       {/* Bottom Row: Description + Author */}
@@ -311,7 +363,7 @@ function ChapterItem({ chapter, onClick }: { chapter: Chapter, onClick: () => vo
           {chapter.description}
         </p>
         <span className="text-xs md:text-sm font-bold text-gray-900 text-right whitespace-nowrap">
-          {chapter.authors?.[0] || '特邀嘉賓'}
+          {chapter.authors?.[0]}
         </span>
       </div>
       
