@@ -1,4 +1,4 @@
-import ScrollReveal from '../ScrollReveal'
+import ScrollReveal from "../ScrollReveal";
 
 export default function Preface() {
   return (
@@ -7,8 +7,6 @@ export default function Preface() {
       <div className="min-h-screen flex flex-col items-center justify-center px-8 py-32 md:py-40">
         <div className="max-w-3xl w-full text-center">
           {/* Title - centered with scroll reveal effect */}
-          
-       
 
           {/* Content paragraphs - with scroll reveal effect */}
           <div className="max-w-2xl mx-auto mb-24 text-left">
@@ -18,9 +16,9 @@ export default function Preface() {
               baseRotation={3}
               blurStrength={8}
               containerClassName="mb-8"
-              textClassName="text-base md:text-lg text-gray-300 leading-loose font-light"
-            >對話的延續，是篇章的連接，一個延續一個的故事。
-
+              textClassName="text-xs md:text-sm text-gray-300 leading-loose font-light"
+            >
+              「分號 ;」。
             </ScrollReveal>
             <ScrollReveal
               baseOpacity={0.1}
@@ -28,21 +26,12 @@ export default function Preface() {
               baseRotation={3}
               blurStrength={8}
               containerClassName="mb-8"
-              textClassName="text-base md:text-lg text-gray-300 leading-loose font-light"
+              textClassName="text-xs md:text-sm text-gray-300 leading-loose font-light"
             >
-
-              分號「 ; 」存在於語句之間，不急著終止，也不任意中斷。它讓思考有餘韻，讓文字有呼吸，正如服務科學在每一次互動之間，找尋那持續的關係、未完的價值。
-            </ScrollReveal>
-
-            <ScrollReveal
-              baseOpacity={0.1}
-              enableBlur={true}
-              baseRotation={3}
-              blurStrength={8}
-              containerClassName="mb-8"
-              textClassName="text-base md:text-lg text-gray-300 leading-loose font-light"
-            >
-              在服科所，我們學習如何觀察與連結，理解使用者與系統、個體與社會的細微關係。每個研究、每場合作、每次討論，都是句與句之間的分號——延續思考，也預告新的開始。
+              它用來分隔一個複句中，彼此獨立卻又緊密相關的句子。
+              它讓語氣稍作停留，卻同時暗示：後面還會有更多、還能再說下去。
+              它是一種介於「未完」與「延續」之間的流動。 既獨立，又連結；
+              既分開，又仍在一起。 其實，這也是服科所的樣子。
             </ScrollReveal>
 
             <ScrollReveal
@@ -51,19 +40,63 @@ export default function Preface() {
               baseRotation={3}
               blurStrength={8}
               containerClassName="mb-8"
-              textClassName="text-base md:text-lg text-gray-300 leading-loose font-light"
+              textClassName="text-xs md:text-sm text-gray-300 leading-loose font-light"
             >
-              本期《服務聲》，以「 ; 」為名。我們邀請你在閱讀的過程中，一同感受那份「未完待續」的節奏，看見每一次對話之後仍在流動的故事。
+              我們來自不同的城市、科系與生命背景，
+              體驗不同的經歷、擁有不同的能力、帶著不同的故事。
+              單獨看，每個人都是一個完整、有重量的句子；
+              然而，在服科這個場域裡，我們相遇—— 並在並列之間產生新的語意。
+            </ScrollReveal>
+
+            <ScrollReveal
+              baseOpacity={0.1}
+              enableBlur={true}
+              baseRotation={3}
+              blurStrength={8}
+              containerClassName="mb-8"
+              textClassName="text-xs md:text-sm text-gray-300 leading-loose font-light"
+            >
+              當不同的句子彼此靠近，世界就開始變得更完整、更深刻。
+              《服務聲》第三期以「分號」作為主題， 它傳遞了一種服務科學的精神：
+              個體之間保持差異，但在關係中創造價值；
+              片段彼此獨立，但在系統裡形成新的循環。
+            </ScrollReveal>
+            <ScrollReveal
+              baseOpacity={0.1}
+              enableBlur={true}
+              baseRotation={3}
+              blurStrength={8}
+              containerClassName="mb-8"
+              textClassName="text-xs md:text-sm text-gray-300 leading-loose font-light"
+            >
+              在這本刊物裡，我們邀請你一起走入分號之間。
+              你會看到學長姐的故事未完待續；
+              看到策展、創業、職涯的道路仍持續延展； 看到
+              AI、服務設計、系統思維在新的脈絡中牽引更多連結。
+              願這本《服務聲》， 成為所有讀者生命中一個小小的分號；
+              讓你在這裡暫停、呼吸、思考，
+              但同時，也準備走向下一個更豐富的句子。
+            </ScrollReveal>
+
+            <ScrollReveal
+              baseOpacity={0.1}
+              enableBlur={true}
+              baseRotation={8}
+              blurStrength={8}
+              containerClassName="mb-8"
+              textClassName="text-xs md:text-sm text-gray-300 leading-loose font-light"
+            >
+              Services continue; Stories continue; And so do we.
             </ScrollReveal>
           </div>
 
           {/* Editors section - centered */}
           <div className="border-t border-gray-800 pt-10">
-            <p className="text-sm text-gray-500 mb-6">
+            <p className="text-sm text-gray-500 mb-6 font-light uppercase tracking-widest">
               編輯的話
             </p>
 
-            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-gray-400">
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-gray-400 font-light">
               <div>
                 <span className="text-white">陳冠宇</span> / 主編 設計
               </div>
@@ -95,5 +128,5 @@ export default function Preface() {
         <div className="w-full h-32 bg-white" />
       </div>
     </section>
-  )
+  );
 }

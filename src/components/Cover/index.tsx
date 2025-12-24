@@ -1,117 +1,93 @@
 import { useEffect, useRef, useState } from 'react'
-import { db } from '@/lib/firebase'
-import { collection, addDoc, onSnapshot, query, orderBy, Timestamp } from 'firebase/firestore'
 import { SemicolonLogo } from '../ui/SemicolonLogo'
 
 interface CoverProps {
   onEnter?: () => void
-  startAnimation?: boolean
 }
 
-interface SentenceDoc {
-  text: string
-  createdAt: Timestamp
-}
+// Helper component for smooth crossfade looping
+const CrossfadeLoop = ({ src, className, style }: { src: string, className?: string, style?: React.CSSProperties }) => {
+  const video1Ref = useRef<HTMLVideoElement>(null);
+  const video2Ref = useRef<HTMLVideoElement>(null);
+  const [activeVideo, setActiveVideo] = useState<1 | 2>(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-export default function Cover({ onEnter, startAnimation = true }: CoverProps) {
-  const coverRef = useRef<HTMLDivElement>(null)
-  const textDisplayRef = useRef<HTMLDivElement>(null)
-  const charRefs = useRef<(HTMLSpanElement | null)[]>([])
-  const [userInput, setUserInput] = useState('')
-  const [sentences, setSentences] = useState<string[]>([])
-  const [charSpacings, setCharSpacings] = useState<{ letterSpacing: number; marginBottom: number; opacity: number }[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  // Join all text and split into characters
-  const allText = sentences.join('；') + (sentences.length > 0 ? '；' : '')
-  const characters = allText.split('')
-
-  // Load sentences from Firebase and listen for real-time updates
   useEffect(() => {
-    let unsubscribe: (() => void) | null = null
-    let retryCount = 0
-    const maxRetries = 3
+    const v1 = video1Ref.current;
+    const v2 = video2Ref.current;
+    if (!v1 || !v2) return;
 
-    const setupListener = () => {
-      try {
-        const sentencesRef = collection(db, 'coverSentences')
-        const q = query(sentencesRef, orderBy('createdAt', 'asc'))
+    const TRANSITION_DURATION = 1.0; // Seconds
 
-        unsubscribe = onSnapshot(
-          q,
-          (snapshot) => {
-            const loadedSentences: string[] = []
-            snapshot.forEach((doc) => {
-              const data = doc.data() as SentenceDoc
-              loadedSentences.push(data.text)
-            })
+    const handleTimeUpdate = () => {
+      const current = activeVideo === 1 ? v1 : v2;
+      const next = activeVideo === 1 ? v2 : v1;
 
-            // If no sentences exist, add default ones
-            if (loadedSentences.length === 0 && !isLoading) {
-              const defaultSentences = [
-                '服務聲既是一個社群；也是一份期刊',
-                '服務聲延續你的想法；邀請你一起創作',
-              ]
+      if (!current.duration) return;
 
-              // Add default sentences to Firebase
-              Promise.all(
-                defaultSentences.map((sentence) =>
-                  addDoc(sentencesRef, {
-                    text: sentence,
-                    createdAt: Timestamp.now()
-                  }).catch(err => {
-                    console.warn('Failed to add default sentence:', err)
-                  })
-                )
-              ).catch(err => {
-                console.warn('Failed to add default sentences:', err)
-              })
-            } else if (loadedSentences.length > 0) {
-              setSentences(loadedSentences)
-            }
-
-            setIsLoading(false)
-            retryCount = 0 // Reset retry count on success
-          },
-          (error) => {
-            console.error('Error loading sentences:', error)
-            if (retryCount < maxRetries) {
-              retryCount++
-              setTimeout(() => {
-                if (unsubscribe) unsubscribe()
-                setupListener()
-              }, 1000 * retryCount)
-            } else {
-              setSentences([
-                '服務聲既是一個社群；也是一份期刊',
-                '服務聲延續你的想法；邀請你一起創作',
-              ])
-              setIsLoading(false)
-            }
-          }
-        )
-      } catch (error) {
-        console.error('Error setting up listener:', error)
-        setSentences([
-          '服務聲既是一個社群；也是一份期刊',
-          '服務聲延續你的想法；邀請你一起創作',
-        ])
-        setIsLoading(false)
+      // Start transition before end
+      if (current.currentTime >= current.duration - TRANSITION_DURATION && !isTransitioning) {
+        setIsTransitioning(true);
+        next.currentTime = 0;
+        next.play().catch(e => console.log(e));
+        
+        // Toggle active state to trigger fade
+        setActiveVideo(prev => prev === 1 ? 2 : 1);
+        
+        // Reset old video after transition
+        setTimeout(() => {
+          setIsTransitioning(false);
+          current.pause();
+          current.currentTime = 0;
+        }, TRANSITION_DURATION * 1000);
       }
-    }
+    };
 
-    const timeoutId = setTimeout(setupListener, 100)
+    // Attach listeners
+    const onTimeUpdate1 = () => { if(activeVideo === 1) handleTimeUpdate() };
+    const onTimeUpdate2 = () => { if(activeVideo === 2) handleTimeUpdate() };
+
+    v1.addEventListener('timeupdate', onTimeUpdate1);
+    v2.addEventListener('timeupdate', onTimeUpdate2);
+
+    // Initial play
+    v1.play().catch(e => console.log(e));
+
     return () => {
-      clearTimeout(timeoutId)
-      if (unsubscribe) unsubscribe()
-    }
-  }, [isLoading])
+      v1.removeEventListener('timeupdate', onTimeUpdate1);
+      v2.removeEventListener('timeupdate', onTimeUpdate2);
+    };
+  }, [activeVideo, isTransitioning]);
+
+  return (
+    <div className={className} style={style}>
+      <video
+        ref={video1Ref}
+        src={src}
+        muted
+        playsInline
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${activeVideo === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+      />
+      <video
+        ref={video2Ref}
+        src={src}
+        muted
+        playsInline
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${activeVideo === 2 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+      />
+    </div>
+  );
+};
+
+export default function Cover({ onEnter }: CoverProps) {
+  const coverRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
       if (!coverRef.current) return
       const rect = coverRef.current.getBoundingClientRect()
-      if (rect.bottom <= window.innerHeight && onEnter) {
+      // Trigger when the top of the *next* section is visible
+      if (rect.top <= 0 && onEnter) {
         onEnter()
       }
     }
@@ -119,168 +95,97 @@ export default function Cover({ onEnter, startAnimation = true }: CoverProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [onEnter])
 
-  useEffect(() => {
-    const calculateSpacings = () => {
-      if (!coverRef.current) return
-      const viewportHeight = window.innerHeight
-      const coverTop = coverRef.current.getBoundingClientRect().top
-
-      const newSpacings = charRefs.current.map((charEl) => {
-        if (!charEl) return { letterSpacing: 0.2, marginBottom: 1, opacity: 0.3 }
-        const charRect = charEl.getBoundingClientRect()
-        const charTop = charRect.top
-        const positionFromCoverTop = charTop - coverTop
-        const positionInVh = positionFromCoverTop / viewportHeight
-
-        let spacingRatio = 0
-        let opacity = 0.3
-
-        if (positionInVh > 1 && positionInVh <= 2) {
-          spacingRatio = (positionInVh - 1)
-          opacity = 0.4 + (spacingRatio * 0.6)
-        } else if (positionInVh > 2) {
-          spacingRatio = 1
-          opacity = 1.0
-        }
-
-        const letterSpacing = 0.2 + (spacingRatio * 2.5)
-        const marginBottom = 1 + (spacingRatio * 45)
-        return { letterSpacing, marginBottom, opacity }
-      })
-      setCharSpacings(newSpacings)
-    }
-    setTimeout(calculateSpacings, 100)
-  }, [characters.length])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (userInput.trim()) {
-      const text = userInput.trim()
-      if (text.length > 200) return
-      setUserInput('')
-      try {
-        const sentencesRef = collection(db, 'coverSentences')
-        await addDoc(sentencesRef, {
-          text: text,
-          createdAt: Timestamp.now()
-        })
-      } catch (error) {
-        console.error('Error adding sentence:', error)
-        setSentences(prev => [...prev, text])
-      }
-    }
-  }
+  const backgroundText = `In grammar, a semicolon connects two related but independently standing ideas. Similarly, at Semicolon Design, the semicolon symbolizes the bridge connecting visual art and storytelling. We believe that design is more than just creating aesthetic visuals - it is about conveying a profound story or message. `
+  const repeatedText = Array(6).fill(backgroundText).join('')
 
   return (
-    <div ref={coverRef} className="relative w-full bg-black text-white" style={{ height: '200vh' }}>
-      {/* Large shared text display - continuous text from bottom */}
-      <div
-        ref={textDisplayRef}
-        className="absolute inset-0 overflow-hidden pointer-events-none z-0 animate-text-fade-in"
-      >
-        <div className="absolute bottom-0 left-0 right-0 pointer-events-auto">
-          <div className="inline-block max-w-full">
-            <div
-              className="text-gray-400 text-sm md:text-base pointer-events-none"
-              style={{
-                fontFamily: 'Noto Sans TC, sans-serif',
-                wordBreak: 'break-all',
-                lineHeight: 0,
-              }}
-            >
-              {characters.map((char, index) => {
-                const spacing = charSpacings[index] || { letterSpacing: 0.2, marginBottom: 1, opacity: 0.3 }
-                return (
-                  <span
-                    key={index}
-                    ref={(el) => {
-                      charRefs.current[index] = el
-                    }}
-                    style={{
-                      letterSpacing: `${spacing.letterSpacing}em`,
-                      marginBottom: `${spacing.marginBottom}px`,
-                      opacity: spacing.opacity,
-                      display: 'inline-block',
-                      lineHeight: '1.5',
-                    }}
-                  >
-                    {char}
-                  </span>
-                )
-              })}
-              <span className="inline-block ml-1 pointer-events-auto">
-                <form onSubmit={handleSubmit} className="inline-block align-baseline relative z-30 pointer-events-auto">
-                  <div className="inline-block relative">
-                    <input
-                      type="text"
-                      value={userInput}
-                      onChange={(e) => setUserInput(e.target.value)}
-                      placeholder="輸入連接你的想法"
-                      className="bg-transparent border-b border-gray-600 focus:border-white outline-none py-1 text-sm md:text-base text-white placeholder-gray-500 placeholder-opacity-35 transition-colors relative z-30 pointer-events-auto"
-                      style={{
-                        fontFamily: 'Noto Sans TC, sans-serif',
-                        width: '300px',
-                      }}
-                    />
-                  </div>
-                </form>
+    <div ref={coverRef} className="relative w-full h-screen bg-black text-white overflow-hidden font-sans">
+      
+      {/* Background Video Layer */}
+      <div className="absolute inset-0 z-0 overflow-hidden opacity-60 bg-gray-900 flex flex-col md:flex-row">
+          {/* Top/Left Video */}
+          <CrossfadeLoop 
+            src="dist/assets/vul.mp4" 
+            className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden" 
+          />
+          {/* Bottom/Right Video (Vertically Flipped) */}
+          <CrossfadeLoop 
+            src="dist/assets/vul.mp4" 
+            className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden" 
+            style={{ transform: 'scaleY(-1)' }} 
+          />
+      </div>
+
+      {/* Content Layer */}
+      <div className="relative z-10 h-full w-full flex flex-col box-border">
+
+          {/* Top Left: Logo & Subtitle */}
+          <div className="absolute top-[8vh] left-[6vw] flex flex-col gap-2 z-20">
+              <img src="/assets/title.svg" alt="服務聲" className="h-10 md:h-14 w-auto brightness-0 invert" />
+              <span className="text-white/80 text-[10px] md:text-[13px] tracking-[0.1em] font-light ml-1">
+                  ISS Community Annual Newsletter
               </span>
-            </div>
           </div>
-        </div>
-      </div>
-
-      {/* Top section: Main cover area (0-100vh) */}
-      <div className="absolute top-0 left-0 right-0 h-screen flex items-center justify-center">
-        <div className="relative w-[85vw] max-w-[1200px] h-screen flex flex-col items-center justify-center">
           
-          {/* Decorative connected blocks - Restored Main Visual */}
-          <div className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full aspect-[1152/382] pointer-events-none opacity-60 transition-opacity duration-1000 ${startAnimation ? 'opacity-60' : 'opacity-0'}`}>
-            {/* Black blocks - rgba(0, 0, 0, 0.5) with flicker animation */}
-            <div className={`absolute backdrop-blur-lg left-0 top-0 w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} />
-            <div className={`absolute backdrop-blur-lg left-0 top-[30.05%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.1s' }} />
-            <div className={`absolute backdrop-blur-lg left-[14.55%] top-[20%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.2s' }} />
-            <div className={`absolute backdrop-blur-lg left-[85.45%] top-[39.85%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.3s' }} />
-            <div className={`absolute backdrop-blur-lg left-0 top-[70.05%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.4s' }} />
-            <div className={`absolute backdrop-blur-lg left-[14.55%] top-[60%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.5s' }} />
-            <div className={`absolute backdrop-blur-lg left-[85.45%] top-[89.95%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.6s' }} />
-            <div className={`absolute backdrop-blur-lg left-0 top-[50%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-black' : ''}`} style={{ animationDelay: '0.7s' }} />
+          {/* Main Content Area */}
+          <div className="absolute top-[50%] -translate-y-[50%] left-0 w-full px-[8vw]">
+              
+              {/* Mobile Layout (Stacked) */}
+              <div className="flex flex-col items-center gap-8 md:hidden">
+                  <div className="text-4xl font-bold tracking-widest">
+                      2025
+                  </div>
+                  <SemicolonLogo className="h-[80px] w-auto drop-shadow-2xl" />
+                  <div className="flex flex-col items-center gap-1">
+                      <span className="text-xl font-light tracking-widest">分號</span>
+                      <span className="text-sm tracking-widest opacity-80 uppercase">semicolon</span>
+                  </div>
+              </div>
 
-            {/* White blocks - rgba(255, 255, 255, 0.21) with flicker animation */}
-            <div className={`absolute backdrop-blur-lg left-0 top-[40.1%] w-[85.45%] h-[9.8%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} />
-            <div className={`absolute backdrop-blur-lg left-[14.55%] top-[9.95%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.1s' }} />
-            <div className={`absolute backdrop-blur-lg left-[85.45%] top-[30.05%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.2s' }} />
-            <div className={`absolute backdrop-blur-lg left-0 top-[20%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.3s' }} />
-            <div className={`absolute backdrop-blur-lg left-0 top-[80.15%] w-[85.45%] h-[9.8%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.4s' }} />
-            <div className={`absolute backdrop-blur-lg left-[14.55%] top-[49.95%] w-[85.45%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.5s' }} />
-            <div className={`absolute backdrop-blur-lg left-[85.45%] top-[70.05%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.6s' }} />
-            <div className={`absolute backdrop-blur-lg left-0 top-[60%] w-[14.55%] h-[10.05%] ${startAnimation ? 'animate-block-flicker-white' : ''}`} style={{ animationDelay: '0.7s' }} />
+              {/* Desktop Layout (Horizontal Band) */}
+              <div className="hidden md:flex items-start justify-between w-full">
+                  {/* Left: Year */}
+                  <div className="text-[32px] font-bold tracking-widest leading-none pt-2">
+                      2025
+                  </div>
+
+                  {/* Center: Icon */}
+                  <div className="absolute left-1/2 -translate-x-1/2 top-0">
+                      <SemicolonLogo className="h-[100px] w-auto drop-shadow-2xl" />
+                  </div>
+
+                  {/* Right Side Group */}
+                  <div className="flex items-start gap-12 ml-auto">
+                       {/* Vertical Text */}
+                       <div className="h-[200px] w-auto">
+                            <p className="text-white/90 text-[13px] tracking-widest [writing-mode:vertical-rl] h-full text-justify leading-relaxed">
+                                Since 2008, the institute has adopted unique educational practices to embed humanity into the learning environment...
+                            </p>
+                       </div>
+                       {/* Labels */}
+                       <div className="flex items-baseline gap-4 pt-2">
+                           <span className="text-[24px] font-light tracking-widest">分號</span>
+                           <span className="text-[24px] font-light tracking-widest opacity-80">semicolon</span>
+                       </div>
+                  </div>
+              </div>
+          </div>
+          
+          {/* Bottom Text Block */}
+          <div className="absolute bottom-[5vh] left-0 w-full px-[8vw] z-0">
+             <p className="text-[10px] md:text-[12px] text-justify leading-[1.6] text-gray-400 opacity-80 mix-blend-color-dodge select-none line-clamp-4 md:line-clamp-none">
+                 {repeatedText}
+             </p>
+          </div>
+          
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce opacity-70 z-20">
+            <div className="text-[10px] tracking-[0.2em] uppercase">Scroll</div>
+            <div className="w-px h-8 bg-white" />
           </div>
 
-          {/* Centered Logo */}
-          <div className="z-10 animate-fade-in-slow">
-            <SemicolonLogo className="h-[30vh] w-auto" />
-          </div>
-
-          {/* Title */}
-          <div className="absolute left-[5%] top-[15%] h-[7vh] w-auto z-10">
-            <img src="/assets/title.svg" alt="Title" className="h-full w-auto" />
-          </div>
-
-          {/* Year */}
-          <p className="absolute left-[5%] top-[25%] text-[2.5vh] text-white font-bold z-10">2025</p>
-
-          {/* Description */}
-          <p className="absolute right-[5%] bottom-[20%] w-[30%] text-[1.6vh] text-white/80 text-right z-10">
-            Since 2008, the institute has adopted unique educational practices to embed humanity into the learning environment.
-          </p>
-        </div>
-
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce z-10">
-          <div className="text-xs text-gray-400 tracking-wider">SCROLL</div>
-          <div className="w-px h-12 bg-gray-400" />
-        </div>
       </div>
+
     </div>
   )
 }

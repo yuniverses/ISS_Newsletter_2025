@@ -57,7 +57,7 @@ const SemicolonIntro: React.FC<SemicolonIntroProps> = ({ onComplete }) => {
     return x === 0 ? 0 : Math.pow(2, 10 * x - 10);
   };
   
-  const scale = 1 + easeInExpo(transitionProgress) * 7; // Scale from 1 to 8x (1 + 7)
+  const scale = 1 + easeInExpo(transitionProgress) * 2.3; // Scale from 1 to 3.3x to match cover size
   const opacity = 1 - Math.pow(transitionProgress, 3); // Fade out cubic
 
   return (
