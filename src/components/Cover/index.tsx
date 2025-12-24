@@ -101,18 +101,37 @@ export default function Cover({ onEnter }: CoverProps) {
   return (
     <div ref={coverRef} className="relative w-full h-screen bg-black text-white overflow-hidden font-sans">
       
-      {/* Background Video Layer */}
+      {/* Background Video Layer with Blur and Noise */}
       <div className="absolute inset-0 z-0 overflow-hidden opacity-60 bg-gray-900 flex flex-col md:flex-row">
-          {/* Top/Left Video */}
-          <CrossfadeLoop 
-            src="dist/assets/vul.mp4" 
-            className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden" 
-          />
-          {/* Bottom/Right Video (Vertically Flipped) */}
-          <CrossfadeLoop 
-            src="dist/assets/vul.mp4" 
-            className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden" 
-            style={{ transform: 'scaleY(-1)' }} 
+          {/* Top/Left Video with Blur - Cropped to remove black edges */}
+          <div className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden">
+            <div className="absolute inset-0" style={{ transform: 'scale(1.1)' }}>
+              <CrossfadeLoop
+                src="dist/assets/vul.mp4"
+                className="relative w-full h-full overflow-hidden"
+                style={{ filter: 'blur(8px)' }}
+              />
+            </div>
+          </div>
+          {/* Bottom/Right Video (Vertically Flipped) with Blur - Cropped to remove black edges */}
+          <div className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden">
+            <div className="absolute inset-0" style={{ transform: 'scale(1.1) scaleY(-1)' }}>
+              <CrossfadeLoop
+                src="dist/assets/vul.mp4"
+                className="relative w-full h-full overflow-hidden"
+                style={{ filter: 'blur(8px)' }}
+              />
+            </div>
+          </div>
+
+          {/* Noise Overlay - Applied after blur and crop */}
+          <div
+            className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-30 z-10"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+              backgroundRepeat: 'repeat',
+              backgroundSize: '200px 200px'
+            }}
           />
       </div>
 
