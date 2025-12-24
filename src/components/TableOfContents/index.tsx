@@ -236,41 +236,87 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
           ref={menuRef} 
           className="w-full max-w-[500px] bg-[#dedede] p-6 md:p-10 origin-top transform-gpu mb-0 rounded-t-sm"
         >
-          {/* Table of Contents List Only */}
-          <div className="space-y-0">
-            {chapters.map((chapter, index) => (
-              <button
-                key={chapter.id}
-                onClick={() => handleChapterClick(chapter.id)}
-                className="w-full text-left group block transition-all hover:bg-black/5 -mx-4 px-4 py-5"
-              >
-                {/* Row 1: Title & Author */}
-                <div className="flex justify-between items-baseline mb-2 gap-4">
-                   <h3 className="text-lg md:text-xl font-bold leading-tight group-hover:translate-x-1 transition-transform duration-300">
-                     {chapter.title}
-                   </h3>
-                   <span className="text-xs md:text-sm text-gray-600 font-medium whitespace-nowrap flex-shrink-0">
-                     {chapter.authors?.[0] || '特邀嘉賓'}
-                   </span>
-                </div>
-                
-                {/* Row 2: Divider Line */}
-                <div className="w-full h-px bg-black opacity-20 group-hover:opacity-100 transition-opacity mt-1 mb-2 relative">
-                    <div className="absolute right-0 -top-1.5 w-1 h-1 bg-black rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
+          {/* Table of Contents List */}
+          <div className="space-y-10">
+            
+            {/* Group 1: Intro */}
+            <div className="relative">
+               {/* Section Header */}
+               <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
+                 <h2 className="text-2xl font-bold">/ 服科的入口 /</h2>
+                 <span className="text-sm font-light">NO. 01</span>
+               </div>
+               
+               {/* Chapters in this group */}
+               {chapters.filter(c => c.id === 'chapter-01').map(chapter => (
+                 <ChapterItem key={chapter.id} chapter={chapter} onClick={() => handleChapterClick(chapter.id)} />
+               ))}
+            </div>
 
-                {/* Row 3: Description & ID */}
-                <div className="flex justify-between items-start text-[10px] md:text-xs text-gray-500 font-mono mt-1">
-                   <p className="line-clamp-1 max-w-[80%] opacity-70">
-                     {chapter.description}
-                   </p>
-                   <span>{String(index + 1).padStart(2, '0')}</span>
-                </div>
-              </button>
-            ))}
+            {/* Group 2: AI */}
+            <div className="relative">
+               {/* Section Header */}
+               <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
+                 <h2 className="text-2xl font-bold">? AI ?</h2>
+                 <span className="text-sm font-light">NO. 02</span>
+               </div>
+               
+               {/* Chapters in this group */}
+               {chapters.filter(c => c.id === 'chapter-03').map(chapter => (
+                 <ChapterItem key={chapter.id} chapter={chapter} onClick={() => handleChapterClick(chapter.id)} />
+               ))}
+            </div>
+
+            {/* Group 3: Alumni */}
+            <div className="relative">
+               {/* Section Header */}
+               <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
+                 <h2 className="text-2xl font-bold">@ 學長姐 救我 @</h2>
+                 <span className="text-sm font-light">NO. 03</span>
+               </div>
+               
+               {/* Chapters in this group (Ch 2 and others) */}
+               {chapters.filter(c => c.id !== 'chapter-01' && c.id !== 'chapter-03').map(chapter => (
+                 <ChapterItem key={chapter.id} chapter={chapter} onClick={() => handleChapterClick(chapter.id)} />
+               ))}
+            </div>
+
           </div>
         </div>
       </div>
     </section>
+  )
+}
+
+// Sub-component for individual chapter item
+function ChapterItem({ chapter, onClick }: { chapter: Chapter, onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full text-left group block mb-8 last:mb-0 relative"
+    >
+      {/* Top Row: Title + Tag */}
+      <div className="flex justify-between items-start mb-1">
+        <h3 className="text-base md:text-lg font-bold leading-tight max-w-[75%] group-hover:translate-x-1 transition-transform duration-300">
+          {chapter.title}
+        </h3>
+        <span className="text-[10px] md:text-xs font-light text-gray-500 whitespace-nowrap uppercase tracking-wider">
+          服務聲精選
+        </span>
+      </div>
+
+      {/* Bottom Row: Description + Author */}
+      <div className="flex justify-between items-end gap-4">
+        <p className="text-[11px] md:text-xs text-gray-600 leading-relaxed max-w-[70%] line-clamp-2">
+          {chapter.description}
+        </p>
+        <span className="text-xs md:text-sm font-bold text-gray-900 text-right whitespace-nowrap">
+          {chapter.authors?.[0] || '特邀嘉賓'}
+        </span>
+      </div>
+      
+      {/* Divider Line */}
+      <div className="w-full h-px bg-black/5 mt-5 group-hover:bg-black/20 transition-colors" />
+    </button>
   )
 }
