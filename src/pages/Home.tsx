@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Cover from '../components/Cover'
-import Preface from '../components/Preface'
 import TableOfContents from '../components/TableOfContents'
 import ChapterReader from '../components/ChapterReader'
 import ProgressNav from '../components/ProgressNav'
@@ -37,9 +36,6 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
     <div className="min-h-screen">
       {/* Cover Page */}
       <Cover startAnimation={isIntroComplete} />
-
-      {/* Preface Section */}
-      <Preface />
 
       {/* Table of Contents */}
       <TableOfContents

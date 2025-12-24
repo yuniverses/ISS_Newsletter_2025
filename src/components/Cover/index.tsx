@@ -1,29 +1,57 @@
-import { useEffect, useRef, useState } from 'react'
-import { SemicolonLogo } from '../ui/SemicolonLogo'
-import Noise from '../Noise'
-import GridDistortion from '../GridDistortion'
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SemicolonLogo } from "../ui/SemicolonLogo";
+import Noise from "../Noise";
+import ScrollReveal from "../ScrollReveal";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface CoverProps {
-  onEnter?: () => void
+  onEnter?: () => void;
+  startAnimation?: boolean;
 }
 
 // Helper function to generate polygon clip-path based on number of sides
-const generatePolygonPath = (sides: number, rotation: number = 0): string => {
-  if (sides < 3) sides = 3;
-  if (sides > 50) return 'circle(45% at 50% 50%)'; // Becomes circle at high sides
+// radius is in percentage (0-50 for inside, >71 for full coverage of square)
+const generatePolygonPath = (
+  sides: number,
+  rotation: number = 0,
+  radius: number = 45
+): string => {
+  sides = Math.max(3, sides);
+  // If we want a perfect circle at 50+, we can use circle syntax, but to morph smoothly
+  // from a "Full Screen Rect" (which is a polygon), staying in polygon mode is often smoother.
+  // However, CSS circle() is efficient. Let's stick to polygon for now to ensure vertex matching if possible,
+  // or just rely on browser interpolation which handles rect -> circle well.
+  if (sides >= 50) return `circle(${radius}% at 50% 50%)`;
 
   const points: string[] = [];
   for (let i = 0; i < sides; i++) {
-    const angle = (i * 2 * Math.PI / sides) - Math.PI / 2 + (rotation * Math.PI / 180);
-    const x = 50 + 45 * Math.cos(angle);
-    const y = 50 + 45 * Math.sin(angle);
+    const angle =
+      (i * 2 * Math.PI) / sides - Math.PI / 2 + (rotation * Math.PI) / 180;
+    const x = 50 + radius * Math.cos(angle);
+    const y = 50 + radius * Math.sin(angle);
     points.push(`${x}% ${y}%`);
   }
-  return `polygon(${points.join(', ')})`;
+  return `polygon(${points.join(", ")})`;
+};
+
+// Linear interpolation helper
+const lerp = (start: number, end: number, t: number) => {
+  return start * (1 - t) + end * t;
 };
 
 // Helper component for smooth crossfade looping
-const CrossfadeLoop = ({ src, className, style }: { src: string, className?: string, style?: React.CSSProperties }) => {
+const CrossfadeLoop = ({
+  src,
+  className,
+  style,
+}: {
+  src: string;
+  className?: string;
+  style?: React.CSSProperties;
+}) => {
   const video1Ref = useRef<HTMLVideoElement>(null);
   const video2Ref = useRef<HTMLVideoElement>(null);
   const [activeVideo, setActiveVideo] = useState<1 | 2>(1);
@@ -43,14 +71,17 @@ const CrossfadeLoop = ({ src, className, style }: { src: string, className?: str
       if (!current.duration) return;
 
       // Start transition before end
-      if (current.currentTime >= current.duration - TRANSITION_DURATION && !isTransitioning) {
+      if (
+        current.currentTime >= current.duration - TRANSITION_DURATION &&
+        !isTransitioning
+      ) {
         setIsTransitioning(true);
         next.currentTime = 0;
-        next.play().catch(e => console.log(e));
-        
+        next.play().catch((e) => console.log(e));
+
         // Toggle active state to trigger fade
-        setActiveVideo(prev => prev === 1 ? 2 : 1);
-        
+        setActiveVideo((prev) => (prev === 1 ? 2 : 1));
+
         // Reset old video after transition
         setTimeout(() => {
           setIsTransitioning(false);
@@ -61,18 +92,22 @@ const CrossfadeLoop = ({ src, className, style }: { src: string, className?: str
     };
 
     // Attach listeners
-    const onTimeUpdate1 = () => { if(activeVideo === 1) handleTimeUpdate() };
-    const onTimeUpdate2 = () => { if(activeVideo === 2) handleTimeUpdate() };
+    const onTimeUpdate1 = () => {
+      if (activeVideo === 1) handleTimeUpdate();
+    };
+    const onTimeUpdate2 = () => {
+      if (activeVideo === 2) handleTimeUpdate();
+    };
 
-    v1.addEventListener('timeupdate', onTimeUpdate1);
-    v2.addEventListener('timeupdate', onTimeUpdate2);
+    v1.addEventListener("timeupdate", onTimeUpdate1);
+    v2.addEventListener("timeupdate", onTimeUpdate2);
 
     // Initial play
-    v1.play().catch(e => console.log(e));
+    v1.play().catch((e) => console.log(e));
 
     return () => {
-      v1.removeEventListener('timeupdate', onTimeUpdate1);
-      v2.removeEventListener('timeupdate', onTimeUpdate2);
+      v1.removeEventListener("timeupdate", onTimeUpdate1);
+      v2.removeEventListener("timeupdate", onTimeUpdate2);
     };
   }, [activeVideo, isTransitioning]);
 
@@ -83,218 +118,472 @@ const CrossfadeLoop = ({ src, className, style }: { src: string, className?: str
         src={src}
         muted
         playsInline
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${activeVideo === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${
+          activeVideo === 1 ? "opacity-100 z-10" : "opacity-0 z-0"
+        }`}
       />
       <video
         ref={video2Ref}
         src={src}
         muted
         playsInline
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${activeVideo === 2 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${
+          activeVideo === 2 ? "opacity-100 z-10" : "opacity-0 z-0"
+        }`}
       />
     </div>
   );
 };
 
 export default function Cover({ onEnter }: CoverProps) {
-  const coverRef = useRef<HTMLDivElement>(null)
-  const video1Ref = useRef<HTMLDivElement>(null)
-  const video2Ref = useRef<HTMLDivElement>(null)
-  const [clipPath1, setClipPath1] = useState('polygon(0 0, 100% 0, 100% 100%, 0 100%)')
-  const [clipPath2, setClipPath2] = useState('polygon(0 0, 100% 0, 100% 100%, 0 100%)')
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stickyWrapperRef = useRef<HTMLDivElement>(null);
+  const leftVideoWrapperRef = useRef<HTMLDivElement>(null);
+  const leftVideoInnerRef = useRef<HTMLDivElement>(null);
+  const rightVideoWrapperRef = useRef<HTMLDivElement>(null);
+  const rightVideoInnerRef = useRef<HTMLDivElement>(null);
+  const heroContentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!coverRef.current) return
-      const rect = coverRef.current.getBoundingClientRect()
-      // Trigger when the top of the *next* section is visible
-      if (rect.top <= 0 && onEnter) {
-        onEnter()
-      }
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [onEnter])
+  // Logic State Refs
+  const mousePosRef = useRef({ x: 0.5, y: 0.5 });
+  const mousePos2Ref = useRef({ x: 0.5, y: 0.5 });
+  const scrollProgressRef = useRef(0);
+  const isHoveringRef = useRef(false);
+  const isHovering2Ref = useRef(false);
 
-  // Handle mouse movement for dynamic shape morphing
+  // Current visual state for smoothing
+  const currentVisualsRef = useRef({
+    left: { sides: 4, rotation: 45, scale: 1.1, radius: 80 },
+    right: { sides: 4, rotation: 45, scale: 1.1, radius: 80 },
+  });
+
+  // Mouse Handlers
   const handleMouseMove1 = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width // 0 to 1
-    const y = (e.clientY - rect.top) / rect.height // 0 to 1
-
-    // Calculate distance from center
-    const centerX = 0.5, centerY = 0.5
-    const distanceFromCenter = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2))
-
-    // Map distance to number of sides (3 to 20, then circle)
-    // Close to center = more sides (smoother, closer to circle)
-    // Far from center = fewer sides (sharper polygon)
-    const sides = Math.round(3 + (1 - distanceFromCenter * 2) * 17)
-
-    // Calculate rotation based on mouse angle from center
-    const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI)
-
-    const newClipPath = generatePolygonPath(Math.max(3, Math.min(50, sides)), angle)
-    setClipPath1(newClipPath)
-  }
-
-  const handleMouseMove2 = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width
-    const y = (e.clientY - rect.top) / rect.height
-
-    // Different logic for second video: use quadrants
-    let sides = 4
-    if (x < 0.5 && y < 0.5) sides = 3  // Top-left: Triangle
-    else if (x >= 0.5 && y < 0.5) sides = 6  // Top-right: Hexagon
-    else if (x < 0.5 && y >= 0.5) sides = 8  // Bottom-left: Octagon
-    else sides = 12  // Bottom-right: Dodecagon
-
-    const angle = (x * 360) // Rotate based on horizontal position
-    const newClipPath = generatePolygonPath(sides, angle)
-    setClipPath2(newClipPath)
-  }
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    mousePosRef.current = { x, y };
+    isHoveringRef.current = true;
+  };
 
   const handleMouseLeave1 = () => {
-    setClipPath1('polygon(0 0, 100% 0, 100% 100%, 0 100%)')
-  }
+    isHoveringRef.current = false;
+    mousePosRef.current = { x: 0.5, y: 0.5 };
+  };
+
+  const handleMouseMove2 = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    mousePos2Ref.current = { x, y };
+    isHovering2Ref.current = true;
+  };
 
   const handleMouseLeave2 = () => {
-    setClipPath2('polygon(0 0, 100% 0, 100% 100%, 0 100%)')
-  }
+    isHovering2Ref.current = false;
+    mousePos2Ref.current = { x: 0.5, y: 0.5 };
+  };
 
-  const backgroundText = `In grammar, a semicolon connects two related but independently standing ideas. Similarly, at Semicolon Design, the semicolon symbolizes the bridge connecting visual art and storytelling. We believe that design is more than just creating aesthetic visuals - it is about conveying a profound story or message. `
-  const repeatedText = Array(6).fill(backgroundText).join('')
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: container,
+        start: "top top",
+        end: "bottom bottom",
+        pin: stickyWrapperRef.current,
+        pinSpacing: false,
+      });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: "top top",
+          end: "30% top",
+          scrub: 1,
+          onUpdate: (self) => {
+            scrollProgressRef.current = self.progress;
+          },
+        },
+      });
+
+      tl.to(heroContentRef.current, { opacity: 0, y: -50, duration: 1 }, 0);
+      tl.to(rightVideoWrapperRef.current, { opacity: 0, duration: 1 }, 0);
+    }, container);
+
+    const tick = () => {
+      const p = scrollProgressRef.current;
+      const circleInfluence = gsap.parseEase("power2.inOut")(p);
+
+      // --- Left Video Logic ---
+      if (leftVideoInnerRef.current) {
+        const { x, y } = mousePosRef.current;
+        const centerX = 0.5,
+          centerY = 0.5;
+        const dist = Math.sqrt(
+          Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
+        );
+
+        // Mouse Influence
+        let targetSides = 3 + (1 - dist * 2) * 17;
+        let targetRotation =
+          Math.atan2(y - centerY, x - centerX) * (180 / Math.PI);
+        let targetRadius = 45; // Hover state radius (smaller to show shape)
+
+        // Default / Rest State (Full Screen)
+        // When not hovering and at top
+        if (!isHoveringRef.current && p < 0.01) {
+          targetSides = 4;
+          targetRotation = 45; // Square
+          targetRadius = 80; // Full coverage (covers corners)
+        }
+
+        // Scroll Influence (Morph to Circle)
+        // Force radius to 40% (Circle size)
+        const finalTargetSides = lerp(targetSides, 50, circleInfluence);
+        const finalTargetRotation = lerp(targetRotation, 0, circleInfluence);
+        const finalTargetScale = lerp(1.1, 0.8, circleInfluence);
+        const finalTargetRadius = lerp(targetRadius, 35, circleInfluence); // 35% radius for final circle
+
+        // Smooth & Apply
+        const cv = currentVisualsRef.current.left;
+        cv.sides = lerp(cv.sides, finalTargetSides, 0.1);
+        cv.rotation = lerp(cv.rotation, finalTargetRotation, 0.1);
+        cv.scale = lerp(cv.scale, finalTargetScale, 0.1);
+        cv.radius = lerp(cv.radius, finalTargetRadius, 0.1);
+
+        const roundedSides = Math.round(cv.sides);
+        const poly = generatePolygonPath(roundedSides, cv.rotation, cv.radius);
+
+        leftVideoInnerRef.current.style.clipPath = poly;
+        leftVideoInnerRef.current.style.transform = `scale(${cv.scale})`;
+      }
+
+      // --- Right Video Logic ---
+      if (rightVideoInnerRef.current) {
+        const { x, y } = mousePos2Ref.current;
+
+        let targetSides = 4;
+        if (x < 0.5 && y < 0.5) targetSides = 3;
+        else if (x >= 0.5 && y < 0.5) targetSides = 6;
+        else if (x < 0.5 && y >= 0.5) targetSides = 8;
+        else targetSides = 12;
+
+        let targetRotation = x * 360;
+        let targetRadius = 45;
+
+        if (!isHovering2Ref.current) {
+          targetSides = 4;
+          targetRotation = 45;
+          targetRadius = 80; // Full coverage default
+        }
+
+        const cv = currentVisualsRef.current.right;
+        cv.sides = lerp(cv.sides, targetSides, 0.1);
+        cv.rotation = lerp(cv.rotation, targetRotation, 0.1);
+        cv.radius = lerp(cv.radius, targetRadius, 0.1);
+
+        const roundedSides = Math.round(cv.sides);
+        const poly = generatePolygonPath(roundedSides, cv.rotation, cv.radius);
+
+        rightVideoInnerRef.current.style.clipPath = poly;
+        rightVideoInnerRef.current.style.transform = `scale(1.1) scaleY(-1)`;
+      }
+    };
+
+    gsap.ticker.add(tick);
+
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      if (rect.bottom <= window.innerHeight && onEnter) {
+        onEnter();
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      ctx.revert();
+      gsap.ticker.remove(tick);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [onEnter]);
+
+  const backgroundText = `In grammar, a semicolon connects two related but independently standing ideas. Similarly, at Semicolon Design, the semicolon symbolizes the bridge connecting visual art and storytelling. We believe that design is more than just creating aesthetic visuals - it is about conveying a profound story or message. `;
+  const repeatedText = Array(6).fill(backgroundText).join("");
 
   return (
-    <div ref={coverRef} className="relative w-full h-screen bg-black text-white overflow-hidden font-sans">
-      
-      {/* Background Video Layer with Blur and Noise */}
-      <div className="absolute inset-0 z-0 overflow-hidden opacity-60 bg-gray-900 flex flex-col md:flex-row pointer-events-auto">
-          {/* Top/Left Video - Dynamic polygon based on distance from center */}
+    <div
+      ref={containerRef}
+      className="relative w-full bg-black text-white font-sans"
+    >
+      {/* Sticky Wrapper - Z-0 */}
+      <div
+        ref={stickyWrapperRef}
+        className="h-screen w-full overflow-hidden flex flex-col md:flex-row absolute top-0 left-0 z-0 pointer-events-auto"
+      >
+        {/* Top/Left Video */}
+        <div
+          ref={leftVideoWrapperRef}
+          className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden pointer-events-auto cursor-crosshair z-10"
+          onMouseMove={handleMouseMove1}
+          onMouseLeave={handleMouseLeave1}
+        >
           <div
-            ref={video1Ref}
-            className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden pointer-events-auto cursor-crosshair"
-            onMouseMove={handleMouseMove1}
-            onMouseLeave={handleMouseLeave1}
+            ref={leftVideoInnerRef}
+            className="absolute inset-0 transition-none"
+            style={{
+              transform: "scale(1.1)",
+              clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            }}
           >
-            <div
-              className="absolute inset-0 transition-all duration-300 ease-out"
-              style={{
-                transform: 'scale(1.1)',
-                clipPath: clipPath1
-              }}
-            >
-              <CrossfadeLoop
-                src="dist/assets/vul.mp4"
-                className="relative w-full h-full overflow-hidden"
-                style={{ filter: 'blur(8px)' }}
-              />
-            </div>
-          </div>
-          {/* Bottom/Right Video - Quadrant-based shapes */}
-          <div
-            ref={video2Ref}
-            className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden pointer-events-auto cursor-crosshair"
-            onMouseMove={handleMouseMove2}
-            onMouseLeave={handleMouseLeave2}
-          >
-            <div
-              className="absolute inset-0 transition-all duration-300 ease-out"
-              style={{
-                transform: 'scale(1.1) scaleY(-1)',
-                clipPath: clipPath2
-              }}
-            >
-              <CrossfadeLoop
-                src="dist/assets/vul.mp4"
-                className="relative w-full h-full overflow-hidden"
-                style={{ filter: 'blur(8px)' }}
-              />
-            </div>
-          </div>
-
-          {/* Animated Noise Overlay - Applied after blur and crop */}
-          <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20 z-10">
-            <Noise
-              patternSize={250}
-              patternAlpha={25}
-              patternRefreshInterval={3}
+            <CrossfadeLoop
+              src="dist/assets/vul.mp4"
+              className="relative w-full h-full overflow-hidden"
+              style={{ filter: "blur(8px)" }}
             />
           </div>
-      </div>
+        </div>
 
-      {/* Content Layer - pointer-events-none on container, auto on children */}
-      <div className="relative z-10 h-full w-full flex flex-col box-border pointer-events-none">
-        <div className="pointer-events-auto contents">
-
-          {/* Top Left: Logo & Subtitle */}
-          <div className="absolute top-[8vh] left-[6vw] flex flex-col gap-2 z-20">
-              <img src="/assets/title.svg" alt="服務聲" className="h-10 md:h-14 w-auto brightness-0 invert" />
-              <span className="text-white/80 text-[10px] md:text-[13px] tracking-[0.1em] font-light ml-1">
-                  ISS Community Annual Newsletter
-              </span>
+        {/* Bottom/Right Video */}
+        <div
+          ref={rightVideoWrapperRef}
+          className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden pointer-events-auto cursor-crosshair z-10"
+          onMouseMove={handleMouseMove2}
+          onMouseLeave={handleMouseLeave2}
+        >
+          <div
+            ref={rightVideoInnerRef}
+            className="absolute inset-0 transition-none"
+            style={{
+              transform: "scale(1.1) scaleY(-1)",
+              clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            }}
+          >
+            <CrossfadeLoop
+              src="dist/assets/vul.mp4"
+              className="relative w-full h-full overflow-hidden"
+              style={{ filter: "blur(8px)" }}
+            />
           </div>
-          
-          {/* Main Content Area */}
-          <div className="absolute top-[50%] -translate-y-[50%] left-0 w-full px-[8vw]">
-              
-              {/* Mobile Layout (Stacked) */}
-              <div className="flex flex-col items-center gap-8 md:hidden">
-                  <div className="text-4xl font-bold tracking-widest">
-                      2025
-                  </div>
-                  <SemicolonLogo className="h-[80px] w-auto drop-shadow-2xl" />
-                  <div className="flex flex-col items-center gap-1">
-                      <span className="text-xl font-light tracking-widest">分號</span>
-                      <span className="text-sm tracking-widest opacity-80 uppercase">semicolon</span>
-                  </div>
-              </div>
+        </div>
 
-              {/* Desktop Layout (Horizontal Band) */}
-              <div className="hidden md:flex items-start justify-between w-full">
-                  {/* Left: Year */}
-                  <div className="text-[32px] font-bold tracking-widest leading-none pt-2">
-                      2025
-                  </div>
-
-                  {/* Center: Icon */}
-                  <div className="absolute left-1/2 -translate-x-1/2 top-0">
-                      <SemicolonLogo className="h-[100px] w-auto drop-shadow-2xl" />
-                  </div>
-
-                  {/* Right Side Group */}
-                  <div className="flex items-start gap-12 ml-auto">
-                       {/* Vertical Text */}
-                       <div className="h-[200px] w-auto">
-                            <p className="text-white/90 text-[13px] tracking-widest [writing-mode:vertical-rl] h-full text-justify leading-relaxed">
-                                Since 2008, the institute has adopted unique educational practices to embed humanity into the learning environment...
-                            </p>
-                       </div>
-                       {/* Labels */}
-                       <div className="flex items-baseline gap-4 pt-2">
-                           <span className="text-[24px] font-light tracking-widest">分號</span>
-                           <span className="text-[24px] font-light tracking-widest opacity-80">semicolon</span>
-                       </div>
-                  </div>
-              </div>
-          </div>
-          
-          {/* Bottom Text Block */}
-          <div className="absolute bottom-[5vh] left-0 w-full px-[8vw] z-0">
-             <p className="text-[10px] md:text-[12px] text-justify leading-[1.6] text-gray-400 opacity-80 mix-blend-color-dodge select-none line-clamp-4 md:line-clamp-none">
-                 {repeatedText}
-             </p>
-          </div>
-          
-          {/* Scroll Indicator */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce opacity-70 z-20">
-            <div className="text-[10px] tracking-[0.2em] uppercase">Scroll</div>
-            <div className="w-px h-8 bg-white" />
-          </div>
+        {/* Noise - pointer-events-none */}
+        <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20 z-20">
+          <Noise
+            patternSize={250}
+            patternAlpha={25}
+            patternRefreshInterval={3}
+          />
         </div>
       </div>
 
+      {/* Content Container - Z-30 */}
+      {/* ADDED pointer-events-none to the PARENT to let clicks through to Z-0 */}
+      <div className="relative z-30 w-full pointer-events-none">
+        {/* Hero Content */}
+        {/* Children need pointer-events-auto if they are interactive (like links) */}
+        <div
+          ref={heroContentRef}
+          className="h-screen w-full relative flex flex-col box-border"
+        >
+          <div className="contents">
+            {/* Elements that need interaction? Mostly just display. 
+                        If there were buttons, we'd add pointer-events-auto. 
+                        The Logo/Text are just visual, so they can be non-interactive or auto.
+                        Let's keeping them auto just in case user wants to select text.
+                    */}
+            <div className="pointer-events-auto absolute top-[8vh] left-[6vw] flex flex-col gap-2 z-20">
+              <img
+                src="/assets/title.svg"
+                alt="服務聲"
+                className="h-10 md:h-14 w-auto brightness-0 invert"
+              />
+              <span className="text-white/80 text-[10px] md:text-[13px] tracking-[0.1em] font-light ml-1">
+                ISS Community Annual Newsletter
+              </span>
+            </div>
+
+            <div className="pointer-events-none absolute top-[50%] -translate-y-[50%] left-0 w-full px-[8vw]">
+              {/* Mobile Layout */}
+              <div className="flex flex-col items-center gap-8 md:hidden pointer-events-auto">
+                <div className="text-4xl font-bold tracking-widest">2025</div>
+                <SemicolonLogo className="h-[80px] w-auto drop-shadow-2xl" />
+                <div className="flex flex-col items-center gap-1">
+                  <span className="text-xl font-light tracking-widest">
+                    分號
+                  </span>
+                  <span className="text-sm tracking-widest opacity-80 uppercase">
+                    semicolon
+                  </span>
+                </div>
+              </div>
+
+              {/* Desktop Layout */}
+              <div className="hidden md:flex items-start justify-between w-full pointer-events-auto">
+                <div className="text-[32px] font-bold tracking-widest leading-none pt-2">
+                  2025
+                </div>
+                <div className="absolute left-1/2 -translate-x-1/2 top-0">
+                  <SemicolonLogo className="h-[100px] w-auto drop-shadow-2xl" />
+                </div>
+                <div className="flex items-start gap-12 ml-auto">
+                  <div className="h-[200px] w-auto">
+                    <p className="text-white/90 text-[13px] tracking-widest [writing-mode:vertical-rl] h-full text-justify leading-relaxed">
+                      Since 2008, the institute has adopted unique educational
+                      practices to embed humanity into the learning
+                      environment...
+                    </p>
+                  </div>
+                  <div className="flex items-baseline gap-4 pt-2">
+                    <span className="text-[24px] font-light tracking-widest">
+                      分號
+                    </span>
+                    <span className="text-[24px] font-light tracking-widest opacity-80">
+                      semicolon
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="absolute bottom-[5vh] left-0 w-full px-[8vw] z-0 pointer-events-auto">
+              <p className="text-[10px] md:text-[12px] text-justify leading-[1.6] text-gray-400 opacity-80 mix-blend-color-dodge select-none line-clamp-4 md:line-clamp-none">
+                {repeatedText}
+              </p>
+            </div>
+
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce opacity-70 z-20 pointer-events-auto">
+              <div className="text-[10px] tracking-[0.2em] uppercase">
+                Scroll
+              </div>
+              <div className="w-px h-8 bg-white" />
+            </div>
+          </div>
+        </div>
+
+        {/* Preface Content */}
+        <div className="min-h-screen flex flex-col md:flex-row">
+          <div className="hidden md:block md:w-1/2 pointer-events-none"></div>
+          <div className="w-full md:w-1/2 bg-transparent px-8 py-32 md:py-40 z-30 pointer-events-auto">
+            <div className="max-w-xl w-full text-left mx-auto md:mx-0">
+              <div className="mb-24">
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={3}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[9px] md:text-[11px] text-gray-300 leading-loose font-light"
+                >
+                  「分號 ;」。
+                </ScrollReveal>
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={3}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[8px] md:text-[10px] text-gray-400 leading-loose font-light"
+                >
+                  它用來分隔一個複句中，彼此獨立卻又緊密相關的句子。
+                  它讓語氣稍作停留，卻同時暗示：後面還會有更多、還能再說下去。
+                  它是一種介於「未完」與「延續」之間的流動。 既獨立，又連結；
+                  既分開，又仍在一起。 其實，這也是服科所的樣子。
+                </ScrollReveal>
+
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={3}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[8px] md:text-[10px] text-gray-400 leading-loose font-light"
+                >
+                  我們來自不同的城市、科系與生命背景，
+                  體驗不同的經歷、擁有不同的能力、帶著不同的故事。
+                  單獨看，每個人都是一個完整、有重量的句子；
+                  然而，在服科這個場域裡，我們相遇—— 並在並列之間產生新的語意。
+                </ScrollReveal>
+
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={3}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[8px] md:text-[10px] text-gray-400 leading-loose font-light"
+                >
+                  當不同的句子彼此靠近，世界就開始變得更完整、更深刻。
+                  《服務聲》第三期以「分號」作為主題，
+                  它傳遞了一種服務科學的精神：
+                  個體之間保持差異，但在關係中創造價值；
+                  片段彼此獨立，但在系統裡形成新的循環。
+                </ScrollReveal>
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={3}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[8px] md:text-[10px] text-gray-400 leading-loose font-light"
+                >
+                  在這本刊物裡，我們邀請你一起走入分號之間。
+                  你會看到學長姐的故事未完待續；
+                  看到策展、創業、職涯的道路仍持續延展； 看到
+                  AI、服務設計、系統思維在新的脈絡中牽引更多連結。
+                  願這本《服務聲》， 成為所有讀者生命中一個小小的分號；
+                  讓你在這裡暫停、呼吸、思考，
+                  但同時，也準備走向下一個更豐富的句子。
+                </ScrollReveal>
+
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={8}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[9px] md:text-[11px] text-gray-300 leading-loose font-light"
+                >
+                  Services continue; Stories continue; And so do we.
+                </ScrollReveal>
+              </div>
+
+              <div className="border-t border-gray-800 pt-10">
+                <p className="text-sm text-gray-500 mb-6 font-light uppercase tracking-widest">
+                  編輯的話
+                </p>
+
+                <div className="flex flex-wrap justify-start gap-x-8 gap-y-3 text-sm text-gray-400 font-light">
+                  <div>
+                    <span className="text-white">陳冠宇</span> / 主編 設計
+                  </div>
+                  <div>
+                    <span className="text-white">胡育慈</span> / 主編 設計
+                  </div>
+                  <div>
+                    <span className="text-white">邱筠婷</span> / 主編 設計
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Block Transition */}
+        <div className="w-full pointer-events-none">
+          <div className="w-full h-2 bg-white opacity-[0.11] mb-10" />
+          <div className="w-full h-2 bg-white opacity-[0.20] mb-8" />
+          <div className="w-full h-3 bg-white opacity-[0.27] mb-7" />
+          <div className="w-full h-4 bg-white opacity-[0.40] mb-5" />
+          <div className="w-full h-5 bg-white opacity-50 mb-4" />
+          <div className="w-full h-6 bg-white opacity-[0.65] mb-3" />
+          <div className="w-full h-8 bg-white opacity-75 mb-2" />
+          <div className="w-full h-32 bg-white" />
+        </div>
+      </div>
     </div>
-  )
+  );
 }
