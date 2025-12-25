@@ -12,24 +12,16 @@ interface CoverProps {
   startAnimation?: boolean;
 }
 
-// Helper function to generate polygon clip-path based on number of sides
-// radius is in percentage (0-50 for inside, >71 for full coverage of square)
 const generatePolygonPath = (
   sides: number,
   rotation: number = 0,
   radius: number = 45
 ): string => {
   sides = Math.max(3, sides);
-  // If we want a perfect circle at 50+, we can use circle syntax, but to morph smoothly
-  // from a "Full Screen Rect" (which is a polygon), staying in polygon mode is often smoother.
-  // However, CSS circle() is efficient. Let's stick to polygon for now to ensure vertex matching if possible,
-  // or just rely on browser interpolation which handles rect -> circle well.
   if (sides >= 50) return `circle(${radius}% at 50% 50%)`;
-
   const points: string[] = [];
   for (let i = 0; i < sides; i++) {
-    const angle =
-      (i * 2 * Math.PI) / sides - Math.PI / 2 + (rotation * Math.PI) / 180;
+    const angle = (i * 2 * Math.PI) / sides - Math.PI / 2 + (rotation * Math.PI) / 180;
     const x = 50 + radius * Math.cos(angle);
     const y = 50 + radius * Math.sin(angle);
     points.push(`${x}% ${y}%`);
@@ -37,21 +29,9 @@ const generatePolygonPath = (
   return `polygon(${points.join(", ")})`;
 };
 
-// Linear interpolation helper
-const lerp = (start: number, end: number, t: number) => {
-  return start * (1 - t) + end * t;
-};
+const lerp = (start: number, end: number, t: number) => start * (1 - t) + end * t;
 
-// Helper component for smooth crossfade looping
-const CrossfadeLoop = ({
-  src,
-  className,
-  style,
-}: {
-  src: string;
-  className?: string;
-  style?: React.CSSProperties;
-}) => {
+const CrossfadeLoop = ({ src, className, style }: { src: string; className?: string; style?: React.CSSProperties; }) => {
   const video1Ref = useRef<HTMLVideoElement>(null);
   const video2Ref = useRef<HTMLVideoElement>(null);
   const [activeVideo, setActiveVideo] = useState<1 | 2>(1);
@@ -61,28 +41,16 @@ const CrossfadeLoop = ({
     const v1 = video1Ref.current;
     const v2 = video2Ref.current;
     if (!v1 || !v2) return;
-
-    const TRANSITION_DURATION = 1.0; // Seconds
-
+    const TRANSITION_DURATION = 1.0;
     const handleTimeUpdate = () => {
       const current = activeVideo === 1 ? v1 : v2;
       const next = activeVideo === 1 ? v2 : v1;
-
       if (!current.duration) return;
-
-      // Start transition before end
-      if (
-        current.currentTime >= current.duration - TRANSITION_DURATION &&
-        !isTransitioning
-      ) {
+      if (current.currentTime >= current.duration - TRANSITION_DURATION && !isTransitioning) {
         setIsTransitioning(true);
         next.currentTime = 0;
         next.play().catch((e) => console.log(e));
-
-        // Toggle active state to trigger fade
         setActiveVideo((prev) => (prev === 1 ? 2 : 1));
-
-        // Reset old video after transition
         setTimeout(() => {
           setIsTransitioning(false);
           current.pause();
@@ -90,21 +58,11 @@ const CrossfadeLoop = ({
         }, TRANSITION_DURATION * 1000);
       }
     };
-
-    // Attach listeners
-    const onTimeUpdate1 = () => {
-      if (activeVideo === 1) handleTimeUpdate();
-    };
-    const onTimeUpdate2 = () => {
-      if (activeVideo === 2) handleTimeUpdate();
-    };
-
+    const onTimeUpdate1 = () => { if (activeVideo === 1) handleTimeUpdate(); };
+    const onTimeUpdate2 = () => { if (activeVideo === 2) handleTimeUpdate(); };
     v1.addEventListener("timeupdate", onTimeUpdate1);
     v2.addEventListener("timeupdate", onTimeUpdate2);
-
-    // Initial play
     v1.play().catch((e) => console.log(e));
-
     return () => {
       v1.removeEventListener("timeupdate", onTimeUpdate1);
       v2.removeEventListener("timeupdate", onTimeUpdate2);
@@ -113,24 +71,8 @@ const CrossfadeLoop = ({
 
   return (
     <div className={className} style={style}>
-      <video
-        ref={video1Ref}
-        src={src}
-        muted
-        playsInline
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${
-          activeVideo === 1 ? "opacity-100 z-10" : "opacity-0 z-0"
-        }`}
-      />
-      <video
-        ref={video2Ref}
-        src={src}
-        muted
-        playsInline
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${
-          activeVideo === 2 ? "opacity-100 z-10" : "opacity-0 z-0"
-        }`}
-      />
+      <video ref={video1Ref} src={src} muted playsInline className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${activeVideo === 1 ? "opacity-100 z-10" : "opacity-0 z-0"}`} />
+      <video ref={video2Ref} src={src} muted playsInline className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${activeVideo === 2 ? "opacity-100 z-10" : "opacity-0 z-0"}`} />
     </div>
   );
 };
@@ -144,45 +86,32 @@ export default function Cover({ onEnter }: CoverProps) {
   const rightVideoInnerRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
 
-  // Logic State Refs
   const mousePosRef = useRef({ x: 0.5, y: 0.5 });
   const mousePos2Ref = useRef({ x: 0.5, y: 0.5 });
   const scrollProgressRef = useRef(0);
   const isHoveringRef = useRef(false);
   const isHovering2Ref = useRef(false);
 
-  // Current visual state for smoothing
   const currentVisualsRef = useRef({
-    left: { sides: 4, rotation: 45, scale: 1.1, radius: 80 },
+    left: { sides: 4, rotation: 45, scale: 1.1, radius: 80, x: 0 },
     right: { sides: 4, rotation: 45, scale: 1.1, radius: 80 },
   });
 
-  // Mouse Handlers
   const handleMouseMove1 = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    mousePosRef.current = { x, y };
+    mousePosRef.current = { x: (e.clientX - rect.left) / rect.width, y: (e.clientY - rect.top) / rect.height };
     isHoveringRef.current = true;
   };
 
-  const handleMouseLeave1 = () => {
-    isHoveringRef.current = false;
-    mousePosRef.current = { x: 0.5, y: 0.5 };
-  };
+  const handleMouseLeave1 = () => { isHoveringRef.current = false; mousePosRef.current = { x: 0.5, y: 0.5 }; };
 
   const handleMouseMove2 = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    mousePos2Ref.current = { x, y };
+    mousePos2Ref.current = { x: (e.clientX - rect.left) / rect.width, y: (e.clientY - rect.top) / rect.height };
     isHovering2Ref.current = true;
   };
 
-  const handleMouseLeave2 = () => {
-    isHovering2Ref.current = false;
-    mousePos2Ref.current = { x: 0.5, y: 0.5 };
-  };
+  const handleMouseLeave2 = () => { isHovering2Ref.current = false; mousePos2Ref.current = { x: 0.5, y: 0.5 }; };
 
   useEffect(() => {
     const container = containerRef.current;
@@ -197,118 +126,113 @@ export default function Cover({ onEnter }: CoverProps) {
         pinSpacing: false,
       });
 
-      const tl = gsap.timeline({
+      gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: "top top",
-          end: "30% top",
+          end: "bottom bottom",
           scrub: 1,
-          onUpdate: (self) => {
-            scrollProgressRef.current = self.progress;
-          },
+          onUpdate: (self) => { scrollProgressRef.current = self.progress; },
         },
-      });
-
-      tl.to(heroContentRef.current, { opacity: 0, y: -50, duration: 1 }, 0);
-      tl.to(rightVideoWrapperRef.current, { opacity: 0, duration: 1 }, 0);
+      })
+      .to(heroContentRef.current, { opacity: 0, y: -50, duration: 0.1 }, 0)
+      .to(rightVideoWrapperRef.current, { opacity: 0, duration: 0.1 }, 0);
     }, container);
 
     const tick = () => {
       const p = scrollProgressRef.current;
-      const circleInfluence = gsap.parseEase("power2.inOut")(p);
+      const el = leftVideoInnerRef.current;
+      const wrapper = leftVideoWrapperRef.current;
+      if (!el || !wrapper) return;
 
-      // --- Left Video Logic ---
-      if (leftVideoInnerRef.current) {
-        const { x, y } = mousePosRef.current;
-        const centerX = 0.5,
-          centerY = 0.5;
-        const dist = Math.sqrt(
-          Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
-        );
+      const cv = currentVisualsRef.current.left;
 
-        // Mouse Influence
-        let targetSides = 3 + (1 - dist * 2) * 17;
-        let targetRotation =
-          Math.atan2(y - centerY, x - centerX) * (180 / Math.PI);
-        let targetRadius = 45; // Hover state radius (smaller to show shape)
+      // --- Phase 1 & 2: Hero & Circle Morph (0.0 -> 0.8) ---
+      if (p <= 0.8) {
+        wrapper.style.zIndex = "10";
+        // Calculate influence: 0 at p=0, 1 at p=0.3
+        const circleP = Math.min(p / 0.3, 1);
+        const circleInfluence = gsap.parseEase("power2.inOut")(circleP);
 
-        // Default / Rest State (Full Screen)
-        // When not hovering and at top
-        if (!isHoveringRef.current && p < 0.01) {
-          targetSides = 4;
-          targetRotation = 45; // Square
-          targetRadius = 80; // Full coverage (covers corners)
+        // Default: Square
+        let targetSides = 4, targetRotation = 45, targetRadius = 80;
+
+        // Interaction: Allow hover to change shape, but scroll dampens it
+        if (isHoveringRef.current) {
+          const { x, y } = mousePosRef.current;
+          const dist = Math.sqrt(Math.pow(x - 0.5, 2) + Math.pow(y - 0.5, 2));
+          targetSides = 3 + (1 - dist * 2) * 17;
+          targetRotation = Math.atan2(y - 0.5, x - 0.5) * (180 / Math.PI);
+          targetRadius = 45;
         }
 
-        // Scroll Influence (Morph to Circle)
-        // Force radius to 40% (Circle size)
+        // Lerp from Target (Mouse/Square) to Circle (50 sides) based on scroll
         const finalTargetSides = lerp(targetSides, 50, circleInfluence);
         const finalTargetRotation = lerp(targetRotation, 0, circleInfluence);
         const finalTargetScale = lerp(1.1, 0.8, circleInfluence);
-        const finalTargetRadius = lerp(targetRadius, 35, circleInfluence); // 35% radius for final circle
+        const finalTargetRadius = lerp(targetRadius, 35, circleInfluence);
 
-        // Smooth & Apply
-        const cv = currentVisualsRef.current.left;
         cv.sides = lerp(cv.sides, finalTargetSides, 0.1);
         cv.rotation = lerp(cv.rotation, finalTargetRotation, 0.1);
-        cv.scale = lerp(cv.scale, finalTargetScale, 0.1);
         cv.radius = lerp(cv.radius, finalTargetRadius, 0.1);
+        cv.scale = lerp(cv.scale, finalTargetScale, 0.1);
+        cv.x = lerp(cv.x, 0, 0.1);
 
-        const roundedSides = Math.round(cv.sides);
-        const poly = generatePolygonPath(roundedSides, cv.rotation, cv.radius);
+        el.style.clipPath = generatePolygonPath(Math.round(cv.sides), cv.rotation, cv.radius);
+        el.style.transform = `scale(${cv.scale})`;
+        wrapper.style.transform = `translateX(${cv.x}%)`;
+      } 
+      // --- Phase 3: Morph to Rectangle & Center (0.8 -> 0.95) ---
+      else {
+        wrapper.style.zIndex = "40"; // Bring to front
+        const morphP = Math.min((p - 0.8) / 0.12, 1);
+        const easeP = gsap.parseEase("power1.inOut")(morphP);
 
-        leftVideoInnerRef.current.style.clipPath = poly;
-        leftVideoInnerRef.current.style.transform = `scale(${cv.scale})`;
+        const startInset = 15; const endInsetY = 25; const endInsetX = 10;
+        const currentInsetY = lerp(startInset, endInsetY, easeP);
+        const currentInsetX = lerp(startInset, endInsetX, easeP);
+        const currentRound = lerp(50, 2, easeP);
+        const currentX = lerp(0, 50, easeP);
+        const currentScale = lerp(0.8, 1.1, easeP);
+
+        el.style.clipPath = `inset(${currentInsetY}% ${currentInsetX}% ${currentInsetY}% ${currentInsetX}% round ${currentRound}%)`;
+        el.style.transform = `scale(${currentScale})`;
+        wrapper.style.transform = `translateX(${currentX}%)`;
       }
 
-      // --- Right Video Logic ---
+      // --- Right Video Logic (Interactive) ---
       if (rightVideoInnerRef.current) {
         const { x, y } = mousePos2Ref.current;
-
         let targetSides = 4;
-        if (x < 0.5 && y < 0.5) targetSides = 3;
-        else if (x >= 0.5 && y < 0.5) targetSides = 6;
-        else if (x < 0.5 && y >= 0.5) targetSides = 8;
-        else targetSides = 12;
-
-        let targetRotation = x * 360;
-        let targetRadius = 45;
-
-        if (!isHovering2Ref.current) {
-          targetSides = 4;
-          targetRotation = 45;
-          targetRadius = 80; // Full coverage default
+        
+        // Only run interactive shape logic if hovering and NOT scrolled down significantly
+        // (Even though opacity fades it out, stopping calculation saves perf and avoids confusion)
+        if (isHovering2Ref.current && p < 0.1) {
+           if (x < 0.5 && y < 0.5) targetSides = 3;
+           else if (x >= 0.5 && y < 0.5) targetSides = 6;
+           else if (x < 0.5 && y >= 0.5) targetSides = 8;
+           else targetSides = 12;
         }
+        
+        let targetRotation = (isHovering2Ref.current && p < 0.1) ? x * 360 : 45;
+        let targetRadius = (isHovering2Ref.current && p < 0.1) ? 45 : 80;
 
-        const cv = currentVisualsRef.current.right;
-        cv.sides = lerp(cv.sides, targetSides, 0.1);
-        cv.rotation = lerp(cv.rotation, targetRotation, 0.1);
-        cv.radius = lerp(cv.radius, targetRadius, 0.1);
+        // Apply
+        const cvR = currentVisualsRef.current.right;
+        cvR.sides = lerp(cvR.sides, targetSides, 0.1);
+        cvR.rotation = lerp(cvR.rotation, targetRotation, 0.1);
+        cvR.radius = lerp(cvR.radius, targetRadius, 0.1);
 
-        const roundedSides = Math.round(cv.sides);
-        const poly = generatePolygonPath(roundedSides, cv.rotation, cv.radius);
-
+        const roundedSides = Math.round(cvR.sides);
+        const poly = generatePolygonPath(roundedSides, cvR.rotation, cvR.radius);
+        
         rightVideoInnerRef.current.style.clipPath = poly;
         rightVideoInnerRef.current.style.transform = `scale(1.1) scaleY(-1)`;
       }
     };
 
     gsap.ticker.add(tick);
-
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      if (rect.bottom <= window.innerHeight && onEnter) {
-        onEnter();
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      ctx.revert();
-      gsap.ticker.remove(tick);
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => { ctx.revert(); gsap.ticker.remove(tick); };
   }, [onEnter]);
 
   const backgroundText = `In grammar, a semicolon connects two related but independently standing ideas. Similarly, at Semicolon Design, the semicolon symbolizes the bridge connecting visual art and storytelling. We believe that design is more than just creating aesthetic visuals - it is about conveying a profound story or message. `;
@@ -350,7 +274,7 @@ export default function Cover({ onEnter }: CoverProps) {
         {/* Bottom/Right Video */}
         <div
           ref={rightVideoWrapperRef}
-          className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden pointer-events-auto cursor-crosshair z-10"
+          className={`relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden pointer-events-auto z-10`}
           onMouseMove={handleMouseMove2}
           onMouseLeave={handleMouseLeave2}
         >
@@ -381,20 +305,13 @@ export default function Cover({ onEnter }: CoverProps) {
       </div>
 
       {/* Content Container - Z-30 */}
-      {/* ADDED pointer-events-none to the PARENT to let clicks through to Z-0 */}
       <div className="relative z-30 w-full pointer-events-none">
         {/* Hero Content */}
-        {/* Children need pointer-events-auto if they are interactive (like links) */}
         <div
           ref={heroContentRef}
           className="h-screen w-full relative flex flex-col box-border"
         >
           <div className="contents">
-            {/* Elements that need interaction? Mostly just display. 
-                        If there were buttons, we'd add pointer-events-auto. 
-                        The Logo/Text are just visual, so they can be non-interactive or auto.
-                        Let's keeping them auto just in case user wants to select text.
-                    */}
             <div className="pointer-events-auto absolute top-[8vh] left-[6vw] flex flex-col gap-2 z-20">
               <img
                 src="/assets/title.svg"
@@ -571,6 +488,9 @@ export default function Cover({ onEnter }: CoverProps) {
             </div>
           </div>
         </div>
+
+        {/* Extended Scroll Spacer - Increased to 250vh */}
+        <div className="h-[250vh] w-full bg-transparent" />
 
         {/* Block Transition */}
         <div className="w-full pointer-events-none">

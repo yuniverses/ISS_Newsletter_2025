@@ -16,29 +16,43 @@ export default function Preface() {
     
     if (!container || !videoWrapper) return;
 
-    // Create a context for GSAP to easily clean up later
     const ctx = gsap.context(() => {
-      // Animation for the video clip-path
-      // Starts as full rectangle, morphs to circle
-      gsap.fromTo(
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+        }
+      });
+
+      // Phase 1: Morph to Circle (0% -> 30% of scroll)
+      tl.fromTo(
         videoWrapper,
         {
-          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", // Full rectangle
+          clipPath: "inset(0% 0% 0% 0%)", 
           borderRadius: "0%",
         },
         {
-          clipPath: "circle(35% at 50% 50%)", // Circle
-          borderRadius: "50%", // Optional: adds smooth border radius transition if clip-path is jagged
+          clipPath: "circle(30% at 50% 50%)",
+          borderRadius: "50%",
+          duration: 3, // Increased duration relative to total scroll
           ease: "none",
-          scrollTrigger: {
-            trigger: container,
-            start: "top top", // Start animation when container hits top
-            end: "center center", // Finish animation when scrolled halfway
-            scrub: 1, // Smooth scrubbing
-            pin: false, // We rely on sticky positioning CSS, but could use pin here if needed
-          },
         }
-      );
+      )
+      // Phase 2: Hold (30% -> 70%) - wait for text to scroll
+      .to(videoWrapper, { duration: 4 }) 
+      
+      // Phase 3: Morph to Wide Rectangle & Center (70% -> 100%)
+      .to(videoWrapper, {
+        clipPath: "inset(25% 10% 25% 10% round 20px)", // Horizontal rectangle
+        borderRadius: "20px",
+        xPercent: 50, // Move to center (50vw * 0.5 = 25vw shift)
+        scale: 1.2,
+        duration: 3,
+        ease: "power1.inOut",
+      });
+
     }, container);
 
     return () => ctx.revert();
@@ -47,12 +61,12 @@ export default function Preface() {
   return (
     <section ref={containerRef} className="relative w-full bg-black text-white flex flex-col md:flex-row">
       
-      {/* Left Column: Sticky Video (Desktop only) */}
+      {/* Left Column: Sticky Video */}
       <div className="hidden md:block md:w-1/2 h-screen sticky top-0 overflow-hidden z-0">
         <div 
           ref={videoWrapperRef} 
-          className="w-full h-full relative"
-          style={{ willChange: "clip-path" }}
+          className="w-full h-full relative origin-center"
+          style={{ willChange: "clip-path, transform" }}
         >
           <video
             ref={videoRef}
@@ -63,19 +77,17 @@ export default function Preface() {
             autoPlay
             className="absolute inset-0 w-full h-full object-cover"
           />
-          {/* Overlay to dim video slightly so text pops if it were over it, but here it's side-by-side. 
-              Maybe we don't need it, but consistent with dark theme. */}
           <div className="absolute inset-0 bg-black/20" />
         </div>
       </div>
 
       {/* Right Column: Content (Scrolls) */}
-      <div className="w-full md:w-1/2 min-h-screen relative z-10 bg-black">
-        {/* Main content - centered and focused like a slogan */}
+      <div className="w-full md:w-1/2 relative z-10 bg-black">
+        {/* Main content */}
         <div className="flex flex-col items-start justify-center px-8 py-32 md:py-40">
           <div className="max-w-xl w-full text-left">
             
-            {/* Content paragraphs - with scroll reveal effect */}
+            {/* Content paragraphs */}
             <div className="mb-24">
               <ScrollReveal
                 baseOpacity={0.1}
@@ -157,8 +169,8 @@ export default function Preface() {
               </ScrollReveal>
             </div>
 
-            {/* Editors section - centered */}
-            <div className="border-t border-gray-800 pt-10">
+            {/* Editors section */}
+            <div className="border-t border-gray-800 pt-10 mb-40">
               <p className="text-sm text-gray-500 mb-6 font-light uppercase tracking-widest">
                 編輯的話
               </p>
@@ -178,22 +190,18 @@ export default function Preface() {
           </div>
         </div>
         
-        {/* Block-style transition from black to white with progressive sizing 
-            Kept inside the right column so it scrolls with the content
-        */}
+        {/* Extended Scroll Spacer (Increased to 150vh) */}
+        <div className="h-[150vh] w-full bg-black" />
+
+        {/* Transition Blocks */}
         <div className="w-full">
-          {/* Darkest blocks: smallest height, largest gaps */}
           <div className="w-full h-2 bg-white opacity-[0.11] mb-10" />
           <div className="w-full h-2 bg-white opacity-[0.20] mb-8" />
           <div className="w-full h-3 bg-white opacity-[0.27] mb-7" />
-
-          {/* Mid-tone blocks: progressive increase in height, decrease in gap */}
           <div className="w-full h-4 bg-white opacity-[0.40] mb-5" />
           <div className="w-full h-5 bg-white opacity-50 mb-4" />
           <div className="w-full h-6 bg-white opacity-[0.65] mb-3" />
           <div className="w-full h-8 bg-white opacity-75 mb-2" />
-
-          {/* Brightest block: largest height (2x larger), no gap */}
           <div className="w-full h-32 bg-white" />
         </div>
       </div>
