@@ -488,7 +488,7 @@ export default function Cover({ onEnter }: CoverProps) {
           {/* Embedded Card Content Overlay */}
           <div
             ref={cardOverlayRef}
-            className={`absolute inset-0 z-20 flex flex-col p-8 md:p-24 transition-none ${
+            className={`absolute inset-0 z-20 flex flex-col p-8 md:p-20 transition-none ${
               isCardOpen
                 ? "pointer-events-auto"
                 : "pointer-events-none translate-y-4"
@@ -496,78 +496,84 @@ export default function Cover({ onEnter }: CoverProps) {
             style={{ opacity: 0 }}
           >
             {/* Background Gradient Blob */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-purple-900/40 via-blue-900/30 to-transparent rounded-full blur-[50px] pointer-events-none opacity-60" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-purple-900/40 via-blue-900/30 to-transparent rounded-full blur-[60px] pointer-events-none opacity-50" />
 
-            {/* History / Previous Message Area */}
-            <div className="flex-1 flex flex-col justify-center overflow-hidden relative min-h-0 z-10">
-              {/* Mask to fade top */}
-              <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none" />
-
-              <div className="overflow-y-auto pr-2 pb-2 space-y-0 no-scrollbar flex flex-col justify-end">
-                {/* Latest Message (Hero) */}
+            {/* Content Container */}
+            <div className="relative z-10 flex-1 flex flex-col h-full justify-between">
+              
+              {/* Top Section: Previous Message */}
+              <div className="flex-1 flex flex-col justify-center relative">
                 {sentences.length > 0 && !hasContributed && (
-                  <div className="mt-4 mb-4 animate-in fade-in slide-in-from-bottom-8 duration-700">
-                    <p className="text-xs text-accent tracking-[0.2em] uppercase mb-6 opacity-60 text-center">
+                  <div className="animate-in fade-in slide-in-from-bottom-8 duration-700">
+                    <p className="text-[10px] md:text-xs text-accent tracking-[0.3em] uppercase mb-8 md:mb-12 opacity-80 text-center font-light">
                       Previous Thought
                     </p>
-                    <div className="relative text-center">
-                      <span className="absolute -top-8 left-0 text-6xl text-white/5 font-serif font-bold">“</span>
-                      <p className="text-2xl md:text-4xl font-light text-white leading-relaxed tracking-wide font-serif px-10">
+                    <div className="relative text-center px-4">
+                      <span className="absolute -top-8 md:-top-12 -left-2 md:left-0 text-6xl md:text-8xl text-white/10 font-serif font-bold leading-none">“</span>
+                      <p className="text-2xl md:text-5xl font-medium text-white leading-tight tracking-wide font-serif relative z-10">
                         {sentences[sentences.length - 1].text}
                       </p>
-                      <span className="absolute -bottom-8 right-0 text-6xl text-white/5 font-serif font-bold rotate-180">“</span>
+                      <span className="absolute -bottom-8 md:-bottom-12 -right-2 md:right-0 text-6xl md:text-8xl text-white/10 font-serif font-bold leading-none rotate-180">“</span>
                     </div>
                   </div>
                 )}
 
                 {/* Completed View */}
                 {hasContributed && (
-                  <div className="flex flex-col items-center justify-center space-y-8 py-8 animate-in zoom-in-95 duration-700">
-                    <div className="space-y-2 text-center">
-                      <p className="text-xs tracking-[0.3em] text-white/40 uppercase">
-                        Connection Established
-                      </p>
-                      <SemicolonLogo className="h-10 w-auto mx-auto text-white/80" />
+                  <div className="flex flex-col h-full justify-center items-center space-y-12 animate-in zoom-in-95 duration-700">
+                    <div className="space-y-4 text-center">
+                      <p className="text-[10px] md:text-xs tracking-[0.4em] text-white/40 uppercase">Memory Stored</p>
+                      <SemicolonLogo className="h-12 md:h-16 w-auto mx-auto text-white/90" />
                     </div>
-                    <div className="w-full bg-white/5 border border-white/10 p-6 rounded-xl backdrop-blur-md relative overflow-hidden group hover:bg-white/10 transition-colors">
-                      <div className="absolute top-0 left-0 w-1 h-full bg-accent" />
-                      <p className="text-sm text-white/50 mb-4 font-light text-left">
-                        "{userContribution?.received}"
-                      </p>
-                      <p className="text-xl md:text-2xl text-white font-medium text-left leading-relaxed font-serif">
-                        "{userContribution?.mine}"
-                      </p>
+                    <div className="w-full max-w-lg space-y-8 text-left relative">
+                      <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+                      <div className="pl-8">
+                        <p className="text-[10px] text-white/30 uppercase tracking-widest mb-3">Received</p>
+                        <p className="text-lg md:text-xl text-white/60 font-serif font-light leading-relaxed italic">
+                          "{userContribution?.received}"
+                        </p>
+                      </div>
+                      <div className="pl-8">
+                        <p className="text-[10px] text-accent/80 uppercase tracking-widest mb-3">You Wrote</p>
+                        <p className="text-2xl md:text-3xl text-white font-medium font-serif leading-relaxed">
+                          "{userContribution?.mine}"
+                        </p>
+                      </div>
                     </div>
                   </div>
                 )}
-                <div ref={messagesEndRef} />
               </div>
+
+              {/* Bottom Section: Input */}
+              {!hasContributed && (
+                <div className="pt-8 md:pt-12 border-t border-white/10 relative">
+                  <div className="relative group max-w-2xl mx-auto">
+                    <textarea
+                      className="w-full h-32 md:h-40 bg-transparent border-none p-0 text-xl md:text-3xl font-light text-white/90 placeholder-white/10 focus:ring-0 focus:outline-none transition-all resize-none text-center font-serif leading-relaxed tracking-wide"
+                      placeholder="Continue the story..."
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                      disabled={isSubmitting}
+                    />
+                    
+                    <div className="absolute bottom-0 left-0 w-full flex justify-end items-center">
+                       <button
+                        onClick={handleSend}
+                        disabled={!inputText.trim() || isSubmitting}
+                        className={`flex items-center gap-3 px-6 py-2 text-white text-[10px] md:text-xs tracking-[0.2em] font-bold border-b border-white/30 hover:border-white transition-all duration-300 ${
+                          !inputText.trim() || isSubmitting
+                            ? "opacity-0 translate-y-2 pointer-events-none"
+                            : "opacity-100 translate-y-0"
+                        }`}
+                      >
+                        {isSubmitting ? "PUBLISHING..." : "PUBLISH"}
+                        <span className="text-lg leading-none transform group-hover:translate-x-1 transition-transform">→</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-
-            {/* Input Area - Integrated */}
-            {!hasContributed && (
-              <div className="mt-6 pt-6 border-t border-white/10 relative group shrink-0 z-10">
-                <textarea
-                  className="w-full h-32 bg-transparent border-none p-0 text-xl font-light text-white/90 placeholder-white/20 focus:ring-0 focus:outline-none transition-all resize-none leading-relaxed tracking-wide font-serif"
-                  placeholder="接續寫下你的想法..."
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  disabled={isSubmitting}
-                />
-
-                <button
-                  onClick={handleSend}
-                  disabled={!inputText.trim() || isSubmitting}
-                  className={`absolute bottom-0 right-0 px-6 py-2 text-white text-xs tracking-[0.2em] font-medium border border-white/30 rounded-full hover:bg-white hover:text-black transition-all ${
-                    !inputText.trim() || isSubmitting
-                      ? "opacity-0 translate-y-4 pointer-events-none"
-                      : "opacity-100 translate-y-0"
-                  }`}
-                >
-                  {isSubmitting ? "PACKING..." : "CONNECT"}
-                </button>
-              </div>
-            )}
           </div>
         </div>
 
