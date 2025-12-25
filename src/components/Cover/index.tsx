@@ -226,31 +226,47 @@ export default function Cover({ onEnter }: CoverProps) {
     }
   };
 
-  const handleMouseMove1 = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Global Mouse Handler on Sticky Wrapper
+  const handleGlobalMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    mousePosRef.current = {
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
-    };
-    isHoveringRef.current = true;
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+
+    // Mobile check
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+      // Mobile: Left video is top (full), Right is bottom.
+      // But visually Left is behind Right at bottom.
+      // Interaction: Top half -> Left video (Polygon).
+      if (y < 0.5) {
+         mousePosRef.current = { x: x, y: y * 2 }; // Normalize Y
+         isHoveringRef.current = true;
+         isHovering2Ref.current = false;
+      } else {
+         // Bottom half (Right video)
+         mousePos2Ref.current = { x: x, y: (y - 0.5) * 2 };
+         isHovering2Ref.current = true;
+         isHoveringRef.current = false;
+      }
+    } else {
+      // Desktop: Left vs Right split at x=0.5
+      if (x < 0.5) {
+        mousePosRef.current = { x: x * 2, y: y }; // Normalize X
+        isHoveringRef.current = true;
+        isHovering2Ref.current = false;
+      } else {
+        mousePos2Ref.current = { x: (x - 0.5) * 2, y: y }; // Normalize X
+        isHovering2Ref.current = true;
+        isHoveringRef.current = false;
+      }
+    }
   };
 
-  const handleMouseLeave1 = () => {
+  const handleGlobalMouseLeave = () => {
     isHoveringRef.current = false;
-    mousePosRef.current = { x: 0.5, y: 0.5 };
-  };
-
-  const handleMouseMove2 = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mousePos2Ref.current = {
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
-    };
-    isHovering2Ref.current = true;
-  };
-
-  const handleMouseLeave2 = () => {
     isHovering2Ref.current = false;
+    mousePosRef.current = { x: 0.5, y: 0.5 };
     mousePos2Ref.current = { x: 0.5, y: 0.5 };
   };
 
@@ -315,7 +331,7 @@ export default function Cover({ onEnter }: CoverProps) {
       // --- Phase 1 & 2: Hero & Circle Morph (0.0 -> 0.6) ---
       if (p <= 0.6) {
         wrapper.style.zIndex = "10";
-        // Dead zone for scroll influence at the very top (0.05)
+        // Dead zone for scroll influence
         const circleP = Math.max(0, Math.min((p - 0.05) / 0.25, 1));
         const circleInfluence = gsap.parseEase("power2.inOut")(circleP);
 
@@ -323,8 +339,7 @@ export default function Cover({ onEnter }: CoverProps) {
 
         if (isHoveringRef.current) {
           const { x, y } = mousePosRef.current;
-          const dist = Math.sqrt(Math.pow(x - 0.5, 2) + Math.pow(y - 0.5, 2));
-          targetSides = 3 + (1 - dist * 2) * 17;
+          targetSides = 3 + (1 - Math.sqrt(Math.pow(x - 0.5, 2) + Math.pow(y - 0.5, 2)) * 2) * 17;
           targetRotation = Math.atan2(y - 0.5, x - 0.5) * (180 / Math.PI);
           targetRadius = 45;
         }
@@ -344,16 +359,22 @@ export default function Cover({ onEnter }: CoverProps) {
         el.style.transform = `scale(${cv.scale})`;
         wrapper.style.transform = `translateX(${cv.x}%)`;
       }
-      // --- Phase 3: Morph to Small Rectangle (0.6 -> 0.7) ---
+      // --- Phase 3: Morph to Rectangle (0.6 -> 0.7) ---
       else if (p <= 0.7) {
         wrapper.style.zIndex = "40"; 
         const morphP = Math.min((p - 0.6) / 0.1, 1);
         const easeP = gsap.parseEase("power1.inOut")(morphP);
 
         const targetX = isMobile ? 0 : lerp(0, 50, easeP);
-        const currentInsetY = lerp(15, 25, easeP);
-        const currentInsetX = lerp(15, 10, easeP);
+        
+        // Mobile: Taller rectangle target
+        const targetInsetY = isMobile ? 20 : 25;
+        const targetInsetX = isMobile ? 8 : 10;
+
+        const currentInsetY = lerp(15, targetInsetY, easeP);
+        const currentInsetX = lerp(15, targetInsetX, easeP);
         const currentRound = lerp(50, 5, easeP);
+        const currentX = lerp(0, 50, easeP);
         const currentScale = lerp(0.8, 1.0, easeP);
 
         el.style.clipPath = `inset(${currentInsetY}% ${currentInsetX}% ${currentInsetY}% ${currentInsetX}% round ${currentRound}%)`;
@@ -366,13 +387,13 @@ export default function Cover({ onEnter }: CoverProps) {
         const expandP = Math.min((p - 0.7) / 0.1, 1);
         const easeExpand = gsap.parseEase("power2.out")(expandP);
 
-        const isMobile = window.innerWidth < 768;
-
+        // Mobile: Tall vertical card (inset Y small, X small)
+        // Desktop: Wide horizontal card (inset Y larger, X medium)
         const startInsetY = isMobile ? 20 : 25;
         const endInsetY = isMobile ? 10 : 15; 
         
         const startInsetX = isMobile ? 8 : 10;
-        const endInsetX = isMobile ? 4 : 8;   
+        const endInsetX = isMobile ? 8 : 8; 
 
         const currentInsetY = lerp(startInsetY, endInsetY, easeExpand);
         const currentInsetX = lerp(startInsetX, endInsetX, easeExpand);
@@ -381,7 +402,7 @@ export default function Cover({ onEnter }: CoverProps) {
 
         el.style.clipPath = `inset(${currentInsetY}% ${currentInsetX}% ${currentInsetY}% ${currentInsetX}% round ${currentRound}px)`;
         el.style.transform = `scale(${currentScale})`;
-        wrapper.style.transform = isMobile ? 'none' : `translateX(50%)`; 
+        wrapper.style.transform = isMobile ? `translateX(0%)` : `translateX(50%)`; 
       }
 
       // --- Right Video Logic ---
@@ -405,13 +426,9 @@ export default function Cover({ onEnter }: CoverProps) {
         const circleP = Math.min(p / 0.3, 1);
         const circleInfluence = gsap.parseEase("power2.inOut")(circleP);
         
-        const finalSides = lerp(targetSides, 50, circleInfluence);
-        const finalRot = lerp(targetRotation, 0, circleInfluence);
-        const finalRad = lerp(targetRadius, 35, circleInfluence);
-
-        cvR.sides = lerp(cvR.sides, finalSides, 0.1);
-        cvR.rotation = lerp(cvR.rotation, finalRot, 0.1);
-        cvR.radius = lerp(cvR.radius, finalRad, 0.1);
+        cvR.sides = lerp(cvR.sides, lerp(targetSides, 50, circleInfluence), 0.1);
+        cvR.rotation = lerp(cvR.rotation, lerp(targetRotation, 0, circleInfluence), 0.1);
+        cvR.radius = lerp(cvR.radius, lerp(targetRadius, 35, circleInfluence), 0.1);
 
         const roundedSides = Math.round(cvR.sides);
         const poly = generatePolygonPath(roundedSides, cvR.rotation, cvR.radius);
@@ -422,71 +439,368 @@ export default function Cover({ onEnter }: CoverProps) {
     };
 
     gsap.ticker.add(tick);
-    return () => { ctx.revert(); gsap.ticker.remove(tick); };
+    return () => {
+      ctx.revert();
+      gsap.ticker.remove(tick);
+    };
   }, [onEnter, isCardOpen]);
 
   const backgroundText = `In grammar, a semicolon connects two related but independently standing ideas. Similarly, at Semicolon Design, the semicolon symbolizes the bridge connecting visual art and storytelling. We believe that design is more than just creating aesthetic visuals - it is about conveying a profound story or message. `;
   const repeatedText = Array(6).fill(backgroundText).join("");
 
   return (
-    <div ref={containerRef} className="relative w-full bg-black text-white font-sans">
-      <div ref={stickyWrapperRef} className="h-screen w-full overflow-hidden flex flex-col md:flex-row absolute top-0 left-0 z-0 pointer-events-auto">
+    <div
+      ref={containerRef}
+      className="relative w-full bg-black text-white font-sans"
+    >
+      {/* Sticky Wrapper - Z-0 */}
+      <div
+        ref={stickyWrapperRef}
+        className="h-screen w-full overflow-hidden flex flex-col md:flex-row absolute top-0 left-0 z-0 pointer-events-auto"
+        onMouseMove={handleGlobalMouseMove}
+        onMouseLeave={handleGlobalMouseLeave}
+      >
         {/* Top/Left Video */}
-        <div ref={leftVideoWrapperRef} className={`absolute md:relative inset-0 md:inset-auto w-full md:w-1/2 h-full overflow-hidden pointer-events-auto z-10`} onMouseMove={handleMouseMove1} onMouseLeave={handleMouseLeave1} onClick={() => isCardReady && setIsCardOpen(!isCardOpen)}>
-          <div ref={leftVideoInnerRef} className="absolute inset-0 transition-none" style={{ transform: "scale(1.1)", clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}>
-            <CrossfadeLoop src="dist/assets/vul.mp4" className="relative w-full h-full overflow-hidden" style={{ filter: isCardOpen ? "blur(12px) brightness(0.4)" : "blur(8px)" }} />
+        <div
+          ref={leftVideoWrapperRef}
+          className={`absolute md:relative inset-0 md:inset-auto w-full md:w-1/2 h-full overflow-hidden pointer-events-auto z-10`}
+          onClick={() => isCardReady && setIsCardOpen(!isCardOpen)}
+        >
+          <div
+            ref={leftVideoInnerRef}
+            className="absolute inset-0 transition-none"
+            style={{
+              transform: "scale(1.1)",
+              clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            }}
+          >
+            <CrossfadeLoop
+              src="dist/assets/vul.mp4"
+              className="relative w-full h-full overflow-hidden"
+              style={{
+                filter: isCardOpen
+                  ? "blur(12px) brightness(0.4)"
+                  : "blur(8px)",
+              }}
+            />
           </div>
 
           {/* Embedded Card Content Overlay */}
-          <div ref={cardOverlayRef} className={`absolute inset-0 z-20 flex flex-col p-8 md:p-24 transition-none ${isCardOpen ? "pointer-events-auto" : "pointer-events-none translate-y-4"}`} style={{ opacity: 0 }}>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] h-[100%] bg-gradient-to-tr from-purple-500/20 via-blue-500/10 to-transparent rounded-full blur-[80px] pointer-events-none opacity-40" />
-            <div className="relative z-10 flex-1 flex flex-col h-full">
-              <div className="flex-1 flex flex-col justify-center border-b border-white/10 pb-4 md:pb-8">
+          <div
+            ref={cardOverlayRef}
+            className={`absolute inset-0 z-20 flex flex-col p-8 md:p-24 transition-none ${
+              isCardOpen
+                ? "pointer-events-auto"
+                : "pointer-events-none translate-y-4"
+            }`}
+            style={{ opacity: 0 }}
+          >
+            {/* Background Gradient Blob */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-purple-900/40 via-blue-900/30 to-transparent rounded-full blur-[50px] pointer-events-none opacity-60" />
+
+            {/* History / Previous Message Area */}
+            <div className="flex-1 flex flex-col justify-center overflow-hidden relative min-h-0 z-10">
+              {/* Mask to fade top */}
+              <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none" />
+
+              <div className="overflow-y-auto pr-2 pb-2 space-y-0 no-scrollbar flex flex-col justify-end">
+                {/* Latest Message (Hero) */}
                 {sentences.length > 0 && !hasContributed && (
-                  <div className="animate-in fade-in slide-in-from-bottom-8 duration-700">
-                    <p className="text-[10px] md:text-xs text-accent tracking-[0.2em] uppercase mb-4 md:mb-6 opacity-60 text-center">Previous Thought</p>
+                  <div className="mt-4 mb-4 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                    <p className="text-xs text-accent tracking-[0.2em] uppercase mb-6 opacity-60 text-center">
+                      Previous Thought
+                    </p>
                     <div className="relative text-center">
-                      <span className="absolute -top-6 md:-top-8 left-0 text-4xl md:text-6xl text-white/5 font-serif font-bold">“</span>
-                      <p className="text-lg md:text-4xl font-light text-white leading-relaxed tracking-wide font-serif px-6 md:px-10">
+                      <span className="absolute -top-8 left-0 text-6xl text-white/5 font-serif font-bold">“</span>
+                      <p className="text-2xl md:text-4xl font-light text-white leading-relaxed tracking-wide font-serif px-10">
                         {sentences[sentences.length - 1].text}
                       </p>
-                      <span className="absolute -bottom-6 md:-bottom-8 right-0 text-4xl md:text-6xl text-white/5 font-serif font-bold rotate-180">“</span>
+                      <span className="absolute -bottom-8 right-0 text-6xl text-white/5 font-serif font-bold rotate-180">“</span>
                     </div>
                   </div>
                 )}
+
+                {/* Completed View */}
                 {hasContributed && (
-                  <div className="flex flex-col h-full justify-center space-y-6 md:space-y-10 animate-in zoom-in-95 duration-700 text-center">
-                    <div className="space-y-2 md:space-y-4"><p className="text-[10px] md:text-xs tracking-[0.3em] text-white/40 uppercase">Memory Stored</p><SemicolonLogo className="h-10 md:h-12 w-auto mx-auto text-white" /></div>
-                    <div className="space-y-4 md:space-y-8 text-left max-w-lg mx-auto">
-                      <div><p className="text-[10px] text-white/30 uppercase tracking-widest mb-1 md:mb-2">Received</p><p className="text-sm md:text-lg text-white/70 font-serif font-light leading-relaxed">"{userContribution?.received}"</p></div>
-                      <div className="w-10 md:w-12 h-px bg-accent/50" />
-                      <div><p className="text-[10px] text-white/30 uppercase tracking-widest mb-1 md:mb-2">You Wrote</p><p className="text-xl md:text-2xl text-white font-serif font-medium leading-relaxed">"{userContribution?.mine}"</p></div>
+                  <div className="flex flex-col items-center justify-center space-y-8 py-8 animate-in zoom-in-95 duration-700">
+                    <div className="space-y-2 text-center">
+                      <p className="text-xs tracking-[0.3em] text-white/40 uppercase">
+                        Connection Established
+                      </p>
+                      <SemicolonLogo className="h-10 w-auto mx-auto text-white/80" />
+                    </div>
+                    <div className="w-full bg-white/5 border border-white/10 p-6 rounded-xl backdrop-blur-md relative overflow-hidden group hover:bg-white/10 transition-colors">
+                      <div className="absolute top-0 left-0 w-1 h-full bg-accent" />
+                      <p className="text-sm text-white/50 mb-4 font-light text-left">
+                        "{userContribution?.received}"
+                      </p>
+                      <p className="text-xl md:text-2xl text-white font-medium text-left leading-relaxed font-serif">
+                        "{userContribution?.mine}"
+                      </p>
                     </div>
                   </div>
                 )}
+                <div ref={messagesEndRef} />
               </div>
-              {!hasContributed && (
-                <div className="pt-4 md:pt-8 relative text-center">
-                  <p className="text-[10px] md:text-xs text-white/50 tracking-[0.2em] uppercase mb-4 md:mb-6 font-light">Continue the story</p>
-                  <div className="relative group max-w-xl mx-auto">
-                    <textarea className="w-full h-24 md:h-32 bg-transparent border-none p-0 text-lg md:text-2xl font-light text-white/90 placeholder-white/10 focus:ring-0 focus:outline-none transition-all resize-none text-center font-serif leading-relaxed" placeholder="Type your thought..." value={inputText} onChange={(e) => setInputText(e.target.value)} disabled={isSubmitting} />
-                    <button onClick={handleSend} disabled={!inputText.trim() || isSubmitting} className={`mt-2 md:mt-4 px-6 md:px-8 py-2 text-black bg-white text-[10px] tracking-[0.2em] font-bold rounded-full transition-all duration-300 ${!inputText.trim() || isSubmitting ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0 hover:bg-accent hover:text-white"}`}>
-                      {isSubmitting ? "PUBLISHING" : "PUBLISH"} &rarr;
-                    </button>
+            </div>
+
+            {/* Input Area - Integrated */}
+            {!hasContributed && (
+              <div className="mt-6 pt-6 border-t border-white/10 relative group shrink-0 z-10">
+                <textarea
+                  className="w-full h-32 bg-transparent border-none p-0 text-xl font-light text-white/90 placeholder-white/20 focus:ring-0 focus:outline-none transition-all resize-none leading-relaxed tracking-wide font-serif"
+                  placeholder="接續寫下你的想法..."
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  disabled={isSubmitting}
+                />
+
+                <button
+                  onClick={handleSend}
+                  disabled={!inputText.trim() || isSubmitting}
+                  className={`absolute bottom-0 right-0 px-6 py-2 text-white text-xs tracking-[0.2em] font-medium border border-white/30 rounded-full hover:bg-white hover:text-black transition-all ${
+                    !inputText.trim() || isSubmitting
+                      ? "opacity-0 translate-y-4 pointer-events-none"
+                      : "opacity-100 translate-y-0"
+                  }`}
+                >
+                  {isSubmitting ? "PACKING..." : "CONNECT"}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Bottom/Right Video */}
+        <div
+          ref={rightVideoWrapperRef}
+          className={`absolute md:relative bottom-0 md:bottom-auto w-full md:w-1/2 h-1/2 md:h-full overflow-hidden pointer-events-auto z-20`}
+        >
+          <div
+            ref={rightVideoInnerRef}
+            className="absolute inset-0 transition-none"
+            style={{
+              transform: "scale(1.1) scaleY(-1)",
+              clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            }}
+          >
+            <CrossfadeLoop
+              src="dist/assets/vul.mp4"
+              className="relative w-full h-full overflow-hidden"
+              style={{ filter: "blur(8px)" }}
+            />
+          </div>
+        </div>
+
+        {/* Noise - pointer-events-none */}
+        <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20 z-20">
+          <Noise
+            patternSize={250}
+            patternAlpha={25}
+            patternRefreshInterval={3}
+          />
+        </div>
+      </div>
+
+      {/* Content Container - Z-30 */}
+      <div className="relative z-30 w-full pointer-events-none">
+        {/* Hero Content */}
+        <div
+          ref={heroContentRef}
+          className="h-screen w-full relative flex flex-col box-border"
+        >
+          <div className="contents">
+            <div className="pointer-events-auto absolute top-[8vh] left-[6vw] flex flex-col gap-2 z-20">
+              <img
+                src="/assets/title.svg"
+                alt="服務聲"
+                className="h-10 md:h-14 w-auto brightness-0 invert"
+              />
+              <span className="text-white/80 text-[10px] md:text-[13px] tracking-[0.1em] font-light ml-1">
+                ISS Community Annual Newsletter
+              </span>
+            </div>
+
+            <div className="pointer-events-none absolute top-[50%] -translate-y-[50%] left-0 w-full px-[8vw]">
+              {/* Mobile Layout */}
+              <div className="flex flex-col items-center gap-8 md:hidden pointer-events-auto">
+                <div className="text-4xl font-bold tracking-widest">2025</div>
+                <SemicolonLogo className="h-[80px] w-auto drop-shadow-2xl" />
+                <div className="flex flex-col items-center gap-1">
+                  <span className="text-xl font-light tracking-widest">
+                    分號
+                  </span>
+                  <span className="text-sm tracking-widest opacity-80 uppercase">
+                    semicolon
+                  </span>
+                </div>
+              </div>
+
+              {/* Desktop Layout */}
+              <div className="hidden md:flex items-start justify-between w-full pointer-events-auto">
+                <div className="text-[32px] font-bold tracking-widest leading-none pt-2">
+                  2025
+                </div>
+                <div className="absolute left-1/2 -translate-x-1/2 top-0">
+                  <SemicolonLogo className="h-[100px] w-auto drop-shadow-2xl" />
+                </div>
+                <div className="flex items-start gap-12 ml-auto">
+                  <div className="h-[200px] w-auto">
+                    <p className="text-white/90 text-[13px] tracking-widest [writing-mode:vertical-rl] h-full text-justify leading-relaxed">
+                      Since 2008, the institute has adopted unique educational
+                      practices to embed humanity into the learning
+                      environment...
+                    </p>
+                  </div>
+                  <div className="flex items-baseline gap-4 pt-2">
+                    <span className="text-[24px] font-light tracking-widest">
+                      分號
+                    </span>
+                    <span className="text-[24px] font-light tracking-widest opacity-80">
+                      semicolon
+                    </span>
                   </div>
                 </div>
-              )}
+              </div>
+            </div>
+
+            <div className="absolute bottom-[5vh] left-0 w-full px-[8vw] z-0 pointer-events-auto">
+              <p className="text-[10px] md:text-[12px] text-justify leading-[1.6] text-gray-400 opacity-80 mix-blend-color-dodge select-none line-clamp-4 md:line-clamp-none">
+                {repeatedText}
+              </p>
+            </div>
+
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce opacity-70 z-20 pointer-events-auto">
+              <div className="text-[10px] tracking-[0.2em] uppercase">
+                Scroll
+              </div>
+              <div className="w-px h-8 bg-white" />
             </div>
           </div>
         </div>
-        <div ref={rightVideoWrapperRef} className={`absolute md:relative inset-0 md:inset-auto w-full md:w-1/2 h-full overflow-hidden pointer-events-auto z-10`} onMouseMove={handleMouseMove2} onMouseLeave={handleMouseLeave2}><div ref={rightVideoInnerRef} className="absolute inset-0 transition-none" style={{ transform: "scale(1.1) scaleY(-1)", clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}><CrossfadeLoop src="dist/assets/vul.mp4" className="relative w-full h-full overflow-hidden" style={{ filter: "blur(8px)" }} /></div></div>
-        <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20 z-20"><Noise patternSize={250} patternAlpha={25} patternRefreshInterval={3} /></div>
-      </div>
-      <div className="relative z-30 w-full pointer-events-none">
-        <div ref={heroContentRef} className="h-screen w-full relative flex flex-col box-border"><div className="contents"><div className="pointer-events-auto absolute top-[8vh] left-[6vw] flex flex-col gap-2 z-20"><img src="/assets/title.svg" alt="服務聲" className="h-10 md:h-14 w-auto brightness-0 invert" /><span className="text-white/80 text-[10px] md:text-[13px] tracking-[0.1em] font-light ml-1">ISS Community Annual Newsletter</span></div><div className="pointer-events-none absolute top-[50%] -translate-y-[50%] left-0 w-full px-[8vw]"><div className="hidden md:flex items-start justify-between w-full pointer-events-auto"><div className="text-[32px] font-bold tracking-widest leading-none pt-2">2025</div><div className="absolute left-1/2 -translate-x-1/2 top-0"><SemicolonLogo className="h-[100px] w-auto drop-shadow-2xl" /></div><div className="flex items-start gap-12 ml-auto"><div className="h-[200px] w-auto"><p className="text-white/90 text-[13px] tracking-widest [writing-mode:vertical-rl] h-full text-justify leading-relaxed">Since 2008, the institute...</p></div><div className="flex items-baseline gap-4 pt-2"><span className="text-[24px] font-light tracking-widest">分號</span><span className="text-[24px] font-light tracking-widest opacity-80">semicolon</span></div></div></div></div><div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce opacity-70 z-20 pointer-events-auto"><div className="text-[10px] tracking-[0.2em] uppercase">Scroll</div><div className="w-px h-8 bg-white" /></div></div></div>
-        <div className="min-h-screen flex flex-col md:flex-row"><div className="hidden md:block md:w-1/2 pointer-events-none"></div><div className="w-full md:w-1/2 bg-transparent px-8 py-32 md:py-40 z-30 pointer-events-auto"><div className="max-w-xl w-full text-left mx-auto md:mx-0"><div className="mb-24"><ScrollReveal baseOpacity={0.1} enableBlur={true} baseRotation={3} blurStrength={8} containerClassName="mb-8" textClassName="text-[9px] md:text-[11px] text-gray-300 leading-loose font-light">「分號 ;」。</ScrollReveal><ScrollReveal baseOpacity={0.1} enableBlur={true} baseRotation={3} blurStrength={8} containerClassName="mb-8" textClassName="text-[8px] md:text-[10px] text-gray-400 leading-loose font-light">它用來分隔一個複句中，彼此獨立卻又緊密相關的句子。它讓語氣稍作停留，卻同時暗示：後面還會有更多、還能再說下去。它是一種介於「未完」與「延續」之間的流動。 既獨立，又連結；既分開，又仍在一起。 其實，這也是服科所的樣子。</ScrollReveal><ScrollReveal baseOpacity={0.1} enableBlur={true} baseRotation={8} blurStrength={8} containerClassName="mb-8" textClassName="text-[9px] md:text-[11px] text-gray-300 leading-loose font-light">Services continue; Stories continue; And so do we.</ScrollReveal></div><div className="border-t border-gray-800 pt-10"><p className="text-sm text-gray-500 mb-6 font-light uppercase tracking-widest">編輯的話</p><div className="flex flex-wrap justify-start gap-x-8 gap-y-3 text-sm text-gray-400 font-light"><div><span className="text-white">陳冠宇</span> / 主編 設計</div><div><span className="text-white">胡育慈</span> / 主編 設計</div><div><span className="text-white">邱筠婷</span> / 主編 設計</div></div></div></div></div></div>
+
+        {/* Preface Content */}
+        <div className="min-h-screen flex flex-col md:flex-row">
+          <div className="hidden md:block md:w-1/2 pointer-events-none"></div>
+          <div className="w-full md:w-1/2 bg-transparent px-8 py-32 md:py-40 z-30 pointer-events-auto">
+            <div className="max-w-xl w-full text-left mx-auto md:mx-0">
+              <div className="mb-24">
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={3}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[9px] md:text-[11px] text-gray-300 leading-loose font-light"
+                >
+                  「分號 ;」。
+                </ScrollReveal>
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={3}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[8px] md:text-[10px] text-gray-400 leading-loose font-light"
+                >
+                  它用來分隔一個複句中，彼此獨立卻又緊密相關的句子。
+                  它讓語氣稍作停留，卻同時暗示：後面還會有更多、還能再說下去。
+                  它是一種介於「未完」與「延續」之間的流動。 既獨立，又連結；
+                  既分開，又仍在一起。 其實，這也是服科所的樣子。
+                </ScrollReveal>
+
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={3}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[8px] md:text-[10px] text-gray-400 leading-loose font-light"
+                >
+                  我們來自不同的城市、科系與生命背景，
+                  體驗不同的經歷、擁有不同的能力、帶著不同的故事。
+                  單獨看，每個人都是一個完整、有重量的句子；
+                  然而，在服科這個場域裡，我們相遇—— 並在並列之間產生新的語意。
+                </ScrollReveal>
+
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={3}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[8px] md:text-[10px] text-gray-400 leading-loose font-light"
+                >
+                  當不同的句子彼此靠近，世界就開始變得更完整、更深刻。
+                  《服務聲》第三期以「分號」作為主題，
+                  它傳遞了一種服務科學的精神：
+                  個體之間保持差異，但在關係中創造價值；
+                  片段彼此獨立，但在系統裡形成新的循環。
+                </ScrollReveal>
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={3}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[8px] md:text-[10px] text-gray-400 leading-loose font-light"
+                >
+                  在這本刊物裡，我們邀請你一起走入分號之間。
+                  你會看到學長姐的故事未完待續；
+                  看到策展、創業、職涯的道路仍持續延展； 看到
+                  AI、服務設計、系統思維在新的脈絡中牽引更多連結。
+                  願這本《服務聲》， 成為所有讀者生命中一個小小的分號；
+                  讓你在這裡暫停、呼吸、思考，
+                  但同時，也準備走向下一個更豐富的句子。
+                </ScrollReveal>
+
+                <ScrollReveal
+                  baseOpacity={0.1}
+                  enableBlur={true}
+                  baseRotation={8}
+                  blurStrength={8}
+                  containerClassName="mb-8"
+                  textClassName="text-[9px] md:text-[11px] text-gray-300 leading-loose font-light"
+                >
+                  Services continue; Stories continue; And so do we.
+                </ScrollReveal>
+              </div>
+
+              <div className="border-t border-gray-800 pt-10">
+                <p className="text-sm text-gray-500 mb-6 font-light uppercase tracking-widest">
+                  編輯的話
+                </p>
+
+                <div className="flex flex-wrap justify-start gap-x-8 gap-y-3 text-sm text-gray-400 font-light">
+                  <div>
+                    <span className="text-white">陳冠宇</span> / 主編 設計
+                  </div>
+                  <div>
+                    <span className="text-white">胡育慈</span> / 主編 設計
+                  </div>
+                  <div>
+                    <span className="text-white">邱筠婷</span> / 主編 設計
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Extended Scroll Spacer - Transparent to show video */}
         <div className="h-[450vh] w-full bg-transparent" />
-        <div className="w-full pointer-events-none"><div className="w-full h-2 bg-white opacity-[0.11] mb-10" /><div className="w-full h-2 bg-white opacity-[0.20] mb-8" /><div className="w-full h-3 bg-white opacity-[0.27] mb-7" /><div className="w-full h-4 bg-white opacity-[0.40] mb-5" /><div className="w-full h-5 bg-white opacity-50 mb-4" /><div className="w-full h-6 bg-white opacity-[0.65] mb-3" /><div className="w-full h-8 bg-white opacity-75 mb-2" /><div className="w-full h-32 bg-white" /></div>
+
+        {/* Block Transition */}
+        <div className="w-full pointer-events-none">
+          <div className="w-full h-2 bg-white opacity-[0.11] mb-10" />
+          <div className="w-full h-2 bg-white opacity-[0.20] mb-8" />
+          <div className="w-full h-3 bg-white opacity-[0.27] mb-7" />
+          <div className="w-full h-4 bg-white opacity-[0.40] mb-5" />
+          <div className="w-full h-5 bg-white opacity-50 mb-4" />
+          <div className="w-full h-6 bg-white opacity-[0.65] mb-3" />
+          <div className="w-full h-8 bg-white opacity-75 mb-2" />
+          <div className="w-full h-32 bg-white" />
+        </div>
       </div>
     </div>
   );
