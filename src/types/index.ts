@@ -7,6 +7,9 @@ export interface Chapter {
   tag?: string
   theme?: 'light' | 'dark'
   order: number
+  coverImage?: string
+  preface?: string
+  category?: string
 }
 
 export interface Newsletter {
