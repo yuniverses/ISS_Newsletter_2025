@@ -496,7 +496,7 @@ export default function Cover({ onEnter }: CoverProps) {
             style={{ opacity: 0 }}
           >
             {/* Background Gradient Blob */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-purple-900/40 via-blue-900/30 to-transparent rounded-full blur-[60px] pointer-events-none opacity-50" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-purple-900/40 via-blue-900/30 to-transparent rounded-full blur-[60px] pointer-events-none opacity-0" />
 
             {/* Content Container */}
             <div className="relative z-10 flex-1 flex flex-col h-full justify-between">
