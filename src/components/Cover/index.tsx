@@ -294,11 +294,28 @@ export default function Cover({ onEnter }: CoverProps) {
             scrub: 1,
             onUpdate: (self) => {
               scrollProgressRef.current = self.progress;
+
+              // Calculate right video opacity based on scroll distance
+              // Hide right video after scrolling 120vh
+              const scrollY = window.scrollY;
+              const windowHeight = window.innerHeight;
+              const hideThreshold = windowHeight * 1.2; // 120vh
+
+              let opacity = 1;
+              if (scrollY >= hideThreshold) {
+                opacity = 0;
+              } else {
+                opacity = 1 - (scrollY / hideThreshold);
+              }
+
+              // Apply opacity using GSAP for smooth control
+              if (rightVideoWrapperRef.current) {
+                gsap.set(rightVideoWrapperRef.current, { opacity });
+              }
             },
           },
         })
-        .to(heroContentRef.current, { opacity: 0, y: -50, duration: 0.1 }, 0)
-        .to(rightVideoWrapperRef.current, { opacity: 0, duration: 0.1 }, 0);
+        .to(heroContentRef.current, { opacity: 0, y: -50, duration: 0.1 }, 0);
     }, container);
 
     const tick = () => {
