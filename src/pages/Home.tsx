@@ -1,28 +1,66 @@
 import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import Cover from '../components/Cover'
 import TableOfContents from '../components/TableOfContents'
 import ChapterReader from '../components/ChapterReader'
 import ProgressNav from '../components/ProgressNav'
 import { Newsletter } from '../types'
+import chaptersConfig from '../config/chapters.json'
 
 interface HomeProps {
   isIntroComplete?: boolean
 }
 
 export default function Home({ isIntroComplete = true }: HomeProps) {
+  const { chapterId } = useParams()
+  const navigate = useNavigate()
   const [newsletter, setNewsletter] = useState<Newsletter | null>(null)
   const [currentChapterId, setCurrentChapterId] = useState<string>('')
+  
+  // Capture the initial chapter ID on mount only.
+  // This prevents the reader from auto-scrolling when the URL updates during normal scrolling.
+  const [initialStartChapterId] = useState(chapterId)
 
+  
   // Load newsletter configuration
   useEffect(() => {
-    fetch('/src/config/chapters.json')
-      .then((res) => res.json())
-      .then((data: Newsletter) => {
-        setNewsletter(data)
-        setCurrentChapterId(data.chapters[0]?.id || '')
-      })
-      .catch((error) => console.error('Failed to load newsletter config:', error))
-  }, [])
+    // Cast the imported json to Newsletter type
+    const data = chaptersConfig as Newsletter
+    setNewsletter(data)
+    
+    // Initialize current chapter from URL
+    if (chapterId) {
+      // Verify if chapter exists
+      const exists = data.chapters.some(c => c.id === chapterId)
+      if (exists) {
+        setCurrentChapterId(chapterId)
+      } else {
+        // Invalid chapter ID, redirect to first or home
+        navigate(`/chapters/${data.chapters[0].id}`, { replace: true })
+      }
+    } 
+    // ELSE: Do nothing! Let the user stay on "Home" (Cover) state.
+    // The ProgressNav or other components might need to handle empty currentChapterId gracefully.
+  }, [chapterId, navigate])
+
+  // Handle chapter change from UI (scroll or click)
+  const handleChapterChange = (newChapterId: string) => {
+    setCurrentChapterId(newChapterId)
+    
+    // If no chapter is active (e.g. at cover), revert to root URL
+    if (!newChapterId) {
+        if (chapterId) { // Only if we currently have a chapter param
+            navigate('/', { replace: true })
+        }
+        return
+    }
+
+    // Update URL without page reload
+    if (newChapterId !== chapterId) {
+       navigate(`/chapters/${newChapterId}`, { replace: true })
+    }
+  }
 
   if (!newsletter) {
     return (
@@ -32,29 +70,49 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
     )
   }
 
+  // Find current chapter info for SEO
+  const currentChapter = newsletter.chapters.find(c => c.id === currentChapterId)
+  const pageTitle = currentChapter ? `${currentChapter.title} | ${newsletter.title}` : newsletter.title
+  const pageDescription = currentChapter?.description || `服務科學研究所 2025 電子期刊 - ${currentChapter?.title}`
+
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <link rel="canonical" href={window.location.href} />
+        {/* Open Graph tags */}
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:type" content="article" />
+      </Helmet>
+
       {/* Cover Page */}
       <Cover startAnimation={isIntroComplete} />
 
       {/* Table of Contents */}
       <TableOfContents
         chapters={newsletter.chapters}
-        onChapterClick={setCurrentChapterId}
+        onChapterClick={(id) => {
+          navigate(`/chapters/${id}`)
+        }}
       />
 
       {/* Progress Navigation - appears after cover */}
       <ProgressNav
         chapters={newsletter.chapters}
         currentChapterId={currentChapterId}
-        onChapterClick={setCurrentChapterId}
+        onChapterClick={(id) => {
+             navigate(`/chapters/${id}`)
+        }}
       />
 
       {/* Chapter Reader */}
       <div className="bg-white">
         <ChapterReader
           newsletter={newsletter}
-          onChapterChange={setCurrentChapterId}
+          onChapterChange={handleChapterChange}
+          initialChapterId={initialStartChapterId}
         />
       </div>
     </div>

@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { Chapter } from '@/types'
 import { cn } from '@/utils/cn'
+import { Link, Check } from 'lucide-react'
 
 interface ChapterSectionProps {
   chapter: Chapter
@@ -13,6 +15,14 @@ export default function ChapterSection({
   isActive,
 }: ChapterSectionProps) {
   const chapterNumber = String(chapter.order).padStart(2, '0')
+  const [copied, setCopied] = useState(false)
+
+  const handleCopyLink = () => {
+    const url = `${window.location.origin}/chapters/${chapter.id}`
+    navigator.clipboard.writeText(url)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   return (
     <section
@@ -33,10 +43,25 @@ export default function ChapterSection({
           </div>
         </div>
 
-        {/* Chapter Title */}
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-light mb-4 max-w-3xl">
-          {chapter.title}
-        </h1>
+        {/* Chapter Title with Link Button */}
+        <div className="flex items-center gap-4 mb-4 max-w-3xl group">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-light">
+            {chapter.title}
+          </h1>
+          <button
+            onClick={handleCopyLink}
+            className={cn(
+              "p-2 rounded-full transition-all duration-200",
+              "text-gray-400 hover:text-black hover:bg-gray-100",
+              "opacity-0 group-hover:opacity-100 focus:opacity-100", // Show on hover/focus
+              copied && "opacity-100 text-green-600 hover:text-green-700 bg-green-50"
+            )}
+            title="複製章節連結"
+            aria-label="複製章節連結"
+          >
+            {copied ? <Check size={20} /> : <Link size={20} />}
+          </button>
+        </div>
 
         {/* Chapter Description */}
         {chapter.description && (

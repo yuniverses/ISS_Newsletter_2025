@@ -6,6 +6,8 @@ import { Chapter } from '../../types'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const lerp = (start: number, end: number, t: number) => start * (1 - t) + end * t
+
 interface TableOfContentsProps {
   chapters: Chapter[]
   onChapterClick: (chapterId: string) => void
@@ -33,6 +35,11 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
   const bodiesRef = useRef<{ [key: number]: Matter.Body }>({})
   const wallsRef = useRef<Matter.Body[]>([])
   
+  // Scroll Physics Refs
+  const isDragging = useRef(false)
+  const scrollY = useRef(0)
+  const targetScrollY = useRef(0)
+
   // Track which particle to spawn next
   const nextParticleIndex = useRef(0)
   
@@ -107,8 +114,14 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
     window.addEventListener('resize', updateBoundaries)
 
     // 3. Render Loop
-    const ticker = gsap.ticker.add((time, deltaTime, frame) => {
-      Matter.Engine.update(engine, 1000 / 60)
+    const ticker = gsap.ticker.add(() => {
+      // Update Physics Engine
+      if (engineRef.current) {
+        Matter.Engine.update(engineRef.current, 1000 / 60)
+      }
+
+      if (!isDragging.current) {
+        scrollY.current = lerp(scrollY.current, targetScrollY.current, 0.1)
 
       // Sync DOM elements
       Object.keys(bodiesRef.current).forEach((key) => {
@@ -127,6 +140,7 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
           el.style.display = 'block'
         }
       })
+      } // End if
     })
 
     // 4. GSAP ScrollTrigger Logic

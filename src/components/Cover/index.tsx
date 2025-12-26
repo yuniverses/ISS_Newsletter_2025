@@ -106,6 +106,7 @@ const CrossfadeLoop = ({
       <video
         ref={video1Ref}
         src={src}
+        autoPlay
         muted
         playsInline
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${
@@ -115,6 +116,7 @@ const CrossfadeLoop = ({
       <video
         ref={video2Ref}
         src={src}
+        autoPlay
         muted
         playsInline
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${
@@ -374,7 +376,7 @@ export default function Cover({ onEnter }: CoverProps) {
         const currentInsetY = lerp(15, targetInsetY, easeP);
         const currentInsetX = lerp(15, targetInsetX, easeP);
         const currentRound = lerp(50, 5, easeP);
-        const currentX = lerp(0, 50, easeP);
+        // const currentX = lerp(0, 50, easeP);
         const currentScale = lerp(0.8, 1.0, easeP);
 
         el.style.clipPath = `inset(${currentInsetY}% ${currentInsetX}% ${currentInsetY}% ${currentInsetX}% round ${currentRound}%)`;
@@ -464,7 +466,7 @@ export default function Cover({ onEnter }: CoverProps) {
         <div
           ref={leftVideoWrapperRef}
           className={`absolute md:relative inset-0 md:inset-auto w-full md:w-1/2 h-full overflow-hidden pointer-events-auto z-10`}
-          onClick={() => isCardReady && setIsCardOpen(!isCardOpen)}
+          onClick={() => setIsCardOpen(!isCardOpen)}
         >
           <div
             ref={leftVideoInnerRef}
@@ -475,7 +477,7 @@ export default function Cover({ onEnter }: CoverProps) {
             }}
           >
             <CrossfadeLoop
-              src="dist/assets/vul.mp4"
+              src="/assets/vul.mp4"
               className="relative w-full h-full overflow-hidden"
               style={{
                 filter: isCardOpen
@@ -591,7 +593,7 @@ export default function Cover({ onEnter }: CoverProps) {
             }}
           >
             <CrossfadeLoop
-              src="dist/assets/vul.mp4"
+              src="/assets/vul.mp4"
               className="relative w-full h-full overflow-hidden"
               style={{ filter: "blur(8px)" }}
             />

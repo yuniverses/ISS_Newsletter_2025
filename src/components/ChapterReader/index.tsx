@@ -8,11 +8,13 @@ import ChapterSection from './ChapterSection'
 interface ChapterReaderProps {
   newsletter: Newsletter
   onChapterChange: (chapterId: string) => void
+  initialChapterId?: string
 }
 
 export default function ChapterReader({
   newsletter,
   onChapterChange,
+  initialChapterId
 }: ChapterReaderProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [visibleChapterIds, setVisibleChapterIds] = useState<string[]>([])
@@ -26,17 +28,19 @@ export default function ChapterReader({
 
   // Notify parent of chapter change
   useEffect(() => {
-    if (currentChapterId) {
-      onChapterChange(currentChapterId)
-    }
+    onChapterChange(currentChapterId)
   }, [currentChapterId, onChapterChange])
 
   // Load next chapter
   const loadNextChapter = useCallback(async () => {
-    const currentIndex = visibleChapterIds.length
-    if (currentIndex >= newsletter.chapters.length) return
+    // Find the index of the last visible chapter in the full list
+    const lastVisibleId = visibleChapterIds[visibleChapterIds.length - 1];
+    const lastVisibleIndex = newsletter.chapters.findIndex(c => c.id === lastVisibleId);
+    
+    // If last visible is the actual last chapter, stop.
+    if (lastVisibleIndex === -1 || lastVisibleIndex >= newsletter.chapters.length - 1) return
 
-    const nextChapter = newsletter.chapters[currentIndex]
+    const nextChapter = newsletter.chapters[lastVisibleIndex + 1]
 
     // Add to visible chapters
     setVisibleChapterIds((prev) => [...prev, nextChapter.id])
@@ -45,32 +49,79 @@ export default function ChapterReader({
     await loadChapter(nextChapter.id, nextChapter.htmlFile)
 
     // Preload the next chapter if available
-    if (currentIndex + 1 < newsletter.chapters.length) {
-      const afterNext = newsletter.chapters[currentIndex + 1]
+    if (lastVisibleIndex + 2 < newsletter.chapters.length) {
+      const afterNext = newsletter.chapters[lastVisibleIndex + 2]
       preloadChapter(afterNext.id, afterNext.htmlFile)
     }
   }, [visibleChapterIds, newsletter.chapters, loadChapter, preloadChapter])
 
-  // Initialize with first chapter
+  // Initialize with initialChapterId or first chapter
   useEffect(() => {
+    // Only initialize if we haven't loaded anything yet
     if (visibleChapterIds.length === 0 && newsletter.chapters.length > 0) {
-      const firstChapter = newsletter.chapters[0]
-      setVisibleChapterIds([firstChapter.id])
-      loadChapter(firstChapter.id, firstChapter.htmlFile)
+      let startChapterIndex = 0;
+      
+      if (initialChapterId) {
+        const index = newsletter.chapters.findIndex(c => c.id === initialChapterId);
+        if (index !== -1) startChapterIndex = index;
+      }
 
-      // Preload second chapter
-      if (newsletter.chapters.length > 1) {
-        const secondChapter = newsletter.chapters[1]
-        preloadChapter(secondChapter.id, secondChapter.htmlFile)
+      // Include all chapters from 0 up to startChapterIndex
+      const initialIds = newsletter.chapters.slice(0, startChapterIndex + 1).map(c => c.id);
+      setVisibleChapterIds(initialIds)
+
+      // Load content for all initial chapters
+      // We prioritize the target chapter, then load others
+      const targetChapter = newsletter.chapters[startChapterIndex];
+      loadChapter(targetChapter.id, targetChapter.htmlFile);
+
+      // Load previous chapters in background
+      initialIds.slice(0, startChapterIndex).forEach(id => {
+         const ch = newsletter.chapters.find(c => c.id === id);
+         if (ch) loadChapter(ch.id, ch.htmlFile);
+      });
+
+      // Preload next chapter relative to the start chapter
+      if (startChapterIndex + 1 < newsletter.chapters.length) {
+        const nextChapter = newsletter.chapters[startChapterIndex + 1]
+        preloadChapter(nextChapter.id, nextChapter.htmlFile)
       }
     }
-  }, [newsletter.chapters, visibleChapterIds.length, loadChapter, preloadChapter])
+  }, [newsletter.chapters, initialChapterId, visibleChapterIds.length, loadChapter, preloadChapter])
+
+  // Auto-scroll to initial chapter when content loads
+  const hasScrolledToInitial = useRef(false)
+  
+  useEffect(() => {
+    if (initialChapterId && !hasScrolledToInitial.current) {
+        // Check if the chapter element exists in DOM
+        const element = document.getElementById(initialChapterId)
+        if (element) {
+            // Wait a small tick for layout to stabilize (e.g. images or content rendering)
+            // But content might be still "Loading..." if preloading is slow.
+            // Check if content is loaded via getChapter?
+            const loaded = getChapter(initialChapterId)
+            
+            if (loaded?.content) {
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: 'auto', block: 'start' }) // Use 'auto' for instant jump, 'smooth' for animation
+                    hasScrolledToInitial.current = true
+                }, 100)
+            }
+        }
+    }
+  }, [initialChapterId, visibleChapterIds, getChapter])
 
   // Set up infinite scroll
+  // Determine if we have more chapters to load
+  const lastVisibleId = visibleChapterIds[visibleChapterIds.length - 1];
+  const lastVisibleIndex = newsletter.chapters.findIndex(c => c.id === lastVisibleId);
+  const hasMore = lastVisibleIndex !== -1 && lastVisibleIndex < newsletter.chapters.length - 1;
+
   const sentinelRef = useInfiniteScroll({
     onLoadNext: loadNextChapter,
     threshold: 200,
-    enabled: visibleChapterIds.length < newsletter.chapters.length,
+    enabled: hasMore,
   })
 
   return (
@@ -92,7 +143,7 @@ export default function ChapterReader({
       })}
 
       {/* Sentinel element for infinite scroll */}
-      {visibleChapterIds.length < newsletter.chapters.length && (
+      {hasMore && (
         <div ref={sentinelRef} className="h-4" />
       )}
     </div>

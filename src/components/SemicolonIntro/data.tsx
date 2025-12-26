@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 export type ContentType = 'horizontal' | 'vertical' | 'code';
 
@@ -20,7 +20,7 @@ const S = ({ c }: { c: string }) => <span className="text-green-400">{c}</span>;
 const V = ({ c }: { c: string }) => <span className="text-blue-300">{c}</span>; // Variable/Type
 const O = ({ c }: { c: string }) => <span className="text-white/60">{c}</span>; // Operator/Punctuation
 const N = ({ c }: { c: string }) => <span className="text-orange-300">{c}</span>; // Number
-const C = ({ c }: { c: string }) => <span className="text-gray-500 italic">{c}</span>; // Comment
+// const C = ({ c }: { c: string }) => <span className="text-gray-500 italic">{c}</span>; // Comment
 
 const mono = `font-mono text-white ${BASE_SIZE}`;
 const serif = `font-serif text-white ${BASE_SIZE}`;
