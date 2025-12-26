@@ -73,18 +73,38 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
   // Find current chapter info for SEO
   const currentChapter = newsletter.chapters.find(c => c.id === currentChapterId)
   const pageTitle = currentChapter ? `${currentChapter.title} | ${newsletter.title}` : newsletter.title
-  const pageDescription = currentChapter?.description || `服務科學研究所 2025 電子期刊 - ${currentChapter?.title}`
+  const pageDescription = currentChapter?.description || `服務科學研究所 2025 電子期刊 - ${currentChapter?.title || ''}`
+  const canonicalUrl = currentChapterId
+    ? `https://iss-newsletter-2025.web.app/chapters/${currentChapterId}`
+    : 'https://iss-newsletter-2025.web.app/'
+  const ogImage = 'https://iss-newsletter-2025.web.app/assets/og-image.jpg'
+  const authors = currentChapter?.authors?.join(', ') || 'ISS 服務科學研究所'
 
   return (
     <div className="min-h-screen">
       <Helmet>
+        {/* Primary Meta Tags */}
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <link rel="canonical" href={window.location.href} />
-        {/* Open Graph tags */}
+        <meta name="author" content={authors} />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href={canonicalUrl} />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
-        <meta property="og:type" content="article" />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content={newsletter.title} />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalUrl} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={ogImage} />
       </Helmet>
 
       {/* Cover Page */}

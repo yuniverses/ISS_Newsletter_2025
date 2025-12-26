@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OG Image Generator - 服務聲 2025</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f0f0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .instructions {
+      max-width: 1200px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .instructions h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .instructions p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .instructions code {
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+
+    #og-image {
+      width: 1200px;
+      height: 630px;
+      background: linear-gradient(135deg, #0A0A0A 0%, #1a1a1a 100%);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    .gradient-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+    }
+
+    .semicolon-bg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 280px;
+      font-family: serif;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 0.08);
+      line-height: 1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 80px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 72px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
+      font-size: 28px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 6px;
+      margin-bottom: 40px;
+    }
+
+    .tagline {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 3px;
+      margin-bottom: 80px;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 2px;
+    }
+
+    .decorative-circle-1 {
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(99, 102, 241, 0.08);
+    }
+
+    .decorative-circle-2 {
+      position: absolute;
+      bottom: 100px;
+      right: 100px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.08);
+    }
+
+    .button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: #6366F1;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .button:hover {
+      background: #4F46E5;
+    }
+  </style>
+</head>
+<body>
+  <div class="instructions">
+    <h2>📸 OG 圖片生成器</h2>
+    <p><strong>使用方法：</strong></p>
+    <ol>
+      <li>按 <code>Cmd+Shift+4</code> (Mac) 或使用截圖工具</li>
+      <li>框選下方的 1200x630 區域（整個黑色卡片）</li>
+      <li>將截圖保存為 <code>og-image.jpg</code></li>
+      <li>將文件複製到 <code>public/assets/og-image.jpg</code></li>
+    </ol>
+    <p style="margin-top: 12px;"><strong>或者：</strong>使用設計工具（Figma, Photoshop）創建 1200x630px 的自定義圖片，包含品牌元素和視覺風格。</p>
+    <button class="button" onclick="downloadAsImage()">⬇️ 下載為圖片 (需要 html2canvas)</button>
+  </div>
+
+  <div id="og-image">
+    <div class="gradient-overlay"></div>
+    <div class="semicolon-bg">;</div>
+    <div class="decorative-circle-1"></div>
+    <div class="decorative-circle-2"></div>
+
+    <div class="content">
+      <div class="title">服務聲 2025</div>
+      <div class="subtitle">ISS SOUNDS QUARTERLY</div>
+      <div class="tagline">延續你的想法，邀請你一起創作</div>
+    </div>
+
+    <div class="footer">服務科學研究所年度電子期刊</div>
+  </div>
+
+  <script>
+    function downloadAsImage() {
+      alert('此功能需要安裝 html2canvas 庫。\n\n推薦方法：\n1. 使用系統截圖工具 (Cmd+Shift+4)\n2. 或在 Figma/Photoshop 中創建專業設計');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+# robots.txt for ISS Newsletter 2025
+# 告訴搜索引擎如何索引我們的網站
+
+User-agent: *
+Allow: /
+Allow: /chapters/
+
+# 禁止索引開發/管理頁面
+Disallow: /admin
+Disallow: /layouts-demo
+
+# Sitemap 位置
+Sitemap: https://iss-newsletter-2025.web.app/sitemap.xml

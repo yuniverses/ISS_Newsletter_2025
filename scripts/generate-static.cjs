@@ -19,19 +19,79 @@ if (!fs.existsSync(indexTemplatePath)) {
 const indexTemplate = fs.readFileSync(indexTemplatePath, 'utf-8');
 
 // 3. Helper to inject SEO tags
-function injectSEO(html, title, description, content) {
+function injectSEO(html, chapter, config, content) {
   let newHtml = html;
-  
+
+  const title = `${chapter.title} | ${config.title}`;
+  const description = chapter.description || `${config.title} - ${chapter.title}`;
+  const url = `https://iss-newsletter-2025.web.app/chapters/${chapter.id}`;
+  const image = 'https://iss-newsletter-2025.web.app/assets/og-image.jpg';
+  const authors = chapter.authors && chapter.authors.length > 0 ? chapter.authors.join(', ') : 'ISS 服務科學研究所';
+
   // Replace Title
   newHtml = newHtml.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
-  
-  // Replace or Add Description
-  const descTag = `<meta name="description" content="${description}">`;
-  if (newHtml.includes('<meta name="description"')) {
-      newHtml = newHtml.replace(/<meta name="description" content=".*?">/, descTag);
-  } else {
-      newHtml = newHtml.replace('</head>', `${descTag}\n</head>`);
-  }
+
+  // Escape quotes for meta content
+  const escapeQuotes = (str) => str.replace(/"/g, '&quot;');
+  const safeDesc = escapeQuotes(description);
+  const safeTitle = escapeQuotes(title);
+
+  // Build all SEO meta tags
+  const seoTags = `
+    <!-- Primary Meta Tags -->
+    <meta name="description" content="${safeDesc}">
+    <meta name="author" content="${escapeQuotes(authors)}">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="${url}">
+    <meta property="og:title" content="${safeTitle}">
+    <meta property="og:description" content="${safeDesc}">
+    <meta property="og:image" content="${image}">
+    <meta property="og:site_name" content="${escapeQuotes(config.title)}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="${url}">
+    <meta name="twitter:title" content="${safeTitle}">
+    <meta name="twitter:description" content="${safeDesc}">
+    <meta name="twitter:image" content="${image}">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="${url}">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "${escapeQuotes(chapter.title)}",
+      "description": "${safeDesc}",
+      "url": "${url}",
+      "image": "${image}",
+      "datePublished": "2025-01-01",
+      "author": {
+        "@type": ${chapter.authors && chapter.authors.length > 0 ? '"Person"' : '"Organization"'},
+        "name": "${escapeQuotes(authors)}"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "${escapeQuotes(config.title)}",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://iss-newsletter-2025.web.app/assets/semicolon-logo.png"
+        }
+      }
+    }
+    </script>
+  `;
+
+  // Remove existing meta description if present
+  newHtml = newHtml.replace(/<meta name="description" content=".*?">/g, '');
+
+  // Inject all SEO tags before </head>
+  newHtml = newHtml.replace('</head>', `${seoTags}\n  </head>`);
 
   // Inject Content into a hidden div or noscript for crawlers
   // This ensures the content is physically present in the file
@@ -45,7 +105,7 @@ function injectSEO(html, title, description, content) {
     </div>
   </noscript>
   `;
-  
+
   // Inject before body end
   newHtml = newHtml.replace('</body>', `${seoContent}\n</body>`);
 
@@ -80,10 +140,7 @@ chapters.forEach(chapter => {
       console.warn(`Error reading content for ${chapter.id}:`, e);
   }
 
-  const pageTitle = `${chapter.title} | ${config.title}`;
-  const pageDesc = chapter.description || `${config.title} - ${chapter.title}`;
-  
-  const finalHtml = injectSEO(indexTemplate, pageTitle, pageDesc, content);
+  const finalHtml = injectSEO(indexTemplate, chapter, config, content);
   
   fs.writeFileSync(path.join(chapterDir, 'index.html'), finalHtml);
   console.log(`Generated: chapters/${chapter.id}/index.html`);
