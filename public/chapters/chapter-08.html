@@ -1,4 +1,201 @@
-<div class="chapter-content">
-  <h2>Chapter 0${i}</h2>
-  <p>這是章節內容的佔位符。請編輯此 HTML 文件以添加你的實際內容。</p>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap');
+
+.ch8-container {
+    font-family: 'Shippori Mincho', 'Noto Serif TC', serif;
+    color: #1a1a1a;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #ffffff;
+}
+
+.ch8-sans {
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.text-justify-palt {
+    text-align: justify;
+    font-feature-settings: "palt";
+}
+
+/* Custom scrollbar hide for clean look */
+.ch8-container::-webkit-scrollbar {
+    display: none;
+}
+</style>
+
+<div class="ch8-container not-prose pb-32">
+    
+    <!-- Intro Section: Overlapping Grid -->
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 py-12 md:py-24 relative">
+        <!-- Big Number Background -->
+        <div class="absolute top-0 right-0 md:right-20 -z-10 opacity-[0.03] select-none pointer-events-none">
+            <span class="text-[200px] md:text-[500px] font-bold leading-none font-serif">08</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            <!-- Vertical Title (Japanese Style - Hidden on Mobile) -->
+            <div class="col-span-2 hidden lg:flex h-[600px] justify-center items-start pt-20">
+                <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900 border-r border-gray-900 pr-8 h-full">
+                    設計就是政治
+                </h2>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-12 md:space-y-16">
+                <!-- Mobile Title (Visible only on Mobile) -->
+                <div class="lg:hidden mb-8 border-b border-black pb-4">
+                     <h2 class="text-3xl font-bold tracking-widest text-gray-900 mb-2">設計就是政治</h2>
+                     <p class="text-sm text-gray-500">專訪 陳慕天</p>
+                </div>
+
+                <!-- Lead Block -->
+                <div class="space-y-8">
+                     <p class="text-xl md:text-2xl font-medium leading-loose tracking-wide border-t border-b border-black py-8 md:py-12">
+                        從美感教科書創辦人陳慕天身上，<br class="hidden md:block">我們學到關於改變體制的5個震撼智慧。
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-justify-palt text-gray-800 font-light">
+                        <p>
+                            提到「美感細胞」計畫，多數人的第一印象，是那群致力於讓台灣教科書變得更美的團隊。然而，這只是故事的開端。當我們深入探究創辦人陳慕天的心路歷程，會發現這場看似美學的革命，其背後真正的課題，遠比封面設計來得更複雜、更深刻。
+                        </p>
+                        <p>
+                            這不僅僅是關於美感，更是關於設計、系統性變革與有效溝通的驚人真相。本文將從與陳慕天的對談中，提煉出五個最具衝擊力的觀點，這些智慧不僅適用於設計領域，更能為任何試圖在複雜體制中推動改變的人，帶來深刻的啟發。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quote Block (Design is Politics) -->
+                <div class="relative py-16 md:py-20">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-12 md:h-20 bg-black"></div>
+                    <h3 class="text-3xl md:text-6xl font-black text-center leading-tight tracking-tight px-4">
+                        「設計不是藝術，<br>
+                        而是無法迴避的『政治』」
+                    </h3>
+                    <p class="text-center mt-6 text-xs md:text-sm tracking-[0.3em] uppercase ch8-sans text-gray-500">
+                        Design is Politics
+                    </p>
+                    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-12 md:h-20 bg-black"></div>
+                </div>
+
+                <!-- Section 2: Kimochi -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+                    <div class="md:col-span-7 space-y-6">
+                        <h4 class="text-2xl font-bold mb-6 flex items-center gap-4">
+                            <span class="w-3 h-3 bg-black rounded-full"></span>
+                            合作的秘訣是處理「心情」
+                        </h4>
+                        <p class="text-lg leading-loose text-justify-palt text-gray-800">
+                            在與各方利害關係人周旋的過程中，陳慕天發展出一套應對人際關係的務實心法。理性層面，他將人的需求拆解為五點：給他喜歡的、避開他討厭的、拿走他不在乎的、合作他擅長的、不合作他不擅長的。
+                        </p>
+                        <p class="text-lg leading-loose text-justify-palt text-gray-800">
+                             然而，在這套理性框架之上，更關鍵的是感性層面的連結——建立真正的信任。他深刻體會到，許多看似複雜的問題，本質上都是<span class="font-bold border-b-2 border-yellow-300 mx-1">「Kimochi問題」</span>（心情問題）。與其陷入「誰對誰錯」的無盡爭辯，不如先處理好關係人的情緒。
+                        </p>
+                    </div>
+                    <div class="md:col-span-5 bg-gray-50 p-8 md:p-12 relative">
+                        <div class="absolute top-4 left-4 text-6xl text-gray-200 font-serif">"</div>
+                        <p class="relative z-10 text-xl font-medium leading-relaxed italic text-gray-700">
+                            因此，他非常願意「道歉」。道歉不是認輸，而是一種高效的工具。先解決「心」的問題，才能解決「事」的問題。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Decoration (Date/Info) -->
+             <div class="col-span-2 hidden lg:flex flex-col justify-between h-[600px] pt-20 items-end">
+                <div class="vertical-text text-sm tracking-widest text-gray-400">
+                    ISS NEWSLETTER 2025
+                </div>
+                 <div class="vertical-text text-sm tracking-widest text-gray-400 mt-20">
+                    TAIWAN DESIGN EXPO
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Width Visual: Be a Sound -->
+    <div class="w-full relative h-[60vh] md:h-[80vh] min-h-[400px] overflow-hidden my-16 md:my-24 flex items-center justify-center bg-black group">
+        <img src="/assets/rectangle-161124696.png" class="absolute inset-0 w-full h-full object-cover opacity-60 transition-transform duration-[20s] group-hover:scale-110 ease-linear" alt="Background">
+        <div class="relative z-10 text-center text-white mix-blend-difference px-4">
+            <h2 class="text-5xl md:text-9xl font-bold tracking-tighter mb-4 ch8-sans">
+                Be a sound,
+            </h2>
+            <h2 class="text-5xl md:text-9xl font-bold tracking-tighter italic font-serif text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+                not an echo.
+            </h2>
+            <p class="mt-8 md:mt-12 text-base md:text-xl tracking-widest font-light opacity-80 max-w-2xl mx-auto leading-loose">
+                成為聲音，而非回音。<br>
+                你要成為發出自己聲響的那個人，而不是把大家的聲音重新做回應。
+            </p>
+        </div>
+    </div>
+
+    <!-- Works Gallery (Magazine Style) -->
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mb-24 md:mb-32">
+        <div class="flex flex-col md:flex-row items-start md:items-end gap-2 md:gap-4 mb-8 md:mb-12 border-b border-gray-200 pb-4">
+            <h3 class="text-3xl font-bold">Works</h3>
+            <span class="text-gray-500 pb-1">教育設計作品 - 美感細胞_教科書再造計畫</span>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <div class="md:col-span-7 relative group cursor-pointer">
+                <div class="overflow-hidden shadow-xl">
+                     <img src="/assets/rectangle-161124698.png" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" alt="Work 1">
+                </div>
+                <div class="absolute -bottom-6 -right-6 bg-black text-white px-6 py-4 text-sm tracking-widest hidden md:block z-10">
+                    FIGURE 01
+                </div>
+            </div>
+            <div class="md:col-span-5 flex flex-col justify-end space-y-8 mt-8 md:mt-0">
+                 <div class="overflow-hidden relative group cursor-pointer shadow-xl">
+                     <img src="/assets/rectangle-161124699.png" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" alt="Work 2">
+                </div>
+                 <p class="text-sm text-gray-500 leading-relaxed text-justify">
+                    美感細胞團隊透過重新設計教科書，試圖在體制內注入美的基因，讓孩子從小耳濡目染，培養對美的感知。
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Section (Clean & Structured) -->
+    <div class="bg-[#f4f4f4] py-16 md:py-24">
+        <div class="max-w-[1000px] mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+                <div class="md:col-span-5 relative order-first md:order-first">
+                    <div class="w-full aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 ease-in-out shadow-2xl">
+                        <img src="/assets/rectangle-161124697.png" class="w-full h-full object-cover" alt="Profile">
+                    </div>
+                    <!-- Decorative border -->
+                    <div class="absolute top-4 -left-4 w-full h-full border-2 border-black -z-10 hidden md:block"></div>
+                </div>
+                
+                <div class="md:col-span-7 space-y-6 md:space-y-8">
+                    <div>
+                        <h3 class="text-3xl md:text-4xl font-bold mb-2">陳慕天</h3>
+                        <p class="text-xs md:text-sm tracking-widest text-gray-500 uppercase">Founder of Aestheticell</p>
+                    </div>
+                    
+                    <p class="text-base md:text-lg leading-loose text-justify text-gray-700">
+                        畢業於交大機械系，憑藉理性的工程邏輯發起「美感細胞」教科書計劃。他強調「設計即政治」，視設計為解決結構性問題的解方。近期致力於「啟發性」策展，期許自己「做聲音而非回音」。
+                    </p>
+
+                    <div class="pt-8 border-t border-gray-300 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0">
+                        <div class="text-xs tracking-widest space-y-1 text-gray-500">
+                            <p>EDITOR / DESIGN</p>
+                            <p class="text-black font-medium">陳冠宇, 胡育慈</p>
+                        </div>
+                        <div class="text-xl md:text-2xl font-serif font-bold">
+                            2025.11
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
