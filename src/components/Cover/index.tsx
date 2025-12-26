@@ -33,7 +33,8 @@ const generatePolygonPath = (
   radius: number = 45
 ): string => {
   sides = Math.max(3, sides);
-  if (sides >= 50) return `circle(${radius}% at 50% 50%)`;
+  // Remove circle switch to maintain aspect ratio (ellipse behavior) consistent with polygon
+  // if (sides >= 50) return `circle(${radius}% at 50% 50%)`;
   const points: string[] = [];
   for (let i = 0; i < sides; i++) {
     const angle =
@@ -504,7 +505,7 @@ export default function Cover({ onEnter }: CoverProps) {
               className="relative w-full h-full overflow-hidden"
               style={{
                 filter: isCardOpen
-                  ? "blur(12px) brightness(0.4)"
+                  ? "blur(12px) "
                   : "blur(8px)",
               }}
             />
