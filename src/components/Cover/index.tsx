@@ -477,7 +477,7 @@ export default function Cover({ onEnter }: CoverProps) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full bg-black text-white font-sans"
+      className="relative w-full max-w-[100vw] overflow-x-hidden bg-black text-white font-sans"
     >
       {/* Sticky Wrapper - Z-0 */}
       <div
