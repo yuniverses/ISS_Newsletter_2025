@@ -1,4 +1,86 @@
-<div class="chapter-content">
-  <h2>Chapter 0${i}</h2>
-  <p>這是章節內容的佔位符。請編輯此 HTML 文件以添加你的實際內容。</p>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap');
+
+.ch8-container {
+    font-family: 'Shippori Mincho', 'Noto Serif TC', serif;
+    color: #1a1a1a;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #ffffff;
+}
+
+.ch8-sans {
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.text-justify-palt {
+    text-align: justify;
+    font-feature-settings: "palt";
+}
+
+/* Custom scrollbar hide for clean look */
+.ch8-container::-webkit-scrollbar {
+    display: none;
+}
+</style>
+
+<div class="ch8-container not-prose pb-32">
+    
+    <!-- Intro Section: Overlapping Grid -->
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 relative">
+        <!-- Big Number Background -->
+
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            <!-- Vertical Title (Japanese Style - Hidden on Mobile) -->
+            <div class="col-span-2 hidden lg:flex h-[600px] justify-center items-start pt-20">
+                <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900 border-r border-gray-900 pr-8 h-full">
+                    設計就是政治
+                </h2>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-12 md:space-y-16">
+                <!-- Mobile Title (Visible only on Mobile) -->
+                <div class="lg:hidden mb-8 border-b border-black pb-4">
+                     <h2 class="text-3xl font-bold tracking-widest text-gray-900 mb-2">設計就是政治</h2>
+                     <p class="text-sm text-gray-500">專訪 陳慕天</p>
+                </div>
+
+                <!-- Lead Block -->
+                <div class="space-y-8">
+                     <p class="text-xl md:text-2xl font-medium leading-loose tracking-wide border-t border-b border-black py-8 md:py-12">
+                        從美感教科書創辦人陳慕天身上，<br class="hidden md:block">我們學到關於改變體制的5個震撼智慧。
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-justify-palt text-gray-800 font-light">
+                        <p>
+                            提到「美感細胞」計畫，多數人的第一印象，是那群致力於讓台灣教科書變得更美的團隊。然而，這只是故事的開端。當我們深入探究創辦人陳慕天的心路歷程，會發現這場看似美學的革命，其背後真正的課題，遠比封面設計來得更複雜、更深刻。
+                        </p>
+                        <p>
+                            這不僅僅是關於美感，更是關於設計、系統性變革與有效溝通的驚人真相。本文將從與陳慕天的對談中，提煉出五個最具衝擊力的觀點，這些智慧不僅適用於設計領域，更能為任何試圖在複雜體制中推動改變的人，帶來深刻的啟發。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quote Block (Design is Politics) -->
+                <div class="relative py-16 md:py-20">
+                    <h3 class="text-3xl md:text-6xl font-black text-center leading-tight tracking-tight px-4">
+                        「設計不是藝術，而是無法迴避的『政治』」
+                    </h3>
+
+                </div>
+
+            </div>
+            
+            <!-- Right Decoration (Date/Info) -->
+        </div>
+    </div>
+
+
 </div>

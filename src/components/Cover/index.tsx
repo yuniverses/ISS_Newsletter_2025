@@ -272,6 +272,12 @@ export default function Cover({ onEnter }: CoverProps) {
     mousePos2Ref.current = { x: 0.5, y: 0.5 };
   };
 
+  const isCardOpenRef = useRef(isCardOpen);
+
+  useEffect(() => {
+    isCardOpenRef.current = isCardOpen;
+  }, [isCardOpen]);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -462,7 +468,7 @@ export default function Cover({ onEnter }: CoverProps) {
       ctx.revert();
       gsap.ticker.remove(tick);
     };
-  }, [onEnter, isCardOpen]);
+  }, [onEnter]);
 
   const backgroundText = `In grammar, a semicolon connects two related but independently standing ideas. Similarly, at Semicolon Design, the semicolon symbolizes the bridge connecting visual art and storytelling. We believe that design is more than just creating aesthetic visuals - it is about conveying a profound story or message. `;
   const repeatedText = Array(6).fill(backgroundText).join("");

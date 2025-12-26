@@ -35,7 +35,7 @@ export default function ChapterSection({
       />
 
       {/* Chapter Content */}
-      <div className="bg-white px-8 md:px-16 lg:px-32 py-16">
+      <div className="bg-white px-8 md:px-16 lg:px-32 ">
         {/* Chapter Meta Info */}
         <div className="mb-12 max-w-4xl">
           {/* Chapter Description */}
@@ -45,14 +45,6 @@ export default function ChapterSection({
             </p>
           )}
 
-          {/* Authors */}
-          {chapter.authors && chapter.authors.length > 0 && (
-            <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-              {chapter.authors.map((author, index) => (
-                <span key={index}>{author}</span>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Article Content */}
