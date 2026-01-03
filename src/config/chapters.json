@@ -74,7 +74,8 @@
       "description": "從區塊鏈到教育創新，探索如何透過系統思維打造有溫度的服務體驗。",
       "htmlFile": "/chapters/chapter-08.html",
       "authors": ["陳慕天"],
-      "theme": "light"
+      "theme": "light",
+      "coverImage": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2023/08/06/0/23799517.jpg&x=0&y=0&sw=0&sh=0&exp=3600"
     },
     {
       "id": "chapter-09",

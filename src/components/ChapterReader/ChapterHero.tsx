@@ -105,7 +105,7 @@ export default function ChapterHero({
 
         {/* Content Overlay - Magazine layout */}
         <div
-          className="absolute inset-0 px-8 md:px-16 lg:px-24 xl:px-32 py-12 md:py-16 lg:py-20 will-change-opacity flex flex-col justify-between"
+          className="absolute inset-0 px-8 md:px-16 lg:px-24 xl:px-32 py-12 md:py-16 lg:py-20 will-change-opacity flex flex-col justify-between mx-auto"
           style={{ opacity: contentOpacity }}
         >
           {/* Top section with title */}
@@ -121,21 +121,20 @@ export default function ChapterHero({
                 {title}
               </h1>
             </div>
-
-            {/* Subtitle/Description - Top Right */}
-            {subtitle && (
-              <div className="flex-1 max-w-md">
-                <p
-                  className={cn(
-                    "text-sm md:text-base lg:text-lg",
-                    "text-gray-700 font-light tracking-[-0.02em] leading-relaxed"
-                  )}
-                >
-                  {subtitle}
-                </p>
-              </div>
-            )}
           </div>
+          {/* Subtitle/Description - Top Right */}
+          {subtitle && (
+            <div className="flex-1 max-w-md max-w-6xl">
+              <p
+                className={cn(
+                  "text-sm md:text-base lg:text-lg",
+                  "text-gray-700 font-light tracking-[-0.02em] leading-relaxed"
+                )}
+              >
+                {subtitle}
+              </p>
+            </div>
+          )}
 
           {/* Bottom section with details */}
           <div className="flex items-end justify-between">
