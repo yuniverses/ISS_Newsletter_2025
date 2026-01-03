@@ -1,86 +1,745 @@
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap');
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap");
 
-.ch8-container {
-    font-family: 'Shippori Mincho', 'Noto Serif TC', serif;
+  .ch8-container {
+    font-family: "Shippori Mincho", "Noto Serif TC", serif;
     color: #1a1a1a;
     width: 100%;
     overflow-x: hidden;
     background-color: #ffffff;
-}
-
-.ch8-sans {
-    font-family: 'Noto Sans TC', sans-serif;
-}
-
-.vertical-text {
+  }
+  .ch8-sans {
+    font-family: "Noto Sans TC", sans-serif;
+  }
+  .vertical-text {
     writing-mode: vertical-rl;
     text-orientation: mixed;
-}
-
-.text-justify-palt {
+  }
+  .text-justify-palt {
     text-align: justify;
     font-feature-settings: "palt";
-}
+  }
 
-/* Custom scrollbar hide for clean look */
-.ch8-container::-webkit-scrollbar {
+  .ch8-container::-webkit-scrollbar {
     display: none;
-}
+  }
 </style>
 
 <div class="ch8-container not-prose pb-32">
-    
-    <!-- Intro Section: Overlapping Grid -->
-    <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 relative">
-        <!-- Big Number Background -->
-
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-            <!-- Vertical Title (Japanese Style - Hidden on Mobile) -->
-            <div class="col-span-2 hidden lg:flex h-[600px] justify-center items-start pt-20">
-                <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900 border-r border-gray-900 pr-8 h-full">
-                    設計就是政治
-                </h2>
-            </div>
-
-            <!-- Main Content Area -->
-            <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-12 md:space-y-16">
-                <!-- Mobile Title (Visible only on Mobile) -->
-                <div class="lg:hidden mb-8 border-b border-black pb-4">
-                     <h2 class="text-3xl font-bold tracking-widest text-gray-900 mb-2">設計就是政治</h2>
-                     <p class="text-sm text-gray-500">專訪 陳慕天</p>
-                </div>
-
-                <!-- Lead Block -->
-                <div class="space-y-8">
-                     <p class="text-xl md:text-2xl font-medium leading-loose tracking-wide border-t border-b border-black py-8 md:py-12">
-                        從美感教科書創辦人陳慕天身上，<br class="hidden md:block">我們學到關於改變體制的5個震撼智慧。
-                    </p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-justify-palt text-gray-800 font-light">
-                        <p>
-                            提到「美感細胞」計畫，多數人的第一印象，是那群致力於讓台灣教科書變得更美的團隊。然而，這只是故事的開端。當我們深入探究創辦人陳慕天的心路歷程，會發現這場看似美學的革命，其背後真正的課題，遠比封面設計來得更複雜、更深刻。
-                        </p>
-                        <p>
-                            這不僅僅是關於美感，更是關於設計、系統性變革與有效溝通的驚人真相。本文將從與陳慕天的對談中，提煉出五個最具衝擊力的觀點，這些智慧不僅適用於設計領域，更能為任何試圖在複雜體制中推動改變的人，帶來深刻的啟發。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Quote Block (Design is Politics) -->
-                <div class="relative py-16 md:py-20">
-                    <h3 class="text-3xl md:text-6xl font-black text-center leading-tight tracking-tight px-4">
-                        「設計不是藝術，而是無法迴避的『政治』」
-                    </h3>
-
-                </div>
-
-            </div>
-            
-            <!-- Right Decoration (Date/Info) -->
+  <!-- HERO / INTRO -->
+  <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 relative">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <!-- Vertical Title (Desktop) -->
+      <div
+        class="col-span-2 hidden lg:flex h-[640px] justify-center items-start pt-20"
+      >
+        <div class="h-full border-r border-gray-900 pr-8">
+          <h2
+            class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900"
+          >
+            設計就是政治
+          </h2>
+          <p
+            class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch8-sans"
+          >
+            專訪／陳慕天
+          </p>
         </div>
+      </div>
+
+      <!-- Main Content -->
+      <div
+        class="col-span-1 md:col-span-12 lg:col-span-8 space-y-12 md:space-y-16"
+      >
+        <!-- Mobile Title -->
+        <div class="lg:hidden mb-8 border-b border-black pb-4">
+          <h2 class="text-3xl font-bold tracking-widest text-gray-900 mb-2">
+            設計就是政治
+          </h2>
+          <p class="text-sm text-gray-500 ch8-sans">專訪／陳慕天</p>
+        </div>
+
+        <!-- Lead -->
+        <div class="space-y-8">
+          <p
+            class="text-xl md:text-2xl font-medium leading-loose tracking-wide border-t border-b border-black py-8 md:py-12"
+          >
+            從美感教科書創辦人陳慕天身上，<br class="hidden md:block" />
+            我們學到關於改變體制的 5 個震撼智慧。
+          </p>
+
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-justify-palt text-gray-800 font-light"
+          >
+            <p>
+              提到「美感細胞」，多數人的第一印象，是那群致力於讓台灣教科書變得更美的團隊。
+              然而，這只是故事的開端。當我們深入探究創辦人陳慕天的路徑，會發現這場看似美學的革命，
+              其背後真正的課題，遠比封面設計來得更複雜、更深刻。
+            </p>
+            <p>
+              這不僅關於美感，更關於系統、權力、資源與溝通——也就是「政治」。
+              本文將從對談與整理中提煉五個最具衝擊力的觀點：它們適用於設計、組織、地方、
+              甚至任何想在複雜體制中推動改變的人。
+            </p>
+          </div>
+        </div>
+
+        <!-- Big Quote -->
+        <div class="relative py-16 md:py-20">
+          <h3
+            class="text-3xl md:text-6xl font-black text-center leading-tight tracking-tight px-4"
+          >
+            「設計不是藝術，而是無法迴避的『政治』」
+          </h3>
+          <p
+            class="mt-8 text-center text-sm md:text-base text-gray-600 ch8-sans tracking-widest"
+          >
+            ——訪談節錄／價值如何被分配、誰有權決定、誰被排除在外
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Rail (Meta) -->
+      <div class="col-span-2 hidden lg:block pt-20">
+        <div class="sticky top-10 space-y-6">
+          <div class="border border-black p-4">
+            <p class="text-xs tracking-widest text-gray-500 ch8-sans">FORM</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              長文專訪／電子書章節<br />
+              長度：細節版（可延伸）
+            </p>
+          </div>
+          <div class="border-t border-black pt-6">
+            <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+              KEYWORDS
+            </p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              系統設計、利害關係人、溝通槓桿、策展啟發、地方敘事
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
+  <!-- SECTION: CONTEXT / BACKGROUND -->
+  <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mt-20 md:mt-28">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <div class="lg:col-span-4">
+        <div class="border border-black p-6 md:p-8 space-y-4">
+          <p class="text-xs tracking-[0.25em] text-gray-500 ch8-sans">
+            CONTEXT
+          </p>
+          <h3 class="text-2xl font-bold tracking-wider">
+            在談他之前，先把舞台說清楚
+          </h3>
+          <p
+            class="text-base leading-8 text-gray-800 font-light text-justify-palt"
+          >
+            你會在本文看到兩個關鍵名詞：「美感細胞」與「台灣設計展」。前者是從教材出發的教育設計倡議；
+            後者則是以城市為舞台的設計行動。理解它們各自在做什麼，才能看見陳慕天談的「設計」，並非只關於美，
+            而是如何讓改變在制度與現場真正發生。
+          </p>
+        </div>
+      </div>
 
+      <div class="lg:col-span-8 space-y-10">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            <span class="font-medium">美感細胞</span
+            >的工作重點，並不是改寫教科書內容，而是把設計資源導入教材介面：
+            排版、資訊階層、插圖、閱讀節奏、輔助頁與附錄等。它更像一個「教育設計的示範工程」——
+            透過可見的改造結果，讓社會重新討論：教材能不能被好好設計？設計有沒有機會進入既有的教育生產鏈？
+          </p>
+          <p>
+            <span class="font-medium">台灣設計展</span
+            >則把設計放到城市尺度：它不只是展覽，更常涉及動線、空間、
+            店家與居民的協作關係。當展場變成街區，策展不再只是「把內容講清楚」，
+            而是「讓人願意走進來、停下來、被打動，然後把新的理解帶走」。
+          </p>
+        </div>
+
+        <div class="border-t border-black pt-10">
+          <p class="text-sm md:text-base leading-8 text-gray-700 ch8-sans">
+            接下來的五個觀點，會以「工程式拆解」與「敘事式凝聚」為主線：先拆系統，再找槓桿；先建立信任，再談改變。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: 5 INSIGHTS (OVERVIEW) -->
+  <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mt-20 md:mt-28">
+    <div class="border-t border-black pt-14">
+      <div class="flex items-end justify-between gap-6">
+        <h3 class="text-3xl md:text-4xl font-black tracking-tight">
+          五個震撼智慧
+        </h3>
+        <p
+          class="text-sm text-gray-500 ch8-sans tracking-widest hidden md:block"
+        >
+          THE 5 INSIGHTS
+        </p>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- card 1 -->
+        <div class="border border-black p-6">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">01</p>
+          <h4 class="mt-2 text-xl font-bold tracking-wider">
+            先畫出系統，才知道怎麼改
+          </h4>
+          <p
+            class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
+          >
+            任何看似「設計問題」的背後，都有利害關係人、資源限制與制度慣性。地圖不只是分析，是活下去的方法。
+          </p>
+        </div>
+
+        <!-- card 2 -->
+        <div class="border border-black p-6">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">02</p>
+          <h4 class="mt-2 text-xl font-bold tracking-wider">
+            設計必須借力：民意、盟友、槓桿點
+          </h4>
+          <p
+            class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
+          >
+            當你要改的不是一張版面，而是一套規則，就得找到能推動流程的節點：媒體、社會共識、與能把壓力送進體制的人。
+          </p>
+        </div>
+
+        <!-- card 3 -->
+        <div class="border border-black p-6">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">03</p>
+          <h4 class="mt-2 text-xl font-bold tracking-wider">
+            不能太遠也不能太近：掌握引領距離
+          </h4>
+          <p
+            class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
+          >
+            真正的迭代是多方期待的平衡：既要理解現場的「好用」，也要保留引領下一階段的角度。
+          </p>
+        </div>
+
+        <!-- card 4 -->
+        <div class="border border-black p-6">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">04</p>
+          <h4 class="mt-2 text-xl font-bold tracking-wider">
+            策展不只傳遞資訊，而是創造啟發
+          </h4>
+          <p
+            class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
+          >
+            內容網路都查得到時，展覽的價值是「提出新的觀看方式」：讓觀眾在現場獲得一個帶得走的全新視角。
+          </p>
+        </div>
+
+        <!-- card 5 -->
+        <div class="border border-black p-6">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">05</p>
+          <h4 class="mt-2 text-xl font-bold tracking-wider">
+            最後決策是感情：處理心情而非爭對錯
+          </h4>
+          <p
+            class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
+          >
+            複雜系統裡常沒有唯一正解。讓關係不斷裂，就是讓事情能繼續往前走的最低成本解法。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: CHAPTER 1 -->
+  <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mt-24 md:mt-32">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+            CHAPTER 1
+          </p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            設計的理性之心
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-10">
+        <div class="lg:hidden">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+            CHAPTER 1
+          </p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">
+            設計的理性之心
+          </h3>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            陳慕天不是從畫板或設計軟體出發。他的起點更接近「拆解與結構」：當問題來臨，先把它拆成零件，理解每個零件的運作，
+            再決定要在哪裡施力。這種工程式的視角，使他看待「設計」的方式與常見的審美導向不同——他更在意的是規模化、效率、與影響力：
+            這件事能不能變成一個可長期運作的機制？
+          </p>
+          <p>
+            在訪談中，他也坦率描述自己的矛盾：細膩感受可能不是最強的武器，但正因如此，他反而更依賴策略與系統。
+            他把自己定位成一種「說書人」——不是講故事好聽而已，而是能看見被低估的價值，並把它說到讓人願意一起做。
+            這種能力後來成為他跨入教育與地方的共同語言：先用新的敘事重新定義問題，再把人與資源凝聚起來。
+          </p>
+        </div>
+
+        <!-- Pull Quote -->
+        <div class="border-t border-b border-black py-10 md:py-12">
+          <p
+            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
+          >
+            「我不是最細膩的人，<br
+              class="hidden md:block"
+            />但我很在意一件事能不能被做成『系統』。」
+          </p>
+        </div>
+
+        <div
+          class="text-base md:text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            也因此，當他開始談「美感」時，他談的不是風格，而是結構：誰在決定？成本怎麼算？誰能接受改變？誰會反對？
+            他把設計放進一張更大的地圖裡——那張地圖上有教育行政、出版社、老師、家長、學生；
+            有審查、定價、供應鏈與現場習慣。然後他說：如果我們不理解這張地圖，設計只會停在表層。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: CHAPTER 2 -->
+  <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mt-24 md:mt-32">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+            CHAPTER 2
+          </p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            教科書的寧靜革命
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-10">
+        <div class="lg:hidden">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+            CHAPTER 2
+          </p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">
+            教科書的寧靜革命
+          </h3>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            「美感教科書」從一開始就不是單純的平面設計專案。它更像一場對教育體制的社會實驗：你要改的不是一張封面，
+            而是一整套由審查、定價、出版、選書與教學現場共同構成的系統。在這個系統裡，每個角色都很合理：
+            行政機關要符合規範，出版社要控制成本，老師要好教好用，家長要價格合理——而學生，往往是最少被真正詢問的人。
+          </p>
+          <p>
+            陳慕天把這類問題視為「每個人都在本分內把事做好，但組合起來卻失去共同方向」的典型。
+            於是第一步不是做設計，而是做地圖：利害關係人地圖、阻力來源、可施力的槓桿點。
+            在訪談中他不斷強調：理解系統不是學術，而是改變能否發生的前提。
+          </p>
+        </div>
+
+        <!-- Stakeholder Map Box -->
+        <div class="border border-black p-6 md:p-8">
+          <div class="flex items-start justify-between gap-6">
+            <div>
+              <p class="text-xs tracking-widest text-gray-500 ch8-sans">TOOL</p>
+              <h4 class="mt-2 text-2xl font-bold tracking-wider">
+                利害關係人地圖（節錄）
+              </h4>
+            </div>
+            <p
+              class="text-xs text-gray-500 ch8-sans tracking-widest hidden md:block"
+            >
+              STAKEHOLDER MAP
+            </p>
+          </div>
+
+          <div
+            class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-sm md:text-base leading-8 text-gray-800 font-light"
+          >
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                <span class="font-medium">審查端</span
+                >：內容正確、符合課綱與規範
+              </li>
+              <li>
+                <span class="font-medium">定價端</span>：價格敏感、避免爭議
+              </li>
+              <li>
+                <span class="font-medium">出版社</span>：成本、製程、競爭與市場
+              </li>
+              <li>
+                <span class="font-medium">老師</span>：好教、好用、班級經營順
+              </li>
+            </ul>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                <span class="font-medium">家長</span>：付費者、對漲價高度敏感
+              </li>
+              <li>
+                <span class="font-medium">學生</span
+                >：最終使用者、但常缺席於決策
+              </li>
+              <li>
+                <span class="font-medium">社會氛圍</span
+                >：媒體與民意如何看待教育投資
+              </li>
+              <li>
+                <span class="font-medium">盟友</span
+                >：能把壓力送進體制的節點人物
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            也正因為這張地圖，他們清楚知道：只做「更美的示範本」不夠。當你要推動的是制度性資源分配，
+            就必須把議題變成「被看見的公共議題」——這也是為什麼你會在美感細胞的路徑上看到群眾募資、媒體擴散、
+            與跨界結盟。募資不只是籌錢，更是在證明：這件事有廣泛的社會支持，值得被體制回應。
+          </p>
+          <p>
+            當外部的社會共識被凝聚之後，下一步才是「把壓力送進流程」：找到能進行大量溝通與協調的節點人物，
+            讓體制有理由與有動機去改。這一段看起來像政治，事實上它就是政治：誰能推動議程、誰能改變規則、
+            誰能讓資源重新流向「設計」與「教育」。
+          </p>
+        </div>
+
+        <!-- Pull Quote -->
+        <div class="border-t border-b border-black py-10 md:py-12">
+          <p
+            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
+          >
+            「當你要改的是制度，<br
+              class="hidden md:block"
+            />設計就必須學會借力。」
+          </p>
+        </div>
+
+        <div
+          class="text-base md:text-lg leading-10 text-gray-800 font-light text-justify-palt space-y-6"
+        >
+          <p>
+            但制度的改變不會一次到位。真正困難的是：在理想與現實之間持續迭代。
+            設計師認為的「好」，可能不是老師選書時的「好」；學生喜歡的節奏，也可能與出版社成本限制衝突。
+            因此，迭代在這裡不只是流程，而是一種距離控制：既不能太遠到讓現場無法採用，也不能太近到失去引領下一階段的可能。
+          </p>
+          <p>
+            於是他提出那句近乎現場哲學的提醒：你不能跟你的客戶太遙遠，你也不能跟你的客戶太近。
+            引領，是一種精準的距離。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: CHAPTER 3 -->
+  <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mt-24 md:mt-32">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+            CHAPTER 3
+          </p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            策展的再定義
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-10">
+        <div class="lg:hidden">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+            CHAPTER 3
+          </p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">策展的再定義</h3>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            若說教科書是「每天都會使用」的介面，那地方策展則是「短時間、高密度」的城市介入。
+            當展覽把舞台搬到街區，策展就不再只是展示內容，而是重新組織地方的閱讀方式：動線如何形成、店家如何被看見、
+            居民如何參與、以及外來觀眾如何在有限時間裡理解地方的價值。
+          </p>
+          <p>
+            陳慕天對策展的理解也因此演進：早期更接近「把資訊講清楚」，像把一份精心整理的
+            infographic 立體化；
+            後來他開始追求「啟發性」——如果網路都查得到，展覽就應該提出新的視角，讓人帶走一個重新理解世界的角度。
+          </p>
+        </div>
+
+        <!-- Big Quote -->
+        <div class="relative py-10 md:py-14 border-t border-b border-black">
+          <p
+            class="text-2xl md:text-4xl font-black text-center leading-tight tracking-tight px-4"
+          >
+            「展覽不是立體化的懶人包，<br class="hidden md:block" />
+            而是要提出『新觀點』。」
+          </p>
+        </div>
+
+        <div
+          class="text-base md:text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            這個轉向讓他在地方策展時，會先問一個尖銳的問題：我們是在「稱讚地方很棒」，還是在「提出地方真正獨特的語法」？
+            因為只有後者，才可能產生啟發——也才可能讓地方在設計展後留下真正可延續的改變。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: CHAPTER 4 / CASE TIANWEI -->
+  <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mt-24 md:mt-32">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+            CHAPTER 4
+          </p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            田尾：自然工業
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-10">
+        <div class="lg:hidden">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+            CHAPTER 4
+          </p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">
+            田尾：自然工業
+          </h3>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            在田尾的案例裡，陳慕天提出「自然工業（Natural
+            Industry）」作為核心關鍵字——它既是園藝與植物的自然生產，
+            卻也呈現出工業化的空間特徵：棚架、臨時結構、作業節奏、與像小工廠般的生產配置。
+            由此衍生出「透氣性、有機性、臨時性」等子概念，形成一套可被策展與設計轉譯的地方語彙。
+          </p>
+          <p>
+            更關鍵的不是名詞，而是策略介入：在觀察到店家腹地狹長、精彩內容常藏於後院後，
+            團隊提出顛覆性的動線想像——與其把焦點壓在大馬路，不如打開店家與店家之間的通道，
+            讓觀眾像逛巷弄般穿梭，把「被遮蔽的精彩」重新納入體驗路徑。
+          </p>
+        </div>
+
+        <!-- Strategy Box -->
+        <div class="border border-black p-6 md:p-8">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">STRATEGY</p>
+          <h4 class="mt-2 text-2xl font-bold tracking-wider">
+            重新設計「被閱讀的方式」
+          </h4>
+          <div
+            class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm md:text-base leading-8 text-gray-800 font-light"
+          >
+            <div class="border border-gray-200 p-4">
+              <p class="text-xs tracking-widest text-gray-500 ch8-sans">01</p>
+              <p class="mt-2">
+                <span class="font-medium">從大路轉向巷弄</span
+                >：讓移動本身變成發現。
+              </p>
+            </div>
+            <div class="border border-gray-200 p-4">
+              <p class="text-xs tracking-widest text-gray-500 ch8-sans">02</p>
+              <p class="mt-2">
+                <span class="font-medium">把後院前置</span
+                >：把地方的深度內容帶到路徑上。
+              </p>
+            </div>
+            <div class="border border-gray-200 p-4">
+              <p class="text-xs tracking-widest text-gray-500 ch8-sans">03</p>
+              <p class="mt-2">
+                <span class="font-medium">媒材成為敘事</span
+                >：用自然媒材承載文字，抵抗「展板化」。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pull Quote -->
+        <div class="border-t border-b border-black py-10 md:py-12">
+          <p
+            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
+          >
+            「我不是在包裝田尾，<br class="hidden md:block" />
+            我在重新設計田尾如何被看見。」
+          </p>
+        </div>
+
+        <div
+          class="text-base md:text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            這種「策展即路徑設計」的思路，讓地方展覽不再只是宣傳，而更像一種能留下痕跡的介入。
+            它迫使觀眾停下來，重新理解：地方不是一堆景點的集合，而是一種產業、空間、與人共同形成的語法。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: CHAPTER 5 / COMMUNICATION -->
+  <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mt-24 md:mt-32">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+            CHAPTER 5
+          </p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            溝通的務實劇本
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-10">
+        <div class="lg:hidden">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+            CHAPTER 5
+          </p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">
+            溝通的務實劇本
+          </h3>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            在複雜系統裡，事情的推進往往不是卡在「不知道怎麼做」，而是卡在「誰不願意」。因此溝通不是附屬技能，
+            而是策略的一部分。陳慕天把溝通拆成可操作的框架：先理解對方的喜好與地雷，再決定哪些地方必須投入，
+            哪些地方可以節省，哪些地方要借用對方的長處，哪些地方不要勉強。
+          </p>
+          <p>
+            這套框架聽起來理性，但他也補上一句更接近現場真相的判斷：最後決策往往是感情。
+            因為當沒有標準答案時，人會依賴信任做選擇。於是他也在衝突時學會一件事：放下對錯，先處理心情。
+            讓心情順了，關係不斷裂，事情才有機會繼續往前。
+          </p>
+        </div>
+
+        <div class="border border-black p-6 md:p-8">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">SCRIPT</p>
+          <h4 class="mt-2 text-2xl font-bold tracking-wider">
+            五項溝通原則（原則版）
+          </h4>
+          <div
+            class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-base leading-8 text-gray-800 font-light"
+          >
+            <ol class="list-decimal pl-6 space-y-2">
+              <li>給他喜歡的</li>
+              <li>避開他討厭的</li>
+              <li>拿走他不在乎的</li>
+            </ol>
+            <ol class="list-decimal pl-6 space-y-2" start="4">
+              <li>合作他擅長的</li>
+              <li>不合作不擅長的</li>
+            </ol>
+          </div>
+          <p class="mt-6 text-sm text-gray-600 ch8-sans leading-7">
+            註：這不是操控，而是資源與衝突管理——把有限資源用在「對方真的在乎」的地方，降低無效摩擦。
+          </p>
+        </div>
+
+        <!-- Pull Quote -->
+        <div class="border-t border-b border-black py-10 md:py-12">
+          <p
+            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
+          >
+            「很多時候，<br class="hidden md:block" />
+            你能做的不是找到完美解法，而是讓大家心情順。」
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTRO / CONCLUSION -->
+  <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mt-24 md:mt-32">
+    <div class="border-t border-black pt-14">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div class="lg:col-span-4">
+          <p class="text-xs tracking-widest text-gray-500 ch8-sans">OUTRO</p>
+          <h3 class="mt-3 text-3xl md:text-4xl font-black tracking-tight">
+            Be a Sound, Not an Echo
+          </h3>
+          <p class="mt-6 text-base leading-8 text-gray-700 ch8-sans">
+            成為聲音，而非回響——這句話把整篇文章從個人經歷拉回到更大的命題：台灣創作者是否願意提出新的視角，而不是只重複別人的答案。
+          </p>
+        </div>
+
+        <div class="lg:col-span-8 space-y-8">
+          <div
+            class="text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          >
+            <p>
+              若把陳慕天的實踐濃縮成一套「說書人介入法」，它大概長這樣：
+              先用工程師的方式拆系統、畫地圖，找出權力與資源的結構；
+              再用說書人的方式重新定義價值，讓人願意靠近、願意投入；
+              最後用設計者的方式讓改變留在制度與現場——不是一次完成，而是持續迭代、持續維持關係、持續推進。
+            </p>
+          </div>
+
+          <div class="border border-black p-6 md:p-8">
+            <p class="text-xs tracking-widest text-gray-500 ch8-sans">
+              SUMMARY
+            </p>
+            <h4 class="mt-2 text-2xl font-bold tracking-wider">
+              本文收束一句話
+            </h4>
+            <p
+              class="mt-6 text-2xl md:text-3xl font-black leading-snug tracking-tight"
+            >
+              先拆系統，再聚人；<br class="hidden md:block" />
+              把設計做成能運作的改變。
+            </p>
+          </div>
+
+          <div
+            class="pt-6 border-t border-black text-sm text-gray-500 ch8-sans flex flex-col md:flex-row md:items-center md:justify-between gap-2"
+          >
+            <p>© 你的電子書章節排版模組（可自由修改段落）</p>
+            <p class="tracking-widest">END OF CHAPTER</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
