@@ -37,13 +37,13 @@ export default function ChapterSection({
       />
 
       {/* Chapter Content */}
-      <div className="bg-white px-8 md:px-16 lg:px-32 ">
+      <div className="bg-white px-8 md:px-16 lg:px-32 mb-72 max-w-6xl mx-auto">
         {/* Chapter Meta Info */}
-        <div className="mb-12 max-w-4xl">
+        <div className="mb-16 max-w-4xl">
           {/* Chapter Description */}
-          {chapter.description && (
+          {/* {chapter.description && (
             <p className="text-lg text-gray-600 mb-6">{chapter.description}</p>
-          )}
+          )} */}
         </div>
 
         {/* Article Content */}
@@ -51,9 +51,11 @@ export default function ChapterSection({
           <article
             className={cn(
               "prose prose-lg mx-auto",
-              "prose-headings:font-light",
-              "prose-p:text-gray-700 prose-p:leading-relaxed",
-              "prose-img:rounded-lg prose-img:shadow-lg"
+              "prose-headings:font-light prose-headings:mt-12 prose-headings:mb-6",
+              "prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6",
+              "prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8",
+              "prose-ul:my-6 prose-ol:my-6",
+              "prose-li:my-2"
             )}
             dangerouslySetInnerHTML={{ __html: content }}
           />
@@ -61,9 +63,11 @@ export default function ChapterSection({
           <article
             className={cn(
               "prose prose-lg mx-auto",
-              "prose-headings:font-light",
-              "prose-p:text-gray-700 prose-p:leading-relaxed",
-              "prose-img:rounded-lg prose-img:shadow-lg"
+              "prose-headings:font-light prose-headings:mt-12 prose-headings:mb-6",
+              "prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6",
+              "prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8",
+              "prose-ul:my-6 prose-ol:my-6",
+              "prose-li:my-2"
             )}
           >
             <div className="flex items-center justify-center py-24">
