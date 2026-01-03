@@ -1,0 +1,689 @@
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap");
+
+  .ch11-container {
+    font-family: "Shippori Mincho", "Noto Serif TC", serif;
+    color: #1a1a1a;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #ffffff;
+  }
+  .ch11-sans {
+    font-family: "Noto Sans TC", sans-serif;
+  }
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+  .text-justify-palt {
+    text-align: justify;
+    font-feature-settings: "palt";
+  }
+
+  .ch11-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Paragraph spacing */
+  .ch11-container p {
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .ch11-container p {
+      margin-bottom: 1rem;
+    }
+  }
+
+  /* ===== Image Styles ===== */
+  .img-full {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 3rem 0;
+  }
+
+  .img-large {
+    width: 80%;
+    max-width: 900px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 2.5rem auto;
+    display: block;
+  }
+
+  .img-medium {
+    width: 60%;
+    max-width: 600px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 2rem auto;
+    display: block;
+  }
+
+  .img-small {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 1.5rem auto;
+    display: block;
+  }
+
+  .img-small-left {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    float: left;
+    margin: 0.5rem 2rem 1.5rem 0;
+  }
+
+  .img-small-right {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    float: right;
+    margin: 0.5rem 0 1.5rem 2rem;
+  }
+
+  .img-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-2 img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .img-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-3 img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .img-large,
+    .img-medium {
+      width: 90%;
+    }
+
+    .img-small,
+    .img-small-left,
+    .img-small-right {
+      width: 100%;
+      float: none;
+      margin: 1.5rem auto;
+    }
+
+    .img-grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .img-grid-3 {
+      grid-template-columns: 1fr;
+    }
+
+    .img-grid-2 img,
+    .img-grid-3 img {
+      height: 200px;
+    }
+  }
+</style>
+
+<div class="ch11-container not-prose pb-24">
+  <!-- INTRO SECTION -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <!-- Vertical Title (Desktop) -->
+      <div
+        class="col-span-2 hidden lg:flex h-[600px] justify-center items-start pt-16"
+      >
+        <div class="h-full border-r border-gray-900 pr-6">
+          <h2
+            class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900"
+          >
+            設計系統展示
+          </h2>
+          <p
+            class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans"
+          >
+            排版範例／Demo
+          </p>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div
+        class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl"
+      >
+        <!-- Lead -->
+        <div class="space-y-6">
+          <div
+            class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          >
+            <p>
+              本頁面展示了電子書中所有可用的設計元素，包括文字排版、圖片樣式、引言區塊、
+              邊框卡片等。透過實際的文章格式，你可以看到這些元素如何在真實情境中被使用。
+              這些設計元素都經過精心調整，確保在不同裝置上都能呈現最佳的閱讀體驗。
+            </p>
+            <p>
+              每個元素都考慮了可讀性、視覺層次和整體美感。從字體選擇到間距設定，
+              從圖片尺寸到色彩運用，都遵循一致的設計原則。接下來的內容將逐一展示這些元素，
+              讓你了解如何運用它們來創造專業且吸引人的內容。
+            </p>
+          </div>
+        </div>
+
+        <!-- Big Quote -->
+        <div class="relative py-12 md:py-16">
+          <h3
+            class="text-3xl md:text-5xl font-black text-center leading-tight tracking-tight px-4"
+          >
+            「設計不只是美觀，更是有效溝通的工具」
+          </h3>
+          <p
+            class="mt-6 text-center text-sm md:text-base text-gray-600 ch11-sans tracking-widest"
+          >
+            ——設計系統的核心理念
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Rail (Meta) -->
+      <div class="col-span-2 hidden lg:block pt-20">
+        <div class="sticky top-10 space-y-6">
+          <div class="border border-black p-4">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              設計系統展示<br />
+              完整排版範例
+            </p>
+          </div>
+          <div class="border-t border-black pt-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+              KEYWORDS
+            </p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              排版、視覺設計、內容結構、圖片運用
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: 文字排版展示 -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-20">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-8 space-y-8 max-w-4xl">
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            文字排版不僅僅是選擇字體那麼簡單。它涉及字級大小、行距、字距、段落間距等多個層面。
+            本設計系統採用 Shippori Mincho
+            和思源宋體作為主要字體，營造優雅而專業的氛圍。 中文內文使用 18px
+            字級，行高設定為 2.5，確保舒適的閱讀體驗。
+          </p>
+          <p>
+            在段落排版上，我們採用兩端對齊的方式，並運用了
+            font-feature-settings: "palt"
+            來優化標點符號的呈現。段落之間保持適當的間距，讓讀者在閱讀長文時不會感到疲勞。
+            這些細節的調整，都是為了創造最佳的閱讀體驗。
+          </p>
+        </div>
+
+        <!-- 示範：全寬圖片 -->
+        <img
+          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+          class="img-full"
+          alt="全寬圖片展示設計細節"
+        />
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            上方展示的是全寬圖片樣式（img-full），適合用於需要強烈視覺衝擊的場景。
+            這種圖片會佔據整個內容寬度，為文章增添豐富的視覺層次。圖片自動裁切並保持比例，
+            確保在不同螢幕尺寸下都能完美呈現。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: 圖片尺寸展示 -->
+  <div
+    class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24 mt-8 mb-8"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+            CHAPTER 2
+          </p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            圖片的多種呈現
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+            CHAPTER 2
+          </p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">
+            圖片的多種呈現
+          </h3>
+        </div>
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            視覺元素在內容傳達中扮演關鍵角色。本設計系統提供了八種不同的圖片樣式，
+            讓創作者能根據內容需求選擇最適合的呈現方式。從全寬到小圖，從單張到多欄，
+            每種樣式都經過精心設計，確保視覺美感與功能性的完美平衡。
+          </p>
+        </div>
+
+        <!-- 示範：大圖 (80%) -->
+        <img
+          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+          class="img-large"
+          alt="大圖樣式展示"
+        />
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            上方是大圖樣式（img-large），佔據內容寬度的 80%，居中顯示。
+            這種樣式適合重要但不需要完全填滿畫面的圖片，保留適當的留白讓版面更有呼吸感。
+          </p>
+        </div>
+
+        <!-- 示範：中等圖片 (60%) -->
+        <img
+          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+          class="img-medium"
+          alt="中等圖片樣式展示"
+        />
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            中等圖片（img-medium）佔據 60% 寬度，適合用於輔助說明的圖片。
+            這種尺寸既能清楚呈現圖片細節，又不會過度搶走文字的注意力。
+          </p>
+        </div>
+
+        <!-- Pull Quote -->
+        <div class="py-8 md:py-10">
+          <p
+            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
+          >
+            「每一個設計決策，都是為了更好的閱讀體驗」
+          </p>
+        </div>
+
+        <!-- 示範：小圖 (40%) -->
+        <img
+          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+          class="img-small"
+          alt="小圖樣式展示"
+        />
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            小圖樣式（img-small）佔據 40%
+            寬度，適合用於圖示、小型插圖或不需要太多視覺比重的圖片。
+            這種尺寸讓圖片成為內容的點綴，而非主角。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: 文繞圖展示 -->
+  <div
+    class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24 mt-8 mb-8"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+            CHAPTER 3
+          </p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            文字與圖片的對話
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+            CHAPTER 3
+          </p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">
+            文字與圖片的對話
+          </h3>
+        </div>
+
+        <!-- 示範：左浮動文繞圖 -->
+        <div
+          class="text-base md:text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            class="img-small-left"
+            alt="左浮動圖片示例"
+          />
+          <p>
+            文繞圖是一種優雅的排版方式，讓圖片與文字自然地融合在一起。
+            當圖片設定為左浮動（img-small-left）時，文字會自動環繞在圖片右側，
+            創造出流暢的閱讀動線。這種排版特別適合用於人物專訪、產品介紹等需要圖文並茂的內容。
+            讀者可以一邊閱讀文字，一邊參考圖片，獲得更完整的資訊。文繞圖的關鍵在於保持適當的間距，
+            確保文字不會太靠近圖片而影響閱讀。我們在左浮動圖片的右側設定了 2rem
+            的間距，
+            在行動裝置上則會自動調整為區塊排列，確保在小螢幕上也能有良好的閱讀體驗。
+          </p>
+        </div>
+
+        <!-- 示範：右浮動文繞圖 -->
+        <div
+          class="text-base md:text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          style="clear: both"
+        >
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            class="img-small-right"
+            alt="右浮動圖片示例"
+          />
+          <p>
+            右浮動圖片（img-small-right）則讓文字環繞在圖片左側，創造不同的視覺節奏。
+            在長文章中，可以交替使用左右浮動，避免版面過於單調。這種變化不僅增加了視覺趣味，
+            也幫助讀者更好地理解內容結構。右浮動圖片的左側同樣保持 2rem 的間距，
+            確保文字有足夠的呼吸空間。文繞圖的另一個優點是節省版面空間，
+            讓更多內容能在同一個視窗內呈現，減少讀者需要滾動的距離。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: 多欄圖片展示 -->
+  <div
+    class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24 mt-8 mb-8"
+    style="clear: both"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+            CHAPTER 4
+          </p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            並列的視覺敘事
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+            CHAPTER 4
+          </p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">
+            並列的視覺敘事
+          </h3>
+        </div>
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            當需要同時呈現多張相關圖片時，多欄網格佈局是最佳選擇。
+            雙欄圖片（img-grid-2）適合用於前後對比、不同角度的展示，或是並列的案例說明。
+            這種排列方式讓讀者能同時看到兩張圖片，方便比較和理解。
+          </p>
+        </div>
+
+        <!-- 示範：雙欄圖片 -->
+        <div class="img-grid-2">
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            alt="雙欄圖片示例 1"
+          />
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            alt="雙欄圖片示例 2"
+          />
+        </div>
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            三欄圖片（img-grid-3）則適合展示系列作品、步驟說明或多個相關案例。
+            這種排列創造出豐富的視覺層次，特別適合需要呈現多樣性的內容。
+            在行動裝置上，多欄圖片會自動轉為單欄垂直排列，確保圖片在小螢幕上也能清楚顯示。
+          </p>
+        </div>
+
+        <!-- 示範：三欄圖片 -->
+        <div class="img-grid-3">
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            alt="三欄圖片示例 1"
+          />
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            alt="三欄圖片示例 2"
+          />
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            alt="三欄圖片示例 3"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: 資訊區塊展示 -->
+  <div
+    class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24 mt-8 mb-8"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+            CHAPTER 5
+          </p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            結構化的資訊
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+            CHAPTER 5
+          </p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">結構化的資訊</h3>
+        </div>
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            除了文字和圖片，資訊區塊是另一個重要的設計元素。
+            邊框區塊能有效地將重要資訊從正文中區隔出來，吸引讀者的注意力。
+            這些區塊適合用於工具說明、重點整理、補充資料等內容。
+          </p>
+        </div>
+
+        <!-- 示範：邊框資訊區塊 -->
+        <div class="p-6 md:p-8">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">TOOL</p>
+          <h4 class="mt-2 text-2xl font-bold tracking-wider">設計原則摘要</h4>
+          <div
+            class="mt-6 space-y-4 text-base leading-8 text-gray-800 font-light"
+          >
+            <p>
+              <span class="font-medium">一致性</span
+              >：所有元素遵循統一的設計語言
+            </p>
+            <p>
+              <span class="font-medium">可讀性</span
+              >：優先考慮內容的易讀性與理解度
+            </p>
+            <p>
+              <span class="font-medium">層次感</span
+              >：運用大小、粗細創造清晰的視覺層次
+            </p>
+            <p>
+              <span class="font-medium">響應式</span
+              >：確保在各種裝置上都能完美呈現
+            </p>
+          </div>
+        </div>
+
+        <!-- 示範：卡片網格 -->
+        <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="border p-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">01</p>
+            <h4 class="mt-2 text-xl font-bold tracking-wider">文字排版</h4>
+            <p
+              class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
+            >
+              字體、字級、行距的精心設計，創造舒適的閱讀體驗。
+            </p>
+          </div>
+          <div class="border p-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">02</p>
+            <h4 class="mt-2 text-xl font-bold tracking-wider">圖片運用</h4>
+            <p
+              class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
+            >
+              八種圖片樣式，滿足不同內容需求的視覺呈現。
+            </p>
+          </div>
+          <div class="border p-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">03</p>
+            <h4 class="mt-2 text-xl font-bold tracking-wider">資訊區塊</h4>
+            <p
+              class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
+            >
+              邊框與卡片樣式，有效組織和呈現結構化資訊。
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            卡片網格特別適合用於展示並列的項目、功能列表或案例集錦。
+            每個卡片都是獨立的資訊單元，讀者可以快速瀏覽並找到感興趣的內容。
+            網格佈局在桌面版可以是二欄或三欄，在平板和手機上會自動調整為單欄，
+            確保在所有裝置上都有最佳的閱讀體驗。
+          </p>
+        </div>
+
+        <!-- Pull Quote -->
+        <div class="py-8 md:py-10">
+          <p
+            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
+          >
+            「好的設計系統，讓創作者專注於內容，<br class="hidden md:block" />
+            而非格式的調整」
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24 mt-8 mb-8
+  <!-- OUTRO -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
+    <div class="pt-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-4">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">OUTRO</p>
+          <h3 class="mt-3 text-3xl md:text-4xl font-black tracking-tight">
+            開始創作你的內容
+          </h3>
+          <p class="mt-6 text-base leading-8 text-gray-700 ch11-sans">
+            這些設計元素都已經準備好，等待被運用在你的文章中。 複製相應的 HTML
+            代碼，替換內容和圖片，就能創造出專業且美觀的內容。
+          </p>
+        </div>
+
+        <div class="lg:col-span-8 space-y-8 max-w-4xl">
+          <div
+            class="text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          >
+            <p>
+              本展示頁面涵蓋了服務聲 2025 電子書設計系統的所有主要元素。
+              從基礎的文字排版到複雜的多欄佈局，每個元素都經過精心設計和測試，
+              確保能在各種情境下發揮最佳效果。記住，設計的目的是服務內容，
+              而非喧賓奪主。選擇最適合你內容的元素，創造出有意義且吸引人的作品。
+            </p>
+          </div>
+
+          <div class="p-6 md:p-8">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+              SUMMARY
+            </p>
+            <h4 class="mt-2 text-2xl font-bold tracking-wider">
+              設計系統核心要素
+            </h4>
+            <p
+              class="mt-6 text-2xl md:text-3xl font-black leading-snug tracking-tight"
+            >
+              一致的視覺語言，<br class="hidden md:block" />
+              靈活的排版選項，<br class="hidden md:block" />
+              優雅的閱讀體驗。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
