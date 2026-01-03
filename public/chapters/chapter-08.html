@@ -23,6 +23,141 @@
   .ch8-container::-webkit-scrollbar {
     display: none;
   }
+
+  /* Paragraph spacing - 段落間距 */
+  .ch8-container p {
+    margin-bottom: 1rem; /* 24px */
+  }
+
+  @media (min-width: 768px) {
+    .ch8-container p {
+      margin-bottom: 1rem; /* 32px */
+    }
+  }
+
+  /* ===== Image Styles - 圖片樣式 ===== */
+
+  /* 1. Full Width Image - 全寬圖片 */
+  .img-full {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 3rem 0;
+  }
+
+  /* 2. Large Image - 大圖 (80% width, centered) */
+  .img-large {
+    width: 80%;
+    max-width: 900px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 2.5rem auto;
+    display: block;
+  }
+
+  /* 3. Medium Image - 中等圖片 (60% width, centered) */
+  .img-medium {
+    width: 60%;
+    max-width: 600px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 2rem auto;
+    display: block;
+  }
+
+  /* 4. Small Image - 小圖 (40% width, centered) */
+  .img-small {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 1.5rem auto;
+    display: block;
+  }
+
+  /* Float Left/Right for small images - 小圖左右浮動 */
+  .img-small-left {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    float: left;
+    margin: 0.5rem 2rem 1.5rem 0;
+  }
+
+  .img-small-right {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    float: right;
+    margin: 0.5rem 0 1.5rem 2rem;
+  }
+
+  /* Two Column Images - 雙欄圖片 */
+  .img-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-2 img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  /* Three Column Images - 三欄圖片 */
+  .img-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-3 img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  /* Responsive Design - 響應式設計 */
+  @media (max-width: 768px) {
+    .img-large,
+    .img-medium {
+      width: 90%;
+    }
+
+    .img-small,
+    .img-small-left,
+    .img-small-right {
+      width: 100%;
+      float: none;
+      margin: 1.5rem auto;
+    }
+
+    .img-grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .img-grid-3 {
+      grid-template-columns: 1fr;
+    }
+
+    .img-grid-2 img,
+    .img-grid-3 img {
+      height: 200px;
+    }
+  }
 </style>
 
 <div class="ch8-container not-prose pb-24">
@@ -130,7 +265,7 @@
 
       <div class="lg:col-span-8 space-y-8">
         <div
-          class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
         >
           <p>
             <span class="font-medium">美感細胞</span
@@ -259,7 +394,7 @@
         </div>
 
         <div
-          class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
         >
           <p>
             陳慕天不是從畫板或設計軟體出發。他的起點更接近「拆解與結構」：當問題來臨，先把它拆成零件，理解每個零件的運作，
@@ -293,6 +428,98 @@
             有審查、定價、供應鏈與現場習慣。然後他說：如果我們不理解這張地圖，設計只會停在表層。
           </p>
         </div>
+
+        <!-- 圖片示例：四種不同大小 -->
+
+        <!-- 1. 全寬圖片 (100% width) -->
+        <img
+          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+          class="img-full"
+          alt="設計展覽圖片 - 全寬"
+        />
+
+        <!-- 2. 大圖 (80% width) -->
+        <img
+          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+          class="img-large"
+          alt="設計展覽圖片 - 大圖"
+        />
+
+        <!-- 3. 中等圖片 (60% width) -->
+        <img
+          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+          class="img-medium"
+          alt="設計展覽圖片 - 中等"
+        />
+
+        <!-- 4. 小圖 (40% width) -->
+        <img
+          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+          class="img-small"
+          alt="設計展覽圖片 - 小圖"
+        />
+
+        <!-- 5. 小圖靠左浮動 (文繞圖 - 文字在右) -->
+        <div
+          class="text-base md:text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            class="img-small-left"
+            alt="設計展覽圖片 - 左浮動"
+          />
+          <p>
+            這是浮動圖片的示例。圖片會靠左浮動，文字會自動環繞在圖片右側。這種排版方式特別適合在介紹概念或說明時，
+            讓圖片與文字自然地融合在一起，創造更流暢的閱讀體驗。當你需要在保持文字連貫性的同時加入視覺元素，
+            這種文繞圖的方式就會非常有用。讀者可以一邊閱讀文字，一邊參考旁邊的圖片，不會打斷閱讀的節奏。
+            這段文字足夠長，可以讓你看到文字是如何環繞在圖片周圍的效果。
+          </p>
+        </div>
+
+        <!-- 6. 小圖靠右浮動 (文繞圖 - 文字在左) -->
+        <div
+          class="text-base md:text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            class="img-small-right"
+            alt="設計展覽圖片 - 右浮動"
+          />
+          <p>
+            這是圖片靠右浮動的示例。與上面相反，這次圖片會靠右浮動，文字會環繞在圖片左側。
+            這種排版變化可以讓頁面更有節奏感，避免版面過於單調。在長文章中，你可以交替使用左右浮動，
+            創造更豐富的視覺層次。這種靈活的排版方式，讓設計師可以根據內容的需要，
+            選擇最適合的圖文配置方式，打造更專業的閱讀體驗。
+          </p>
+        </div>
+
+        <!-- 7. 雙欄圖片 (兩張圖並排) -->
+        <div class="img-grid-2">
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            alt="設計展覽圖片 1"
+          />
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            alt="設計展覽圖片 2"
+          />
+        </div>
+
+        <!-- 8. 三欄圖片 (三張圖並排) -->
+        <div class="img-grid-3">
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            alt="設計展覽圖片 1"
+          />
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            alt="設計展覽圖片 2"
+          />
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            alt="設計展覽圖片 3"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -324,7 +551,7 @@
         </div>
 
         <div
-          class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
         >
           <p>
             「美感教科書」從一開始就不是單純的平面設計專案。它更像一場對教育體制的社會實驗：你要改的不是一張封面，
@@ -393,7 +620,7 @@
         </div>
 
         <div
-          class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
         >
           <p>
             也正因為這張地圖，他們清楚知道：只做「更美的示範本」不夠。當你要推動的是制度性資源分配，
@@ -460,7 +687,7 @@
         </div>
 
         <div
-          class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
         >
           <p>
             若說教科書是「每天都會使用」的介面，那地方策展則是「短時間、高密度」的城市介入。
@@ -523,7 +750,7 @@
         </div>
 
         <div
-          class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
         >
           <p>
             在田尾的案例裡，陳慕天提出「自然工業（Natural
@@ -620,7 +847,7 @@
         </div>
 
         <div
-          class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
         >
           <p>
             在複雜系統裡，事情的推進往往不是卡在「不知道怎麼做」，而是卡在「誰不願意」。因此溝通不是附屬技能，
