@@ -3,6 +3,7 @@ import { cn } from "@/utils/cn";
 import { Link, Check } from "lucide-react";
 import { Credit } from "@/types";
 import Matter from "matter-js";
+import SplitText from "../ui/SplitText";
 import { gsap } from "gsap";
 
 interface ChapterHeroProps {
@@ -295,14 +296,23 @@ export default function ChapterHero({
           <div className="flex items-start justify-between gap-8">
             {/* Main Title - Top Left */}
             <div className="flex-1">
-              <h1
+              <SplitText
+                text={title}
                 className={cn(
                   "text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold",
                   "tracking-[-0.04em] leading-[0.95] mb-4"
                 )}
-              >
-                {title}
-              </h1>
+                delay={100}
+                duration={0.6}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.1}
+                rootMargin="-100px"
+                textAlign="start"
+                tag="h1"
+              />
             </div>
           </div>
           {/* Subtitle/Description - Top Right */}
