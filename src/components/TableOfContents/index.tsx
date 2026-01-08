@@ -263,22 +263,24 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
       ref={containerRef} 
       className="relative min-h-screen w-full bg-white text-black pt-64 pb-0 flex flex-col justify-end"
     >
-      {/* Background Shapes Container */}
-      <div 
-        ref={shapesContainerRef} 
-        className="absolute inset-0 pointer-events-none z-0"
-      >
-        {particles.map((p, i) => (
-          <img
-            key={p.id}
-            ref={(el) => (shapeRefs.current[i] = el)}
-            src={p.src}
-            alt=""
-            // w-56 = 224px (approx 1.2x bigger than w-48)
-            className="absolute hidden w-56 h-56 object-contain origin-center opacity-0 will-change-transform"
-            style={{ left: 0, top: 0 }}
-          />
-        ))}
+      <div className="absolute inset-0 overflow-x-hidden max-w-[100vw] pointer-events-none">
+        {/* Background Shapes Container */}
+        <div 
+          ref={shapesContainerRef} 
+          className="absolute inset-0 pointer-events-none z-0"
+        >
+          {particles.map((p, i) => (
+            <img
+              key={p.id}
+              ref={(el) => (shapeRefs.current[i] = el)}
+              src={p.src}
+              alt=""
+              // w-56 = 224px (approx 1.2x bigger than w-48)
+              className="absolute hidden w-56 h-56 object-contain origin-center opacity-0 will-change-transform"
+              style={{ left: 0, top: 0 }}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="relative z-10 w-full pl-[5%] md:pl-[10%] lg:pl-[15%] pr-8 flex justify-start">
