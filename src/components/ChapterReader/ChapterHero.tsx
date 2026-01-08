@@ -4,6 +4,7 @@ import { Link, Check } from "lucide-react";
 import { Credit } from "@/types";
 import Matter from "matter-js";
 import SplitText from "../ui/SplitText";
+import AnimatedContent from "../ui/AnimatedContent";
 import { gsap } from "gsap";
 
 interface ChapterHeroProps {
@@ -318,14 +319,27 @@ export default function ChapterHero({
           {/* Subtitle/Description - Top Right */}
           {subtitle && (
             <div className="flex-1 max-w-md max-w-6xl">
-              <p
-                className={cn(
-                  "text-sm md:text-base lg:text-lg",
-                  "font-light tracking-[-0.02em] leading-relaxed"
-                )}
+              <AnimatedContent
+                distance={50}
+                direction="vertical"
+                reverse={false}
+                duration={1.0}
+                ease="power3.out"
+                initialOpacity={0}
+                animateOpacity={true}
+                scale={0.95}
+                threshold={0.1}
+                delay={0.2}
               >
-                {subtitle}
-              </p>
+                <p
+                  className={cn(
+                    "text-sm md:text-base lg:text-lg",
+                    "font-light tracking-[-0.02em] leading-relaxed"
+                  )}
+                >
+                  {subtitle}
+                </p>
+              </AnimatedContent>
             </div>
           )}
 
@@ -335,46 +349,70 @@ export default function ChapterHero({
             <div className="space-y-4">
                {/* Date Row */}
                {date && (
-                 <div className="text-xl md:text-2xl font-light tracking-widest">
-                   {date}
-                 </div>
+                 <AnimatedContent
+                   distance={30}
+                   direction="vertical"
+                   reverse={false}
+                   duration={0.8}
+                   delay={0.4}
+                 >
+                   <div className="text-xl md:text-2xl font-light tracking-widest">
+                     {date}
+                   </div>
+                 </AnimatedContent>
                )}
                
                {/* Credits Rows */}
                {credits && credits.length > 0 ? (
-                 <div className="space-y-1">
-                   {credits.map((credit, idx) => (
-                     <div key={idx} className="flex flex-col md:flex-row gap-1 md:gap-3 text-sm md:text-base">
-                       <span className="font-bold">{credit.name}</span>
-                       <span className="hidden md:inline text-white/60">/</span>
-                       <span className="font-light text-white/80">{credit.role}</span>
-                     </div>
-                   ))}
-                 </div>
+                 <AnimatedContent
+                    distance={30}
+                    direction="vertical"
+                    reverse={false}
+                    duration={0.8}
+                    delay={0.5}
+                 >
+                   <div className="space-y-1">
+                     {credits.map((credit, idx) => (
+                       <div key={idx} className="flex flex-col md:flex-row gap-1 md:gap-3 text-sm md:text-base">
+                         <span className="font-bold">{credit.name}</span>
+                         <span className="hidden md:inline text-white/60">/</span>
+                         <span className="font-light text-white/80">{credit.role}</span>
+                       </div>
+                     ))}
+                   </div>
+                 </AnimatedContent>
                ) : (
                  // Fallback to old format if no credits/date provided
-                 <div className="space-y-2 text-white/80">
-                    {category && (
+                 <AnimatedContent
+                    distance={30}
+                    direction="vertical"
+                    reverse={false}
+                    duration={0.8}
+                    delay={0.5}
+                 >
+                   <div className="space-y-2 text-white/80">
+                      {category && (
+                        <div className="flex gap-3 text-xs md:text-sm">
+                          <span className="font-light text-white/60">分類</span>
+                          <span className="font-normal">{category}</span>
+                        </div>
+                      )}
+                      {authors && authors.length > 0 && (
+                        <div className="flex gap-3 text-xs md:text-sm">
+                          <span className="font-light text-white/60">作者</span>
+                          <span className="font-normal">{authors.join(" / ")}</span>
+                        </div>
+                      )}
                       <div className="flex gap-3 text-xs md:text-sm">
-                        <span className="font-light text-white/60">分類</span>
-                        <span className="font-normal">{category}</span>
+                        <span className="font-light text-white/60">期刊</span>
+                        <span className="font-normal">服務聲 2025</span>
                       </div>
-                    )}
-                    {authors && authors.length > 0 && (
                       <div className="flex gap-3 text-xs md:text-sm">
-                        <span className="font-light text-white/60">作者</span>
-                        <span className="font-normal">{authors.join(" / ")}</span>
+                        <span className="font-light text-white/60">章節</span>
+                        <span className="font-normal">{chapterNumber}</span>
                       </div>
-                    )}
-                    <div className="flex gap-3 text-xs md:text-sm">
-                      <span className="font-light text-white/60">期刊</span>
-                      <span className="font-normal">服務聲 2025</span>
-                    </div>
-                    <div className="flex gap-3 text-xs md:text-sm">
-                      <span className="font-light text-white/60">章節</span>
-                      <span className="font-normal">{chapterNumber}</span>
-                    </div>
-                 </div>
+                   </div>
+                 </AnimatedContent>
                )}
             </div>
 
@@ -405,9 +443,16 @@ export default function ChapterHero({
             style={{ opacity: prefaceOpacity }}
           >
             <div className="max-w-4xl">
-              <p className="text-base md:text-lg lg:text-xl leading-relaxed text-gray-800 font-light">
-                {preface}
-              </p>
+              <AnimatedContent
+                distance={40}
+                direction="vertical"
+                duration={1.0}
+                threshold={0.2}
+              >
+                <p className="text-base md:text-lg lg:text-xl leading-relaxed text-gray-800 font-light">
+                  {preface}
+                </p>
+              </AnimatedContent>
             </div>
           </div>
         </div>
