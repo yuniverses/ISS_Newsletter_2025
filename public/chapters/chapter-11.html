@@ -149,6 +149,15 @@
       height: 200px;
     }
   }
+  .img-caption {
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.75rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+  }
 </style>
 
 <div class="ch11-container not-prose pb-24">
@@ -255,11 +264,16 @@
         </div>
 
         <!-- 示範：全寬圖片 -->
-        <img
-          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-          class="img-full"
-          alt="全寬圖片展示設計細節"
-        />
+        <figure class="my-12">
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            class="w-full h-auto object-cover rounded-lg"
+            alt="全寬圖片展示設計細節"
+          />
+          <figcaption class="img-caption">
+            全寬圖片展示設計細節（caption example）
+          </figcaption>
+        </figure>
 
         <div
           class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
@@ -313,11 +327,16 @@
         </div>
 
         <!-- 示範：大圖 (80%) -->
-        <img
-          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-          class="img-large"
-          alt="大圖樣式展示"
-        />
+        <figure class="w-[80%] mx-auto my-10 block">
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            class="w-full h-auto object-cover rounded-lg"
+            alt="大圖樣式展示"
+          />
+          <figcaption class="img-caption">
+            大圖樣式展示（80% 寬度）
+          </figcaption>
+        </figure>
 
         <div
           class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
@@ -329,11 +348,16 @@
         </div>
 
         <!-- 示範：中等圖片 (60%) -->
-        <img
-          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-          class="img-medium"
-          alt="中等圖片樣式展示"
-        />
+        <figure class="w-[60%] mx-auto my-8 block">
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            class="w-full h-auto object-cover rounded-lg"
+            alt="中等圖片樣式展示"
+          />
+          <figcaption class="img-caption">
+            中等圖片樣式展示（60% 寬度）
+          </figcaption>
+        </figure>
 
         <div
           class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
@@ -354,11 +378,16 @@
         </div>
 
         <!-- 示範：小圖 (40%) -->
-        <img
-          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-          class="img-small"
-          alt="小圖樣式展示"
-        />
+        <figure class="w-[40%] mx-auto my-6 block">
+          <img
+            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+            class="w-full h-auto object-cover rounded-lg"
+            alt="小圖樣式展示"
+          />
+          <figcaption class="img-caption">
+            小圖樣式展示（40% 寬度）
+          </figcaption>
+        </figure>
 
         <div
           class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
@@ -483,16 +512,21 @@
         </div>
 
         <!-- 示範：雙欄圖片 -->
-        <div class="img-grid-2">
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            alt="雙欄圖片示例 1"
-          />
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            alt="雙欄圖片示例 2"
-          />
-        </div>
+        <figure class="my-10">
+          <div class="img-grid-2" style="margin: 0 0 0.5rem 0;">
+            <img
+              src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+              alt="雙欄圖片示例 1"
+            />
+            <img
+              src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+              alt="雙欄圖片示例 2"
+            />
+          </div>
+          <figcaption class="img-caption">
+            雙欄圖片說明範例
+          </figcaption>
+        </figure>
 
         <div
           class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
@@ -505,20 +539,25 @@
         </div>
 
         <!-- 示範：三欄圖片 -->
-        <div class="img-grid-3">
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            alt="三欄圖片示例 1"
-          />
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            alt="三欄圖片示例 2"
-          />
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            alt="三欄圖片示例 3"
-          />
-        </div>
+        <figure class="my-10">
+          <div class="img-grid-3" style="margin: 0 0 0.5rem 0;">
+            <img
+              src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+              alt="三欄圖片示例 1"
+            />
+            <img
+              src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+              alt="三欄圖片示例 2"
+            />
+            <img
+              src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+              alt="三欄圖片示例 3"
+            />
+          </div>
+          <figcaption class="img-caption">
+            三欄圖片說明範例
+          </figcaption>
+        </figure>
       </div>
     </div>
   </div>

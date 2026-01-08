@@ -170,9 +170,10 @@ export default function ChapterHero({
            const x = body.position.x;
            const y = body.position.y;
            const angle = body.angle;
+           
+           // Retrieve original size stored during creation
            // @ts-ignore
-           const radius = body.circleRadius; 
-           const size = radius * 2; // Match visual size to physics body
+           const size = body.plugin.originalSize || 100;
 
            el.style.width = `${size}px`;
            el.style.height = `${size}px`;
@@ -201,17 +202,25 @@ export default function ChapterHero({
         setTimeout(() => {
           if (!engineRef.current) return;
           
-          // Size between 40 (mobile) and 80 (desktopish) radius
-          const radius = 40 + Math.random() * 40; 
+          // Size between 80 and 160 px (visual size)
+          // Physics body size will match this
+          const size = 80 + Math.random() * 80; 
+          
           // Spawn more towards the right side (40% - 90% range)
           const spawnX = containerWidth * 0.4 + Math.random() * containerWidth * 0.5;
           const spawnY = -150 - Math.random() * 200; // Start above viewport
 
-          const body = Matter.Bodies.circle(spawnX, spawnY, radius, {
+          // Use Rectangle (Square) instead of Circle to match DOM element bounding box
+          const body = Matter.Bodies.rectangle(spawnX, spawnY, size, size, {
             restitution: 0.5,
             friction: 0.1,
-            density: 0.002, // Slightly heavier
+            density: 0.002, 
             angle: Math.random() * Math.PI * 2,
+            // Chamfer gives rounded corners, helping them roll slightly and look more natural
+            chamfer: { radius: size * 0.1 },
+            plugin: {
+              originalSize: size // Store original size for rendering
+            }
           });
 
           // Add random force/spin
@@ -242,11 +251,11 @@ export default function ChapterHero({
   const prefaceOpacity = Math.max(0, (scrollProgress - 0.8) * 5);
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-[200vh] bg-white">
+    <div ref={heroRef} className="relative w-full min-h-[200vh] bg-white overflow-hidde">
       {/* Sticky Container */}
       <div 
         ref={containerRef}
-        className="sticky top-0 h-screen w-full flex flex-col items-center justify-center bg-white"
+        className="sticky top-0 h-screen w-full flex flex-col items-center justify-center bg-white overflow-hidden"
       >
         {/* Falling Elements Layer - Move to back */}
         <div className="absolute inset-0 z-0 pointer-events-none ">
