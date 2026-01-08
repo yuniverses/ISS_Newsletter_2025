@@ -1,3 +1,8 @@
+export interface Credit {
+  name: string
+  role: string
+}
+
 export interface Chapter {
   id: string
   title: string
@@ -10,6 +15,9 @@ export interface Chapter {
   coverImage?: string
   preface?: string
   category?: string
+  date?: string
+  credits?: Credit[]
+  fallingElements?: string[]
 }
 
 export interface Newsletter {

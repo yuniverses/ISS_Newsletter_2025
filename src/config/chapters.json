@@ -70,12 +70,25 @@
     {
       "id": "chapter-08",
       "order": 8,
-      "title": "跨界「說書人」：陳慕天的系統設計思維",
-      "description": "從區塊鏈到教育創新，探索如何透過系統思維打造有溫度的服務體驗。",
+      "title": "陳慕天的設計實踐之路",
+      "description": "從教科書到展覽場，一個工程背景設計師的跨界敘事",
       "htmlFile": "/chapters/chapter-08.html",
       "authors": ["陳慕天"],
       "theme": "light",
-      "coverImage": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2023/08/06/0/23799517.jpg&x=0&y=0&sw=0&sh=0&exp=3600"
+      "coverImage": "https://www.aestheticell.org/wp-content/uploads/2020/12/DSCF1200-scaled.jpg",
+      "date": "2025 . 11",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "https://www.aestheticell.org/wp-content/uploads/2020/12/%E7%BE%8E%E6%84%9F%E7%B4%B0%E8%83%9E_%E7%84%A1%E5%AD%97_logo.png",
+        "https://bankofculture.com/wp-content/uploads/2019/10/bankofculture_logo.png",
+        "https://storage.googleapis.com/tdri/designexpo/2025/exhibition/list_image/26/thumb_image_fc218b.png",
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
     },
     {
       "id": "chapter-09",
@@ -84,7 +97,19 @@
       "description": "",
       "htmlFile": "/chapters/chapter-09.html",
       "authors": ["徐千捷"],
-      "theme": "light"
+      "theme": "light",
+            "coverImage": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2023/08/06/0/23799517.jpg&x=0&y=0&sw=0&sh=0&exp=3600",
+      "date": "2025 . 11",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
+
     },
     {
       "id": "chapter-10",

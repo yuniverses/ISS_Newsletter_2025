@@ -34,6 +34,9 @@ export default function ChapterSection({
         preface={chapter.preface}
         coverImage={chapter.coverImage}
         chapterId={chapter.id}
+        date={chapter.date}
+        credits={chapter.credits}
+        fallingElements={chapter.fallingElements}
       />
 
       {/* Chapter Content */}
