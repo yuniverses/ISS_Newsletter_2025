@@ -1,5 +1,5 @@
 {
-  "title": "服務聲 2025",
+  "title": "服務聲 2026",
   "year": 2025,
   "chapters": [
     {
@@ -70,7 +70,7 @@
     {
       "id": "chapter-08",
       "order": 8,
-      "title": "陳慕天的設計實踐之路",
+      "title": "設計的政治學:在複雜系統中創造改變",
       "description": "從教科書到展覽場，一個工程背景設計師的跨界敘事",
       "htmlFile": "/chapters/chapter-08.html",
       "authors": ["陳慕天"],
@@ -78,8 +78,7 @@
       "coverImage": "https://www.aestheticell.org/wp-content/uploads/2020/12/DSCF1200-scaled.jpg",
       "date": "2025 . 11",
       "credits": [
-        { "name": "陳冠宇", "role": "主編 設計" },
-        { "name": "胡育慈", "role": "主編 設計" }
+        { "name": "陳冠宇", "role": "主編 設計" }
       ],
       "fallingElements": [
         "https://www.aestheticell.org/wp-content/uploads/2020/12/%E7%BE%8E%E6%84%9F%E7%B4%B0%E8%83%9E_%E7%84%A1%E5%AD%97_logo.png",

@@ -73,11 +73,11 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
   // Find current chapter info for SEO
   const currentChapter = newsletter.chapters.find(c => c.id === currentChapterId)
   const pageTitle = currentChapter ? `${currentChapter.title} | ${newsletter.title}` : newsletter.title
-  const pageDescription = currentChapter?.description || `服務科學研究所 2025 電子期刊 - ${currentChapter?.title || ''}`
+  const pageDescription = currentChapter?.description || `服務科學研究所 2026 電子期刊 - ${currentChapter?.title || ''}`
   const canonicalUrl = currentChapterId
-    ? `https://iss-newsletter-2025.web.app/chapters/${currentChapterId}`
-    : 'https://iss-newsletter-2025.web.app/'
-  const ogImage = 'https://iss-newsletter-2025.web.app/assets/og-image.jpg'
+    ? `https://iss-newsletter-2026.web.app/chapters/${currentChapterId}`
+    : 'https://iss-newsletter-2026.web.app/'
+  const ogImage = 'https://iss-newsletter-2026.web.app/assets/og-image.jpg'
   const authors = currentChapter?.authors?.join(', ') || 'ISS 服務科學研究所'
 
   return (

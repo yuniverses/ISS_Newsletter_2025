@@ -405,7 +405,7 @@ export default function ChapterHero({
                       )}
                       <div className="flex gap-3 text-xs md:text-sm">
                         <span className="font-light text-white/60">期刊</span>
-                        <span className="font-normal">服務聲 2025</span>
+                        <span className="font-normal">服務聲 2026</span>
                       </div>
                       <div className="flex gap-3 text-xs md:text-sm">
                         <span className="font-light text-white/60">章節</span>

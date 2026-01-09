@@ -1,4 +1,4 @@
-# ISS Newsletter 2025 - 字體系統文檔索引
+# ISS Newsletter 2026 - 字體系統文檔索引
 
 ## 快速導航
 
@@ -159,7 +159,7 @@ A: 不需要，使用 Tailwind utilities 就足夠了
 所有文檔都保存在項目根目錄：
 
 ```
-/Users/chenguanyu/ISS_Newsletter_2025/
+/Users/chenguanyu/ISS_Newsletter_2026/
 ├── TYPOGRAPHY_ANALYSIS.md       (詳細分析)
 ├── QUICK_REFERENCE.md           (快速參考)
 ├── CHAPTER_COMPARISON.md        (對比分析)
@@ -171,7 +171,7 @@ A: 不需要，使用 Tailwind utilities 就足夠了
 
 ## 更新歷史
 
-- 2025-11-04：初始分析完成，生成 4 份完整文檔
+- 2026-11-04：初始分析完成，生成 4 份完整文檔
 
 ---
 

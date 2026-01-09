@@ -5,7 +5,7 @@ const path = require('path');
 const configPath = path.resolve(__dirname, '../src/config/chapters.json');
 const config = require(configPath);
 
-const BASE_URL = 'https://iss-newsletter-2025.web.app'; // Update this to your actual domain
+const BASE_URL = 'https://iss-newsletter-2026.web.app'; // Update this to your actual domain
 const distDir = path.resolve(__dirname, '../dist');
 
 let sitemap = `<?xml version="1.0" encoding="UTF-8"?>

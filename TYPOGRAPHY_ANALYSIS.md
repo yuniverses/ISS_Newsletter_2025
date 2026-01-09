@@ -1,8 +1,8 @@
-# ISS Newsletter 2025 - 字體系統和設計風格分析報告
+# ISS Newsletter 2026 - 字體系統和設計風格分析報告
 
 ## 執行摘要
 
-經過全面分析，ISS Newsletter 2025 系統採用了**一致的設計語言**，基於 Tailwind CSS，使用 `prose prose-lg` 類別管理內容排版。第三章（Chapter-03）使用了與整個系統**完全一致**的字體大小和間距設定。
+經過全面分析，ISS Newsletter 2026 系統採用了**一致的設計語言**，基於 Tailwind CSS，使用 `prose prose-lg` 類別管理內容排版。第三章（Chapter-03）使用了與整個系統**完全一致**的字體大小和間距設定。
 
 ---
 

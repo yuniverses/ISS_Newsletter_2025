@@ -1,4 +1,4 @@
-# ISS Newsletter 2025 - 快速字體參考指南
+# ISS Newsletter 2026 - 快速字體參考指南
 
 ## 核心字體規範
 

@@ -21,7 +21,7 @@
 - **尺寸**: 1200 x 630 px
 - **格式**: JPG 或 PNG
 - **建議內容**:
-  - 品牌標題：「服務聲 2025」
+  - 品牌標題：「服務聲 2026」
   - 副標題：「ISS Sounds Quarterly」
   - 分號符號「;」作為視覺元素
   - 深色背景 (#0A0A0A)
@@ -33,7 +33,7 @@
 
 ```javascript
 // scripts/generate-static.cjs (line 28)
-const image = 'https://iss-newsletter-2025.web.app/assets/og-image.svg';
+const image = 'https://iss-newsletter-2026.web.app/assets/og-image.svg';
 
 // src/pages/Home.tsx (line 80)
 const ogImage = '/assets/og-image.svg'

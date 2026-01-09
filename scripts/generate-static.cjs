@@ -24,8 +24,8 @@ function injectSEO(html, chapter, config, content) {
 
   const title = `${chapter.title} | ${config.title}`;
   const description = chapter.description || `${config.title} - ${chapter.title}`;
-  const url = `https://iss-newsletter-2025.web.app/chapters/${chapter.id}`;
-  const image = 'https://iss-newsletter-2025.web.app/assets/og-image.jpg';
+  const url = `https://iss-newsletter-2026.web.app/chapters/${chapter.id}`;
+  const image = 'https://iss-newsletter-2026.web.app/assets/og-image.jpg';
   const authors = chapter.authors && chapter.authors.length > 0 ? chapter.authors.join(', ') : 'ISS 服務科學研究所';
 
   // Replace Title
@@ -80,7 +80,7 @@ function injectSEO(html, chapter, config, content) {
         "name": "${escapeQuotes(config.title)}",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://iss-newsletter-2025.web.app/assets/semicolon-logo.png"
+          "url": "https://iss-newsletter-2026.web.app/assets/semicolon-logo.png"
         }
       }
     }

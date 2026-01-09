@@ -656,7 +656,7 @@ export default function Cover({ onEnter }: CoverProps) {
             <div className="pointer-events-none absolute top-[50%] -translate-y-[50%] left-0 w-full px-[8vw]">
               {/* Mobile Layout */}
               <div className="flex flex-col items-center gap-8 md:hidden pointer-events-auto">
-                <div className="text-4xl font-bold tracking-widest">2025</div>
+                <div className="text-4xl font-bold tracking-widest">2026</div>
                 <SemicolonLogo className="h-[80px] w-auto drop-shadow-2xl" />
                 <div className="flex flex-col items-center gap-1">
                   <span className="text-xl font-light tracking-widest">
@@ -671,7 +671,7 @@ export default function Cover({ onEnter }: CoverProps) {
               {/* Desktop Layout */}
               <div className="hidden md:flex items-start justify-between w-full pointer-events-auto">
                 <div className="text-[32px] font-bold tracking-widest leading-none pt-2">
-                  2025
+                  2026
                 </div>
                 <div className="absolute left-1/2 -translate-x-1/2 top-0">
                   <SemicolonLogo className="h-[100px] w-auto drop-shadow-2xl" />
