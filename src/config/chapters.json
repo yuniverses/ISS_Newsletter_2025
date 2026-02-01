@@ -78,7 +78,10 @@
       "coverImage": "https://www.aestheticell.org/wp-content/uploads/2020/12/DSCF1200-scaled.jpg",
       "date": "2025 . 11",
       "credits": [
-        { "name": "陳冠宇", "role": "主編 設計" }
+        { "name": "陳冠宇", "role": "採訪 編輯" },
+        { "name": "邱筠婷", "role": "採訪" },
+        { "name": "胡育慈", "role": "採訪" },
+        { "name": "林柏緯", "role": "採訪" }
       ],
       "fallingElements": [
         "https://www.aestheticell.org/wp-content/uploads/2020/12/%E7%BE%8E%E6%84%9F%E7%B4%B0%E8%83%9E_%E7%84%A1%E5%AD%97_logo.png",
