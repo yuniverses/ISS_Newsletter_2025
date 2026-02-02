@@ -5,6 +5,8 @@ import Cover from '../components/Cover'
 import TableOfContents from '../components/TableOfContents'
 import ChapterReader from '../components/ChapterReader'
 import ProgressNav from '../components/ProgressNav'
+import BackCover from '../components/BackCover'
+import TextSelection from '../components/TextSelection'
 import { Newsletter } from '../types'
 import chaptersConfig from '../config/chapters.json'
 
@@ -135,6 +137,12 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
           initialChapterId={initialStartChapterId}
         />
       </div>
+
+      {/* Back Cover */}
+      <BackCover />
+
+      {/* Text Selection Handler */}
+      <TextSelection chapters={newsletter.chapters} />
     </div>
   )
 }

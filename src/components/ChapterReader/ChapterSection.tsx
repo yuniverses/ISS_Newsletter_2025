@@ -56,7 +56,7 @@ export default function ChapterSection({
 
     return () => {
       // Cleanup triggers if content changes (though usually content is stable per chapter render)
-      ScrollTrigger.getAll().forEach(t => {
+      ScrollTrigger.getAll().forEach(() => {
         // If trigger is related to these elements, kill it?
         // Since we don't track individual triggers, we rely on React unmount or next effect run.
         // But ScrollTrigger doesn't auto-cleanup on DOM removal unless we tell it.
@@ -73,10 +73,7 @@ export default function ChapterSection({
     <section
       id={chapter.id}
       data-chapter-id={chapter.id}
-      className={cn(
-        "w-full transition-opacity duration-300",
-        isActive ? "opacity-100" : "opacity-80"
-      )}
+      className="w-full"
     >
       {/* Hero Section with scroll animation */}
       <ChapterHero

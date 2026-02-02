@@ -1,86 +1,696 @@
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap');
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap");
 
-.ch8-container {
-    font-family: 'Shippori Mincho', 'Noto Serif TC', serif;
+  .ch11-container {
+    font-family: "Shippori Mincho", "Noto Serif TC", serif;
     color: #1a1a1a;
     width: 100%;
-    overflow-x: hidden;
     background-color: #ffffff;
-}
-
-.ch8-sans {
-    font-family: 'Noto Sans TC', sans-serif;
-}
-
-.vertical-text {
+  }
+  .ch11-sans {
+    font-family: "Noto Sans TC", sans-serif;
+  }
+  .vertical-text {
     writing-mode: vertical-rl;
     text-orientation: mixed;
-}
-
-.text-justify-palt {
+  }
+  .text-justify-palt {
     text-align: justify;
     font-feature-settings: "palt";
-}
+  }
 
-/* Custom scrollbar hide for clean look */
-.ch8-container::-webkit-scrollbar {
+  .ch11-container::-webkit-scrollbar {
     display: none;
-}
+  }
+
+  /* Paragraph spacing */
+  .ch11-container p {
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .ch11-container p {
+      margin-bottom: 1rem;
+    }
+  }
+
+  /* ===== Image Styles ===== */
+  .img-full {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 3rem 0;
+  }
+
+  .img-large {
+    width: 80%;
+    max-width: 900px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 2.5rem auto;
+    display: block;
+  }
+
+  .img-medium {
+    width: 60%;
+    max-width: 600px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 2rem auto;
+    display: block;
+  }
+
+  .img-small {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 1.5rem auto;
+    display: block;
+  }
+
+  .img-small-left {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    float: left;
+    margin: 0.5rem 2rem 1.5rem 0;
+  }
+
+  .img-small-right {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    float: right;
+    margin: 0.5rem 0 1.5rem 2rem;
+  }
+
+  .img-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-2 img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .img-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-3 img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .img-large,
+    .img-medium {
+      width: 90%;
+    }
+
+    .img-small,
+    .img-small-left,
+    .img-small-right {
+      width: 100%;
+      float: none;
+      margin: 1.5rem auto;
+    }
+
+    .img-grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .img-grid-3 {
+      grid-template-columns: 1fr;
+    }
+
+    .img-grid-2 img,
+    .img-grid-3 img {
+      height: 200px;
+    }
+  }
 </style>
 
-<div class="ch8-container not-prose pb-32">
-    
-    <!-- Intro Section: Overlapping Grid -->
-    <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 relative">
-        <!-- Big Number Background -->
+<div class="ch11-container not-prose pb-24 overflow-visible">
 
+  <!-- INTRO SECTION -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-            <!-- Vertical Title (Japanese Style - Hidden on Mobile) -->
-            <div class="col-span-2 hidden lg:flex h-[600px] justify-center items-start pt-20">
-                <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900 border-r border-gray-900 pr-8 h-full">
-                    設計就是政治
-                </h2>
-            </div>
-
-            <!-- Main Content Area -->
-            <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-12 md:space-y-16">
-                <!-- Mobile Title (Visible only on Mobile) -->
-                <div class="lg:hidden mb-8 border-b border-black pb-4">
-                     <h2 class="text-3xl font-bold tracking-widest text-gray-900 mb-2">設計就是政治</h2>
-                     <p class="text-sm text-gray-500">專訪 陳慕天</p>
-                </div>
-
-                <!-- Lead Block -->
-                <div class="space-y-8">
-                     <p class="text-xl md:text-2xl font-medium leading-loose tracking-wide border-t border-b border-black py-8 md:py-12">
-                        從美感教科書創辦人陳慕天身上，<br class="hidden md:block">我們學到關於改變體制的5個震撼智慧。
-                    </p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-lg leading-10 text-justify-palt text-gray-800 font-light">
-                        <p>
-                            提到「美感細胞」計畫，多數人的第一印象，是那群致力於讓台灣教科書變得更美的團隊。然而，這只是故事的開端。當我們深入探究創辦人陳慕天的心路歷程，會發現這場看似美學的革命，其背後真正的課題，遠比封面設計來得更複雜、更深刻。
-                        </p>
-                        <p>
-                            這不僅僅是關於美感，更是關於設計、系統性變革與有效溝通的驚人真相。本文將從與陳慕天的對談中，提煉出五個最具衝擊力的觀點，這些智慧不僅適用於設計領域，更能為任何試圖在複雜體制中推動改變的人，帶來深刻的啟發。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Quote Block (Design is Politics) -->
-                <div class="relative py-16 md:py-20">
-                    <h3 class="text-3xl md:text-6xl font-black text-center leading-tight tracking-tight px-4">
-                        「設計不是藝術，而是無法迴避的『政治』」
-                    </h3>
-
-                </div>
-
-            </div>
-            
-            <!-- Right Decoration (Date/Info) -->
+      <!-- Vertical Title (Desktop) -->
+      <div class="col-span-2 hidden lg:flex h-[680px] justify-center items-start pt-16">
+        <div class="h-full border-r border-gray-900 pr-6">
+          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">
+            幕後
+          </h2>
+          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">
+            專訪／陳慕天
+          </p>
         </div>
-    </div>
+      </div>
 
+      <!-- Main Content -->
+      <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl">
+
+
+        <!-- Lead -->
+        <div class="space-y-6">
+          <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+            <p>
+              設計如何不只是服務，而能成為改變的力量？
+            </p>
+            <p>
+              在「美感教科書」與「台灣設計展」兩個複雜的舞台上，陳慕天走的不是典型設計師的路徑。他不從美學出發，而從系統開始；不急著畫出美好藍圖，而是先問：誰有權力？資源在哪？阻力從何而來？
+            </p>
+            <p>
+              他的起點是交通大學機械工程——一個訓練拆解、效率與理性的場域。這份背景讓他習慣用「可行性」「規模化」「影響力」框架思考；但真正讓一切運轉的，是他看見潛力、說好故事的能力，以及在現實妥協中仍能推進方向的韌性。
+            </p>
+          </div>
+        </div>
+
+        <!-- Big Quote -->
+        <div class="relative py-12 md:py-16">
+          <h3 class="text-3xl md:text-5xl font-black text-center leading-tight tracking-tight px-4">
+            「你談設計不可能不談政治，<br class="hidden md:block" />
+            因為設計就是在解決社會的問題。」
+          </h3>
+          <p class="mt-6 text-center text-sm md:text-base text-gray-600 ch11-sans tracking-widest">
+            ——陳慕天
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Right Rail (Meta) -->
+      <div class="col-span-2 hidden lg:block pt-20">
+        <div class="sticky top-10 space-y-6">
+          <div class="border border-black p-4">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              長文專訪／電子書版本<br />
+              保留完整脈絡與細節
+            </p>
+          </div>
+          <div class="border-t border-black pt-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">KEYWORDS</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              系統思維、利害關係人、政策倡議、策展、溝通、AI時代
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 1: 專案背景 -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-20">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3 class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]">
+            專案背景
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">專案背景：當美感成為必修課</h3>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            2013 年，三位交通大學的學生注意到一個被忽視的問題：台灣孩子每天接觸最多的讀物——教科書——在設計上長期被視為次要考量。
+            美感細胞團隊由此誕生，他們提出一個大膽的想法：如果能改造教科書的設計，讓美感教育融入日常學習，
+            是否能從根本改變下一代的美學素養？
+          </p>
+          <p>
+            這個計劃涉及複雜的利益關係網絡：教育部國教院負責審查、國教署定價、出版社編書、老師選書、家長付費、學生使用。
+            每個環節都有各自的考量與限制。經過多年努力與倡議，2019 年教育部首次將「設計費」納入教科書編列預算，
+            儘管金額仍有限，卻是重要的里程碑。
+          </p>
+          <p>
+            而台灣設計展，則是另一個舞台。2025 年的展覽落腳彰化田尾——這個以花卉產業聞名的小鎮。
+            如何透過設計展呈現一個地方的獨特性？如何讓展覽不只是「好棒棒」的展示，而能提出新的觀點？
+            這些都是策展團隊面臨的挑戰。
+          </p>
+          <p>
+            在這兩個看似不同的專案背後，有一個共同的推手：陳慕天。
+          </p>
+        </div>
+
+        <!-- 可替換成你的封面/現場照 -->
+        <img
+          src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2023/08/06/0/23799517.jpg&x=0&y=0&sw=0&sh=0&exp=3600"
+          class="img-full"
+          alt="（可替換）專案現場／策展視覺"
+        />
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 2: 工程思維遇上設計實踐 -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-8 md:mt-24 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3 class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]">
+            工程思維
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">工程思維遇上設計實踐</h3>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            「我覺得我自己本身是比較偏交大的這種工程或商管的思維，」陳慕天開門見山地說。
+            交通大學機械系畢業的背景，讓他看待設計的角度與典型設計師截然不同。
+          </p>
+          <p>
+            「多數做設計背景出來的都會比較在乎感受性、經驗性的東西。但我會花比較多時間考慮效率、規模化，
+            以及對整個社會的效益性影響。」他坦承，這種理性思考的訓練方式，讓他在細膩的感受表達上不如其他設計師優秀，
+            「但在整體的策略性、規模化的過程，或是影響力上面，會有比較顯著的優勢。」
+          </p>
+          <p>
+            當被問到如何用一句話描述自己的角色，陳慕天想了想：
+            「我是一個可以看見故事潛力，然後好好說故事的人。並且能夠把大家整合在一起，一起去做一件有趣的事情。」
+          </p>
+        </div>
+
+
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            這種「敘事」不是單純的包裝，而是一種價值再發現：他能從既有定義裡抽出新的觀點，
+            讓人產生「誒，我怎麼沒這樣想過？」的瞬間——而這個瞬間往往足以讓團隊願意投入，
+            讓利害關係人願意坐下來談，讓一個看似難以撬動的系統出現縫隙。
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 3: 美感教科書：結構性的改革 -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-8 md:mt-24 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <img
+          src="https://wowlavie-aws.hmgcdn.com/files/article/a1/18168/atl_200018168_456.png"
+          class="img-full"
+          alt="（可替換）田尾現場／策展輸出"
+        />
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3 class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]">
+            結構改革
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">美感教科書：一場結構性的改革</h3>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            教科書改革遠比想像中複雜。這不是單純的設計問題，而是一個涉及政治、商業、教育、社會多重層面的系統性挑戰。
+          </p>
+          <p>
+            「每個 stakeholder 關注的點完全不同，」陳慕天分析：
+            「家長付錢但不用課本，所以在意價格；老師選書但考量的是好不好教、班級經營；
+            出版社要拼市佔率賺錢；教育部審查時要保持知識正確性和理想度。」
+          </p>
+          <p>
+            這種結構性問題的核心在於：
+            「每個人都在本分內做好自己的職責，可是當所有人搭在一起的時候，就沒有一個共同的方向。」
+          </p>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            「為什麼大家都在罵課綱？很正常，因為課綱推出的時候，一定跟老師想像不一樣。」陳慕天解釋：新課綱的出現，本身就代表「社會環境已經改變，需要新的教學方式」。但學校現場仍慣性使用過去那一套；等到 60%、70% 的老師終於跟上，下一波新課綱又要推出了。
+          </p>
+          <p>
+            「你會發現所有老師一輩子都在改變。」這不是個人問題，而是結構性的時間落差——改革的速度永遠比現場適應的速度快，於是「追趕」成為常態。
+          </p>
+          <p>
+            更複雜的是，這種時間差不只存在於課綱與老師之間，而是滲透在整個教育生態的每個環節。出版社要提前一到兩年規劃新版教科書，但他們無法預測哪些老師會適應新課綱、哪些老師會抗拒；審查端要求符合最新課綱精神，但現場老師可能還在用舊的教學邏輯；家長期待的是「有效學習」，但這個「有效」的定義，在不同世代、不同教育觀念下完全不同。
+          </p>
+          <p>
+            於是你會看到一個矛盾的現象：一本「完全符合新課綱」的教科書，可能在市場上賣不好，因為多數老師還沒準備好用新的方式教學；而一本「迎合現場需求」的教科書，又可能在審查時被要求修改，因為它不夠前瞻。這種多重時間差的交錯，讓「做一本好的教科書」變成一個幾乎不可能的任務——因為你永遠在為一個「尚未到來」或「已經過去」的現場設計。
+          </p>
+        </div>
+
+        <div class="img-grid-2">
+          <img src="https://www.aestheticell.org/wp-content/uploads/2021/05/183055182_10216883126384890_913356643102192726_n.jpeg" alt="雙欄圖片示例 1">
+          <img src="https://www.aestheticell.org/wp-content/uploads/2021/05/183444777_10216883130504993_5403320956201585060_n.jpeg" alt="雙欄圖片示例 2">
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            理解了這種時間差的本質後，美感細胞意識到：在這個複雜系統裡，設計如果只停留在「做得漂亮」，根本無法存活。
+          </p>
+          <p>
+            「我們發現如果試銷不好，你設計得再好看也會被砍掉。」陳慕天說。出版社面對的是市場壓力、成本控制與競爭現實；如果一本教科書賣不出去，再美的設計都沒有意義。更關鍵的問題是：當你作為外部設計團隊，只在最後階段介入「把版面做漂亮」，你根本無法影響那些真正決定成敗的因素——產品定位、目標客群、內容策略、與市場區隔。
+          </p>
+          <p>
+            <strong>因此美感細胞選擇了一條更困難、但也更根本的路：深入出版社的決策核心。</strong>
+          </p>
+          <p>
+            他們開始參與出版社的前期策略會議，包括：這本教科書要主打什麼特色？要鎖定哪些老師？跟競爭對手的差異在哪？內容難度要如何設定？這些問題聽起來像是出版社的商業決策，但陳慕天認為，如果設計師不理解這些決策背後的邏輯，就無法做出真正有效的設計。
+          </p>
+          <p>
+            他們也參與出版社的內部教育訓練，讓編輯團隊理解：設計不只是「讓課本變漂亮」，而是「讓資訊更容易被吸收」、「讓學習動機被啟發」、「讓老師更容易教學」。這種認知的轉變，往往比單純的視覺改造更重要——因為當內部團隊開始用設計思維思考問題，他們在後續的每個決策點，都會自然地把「使用者體驗」納入考量。
+          </p>
+          <p>
+            「我每一次做案子的時候，都把自己當成那個老闆在看。我今天如果是董事長、是總經理，我會不會做這個決定？如果我自己都不敢這樣做，我憑什麼建議人家要這樣做？」這種換位思考，讓他的建議不只是「好設計」，而是真正能幫助企業在市場競爭中存活、且能落地執行的方案。
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 4: 策展思維的轉變 -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-8 md:mt-24 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3 class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]">
+            策展轉向
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">從 infographic 到啟發性：策展思維的轉變</h3>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            對於展覽，陳慕天經歷了一次重要的思維轉變。
+            「過去我做展覽的邏輯都是非常教科書式的處理方法，就是把 infographic 立體化而已。」
+            他描述過往的方法：先理解事情脈絡、找到論述點、串成邏輯線，然後一個展間接一個展間，
+            像翻頁般展開敘事。
+          </p>
+          <p>
+            轉折點發生在 2025 年初。參訪日本萬博後，他意識到：如果展覽內容在網路上都看得到，
+            觀眾並不會因此獲得真正的啟發。「我並沒有真的對這件事情給出什麼新的觀點。」
+          </p>
+        </div>
+
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            從此，「啟發性」成為他的標準：不論大論述或小細節，都要讓人感到「哦，沒有這樣講過」。
+            這也讓策展變得更辛苦——但也更接近他所追求的價值：讓展覽不只是傳遞資訊，
+            而是創造新的理解方式。
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 5: 田尾設計展 -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-8 md:mt-24 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3 class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]">
+            田尾實作
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">田尾設計展：說出從未被命名的東西</h3>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            這個新思維在 2025 台灣設計展得到實踐。當設計展落腳彰化田尾，陳慕天團隊面對的第一個問題是：如何定義田尾？
+          </p>
+          <p>
+            田尾是全台最大的花卉集散地，擁有超過 300 家園藝業者，但這個「最大」本身並不構成獨特性。你可以說它是農業小鎮、觀光景點、花卉產業聚落——這些描述都對，但都不夠精準，也無法讓人真正理解田尾「為什麼長成這樣」。於是陳慕天團隊提出了一個新的關鍵字：「自然工業（Natural Industry）」。
+          </p>
+          <p>
+            田尾是農業，卻又帶有強烈的工業物件與生產節奏——溫室、棚架、灑水系統、運輸推車，整個空間看起來像小工廠般井然有序；但它生產的不是規格品，而是活生生的、每一株都不同的自然物。這種「用工業化手段生產自然」的矛盾感，正是田尾最獨特的地方，也是其他農業區域不容易看到的景觀特質。
+          </p>
+          <p>
+            <strong>從這個核心概念延伸出四個關鍵字，形成一套可被設計轉譯的地方語彙</strong>：透氣性（植物需要呼吸、建築與結構皆透氣）、
+            有機性（田間小路造成蜿蜒動線）、臨時性（盆栽可隨時搬移）、穿透性（店家間界線可穿越）。
+          </p>
+        </div>
+
+        <!-- 影像可替換為田尾現場／作品照 -->
+        <img
+          src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
+          class="img-full"
+          alt="（可替換）田尾現場／策展輸出"
+        />
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            理解了田尾的本質後，下一個問題是：如何讓觀眾真正看見這些特質？
+          </p>
+          <p>
+            田尾的店家有一個共同的空間困境：門面很窄，但腹地很深。這是因為早期分家產時，每個小孩都想分到面對馬路的那一塊（因為可以做生意），於是一塊田被切得越來越細、越來越長。結果就是：每家店的門口可能只有 3、4 公尺寬，但往內延伸可以到 50、60 公尺深。「所以他們面對的問題是：我的店門口小小的，可是我精彩都在後面。」
+          </p>
+          <p>
+            傳統的觀光策略會想：把主要幹道拓寬、把招牌做大——但這樣做，反而會失去田尾最珍貴的「有機性」與「穿透性」。<strong>於是陳慕天團隊提出一個顛覆性的策略：不要把焦點放在「大馬路」上，而是打開「店家與店家之間的通道」。</strong>
+          </p>
+          <p>
+            「你可以想像你去台南最想逛的是巷弄，你很少會說我去台南要看大馬路。」他比喻：「所以在田尾，你不應該是用大馬路的思維去逛它。我們要做的是：怎麼樣讓店家之間打開一些開口，讓觀眾可以在其中穿梭。」
+          </p>
+          <p>
+            觀眾不是沿著主要道路走一圈就離開，而是被引導進入店家的後院、側院，從這家穿到那家，在穿梭過程中發現那些「藏在深處的精彩」——可能是一整片罕見的多肉植物、一個老闆自己搭建的奇特溫室、或一個被植物包圍的秘密花園。
+          </p>
+          <p>
+            在形式上，他們也做了大膽嘗試：「我們一直在對抗展板輸出。很多論述文字直接印在活的葉子上面，印在景觀用的石頭上。」
+          </p>
+          <p>
+            這不只是為了「看起來特別」，而是為了創造「我沒看過用這些東西做輸出」的啟發感。印在葉子上的文字會隨著植物生長、枯萎、掉落而消失，呼應田尾的「臨時性」；印在石頭上的產業地圖，讓你必須蹲下來、靠近看，這個身體動作的改變，也改變了你與內容的關係——你不再是「路過時瞄一眼」，而是「主動靠近、認真閱讀」。
+          </p>
+          <p>
+            但這種做法也有代價：製作成本比傳統展板高，維護難度大得多。「客戶一定會問：為什麼不用正常的展板就好？」陳慕天說：「但如果我們用正常的方式，觀眾就只會得到正常的體驗。」
+          </p>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            理想與現實的拉扯始終存在。「客戶最想要的就是把田尾所有好棒棒的東西拿出來，讓大家覺得田尾很棒。我一定做得到，但從藝術性、感受性，或是我自己覺得我人生的價值跟定位，我希望帶進更多元的方式讓大家啟發。」
+          </p>
+          <p>
+            <strong>這個拉扯的核心在於：你是要「稱讚地方」，還是要「重新定義地方」？</strong>
+          </p>
+          <p>
+            如果只是稱讚，你可以做一個很漂亮的形象展覽：把最美的花卉拍成大圖、把成功業者做成影片——這絕對能讓店家開心，也能讓觀眾覺得「田尾好美」。但展覽結束後，留下什麼？
+          </p>
+          <p>
+            「我們必須提出一個只有我們看得到的觀點。」陳慕天說：「不是田尾本來就有的東西，而是透過我們的眼睛、我們的詮釋，讓田尾被重新理解。」
+          </p>
+          <p>
+            所以他們提出「自然工業」——這是一個田尾人自己可能從來沒想過的概念，但一旦被提出來，所有人都會恍然大悟：「對啊，我們就是這樣！」這種「說出了我們一直知道但從未命名的東西」的能力，才是策展真正的價值。
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 6: 溝通的藝術 -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-8 md:mt-24 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3 class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]">
+            溝通劇本
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">溝通的務實邏輯：理性框架與感性基底</h3>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            面對複雜的利害關係人網絡，陳慕天發展出一套可操作的溝通框架：
+            「從理性角度，我會把人分成：喜歡、討厭、不在乎、擅長、不擅長這五件事。
+            給他喜歡的，避開他討厭的，拿走他不在乎的，合作他擅長的，不合作不擅長的。」
+          </p>
+          <p>
+            其中最關鍵的是「拿走他不在乎的」：
+            「如果你全部都是給他想要的，每個人想要的東西一定會衝突，最後你就會裡外不是人。
+            所以拿走他不在乎的，是一個比較能夠平衡整件事情成本收入的關鍵。」
+          </p>
+        </div>
+
+        <div class="p-6 md:p-8 border border-black">
+          <h4 class="mt-2 text-2xl font-bold tracking-wider">利害關係人溝通五原則</h4>
+          <div class="mt-6 space-y-4 text-base leading-8 text-gray-800 font-light">
+            <p><span class="font-medium">給他喜歡的</span> — 先滿足最在意的需求與期待</p>
+            <p><span class="font-medium">避開他討厭的</span> — 不要踩雷，降低不必要的摩擦</p>
+            <p><span class="font-medium">拿走他不在乎的</span> — 把資源從低敏感區移走，留給真正影響成敗的部分</p>
+            <p><span class="font-medium">合作他擅長的</span> — 把合作放在對方最能發揮之處</p>
+            <p><span class="font-medium">不合作不擅長的</span> — 別在對方弱項上硬推，避免反效果</p>
+          </div>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            但這套理性框架只能解決 50% 的問題。另一半是感性面：
+            「我在做的事情就是很真誠地說一個好的故事，讓大家真的相信慕天是為了這件事情而努力，
+            不是來講幹話的。他必須真的相信你是為了他好而做了這些決定。」
+          </p>
+          <p>
+            在複雜系統裡，最後決策往往不是理性計算，而是信任與情感。當沒有標準答案時，人會依賴「我相不相信你」來做選擇。所以真誠不是技巧，而是讓合作得以持續的基礎。
+          </p>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 7: AI時代的反思 -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-8 md:mt-24 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3 class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]">
+            AI與回音
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">AI 時代的反思：Be the Sound, Not the Echo</h3>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            當被問到 AI 對設計與策展的影響，陳慕天的回答從技術層面延伸到更深的文化反思。
+          </p>
+          <p>
+            「比較專業的展覽，AI 能幫忙的都是幕後工作——提案、文案、圖像生成。
+            但我比較擔心預算較低、不那麼專業的展覽會大量使用 AI 來 cost down。」他的憂慮在於同質化：「AI 的演算法會優先給你最常看到的東西，因為它的目標是服務客戶。
+            所以它是你的想法放大器。」
+          </p>
+          <p>
+            當核心想法從專業工作者轉移到一般人，當大家都依賴 AI 生成「看起來不錯」的內容，展覽形式可能變得更加一致，
+            多樣性也可能消失。<strong>這不只是技術問題，而是創造力的生態問題。</strong>
+          </p>
+          <p>
+            但他也提出一個積極的觀點：在 AI 時代，反而「美」與「感受」更不可取代。
+            「AI 不可能替你吃一顆蘋果、替你感受味道；人生仍必須自己活，而不是靠 AI 幫你活。」
+          </p>
+        </div>
+
+        <!-- Big Quote -->
+        <div class="relative py-12 md:py-16">
+          <h3 class="text-3xl md:text-5xl font-black text-center leading-tight tracking-tight px-4">
+            「Be the sound, not the echo.」
+          </h3>
+          <p class="mt-6 text-center text-sm md:text-base text-gray-600 ch11-sans tracking-widest">
+            ——成為發出聲響的人，而不是回音
+          </p>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            成為發出聲響的人，而不是回音——這句話從景觀設計師吳書原轉述而來，卻成為陳慕天對這個時代最核心的提醒。
+          </p>
+          <p>
+            「你必須想辦法提出只有你提出來的觀點跟概念，而不是把別人都做過的事情重新講一遍。」
+            他認為台灣環境很容易養成「重新講一遍」的習慣：出國念書，把國外正在做的事情帶回台灣，就能獲得關注、甚至商業成功。「但代價是：難以成為那個創造者，去真正啟發世界。」
+          </p>
+          <p>
+            這不只是對設計師的提醒，更是對台灣創作者的提問：我們願不願意放下「作為某個文化的延伸」這個安全位置，重新定義自己是誰？當我們不再 echo 中國、echo 日本、echo 歐美，我們能發出什麼樣的聲音？
+          </p>
+          <p>
+            這個提問，或許才是陳慕天這十年實踐真正想留下的東西。
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OUTRO / 後記 -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
+    <div class="pt-10 border-t border-black">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <div class="lg:col-span-4">
+          <h3 class="mt-3 text-3xl md:text-4xl font-black tracking-tight">
+            後記：把改變留在制度與現場
+          </h3>
+          <p class="mt-6 text-base leading-8 text-gray-700 ch11-sans">
+            這不只是一段個人經歷，更是一套「在複雜系統中推動改變」的方法。
+          </p>
+        </div>
+
+        <div class="lg:col-span-8 space-y-8 max-w-4xl">
+          <div class="text-lg leading-10 text-gray-800 font-light text-justify-palt">
+            <p>
+              訪談結束後，會發現陳慕天的實踐其實一直在挑戰一個核心問題：設計如何不只是服務，而能成為改變的力量？
+              從教科書到展覽、從政策倡議到在地溝通，他所做的不是單純的「好設計」，
+              而是在權力結構、利益關係、文化慣性之間找到可以撬動改變的支點。
+            </p>
+            <p>
+              這個過程充滿妥協、挫折，以及無法完美解決的困境，但也正是真實世界的樣貌。
+              工程背景給了他理性分析的能力，而他也學會了感性溝通的必要：什麼時候該堅持專業判斷，
+              什麼時候該道歉認錯；既是說故事的人，也是把人們聚在一起的組織者。
+            </p>
+            <p>
+              在這個 AI 可能讓一切更趨同質化的時代，他提醒我們：真正不可取代的，
+              是那些只有你能提出的觀點，和只有你能感受的體驗。
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 </div>
