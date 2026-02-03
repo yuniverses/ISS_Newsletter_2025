@@ -46,3 +46,11 @@ export interface CoverContribution {
   received: string              // 收到的句子
   mine: string                  // 自己寫的句子
 }
+
+// 收集的掉落元素
+export interface CollectedElement {
+  id: string                    // 唯一 ID
+  src: string                   // 圖片來源
+  chapterId: string             // 來源章節
+  collectedAt: number           // 收集時間
+}

@@ -19,10 +19,13 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
   const navigate = useNavigate()
   const [newsletter, setNewsletter] = useState<Newsletter | null>(null)
   const [currentChapterId, setCurrentChapterId] = useState<string>('')
-  
+
   // Capture the initial chapter ID on mount only.
   // This prevents the reader from auto-scrolling when the URL updates during normal scrolling.
   const [initialStartChapterId] = useState(chapterId)
+
+  // Track when user explicitly clicks to navigate to a chapter
+  const [scrollToChapterId, setScrollToChapterId] = useState<string | null>(null)
 
   
   // Load newsletter configuration
@@ -125,7 +128,8 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
         chapters={newsletter.chapters}
         currentChapterId={currentChapterId}
         onChapterClick={(id) => {
-             navigate(`/chapters/${id}`)
+          setScrollToChapterId(id)
+          navigate(`/chapters/${id}`)
         }}
       />
 
@@ -135,6 +139,8 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
           newsletter={newsletter}
           onChapterChange={handleChapterChange}
           initialChapterId={initialStartChapterId}
+          scrollToChapterId={scrollToChapterId}
+          onScrollComplete={() => setScrollToChapterId(null)}
         />
       </div>
 

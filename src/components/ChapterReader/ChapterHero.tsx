@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { cn } from "@/utils/cn";
 import { Link, Check } from "lucide-react";
 import { Credit } from "@/types";
@@ -6,6 +6,7 @@ import Matter from "matter-js";
 import SplitText from "../ui/SplitText";
 import AnimatedContent from "../ui/AnimatedContent";
 import { gsap } from "gsap";
+import { useReadingMemories } from "@/hooks/useReadingMemories";
 
 interface ChapterHeroProps {
   chapterNumber: string;
@@ -46,6 +47,13 @@ export default function ChapterHero({
   const wallsRef = useRef<Matter.Body[]>([]);
   const shapeRefs = useRef<(HTMLImageElement | null)[]>([]);
   const hasSpawnedRef = useRef(false);
+  const isInViewRef = useRef(false);
+  const tickerRef = useRef<(() => void) | null>(null);
+
+  // Collection state
+  const { addCollectedElement, isElementCollected } = useReadingMemories();
+  const [collectedIds, setCollectedIds] = useState<Set<number>>(new Set());
+  const [showCollectToast, setShowCollectToast] = useState(false);
 
   // Prepare particles data
   const particles = useMemo(() => {
@@ -55,6 +63,33 @@ export default function ChapterHero({
     }));
   }, [fallingElements]);
 
+  // 初始化已收集的元素
+  useEffect(() => {
+    const collected = new Set<number>();
+    particles.forEach((p) => {
+      if (isElementCollected(p.src)) {
+        collected.add(p.id);
+      }
+    });
+    setCollectedIds(collected);
+  }, [particles, isElementCollected]);
+
+  // 處理點擊收集元素
+  const handleCollectElement = useCallback((id: number, src: string) => {
+    if (collectedIds.has(id) || isElementCollected(src)) return;
+
+    addCollectedElement({
+      src,
+      chapterId: chapterId || '',
+    });
+
+    setCollectedIds(prev => new Set([...prev, id]));
+
+    // 顯示收集提示
+    setShowCollectToast(true);
+    setTimeout(() => setShowCollectToast(false), 1500);
+  }, [collectedIds, isElementCollected, addCollectedElement, chapterId]);
+
   const handleCopyLink = () => {
     if (!chapterId) return;
     const url = `${window.location.origin}/chapters/${chapterId}`;
@@ -63,8 +98,26 @@ export default function ChapterHero({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Track visibility with IntersectionObserver
+  useEffect(() => {
+    if (!heroRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isInViewRef.current = entries[0].isIntersecting;
+      },
+      { threshold: 0, rootMargin: '100px' }
+    );
+
+    observer.observe(heroRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
+      // Skip if not in view
+      if (!isInViewRef.current) return;
+
       // Cancel previous RAF if it exists
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
@@ -105,13 +158,13 @@ export default function ChapterHero({
     if (particles.length === 0) return;
 
     const engine = Matter.Engine.create({
-      positionIterations: 50, // Ultra precision to prevent tunneling
-      velocityIterations: 50,
-      constraintIterations: 10,
+      positionIterations: 6, // Reduced for better performance (default is 6)
+      velocityIterations: 4, // Reduced for better performance (default is 4)
+      constraintIterations: 2,
     });
     engineRef.current = engine;
     const world = engine.world;
-    engine.gravity.y = 1;
+    engine.gravity.y = 0.8; // Slightly reduced gravity
 
     // Setup Boundaries
     const updateBoundaries = () => {
@@ -156,38 +209,35 @@ export default function ChapterHero({
     updateBoundaries();
     window.addEventListener("resize", updateBoundaries);
 
-    // Render Loop
-    const ticker = gsap.ticker.add(() => {
-      if (engineRef.current) {
-        Matter.Engine.update(engineRef.current, 1000 / 60);
-      }
+    // Render Loop - only runs when in view
+    const ticker = () => {
+      if (!isInViewRef.current || !engineRef.current) return;
 
-      // Sync DOM elements
-      Object.keys(bodiesRef.current).forEach((key) => {
-        const index = parseInt(key);
+      Matter.Engine.update(engineRef.current, 16.67); // ~60fps
+
+      // Sync DOM elements - batch style updates
+      const keys = Object.keys(bodiesRef.current);
+      for (let i = 0; i < keys.length; i++) {
+        const index = parseInt(keys[i]);
         const body = bodiesRef.current[index];
         const el = shapeRefs.current[index];
 
         if (el && body) {
-           const x = body.position.x;
-           const y = body.position.y;
-           const angle = body.angle;
-           
-           // Retrieve original size stored during creation
-           // @ts-ignore
-           const size = body.plugin.originalSize || 100;
-
-           el.style.width = `${size}px`;
-           el.style.height = `${size}px`;
-           el.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${angle}rad) translate(-50%, -50%)`;
-           el.style.opacity = "1";
+          // @ts-ignore
+          const size = body.plugin.originalSize || 100;
+          el.style.cssText = `top:0;left:0;width:${size}px;height:${size}px;transform:translate3d(${body.position.x}px,${body.position.y}px,0) rotate(${body.angle}rad) translate(-50%,-50%);opacity:1;`;
         }
-      });
-    });
+      }
+    };
+
+    tickerRef.current = ticker;
+    gsap.ticker.add(ticker);
 
     return () => {
       window.removeEventListener("resize", updateBoundaries);
-      gsap.ticker.remove(ticker);
+      if (tickerRef.current) {
+        gsap.ticker.remove(tickerRef.current);
+      }
       Matter.World.clear(world, false);
       Matter.Engine.clear(engine);
     };
@@ -212,14 +262,13 @@ export default function ChapterHero({
           const spawnX = containerWidth * 0.4 + Math.random() * containerWidth * 0.5;
           const spawnY = -150 - Math.random() * 200; // Start above viewport
 
-          // Use Rectangle (Square) instead of Circle to match DOM element bounding box
-          const body = Matter.Bodies.rectangle(spawnX, spawnY, size, size, {
-            restitution: 0.5,
-            friction: 0.1,
-            density: 0.002, 
+          // Use Circle for better physics performance and stability
+          const body = Matter.Bodies.circle(spawnX, spawnY, size * 0.45, {
+            restitution: 0.4,
+            friction: 0.3,
+            frictionAir: 0.01, // Add air friction to slow down
+            density: 0.001,
             angle: Math.random() * Math.PI * 2,
-            // Chamfer gives rounded corners, helping them roll slightly and look more natural
-            chamfer: { radius: size * 0.1 },
             plugin: {
               originalSize: size // Store original size for rendering
             }
@@ -259,19 +308,36 @@ export default function ChapterHero({
         ref={containerRef}
         className="sticky top-0 h-screen w-full flex flex-col items-center justify-center bg-white overflow-hidden"
       >
-        {/* Falling Elements Layer - Move to back */}
-        <div className="absolute inset-0 z-0 pointer-events-none ">
-          {particles.map((p) => (
-             <img
-              key={p.id}
-              ref={(el) => (shapeRefs.current[p.id] = el)}
-              src={p.src}
-              alt=""
-              className="absolute opacity-0 w-32 h-32 md:w-48 md:h-48 object-contain"
-              style={{ top: 0, left: 0 }}
-             />
-          ))}
+        {/* Falling Elements Layer - Clickable */}
+        <div className="absolute inset-0 z-30">
+          {particles.map((p) => {
+            const isCollected = collectedIds.has(p.id);
+            return (
+              <img
+                key={p.id}
+                ref={(el) => (shapeRefs.current[p.id] = el)}
+                src={p.src}
+                alt=""
+                onClick={() => handleCollectElement(p.id, p.src)}
+                className={cn(
+                  "absolute opacity-0 w-32 h-32 md:w-48 md:h-48 object-contain cursor-pointer transition-all duration-300",
+                  isCollected && "scale-0 pointer-events-none"
+                )}
+                style={{ top: 0, left: 0 }}
+              />
+            );
+          })}
         </div>
+
+        {/* Collect Toast */}
+        {showCollectToast && (
+          <div className="fixed bottom-8 right-8 z-50 px-5 py-3 bg-black/80 backdrop-blur-sm text-white text-sm rounded-full shadow-lg border border-white/10 flex items-center gap-2 toast-enter">
+            <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            <span>已收集</span>
+          </div>
+        )}
 
         {/* Shrinking Image - Move to front of elements */}
         <div

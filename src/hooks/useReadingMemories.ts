@@ -1,16 +1,20 @@
 import { useState, useEffect, useCallback } from 'react'
-import { ReadingMemory, CoverContribution } from '@/types'
+import { ReadingMemory, CoverContribution, CollectedElement } from '@/types'
 
 const MEMORIES_STORAGE_KEY = 'iss_reading_memories'
 const RELAY_STORAGE_KEY = 'iss_relay_data'
+const ELEMENTS_STORAGE_KEY = 'iss_collected_elements'
 
 interface UseReadingMemoriesReturn {
   memories: ReadingMemory[]
   coverContribution: CoverContribution | null
+  collectedElements: CollectedElement[]
   addMemory: (memory: Omit<ReadingMemory, 'id' | 'createdAt'>) => void
   removeMemory: (id: string) => void
   clearMemories: () => void
   isDuplicate: (text: string) => boolean
+  addCollectedElement: (element: Omit<CollectedElement, 'id' | 'collectedAt'>) => void
+  isElementCollected: (src: string) => boolean
 }
 
 // 生成唯一 ID
@@ -21,6 +25,7 @@ const generateId = (): string => {
 export function useReadingMemories(): UseReadingMemoriesReturn {
   const [memories, setMemories] = useState<ReadingMemory[]>([])
   const [coverContribution, setCoverContribution] = useState<CoverContribution | null>(null)
+  const [collectedElements, setCollectedElements] = useState<CollectedElement[]>([])
 
   // 初始化：從 localStorage 讀取數據
   useEffect(() => {
@@ -49,6 +54,19 @@ export function useReadingMemories(): UseReadingMemoriesReturn {
     } catch (error) {
       console.error('Failed to load cover contribution:', error)
     }
+
+    // 讀取收集的元素
+    try {
+      const savedElements = localStorage.getItem(ELEMENTS_STORAGE_KEY)
+      if (savedElements) {
+        const parsed = JSON.parse(savedElements)
+        if (Array.isArray(parsed)) {
+          setCollectedElements(parsed)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load collected elements:', error)
+    }
   }, [])
 
   // 保存記憶到 localStorage
@@ -57,6 +75,15 @@ export function useReadingMemories(): UseReadingMemoriesReturn {
       localStorage.setItem(MEMORIES_STORAGE_KEY, JSON.stringify(newMemories))
     } catch (error) {
       console.error('Failed to save reading memories:', error)
+    }
+  }, [])
+
+  // 保存收集元素到 localStorage
+  const saveElements = useCallback((newElements: CollectedElement[]) => {
+    try {
+      localStorage.setItem(ELEMENTS_STORAGE_KEY, JSON.stringify(newElements))
+    } catch (error) {
+      console.error('Failed to save collected elements:', error)
     }
   }, [])
 
@@ -100,12 +127,35 @@ export function useReadingMemories(): UseReadingMemoriesReturn {
     return memories.some(m => m.text.trim().toLowerCase() === normalizedText)
   }, [memories])
 
+  // 添加收集的元素
+  const addCollectedElement = useCallback((elementData: Omit<CollectedElement, 'id' | 'collectedAt'>) => {
+    const newElement: CollectedElement = {
+      ...elementData,
+      id: generateId(),
+      collectedAt: Date.now()
+    }
+
+    setCollectedElements(prev => {
+      const updated = [...prev, newElement]
+      saveElements(updated)
+      return updated
+    })
+  }, [saveElements])
+
+  // 檢查元素是否已收集
+  const isElementCollected = useCallback((src: string): boolean => {
+    return collectedElements.some(e => e.src === src)
+  }, [collectedElements])
+
   return {
     memories,
     coverContribution,
+    collectedElements,
     addMemory,
     removeMemory,
     clearMemories,
-    isDuplicate
+    isDuplicate,
+    addCollectedElement,
+    isElementCollected
   }
 }

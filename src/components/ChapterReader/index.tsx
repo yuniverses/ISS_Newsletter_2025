@@ -9,12 +9,16 @@ interface ChapterReaderProps {
   newsletter: Newsletter
   onChapterChange: (chapterId: string) => void
   initialChapterId?: string
+  scrollToChapterId?: string | null
+  onScrollComplete?: () => void
 }
 
 export default function ChapterReader({
   newsletter,
   onChapterChange,
-  initialChapterId
+  initialChapterId,
+  scrollToChapterId,
+  onScrollComplete
 }: ChapterReaderProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [visibleChapterIds, setVisibleChapterIds] = useState<string[]>([])
@@ -111,6 +115,68 @@ export default function ChapterReader({
         }
     }
   }, [initialChapterId, visibleChapterIds, getChapter])
+
+  // Handle scrollToChapterId - when user clicks navigation to jump to a chapter
+  useEffect(() => {
+    if (!scrollToChapterId) return
+
+    const targetIndex = newsletter.chapters.findIndex(c => c.id === scrollToChapterId)
+    if (targetIndex === -1) return
+
+    // Ensure all chapters up to the target are in visibleChapterIds
+    const chaptersToAdd = newsletter.chapters
+      .slice(0, targetIndex + 1)
+      .map(c => c.id)
+      .filter(id => !visibleChapterIds.includes(id))
+
+    if (chaptersToAdd.length > 0) {
+      // Add missing chapters
+      setVisibleChapterIds(prev => {
+        const newIds = [...prev]
+        chaptersToAdd.forEach(id => {
+          if (!newIds.includes(id)) {
+            // Insert in correct order
+            const idx = newsletter.chapters.findIndex(c => c.id === id)
+            const insertIdx = newIds.findIndex(existingId => {
+              const existingIdx = newsletter.chapters.findIndex(c => c.id === existingId)
+              return existingIdx > idx
+            })
+            if (insertIdx === -1) {
+              newIds.push(id)
+            } else {
+              newIds.splice(insertIdx, 0, id)
+            }
+          }
+        })
+        return newIds
+      })
+
+      // Load content for new chapters
+      chaptersToAdd.forEach(id => {
+        const ch = newsletter.chapters.find(c => c.id === id)
+        if (ch) loadChapter(ch.id, ch.htmlFile)
+      })
+    }
+
+    // Poll for the element and scroll to it
+    const maxAttempts = 30
+    let attempts = 0
+
+    const tryScroll = () => {
+      const element = document.getElementById(scrollToChapterId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        onScrollComplete?.()
+      } else if (attempts < maxAttempts) {
+        attempts++
+        setTimeout(tryScroll, 100)
+      } else {
+        onScrollComplete?.()
+      }
+    }
+
+    setTimeout(tryScroll, 50)
+  }, [scrollToChapterId, newsletter.chapters, visibleChapterIds, loadChapter, onScrollComplete])
 
   // Set up infinite scroll
   // Determine if we have more chapters to load

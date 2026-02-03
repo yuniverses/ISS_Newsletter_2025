@@ -2,11 +2,12 @@ import { useRef, useEffect, useState } from 'react'
 import { useReadingMemories } from '@/hooks/useReadingMemories'
 import { SemicolonLogo } from '@/components/ui/SemicolonLogo'
 import FallingMemories from './FallingMemories'
+import FallingElements from './FallingElements'
 import EmptyState from './EmptyState'
 import Noise from '@/components/Noise'
 
 export default function BackCover() {
-  const { memories, coverContribution } = useReadingMemories()
+  const { memories, coverContribution, collectedElements } = useReadingMemories()
   const sectionRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
 
@@ -30,6 +31,8 @@ export default function BackCover() {
     return () => observer.disconnect()
   }, [isVisible])
 
+  const hasAnyContent = memories.length > 0 || collectedElements.length > 0
+
   return (
     <section
       ref={sectionRef}
@@ -47,11 +50,20 @@ export default function BackCover() {
       {/* 主要內容區域 */}
       <div className="relative min-h-screen">
 
-        {/* 背景層：掉落的文字記憶 */}
+        {/* 背景層：掉落的元素和文字 */}
         <div className="absolute inset-0 z-0">
-          {memories.length > 0 ? (
+          {/* 收集的圖片元素 */}
+          {collectedElements.length > 0 && (
+            <FallingElements elements={collectedElements} isVisible={isVisible} />
+          )}
+
+          {/* 收集的文字記憶 */}
+          {memories.length > 0 && (
             <FallingMemories memories={memories} isVisible={isVisible} />
-          ) : (
+          )}
+
+          {/* 如果都沒有內容 */}
+          {!hasAnyContent && (
             <div className="h-full flex items-center justify-center">
               <EmptyState />
             </div>
@@ -115,10 +127,12 @@ export default function BackCover() {
                 </div>
               </div>
 
-              {/* 記憶數量提示 */}
-              {memories.length > 0 && (
+              {/* 收藏統計 */}
+              {hasAnyContent && (
                 <p className="text-[10px] text-white/20 text-center mt-6">
-                  你收藏了 {memories.length} 段文字
+                  {memories.length > 0 && `${memories.length} 段文字`}
+                  {memories.length > 0 && collectedElements.length > 0 && ' · '}
+                  {collectedElements.length > 0 && `${collectedElements.length} 個元素`}
                 </p>
               )}
             </div>
@@ -134,9 +148,12 @@ export default function BackCover() {
                 </p>
               </div>
 
-              {memories.length > 0 && (
+              {/* 收藏統計 */}
+              {hasAnyContent && (
                 <p className="text-[10px] text-white/20 mt-6">
-                  你收藏了 {memories.length} 段文字
+                  {memories.length > 0 && `${memories.length} 段文字`}
+                  {memories.length > 0 && collectedElements.length > 0 && ' · '}
+                  {collectedElements.length > 0 && `${collectedElements.length} 個元素`}
                 </p>
               )}
             </div>

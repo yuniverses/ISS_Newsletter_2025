@@ -16,7 +16,7 @@ interface ChapterSectionProps {
 export default function ChapterSection({
   chapter,
   content,
-  isActive,
+  isActive: _isActive,
 }: ChapterSectionProps) {
   const chapterNumber = String(chapter.order).padStart(2, "0");
   const articleRef = useRef<HTMLElement>(null);

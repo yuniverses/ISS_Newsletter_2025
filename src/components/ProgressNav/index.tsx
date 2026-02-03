@@ -19,8 +19,14 @@ export default function ProgressNav({
   const completedChapters = chapters.filter(ch => ch.order < currentOrder)
   const upcomingChapters = chapters.filter(ch => ch.order > currentOrder)
 
+  // Handle chapter navigation - scrolling is handled by ChapterReader
+  const handleNavClick = (chapterId: string) => {
+    onChapterClick(chapterId)
+  }
+
   return (
-    <nav className="fixed right-8 top-8 z-50">
+    // Hidden on mobile (hidden), visible on medium screens and up (md:block)
+    <nav className="hidden md:block fixed right-8 top-8 z-50">
       <div className="flex flex-col gap-4">
         {/* Completed chapters - at top */}
         {completedChapters.map((chapter) => {
@@ -29,11 +35,11 @@ export default function ProgressNav({
           return (
             <button
               key={chapter.id}
-              onClick={() => onChapterClick(chapter.id)}
-              className="group relative text-right transition-all duration-300 hover:opacity-100 opacity-40"
+              onClick={() => handleNavClick(chapter.id)}
+              className="group relative text-right transition-all duration-300 hover:opacity-100 opacity-40 cursor-pointer"
               aria-label={`前往章節 ${chapterNumber}: ${chapter.title}`}
             >
-              <div className="text-xs font-light tracking-wider text-gray-400 transition-all duration-300">
+              <div className="text-xs font-light tracking-wider text-gray-400 transition-all duration-300 group-hover:text-black">
                 {chapterNumber}
               </div>
             </button>
@@ -43,8 +49,8 @@ export default function ProgressNav({
         {/* Current chapter - also at top, after completed */}
         {currentChapter && (
           <button
-            onClick={() => onChapterClick(currentChapter.id)}
-            className="group relative text-right transition-all duration-300"
+            onClick={() => handleNavClick(currentChapter.id)}
+            className="group relative text-right transition-all duration-300 cursor-pointer"
             aria-label={`當前章節 ${String(currentChapter.order).padStart(2, '0')}: ${currentChapter.title}`}
           >
             {/* Chapter Title - Vertical Text (only) */}
@@ -68,11 +74,11 @@ export default function ProgressNav({
             return (
               <button
                 key={chapter.id}
-                onClick={() => onChapterClick(chapter.id)}
-                className="group relative text-right transition-all duration-300 hover:opacity-100 opacity-40"
+                onClick={() => handleNavClick(chapter.id)}
+                className="group relative text-right transition-all duration-300 hover:opacity-100 opacity-40 cursor-pointer"
                 aria-label={`前往章節 ${chapterNumber}: ${chapter.title}`}
               >
-                <div className="text-xs font-light tracking-wider text-gray-400 transition-all duration-300">
+                <div className="text-xs font-light tracking-wider text-gray-400 transition-all duration-300 group-hover:text-black">
                   {chapterNumber}
                 </div>
               </button>
