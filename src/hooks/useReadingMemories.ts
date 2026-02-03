@@ -1,9 +1,134 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useSyncExternalStore } from 'react'
 import { ReadingMemory, CoverContribution, CollectedElement } from '@/types'
 
 const MEMORIES_STORAGE_KEY = 'iss_reading_memories'
 const RELAY_STORAGE_KEY = 'iss_relay_data'
 const ELEMENTS_STORAGE_KEY = 'iss_collected_elements'
+
+// 全局狀態存儲
+let memoriesCache: ReadingMemory[] = []
+let elementsCache: CollectedElement[] = []
+let coverContributionCache: CoverContribution | null = null
+
+// 訂閱者列表
+const subscribers = new Set<() => void>()
+
+// 通知所有訂閱者
+const notifySubscribers = () => {
+  subscribers.forEach(callback => callback())
+}
+
+// 初始化緩存（只執行一次）
+let initialized = false
+const initializeCache = () => {
+  if (initialized) return
+  initialized = true
+
+  // 讀取閱讀記憶
+  try {
+    const savedMemories = localStorage.getItem(MEMORIES_STORAGE_KEY)
+    if (savedMemories) {
+      const parsed = JSON.parse(savedMemories)
+      if (Array.isArray(parsed)) {
+        memoriesCache = parsed
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load reading memories:', error)
+  }
+
+  // 讀取封面文字接力貢獻
+  try {
+    const savedRelay = localStorage.getItem(RELAY_STORAGE_KEY)
+    if (savedRelay) {
+      const parsed = JSON.parse(savedRelay)
+      if (parsed.received && parsed.mine) {
+        coverContributionCache = parsed
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load cover contribution:', error)
+  }
+
+  // 讀取收集的元素
+  try {
+    const savedElements = localStorage.getItem(ELEMENTS_STORAGE_KEY)
+    if (savedElements) {
+      const parsed = JSON.parse(savedElements)
+      if (Array.isArray(parsed)) {
+        elementsCache = parsed
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load collected elements:', error)
+  }
+}
+
+// 生成唯一 ID
+const generateId = (): string => {
+  return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
+}
+
+// 全局操作函數
+const globalAddMemory = (memoryData: Omit<ReadingMemory, 'id' | 'createdAt'>) => {
+  const newMemory: ReadingMemory = {
+    ...memoryData,
+    id: generateId(),
+    createdAt: Date.now()
+  }
+
+  memoriesCache = [...memoriesCache, newMemory]
+
+  try {
+    localStorage.setItem(MEMORIES_STORAGE_KEY, JSON.stringify(memoriesCache))
+  } catch (error) {
+    console.error('Failed to save reading memories:', error)
+  }
+
+  notifySubscribers()
+}
+
+const globalRemoveMemory = (id: string) => {
+  memoriesCache = memoriesCache.filter(m => m.id !== id)
+
+  try {
+    localStorage.setItem(MEMORIES_STORAGE_KEY, JSON.stringify(memoriesCache))
+  } catch (error) {
+    console.error('Failed to save reading memories:', error)
+  }
+
+  notifySubscribers()
+}
+
+const globalClearMemories = () => {
+  memoriesCache = []
+
+  try {
+    localStorage.removeItem(MEMORIES_STORAGE_KEY)
+  } catch (error) {
+    console.error('Failed to clear reading memories:', error)
+  }
+
+  notifySubscribers()
+}
+
+const globalAddCollectedElement = (elementData: Omit<CollectedElement, 'id' | 'collectedAt'>) => {
+  const newElement: CollectedElement = {
+    ...elementData,
+    id: generateId(),
+    collectedAt: Date.now()
+  }
+
+  elementsCache = [...elementsCache, newElement]
+
+  try {
+    localStorage.setItem(ELEMENTS_STORAGE_KEY, JSON.stringify(elementsCache))
+  } catch (error) {
+    console.error('Failed to save collected elements:', error)
+  }
+
+  notifySubscribers()
+}
 
 interface UseReadingMemoriesReturn {
   memories: ReadingMemory[]
@@ -17,145 +142,46 @@ interface UseReadingMemoriesReturn {
   isElementCollected: (src: string) => boolean
 }
 
-// 生成唯一 ID
-const generateId = (): string => {
-  return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
-}
-
 export function useReadingMemories(): UseReadingMemoriesReturn {
-  const [memories, setMemories] = useState<ReadingMemory[]>([])
-  const [coverContribution, setCoverContribution] = useState<CoverContribution | null>(null)
-  const [collectedElements, setCollectedElements] = useState<CollectedElement[]>([])
+  // 確保緩存已初始化
+  initializeCache()
 
-  // 初始化：從 localStorage 讀取數據
-  useEffect(() => {
-    // 讀取閱讀記憶
-    try {
-      const savedMemories = localStorage.getItem(MEMORIES_STORAGE_KEY)
-      if (savedMemories) {
-        const parsed = JSON.parse(savedMemories)
-        if (Array.isArray(parsed)) {
-          setMemories(parsed)
-        }
-      }
-    } catch (error) {
-      console.error('Failed to load reading memories:', error)
-    }
-
-    // 讀取封面文字接力貢獻
-    try {
-      const savedRelay = localStorage.getItem(RELAY_STORAGE_KEY)
-      if (savedRelay) {
-        const parsed = JSON.parse(savedRelay)
-        if (parsed.received && parsed.mine) {
-          setCoverContribution(parsed)
-        }
-      }
-    } catch (error) {
-      console.error('Failed to load cover contribution:', error)
-    }
-
-    // 讀取收集的元素
-    try {
-      const savedElements = localStorage.getItem(ELEMENTS_STORAGE_KEY)
-      if (savedElements) {
-        const parsed = JSON.parse(savedElements)
-        if (Array.isArray(parsed)) {
-          setCollectedElements(parsed)
-        }
-      }
-    } catch (error) {
-      console.error('Failed to load collected elements:', error)
+  // 使用 useSyncExternalStore 訂閱全局狀態
+  const subscribe = useCallback((callback: () => void) => {
+    subscribers.add(callback)
+    return () => {
+      subscribers.delete(callback)
     }
   }, [])
 
-  // 保存記憶到 localStorage
-  const saveMemories = useCallback((newMemories: ReadingMemory[]) => {
-    try {
-      localStorage.setItem(MEMORIES_STORAGE_KEY, JSON.stringify(newMemories))
-    } catch (error) {
-      console.error('Failed to save reading memories:', error)
-    }
-  }, [])
+  const getMemoriesSnapshot = useCallback(() => memoriesCache, [])
+  const getElementsSnapshot = useCallback(() => elementsCache, [])
+  const getCoverContributionSnapshot = useCallback(() => coverContributionCache, [])
 
-  // 保存收集元素到 localStorage
-  const saveElements = useCallback((newElements: CollectedElement[]) => {
-    try {
-      localStorage.setItem(ELEMENTS_STORAGE_KEY, JSON.stringify(newElements))
-    } catch (error) {
-      console.error('Failed to save collected elements:', error)
-    }
-  }, [])
-
-  // 添加新記憶
-  const addMemory = useCallback((memoryData: Omit<ReadingMemory, 'id' | 'createdAt'>) => {
-    const newMemory: ReadingMemory = {
-      ...memoryData,
-      id: generateId(),
-      createdAt: Date.now()
-    }
-
-    setMemories(prev => {
-      const updated = [...prev, newMemory]
-      saveMemories(updated)
-      return updated
-    })
-  }, [saveMemories])
-
-  // 刪除記憶
-  const removeMemory = useCallback((id: string) => {
-    setMemories(prev => {
-      const updated = prev.filter(m => m.id !== id)
-      saveMemories(updated)
-      return updated
-    })
-  }, [saveMemories])
-
-  // 清空所有記憶
-  const clearMemories = useCallback(() => {
-    setMemories([])
-    try {
-      localStorage.removeItem(MEMORIES_STORAGE_KEY)
-    } catch (error) {
-      console.error('Failed to clear reading memories:', error)
-    }
-  }, [])
+  const memories = useSyncExternalStore(subscribe, getMemoriesSnapshot, getMemoriesSnapshot)
+  const collectedElements = useSyncExternalStore(subscribe, getElementsSnapshot, getElementsSnapshot)
+  const coverContribution = useSyncExternalStore(subscribe, getCoverContributionSnapshot, getCoverContributionSnapshot)
 
   // 檢查是否重複
   const isDuplicate = useCallback((text: string): boolean => {
     const normalizedText = text.trim().toLowerCase()
-    return memories.some(m => m.text.trim().toLowerCase() === normalizedText)
-  }, [memories])
-
-  // 添加收集的元素
-  const addCollectedElement = useCallback((elementData: Omit<CollectedElement, 'id' | 'collectedAt'>) => {
-    const newElement: CollectedElement = {
-      ...elementData,
-      id: generateId(),
-      collectedAt: Date.now()
-    }
-
-    setCollectedElements(prev => {
-      const updated = [...prev, newElement]
-      saveElements(updated)
-      return updated
-    })
-  }, [saveElements])
+    return memoriesCache.some(m => m.text.trim().toLowerCase() === normalizedText)
+  }, [])
 
   // 檢查元素是否已收集
   const isElementCollected = useCallback((src: string): boolean => {
-    return collectedElements.some(e => e.src === src)
-  }, [collectedElements])
+    return elementsCache.some(e => e.src === src)
+  }, [])
 
   return {
     memories,
     coverContribution,
     collectedElements,
-    addMemory,
-    removeMemory,
-    clearMemories,
+    addMemory: globalAddMemory,
+    removeMemory: globalRemoveMemory,
+    clearMemories: globalClearMemories,
     isDuplicate,
-    addCollectedElement,
+    addCollectedElement: globalAddCollectedElement,
     isElementCollected
   }
 }

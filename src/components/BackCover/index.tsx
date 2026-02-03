@@ -10,6 +10,8 @@ export default function BackCover() {
   const { memories, coverContribution, collectedElements } = useReadingMemories()
   const sectionRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
+  // 用於強制重新渲染 FallingMemories/FallingElements 組件
+  const [resetKey, setResetKey] = useState(0)
 
   // 檢測封底是否進入視野
   useEffect(() => {
@@ -19,17 +21,22 @@ export default function BackCover() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !isVisible) {
+          if (entry.isIntersecting) {
+            // 進入視野時，增加 key 來重置組件並顯示
+            setResetKey(prev => prev + 1)
             setIsVisible(true)
+          } else {
+            // 離開視野時，重置狀態
+            setIsVisible(false)
           }
         })
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     )
 
     observer.observe(section)
     return () => observer.disconnect()
-  }, [isVisible])
+  }, [])
 
   const hasAnyContent = memories.length > 0 || collectedElements.length > 0
 
@@ -52,14 +59,22 @@ export default function BackCover() {
 
         {/* 背景層：掉落的元素和文字 */}
         <div className="absolute inset-0 z-0">
-          {/* 收集的圖片元素 */}
-          {collectedElements.length > 0 && (
-            <FallingElements elements={collectedElements} isVisible={isVisible} />
+          {/* 收集的圖片元素 - key 變化時會重新掛載 */}
+          {collectedElements.length > 0 && isVisible && (
+            <FallingElements
+              key={`elements-${resetKey}`}
+              elements={collectedElements}
+              isVisible={isVisible}
+            />
           )}
 
-          {/* 收集的文字記憶 */}
-          {memories.length > 0 && (
-            <FallingMemories memories={memories} isVisible={isVisible} />
+          {/* 收集的文字記憶 - key 變化時會重新掛載 */}
+          {memories.length > 0 && isVisible && (
+            <FallingMemories
+              key={`memories-${resetKey}`}
+              memories={memories}
+              isVisible={isVisible}
+            />
           )}
 
           {/* 如果都沒有內容 */}

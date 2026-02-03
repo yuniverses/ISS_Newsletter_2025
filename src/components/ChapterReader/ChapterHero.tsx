@@ -74,6 +74,21 @@ export default function ChapterHero({
     });
   }, [particles, isElementCollected]);
 
+  // Handle hover - shake effect
+  const handleMouseEnter = useCallback((id: number) => {
+    const el = shapeRefs.current[id];
+    if (!el || collectedIdsRef.current.has(id)) return;
+
+    // Shake animation
+    gsap.to(el, {
+      rotation: "+=15",
+      duration: 0.1,
+      ease: "power1.inOut",
+      yoyo: true,
+      repeat: 3,
+    });
+  }, []);
+
   // Handle element collection
   const handleCollectElement = useCallback((id: number, src: string) => {
     if (collectedIdsRef.current.has(id) || isElementCollected(src)) return;
@@ -85,18 +100,57 @@ export default function ChapterHero({
 
     collectedIdsRef.current.add(id);
 
-    // Animate element out
     const el = shapeRefs.current[id];
-    if (el) {
-      gsap.to(el, {
-        scale: 0,
-        opacity: 0,
-        duration: 0.3,
-        ease: "power2.in",
+    const body = bodiesRef.current[id];
+    const container = containerRef.current;
+
+    if (el && body && container) {
+      // Remove physics body so we control the animation
+      if (engineRef.current) {
+        Matter.World.remove(engineRef.current.world, body);
+        delete bodiesRef.current[id];
+      }
+
+      const containerHeight = container.offsetHeight;
+      const currentY = body.position.y;
+
+      // Animation: bounce up, then fall down and exit screen
+      const tl = gsap.timeline({
         onComplete: () => {
+          el.style.display = 'none';
           el.style.pointerEvents = 'none';
         }
       });
+
+      // 1. Quick scale pulse (feedback)
+      tl.to(el, {
+        scale: 1.3,
+        duration: 0.15,
+        ease: "power2.out",
+      });
+
+      // 2. Bounce up
+      tl.to(el, {
+        y: currentY - 200,
+        rotation: "+=360",
+        scale: 1,
+        duration: 0.4,
+        ease: "power2.out",
+      }, "<0.1");
+
+      // 3. Fall down and exit through bottom
+      tl.to(el, {
+        y: containerHeight + 200,
+        rotation: "+=180",
+        duration: 0.6,
+        ease: "power2.in",
+      });
+
+      // 4. Fade out near the end
+      tl.to(el, {
+        opacity: 0,
+        duration: 0.2,
+      }, "-=0.2");
     }
 
     // Show toast
@@ -369,7 +423,8 @@ export default function ChapterHero({
               src={p.src}
               alt=""
               onClick={() => handleCollectElement(p.id, p.src)}
-              className="absolute opacity-0 object-contain cursor-pointer will-change-transform pointer-events-auto"
+              onMouseEnter={() => handleMouseEnter(p.id)}
+              className="absolute opacity-0 object-contain cursor-pointer will-change-transform pointer-events-auto hover:brightness-110 transition-[filter]"
               style={{ top: 0, left: 0 }}
             />
           ))}
