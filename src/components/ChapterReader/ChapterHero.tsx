@@ -1,12 +1,15 @@
-import { useEffect, useRef, useState, useMemo, useCallback } from "react";
+import { useEffect, useRef, useMemo, useCallback } from "react";
 import { cn } from "@/utils/cn";
-import { Link, Check } from "lucide-react";
+import { Link } from "lucide-react";
 import { Credit } from "@/types";
 import Matter from "matter-js";
 import SplitText from "../ui/SplitText";
 import AnimatedContent from "../ui/AnimatedContent";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReadingMemories } from "@/hooks/useReadingMemories";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface ChapterHeroProps {
   chapterNumber: string;
@@ -36,10 +39,12 @@ export default function ChapterHero({
   fallingElements = [],
 }: ChapterHeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null); // The sticky container
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const rafRef = useRef<number>();
-  const [copied, setCopied] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const prefaceRef = useRef<HTMLDivElement>(null);
+  const copiedRef = useRef(false);
+  const copyButtonRef = useRef<HTMLButtonElement>(null);
 
   // Physics Refs
   const engineRef = useRef<Matter.Engine | null>(null);
@@ -47,13 +52,10 @@ export default function ChapterHero({
   const wallsRef = useRef<Matter.Body[]>([]);
   const shapeRefs = useRef<(HTMLImageElement | null)[]>([]);
   const hasSpawnedRef = useRef(false);
-  const isInViewRef = useRef(false);
-  const tickerRef = useRef<(() => void) | null>(null);
+  const collectedIdsRef = useRef<Set<number>>(new Set());
 
-  // Collection state
+  // Collection
   const { addCollectedElement, isElementCollected } = useReadingMemories();
-  const [collectedIds, setCollectedIds] = useState<Set<number>>(new Set());
-  const [showCollectToast, setShowCollectToast] = useState(false);
 
   // Prepare particles data
   const particles = useMemo(() => {
@@ -63,108 +65,215 @@ export default function ChapterHero({
     }));
   }, [fallingElements]);
 
-  // 初始化已收集的元素
+  // Initialize collected state (no React state, use ref)
   useEffect(() => {
-    const collected = new Set<number>();
     particles.forEach((p) => {
       if (isElementCollected(p.src)) {
-        collected.add(p.id);
+        collectedIdsRef.current.add(p.id);
       }
     });
-    setCollectedIds(collected);
   }, [particles, isElementCollected]);
 
-  // 處理點擊收集元素
+  // Handle element collection
   const handleCollectElement = useCallback((id: number, src: string) => {
-    if (collectedIds.has(id) || isElementCollected(src)) return;
+    if (collectedIdsRef.current.has(id) || isElementCollected(src)) return;
 
     addCollectedElement({
       src,
       chapterId: chapterId || '',
     });
 
-    setCollectedIds(prev => new Set([...prev, id]));
+    collectedIdsRef.current.add(id);
 
-    // 顯示收集提示
-    setShowCollectToast(true);
-    setTimeout(() => setShowCollectToast(false), 1500);
-  }, [collectedIds, isElementCollected, addCollectedElement, chapterId]);
+    // Animate element out
+    const el = shapeRefs.current[id];
+    if (el) {
+      gsap.to(el, {
+        scale: 0,
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in",
+        onComplete: () => {
+          el.style.pointerEvents = 'none';
+        }
+      });
+    }
 
-  const handleCopyLink = () => {
-    if (!chapterId) return;
-    const url = `${window.location.origin}/chapters/${chapterId}`;
-    navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+    // Show toast
+    showToast();
+  }, [isElementCollected, addCollectedElement, chapterId]);
 
-  // Track visibility with IntersectionObserver
-  useEffect(() => {
-    if (!heroRef.current) return;
+  // Toast without React state
+  const showToast = useCallback(() => {
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-8 right-8 z-50 px-5 py-3 bg-black/80 backdrop-blur-sm text-white text-sm rounded-full shadow-lg border border-white/10 flex items-center gap-2';
+    toast.innerHTML = `
+      <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      <span>已收集</span>
+    `;
+    document.body.appendChild(toast);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        isInViewRef.current = entries[0].isIntersecting;
-      },
-      { threshold: 0, rootMargin: '100px' }
+    gsap.fromTo(toast,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.3 }
     );
 
-    observer.observe(heroRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Skip if not in view
-      if (!isInViewRef.current) return;
-
-      // Cancel previous RAF if it exists
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-
-      // Use RAF for smooth animation
-      rafRef.current = requestAnimationFrame(() => {
-        if (!heroRef.current) return;
-
-        const rect = heroRef.current.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-
-        // Calculate scroll progress (0 to 1)
-        const scrollStart = windowHeight;
-        const scrollRange = windowHeight * 1.5;
-        const progress = Math.max(
-          0,
-          Math.min(1, (scrollStart - rect.top) / scrollRange)
-        );
-
-        setScrollProgress(progress);
+    setTimeout(() => {
+      gsap.to(toast, {
+        opacity: 0,
+        y: -20,
+        duration: 0.3,
+        onComplete: () => toast.remove()
       });
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial check
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
+    }, 1500);
   }, []);
+
+  // Copy link without React state
+  const handleCopyLink = useCallback(() => {
+    if (!chapterId || copiedRef.current) return;
+
+    const url = `${window.location.origin}/chapters/${chapterId}`;
+    navigator.clipboard.writeText(url);
+    copiedRef.current = true;
+
+    // Update button icon
+    if (copyButtonRef.current) {
+      copyButtonRef.current.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+      copyButtonRef.current.classList.add('text-white', 'bg-white/20');
+    }
+
+    setTimeout(() => {
+      copiedRef.current = false;
+      if (copyButtonRef.current) {
+        copyButtonRef.current.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`;
+        copyButtonRef.current.classList.remove('text-white', 'bg-white/20');
+      }
+    }, 2000);
+  }, [chapterId]);
+
+  // Main GSAP animation setup
+  useEffect(() => {
+    const hero = heroRef.current;
+    const container = containerRef.current;
+    const image = imageRef.current;
+    const content = contentRef.current;
+    const prefaceEl = prefaceRef.current;
+
+    if (!hero || !container || !image || !content) return;
+
+    const ctx = gsap.context(() => {
+      // The hero is min-h-[200vh] with a sticky container
+      // As user scrolls through the 200vh, the sticky container stays in place
+      // We want: first 60% = full screen, last 40% = shrink to 0.5
+
+      // Image scale animation - stays full for first 60%, shrinks in last 40%
+      gsap.fromTo(image,
+        { scale: 1 },
+        {
+          scale: 0.5,
+          ease: "none",
+          scrollTrigger: {
+            trigger: hero,
+            start: "60% bottom", // Start shrinking when 60% of hero has scrolled
+            end: "bottom bottom", // End when hero bottom reaches viewport bottom
+            scrub: 0.5,
+          }
+        }
+      );
+
+      // Content fade in - fade in during first part of scroll (0-60%)
+      gsap.fromTo(content,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: hero,
+            start: "top bottom",    // Start when hero enters viewport
+            end: "40% bottom",      // Fully visible by 40%
+            scrub: 0.5,
+          }
+        }
+      );
+
+      // Preface fade in - fade in when shrinking starts (60%-100%)
+      if (prefaceEl) {
+        gsap.fromTo(prefaceEl,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: hero,
+              start: "60% bottom",
+              end: "bottom bottom",
+              scrub: 0.5,
+            }
+          }
+        );
+      }
+
+      // Trigger falling elements when shrinking begins (at 60%)
+      ScrollTrigger.create({
+        trigger: hero,
+        start: "60% bottom",
+        onEnter: () => {
+          if (!hasSpawnedRef.current && engineRef.current && container) {
+            hasSpawnedRef.current = true;
+            spawnParticles();
+          }
+        }
+      });
+    }, hero);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Spawn particles function
+  const spawnParticles = useCallback(() => {
+    const container = containerRef.current;
+    const engine = engineRef.current;
+    if (!container || !engine) return;
+
+    const containerWidth = container.offsetWidth;
+
+    particles.forEach((p, i) => {
+      // Skip if already collected
+      if (collectedIdsRef.current.has(p.id)) return;
+
+      setTimeout(() => {
+        if (!engineRef.current) return;
+
+        const size = 80 + Math.random() * 80;
+        const spawnX = containerWidth * 0.4 + Math.random() * containerWidth * 0.5;
+        const spawnY = -150 - Math.random() * 200;
+
+        const body = Matter.Bodies.circle(spawnX, spawnY, size * 0.4, {
+          restitution: 0.5,
+          friction: 0.2,
+          frictionAir: 0.01,
+          density: 0.001,
+          angle: Math.random() * Math.PI * 2,
+          plugin: { originalSize: size }
+        });
+
+        Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.1);
+        Matter.World.add(engineRef.current!.world, body);
+        bodiesRef.current[p.id] = body;
+      }, i * 150);
+    });
+  }, [particles]);
 
   // Initialize Physics Engine
   useEffect(() => {
     if (particles.length === 0) return;
 
-    const engine = Matter.Engine.create({
-      positionIterations: 6, // Reduced for better performance (default is 6)
-      velocityIterations: 4, // Reduced for better performance (default is 4)
-      constraintIterations: 2,
-    });
+    const engine = Matter.Engine.create();
     engineRef.current = engine;
     const world = engine.world;
-    engine.gravity.y = 0.8; // Slightly reduced gravity
+    engine.gravity.y = 0.8;
 
     // Setup Boundaries
     const updateBoundaries = () => {
@@ -176,22 +285,22 @@ export default function ChapterHero({
 
       const width = containerRef.current.offsetWidth;
       const height = containerRef.current.offsetHeight;
-      const wallThickness = 60000; // Extremely thick walls
+      const wallThickness = 1000;
 
       const floor = Matter.Bodies.rectangle(
         width / 2,
-        height + wallThickness / 2 - 200, // Floor position
+        height + wallThickness / 2 - 200,
         width * 2,
         wallThickness,
-        { isStatic: true, label: 'Floor', friction: 0.5, restitution: 0.5 }
+        { isStatic: true }
       );
 
       const leftWall = Matter.Bodies.rectangle(
-        0 - wallThickness / 2,
+        -wallThickness / 2,
         height / 2,
         wallThickness,
         height * 2,
-        { isStatic: true, label: 'LeftWall', friction: 0.5 }
+        { isStatic: true }
       );
 
       const rightWall = Matter.Bodies.rectangle(
@@ -199,7 +308,7 @@ export default function ChapterHero({
         height / 2,
         wallThickness,
         height * 2,
-        { isStatic: true, label: 'RightWall', friction: 0.5 }
+        { isStatic: true }
       );
 
       wallsRef.current = [floor, leftWall, rightWall];
@@ -209,159 +318,81 @@ export default function ChapterHero({
     updateBoundaries();
     window.addEventListener("resize", updateBoundaries);
 
-    // Render Loop - only runs when in view
-    const ticker = () => {
-      if (!isInViewRef.current || !engineRef.current) return;
+    // Render Loop - using GSAP ticker
+    const ticker = gsap.ticker.add(() => {
+      if (!engineRef.current) return;
 
-      Matter.Engine.update(engineRef.current, 16.67); // ~60fps
+      Matter.Engine.update(engineRef.current, 1000 / 60);
 
-      // Sync DOM elements - batch style updates
-      const keys = Object.keys(bodiesRef.current);
-      for (let i = 0; i < keys.length; i++) {
-        const index = parseInt(keys[i]);
+      // Sync DOM elements
+      Object.keys(bodiesRef.current).forEach((key) => {
+        const index = parseInt(key);
         const body = bodiesRef.current[index];
         const el = shapeRefs.current[index];
 
         if (el && body) {
           // @ts-ignore
-          const size = body.plugin.originalSize || 100;
-          el.style.cssText = `top:0;left:0;width:${size}px;height:${size}px;transform:translate3d(${body.position.x}px,${body.position.y}px,0) rotate(${body.angle}rad) translate(-50%,-50%);opacity:1;`;
-        }
-      }
-    };
+          const size = body.plugin?.originalSize || 100;
+          const x = body.position.x;
+          const y = body.position.y;
+          const angle = body.angle;
 
-    tickerRef.current = ticker;
-    gsap.ticker.add(ticker);
+          el.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${angle}rad) translate(-50%, -50%)`;
+          el.style.width = `${size}px`;
+          el.style.height = `${size}px`;
+          el.style.opacity = '1';
+        }
+      });
+    });
 
     return () => {
       window.removeEventListener("resize", updateBoundaries);
-      if (tickerRef.current) {
-        gsap.ticker.remove(tickerRef.current);
-      }
+      gsap.ticker.remove(ticker);
       Matter.World.clear(world, false);
       Matter.Engine.clear(engine);
     };
   }, [particles.length]);
 
-  // Trigger Falling Logic
-  useEffect(() => {
-    // When shrinking starts (progress > 0.8) and haven't spawned yet
-    if (scrollProgress > 0.8 && !hasSpawnedRef.current && engineRef.current && containerRef.current) {
-      hasSpawnedRef.current = true;
-      const containerWidth = containerRef.current.offsetWidth;
-      // Spawn particles
-      particles.forEach((p, i) => {
-        setTimeout(() => {
-          if (!engineRef.current) return;
-          
-          // Size between 80 and 160 px (visual size)
-          // Physics body size will match this
-          const size = 80 + Math.random() * 80; 
-          
-          // Spawn more towards the right side (40% - 90% range)
-          const spawnX = containerWidth * 0.4 + Math.random() * containerWidth * 0.5;
-          const spawnY = -150 - Math.random() * 200; // Start above viewport
-
-          // Use Circle for better physics performance and stability
-          const body = Matter.Bodies.circle(spawnX, spawnY, size * 0.45, {
-            restitution: 0.4,
-            friction: 0.3,
-            frictionAir: 0.01, // Add air friction to slow down
-            density: 0.001,
-            angle: Math.random() * Math.PI * 2,
-            plugin: {
-              originalSize: size // Store original size for rendering
-            }
-          });
-
-          // Add random force/spin
-          Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.1);
-          
-          Matter.World.add(engineRef.current.world, body);
-          bodiesRef.current[p.id] = body;
-        }, i * 200); // Staggered spawn
-      });
-    } else if (scrollProgress < 0.5 && hasSpawnedRef.current) {
-      // Reset if scrolled back up significantly? 
-      // Optional: Remove bodies to replay effect? 
-      // For now, let's keep them on the floor to avoid jarring disappearances.
-      // If we want to replay, we'd need to clear bodiesRef and remove from world.
-    }
-  }, [scrollProgress, particles]);
-
-
-  // Calculate transform values based on scroll progress
-  // Keep full screen for first 80% of scroll, then shrink from 1 to 0.5 in last 20%
-  const scaleProgress = Math.max(0, (scrollProgress - 0.8) / 0.2);
-  const scale = 1 - scaleProgress * 0.5;
-
-  // Title elements fade in gradually during the full screen period
-  const contentOpacity = Math.min(1, scrollProgress * 1.5);
-
-  // Preface fades in when shrinking starts
-  const prefaceOpacity = Math.max(0, (scrollProgress - 0.8) * 5);
-
   return (
-    <div ref={heroRef} className="relative w-full min-h-[200vh] bg-white overflow-hidde">
+    <div ref={heroRef} className="relative w-full min-h-[200vh] bg-white">
       {/* Sticky Container */}
-      <div 
+      <div
         ref={containerRef}
         className="sticky top-0 h-screen w-full flex flex-col items-center justify-center bg-white overflow-hidden"
       >
-        {/* Falling Elements Layer - Clickable */}
-        <div className="absolute inset-0 z-30">
-          {particles.map((p) => {
-            const isCollected = collectedIds.has(p.id);
-            return (
-              <img
-                key={p.id}
-                ref={(el) => (shapeRefs.current[p.id] = el)}
-                src={p.src}
-                alt=""
-                onClick={() => handleCollectElement(p.id, p.src)}
-                className={cn(
-                  "absolute opacity-0 w-32 h-32 md:w-48 md:h-48 object-contain cursor-pointer transition-all duration-300",
-                  isCollected && "scale-0 pointer-events-none"
-                )}
-                style={{ top: 0, left: 0 }}
-              />
-            );
-          })}
+        {/* Falling Elements Layer */}
+        <div className="absolute inset-0 z-30 pointer-events-none">
+          {particles.map((p) => (
+            <img
+              key={p.id}
+              ref={(el) => (shapeRefs.current[p.id] = el)}
+              src={p.src}
+              alt=""
+              onClick={() => handleCollectElement(p.id, p.src)}
+              className="absolute opacity-0 object-contain cursor-pointer will-change-transform pointer-events-auto"
+              style={{ top: 0, left: 0 }}
+            />
+          ))}
         </div>
 
-        {/* Collect Toast */}
-        {showCollectToast && (
-          <div className="fixed bottom-8 right-8 z-50 px-5 py-3 bg-black/80 backdrop-blur-sm text-white text-sm rounded-full shadow-lg border border-white/10 flex items-center gap-2 toast-enter">
-            <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            <span>已收集</span>
-          </div>
-        )}
-
-        {/* Shrinking Image - Move to front of elements */}
+        {/* Shrinking Image */}
         <div
+          ref={imageRef}
           className="absolute inset-0 will-change-transform z-10"
-          style={{
-            transform: `scale(${scale})`,
-          }}
         >
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${coverImage})`,
-            }}
+            style={{ backgroundImage: `url(${coverImage})` }}
           />
         </div>
 
-        {/* Content Overlay - Keep at very front */}
+        {/* Content Overlay */}
         <div
-          className="absolute inset-0 px-8 md:px-16 lg:px-24 xl:px-32 py-12 md:py-16 lg:py-20 will-change-opacity flex flex-col justify-between mx-auto z-20 mix-blend-difference text-white"
-          style={{ opacity: contentOpacity }}
+          ref={contentRef}
+          className="absolute inset-0 px-8 md:px-16 lg:px-24 xl:px-32 py-12 md:py-16 lg:py-20 will-change-opacity flex flex-col justify-between mx-auto z-20 mix-blend-difference text-white opacity-0"
         >
           {/* Top section with title */}
           <div className="flex items-start justify-between gap-8">
-            {/* Main Title - Top Left */}
             <div className="flex-1">
               <SplitText
                 text={title}
@@ -382,7 +413,8 @@ export default function ChapterHero({
               />
             </div>
           </div>
-          {/* Subtitle/Description - Top Right */}
+
+          {/* Subtitle */}
           {subtitle && (
             <div className="flex-1 max-w-md max-w-6xl">
               <AnimatedContent
@@ -397,12 +429,10 @@ export default function ChapterHero({
                 threshold={0.1}
                 delay={0.2}
               >
-                <p
-                  className={cn(
-                    "text-sm md:text-base lg:text-lg",
-                    "font-light tracking-[-0.02em] leading-relaxed"
-                  )}
-                >
+                <p className={cn(
+                  "text-sm md:text-base lg:text-lg",
+                  "font-light tracking-[-0.02em] leading-relaxed"
+                )}>
                   {subtitle}
                 </p>
               </AnimatedContent>
@@ -411,102 +441,95 @@ export default function ChapterHero({
 
           {/* Bottom section with details */}
           <div className="flex items-end justify-between">
-            {/* Project Details - Bottom Left */}
             <div className="space-y-4">
-               {/* Date Row */}
-               {date && (
-                 <AnimatedContent
-                   distance={30}
-                   direction="vertical"
-                   reverse={false}
-                   duration={0.8}
-                   delay={0.4}
-                 >
-                   <div className="text-xl md:text-2xl font-light tracking-widest">
-                     {date}
-                   </div>
-                 </AnimatedContent>
-               )}
-               
-               {/* Credits Rows */}
-               {credits && credits.length > 0 ? (
-                 <AnimatedContent
-                    distance={30}
-                    direction="vertical"
-                    reverse={false}
-                    duration={0.8}
-                    delay={0.5}
-                 >
-                   <div className="space-y-1">
-                     {credits.map((credit, idx) => (
-                       <div key={idx} className="flex flex-col md:flex-row gap-1 md:gap-3 text-sm md:text-base">
-                         <span className="font-bold">{credit.name}</span>
-                         <span className="hidden md:inline text-white/60">/</span>
-                         <span className="font-light text-white/80">{credit.role}</span>
-                       </div>
-                     ))}
-                   </div>
-                 </AnimatedContent>
-               ) : (
-                 // Fallback to old format if no credits/date provided
-                 <AnimatedContent
-                    distance={30}
-                    direction="vertical"
-                    reverse={false}
-                    duration={0.8}
-                    delay={0.5}
-                 >
-                   <div className="space-y-2 text-white/80">
-                      {category && (
-                        <div className="flex gap-3 text-xs md:text-sm">
-                          <span className="font-light text-white/60">分類</span>
-                          <span className="font-normal">{category}</span>
-                        </div>
-                      )}
-                      {authors && authors.length > 0 && (
-                        <div className="flex gap-3 text-xs md:text-sm">
-                          <span className="font-light text-white/60">作者</span>
-                          <span className="font-normal">{authors.join(" / ")}</span>
-                        </div>
-                      )}
-                      <div className="flex gap-3 text-xs md:text-sm">
-                        <span className="font-light text-white/60">期刊</span>
-                        <span className="font-normal">服務聲 2026</span>
+              {date && (
+                <AnimatedContent
+                  distance={30}
+                  direction="vertical"
+                  reverse={false}
+                  duration={0.8}
+                  delay={0.4}
+                >
+                  <div className="text-xl md:text-2xl font-light tracking-widest">
+                    {date}
+                  </div>
+                </AnimatedContent>
+              )}
+
+              {credits && credits.length > 0 ? (
+                <AnimatedContent
+                  distance={30}
+                  direction="vertical"
+                  reverse={false}
+                  duration={0.8}
+                  delay={0.5}
+                >
+                  <div className="space-y-1">
+                    {credits.map((credit, idx) => (
+                      <div key={idx} className="flex flex-col md:flex-row gap-1 md:gap-3 text-sm md:text-base">
+                        <span className="font-bold">{credit.name}</span>
+                        <span className="hidden md:inline text-white/60">/</span>
+                        <span className="font-light text-white/80">{credit.role}</span>
                       </div>
+                    ))}
+                  </div>
+                </AnimatedContent>
+              ) : (
+                <AnimatedContent
+                  distance={30}
+                  direction="vertical"
+                  reverse={false}
+                  duration={0.8}
+                  delay={0.5}
+                >
+                  <div className="space-y-2 text-white/80">
+                    {category && (
                       <div className="flex gap-3 text-xs md:text-sm">
-                        <span className="font-light text-white/60">章節</span>
-                        <span className="font-normal">{chapterNumber}</span>
+                        <span className="font-light text-white/60">分類</span>
+                        <span className="font-normal">{category}</span>
                       </div>
-                   </div>
-                 </AnimatedContent>
-               )}
+                    )}
+                    {authors && authors.length > 0 && (
+                      <div className="flex gap-3 text-xs md:text-sm">
+                        <span className="font-light text-white/60">作者</span>
+                        <span className="font-normal">{authors.join(" / ")}</span>
+                      </div>
+                    )}
+                    <div className="flex gap-3 text-xs md:text-sm">
+                      <span className="font-light text-white/60">期刊</span>
+                      <span className="font-normal">服務聲 2026</span>
+                    </div>
+                    <div className="flex gap-3 text-xs md:text-sm">
+                      <span className="font-light text-white/60">章節</span>
+                      <span className="font-normal">{chapterNumber}</span>
+                    </div>
+                  </div>
+                </AnimatedContent>
+              )}
             </div>
 
-            {/* Copy Link Button - Bottom Right */}
+            {/* Copy Link Button */}
             {chapterId && (
               <button
+                ref={copyButtonRef}
                 onClick={handleCopyLink}
-                className={cn(
-                  "p-3 rounded-full transition-all duration-200",
-                  "text-white hover:text-white/80 hover:bg-white/10 backdrop-blur-sm",
-                  copied && "text-white bg-white/20"
-                )}
+                className="p-3 rounded-full transition-all duration-200 text-white hover:text-white/80 hover:bg-white/10 backdrop-blur-sm"
                 title="複製章節連結"
                 aria-label="複製章節連結"
               >
-                {copied ? <Check size={20} /> : <Link size={20} />}
+                <Link size={20} />
               </button>
             )}
           </div>
         </div>
       </div>
 
-      {/* Preface Section - appears below */}
+      {/* Preface Section */}
       {preface && (
         <div className="relative bg-white">
           <div
-            className="px-8 md:px-16 lg:px-32 py-16 md:py-24 will-change-opacity"
-            style={{ opacity: prefaceOpacity }}
+            ref={prefaceRef}
+            className="px-8 md:px-16 lg:px-32 py-16 md:py-24 opacity-0"
           >
             <div className="max-w-4xl">
               <AnimatedContent
