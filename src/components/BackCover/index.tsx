@@ -4,6 +4,7 @@ import { SemicolonLogo } from '@/components/ui/SemicolonLogo'
 import FallingMemories from './FallingMemories'
 import FallingElements from './FallingElements'
 import EmptyState from './EmptyState'
+import RelayOverview from './RelayOverview'
 import Noise from '@/components/Noise'
 
 export default function BackCover() {
@@ -83,6 +84,11 @@ export default function BackCover() {
               <EmptyState />
             </div>
           )}
+        </div>
+
+        {/* 前景層：文字接龍總覽 */}
+        <div className="relative z-20">
+          <RelayOverview ownText={coverContribution?.mine} />
         </div>
 
         {/* 前景層：文字接龍卡片 */}

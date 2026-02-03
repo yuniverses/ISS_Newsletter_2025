@@ -642,7 +642,7 @@ export default function Cover({ onEnter }: CoverProps) {
           className="h-screen w-full relative flex flex-col box-border"
         >
           <div className="contents">
-            <div className="pointer-events-auto absolute top-[8vh] left-[6vw] flex flex-col gap-2 z-20">
+            <div className="pointer-events-auto absolute top-[8vh] left-[7vw] flex flex-col gap-2 z-20">
               <img
                 src="/assets/title.svg"
                 alt="服務聲"

@@ -22,11 +22,11 @@ export default function FallingElements({ elements, isVisible }: FallingElements
     if (elements.length === 0) return
 
     const engine = Matter.Engine.create({
-      positionIterations: 30,
-      velocityIterations: 30,
+      positionIterations: 10,
+      velocityIterations: 10,
     })
     engineRef.current = engine
-    engine.gravity.y = 0.5
+    engine.gravity.y = 0.3
 
     const updateBoundaries = () => {
       if (!containerRef.current || !engineRef.current) return
@@ -39,30 +39,33 @@ export default function FallingElements({ elements, isVisible }: FallingElements
 
       const width = containerRef.current.offsetWidth
       const height = containerRef.current.offsetHeight
-      const wallThickness = 100
+      const wallThickness = 200
 
+      // 地板
       const floor = Matter.Bodies.rectangle(
         width / 2,
-        height + wallThickness / 2 - 15,
-        width * 2,
+        height - 50,
+        width + 200,
         wallThickness,
-        { isStatic: true, friction: 1, restitution: 0.1 }
+        { isStatic: true, friction: 1, restitution: 0.1, label: 'floor' }
       )
 
+      // 左牆
       const leftWall = Matter.Bodies.rectangle(
-        -wallThickness / 2 + 5,
+        -wallThickness / 2,
         height / 2,
         wallThickness,
-        height * 3,
-        { isStatic: true, friction: 0.5 }
+        height * 2,
+        { isStatic: true, friction: 0.8, restitution: 0.2, label: 'leftWall' }
       )
 
+      // 右牆
       const rightWall = Matter.Bodies.rectangle(
-        width + wallThickness / 2 - 5,
+        width + wallThickness / 2,
         height / 2,
         wallThickness,
-        height * 3,
-        { isStatic: true, friction: 0.5 }
+        height * 2,
+        { isStatic: true, friction: 0.8, restitution: 0.2, label: 'rightWall' }
       )
 
       wallsRef.current = [floor, leftWall, rightWall]
@@ -73,17 +76,44 @@ export default function FallingElements({ elements, isVisible }: FallingElements
     window.addEventListener('resize', updateBoundaries)
 
     const ticker = gsap.ticker.add(() => {
-      if (engineRef.current) {
-        Matter.Engine.update(engineRef.current, 1000 / 60)
-      }
+      if (!engineRef.current || !containerRef.current) return
+
+      Matter.Engine.update(engineRef.current, 1000 / 60)
+
+      const containerWidth = containerRef.current.offsetWidth
+      const containerHeight = containerRef.current.offsetHeight
 
       Object.keys(bodiesRef.current).forEach((key) => {
         const body = bodiesRef.current[key]
         const el = elementRefs.current[key]
 
         if (el && body) {
+          // 邊界檢查
+          let x = body.position.x
+          let y = body.position.y
+
+          // @ts-ignore
+          const size = body.plugin?.size || 80
+          const halfSize = size / 2
+
+          // 限制在可見區域內
+          if (x < halfSize) {
+            Matter.Body.setPosition(body, { x: halfSize, y })
+            Matter.Body.setVelocity(body, { x: Math.abs(body.velocity.x) * 0.5, y: body.velocity.y })
+          }
+          if (x > containerWidth - halfSize) {
+            Matter.Body.setPosition(body, { x: containerWidth - halfSize, y })
+            Matter.Body.setVelocity(body, { x: -Math.abs(body.velocity.x) * 0.5, y: body.velocity.y })
+          }
+          if (y > containerHeight - halfSize - 50) {
+            Matter.Body.setPosition(body, { x, y: containerHeight - halfSize - 50 })
+            Matter.Body.setVelocity(body, { x: body.velocity.x * 0.8, y: 0 })
+          }
+
           el.style.transform = `translate(${body.position.x}px, ${body.position.y}px) rotate(${body.angle}rad) translate(-50%, -50%)`
-          el.style.opacity = '0.6'
+          el.style.width = `${size}px`
+          el.style.height = `${size}px`
+          el.style.opacity = '0.5'
         }
       })
     })
@@ -100,6 +130,26 @@ export default function FallingElements({ elements, isVisible }: FallingElements
     }
   }, [elements.length])
 
+  // 根據數量計算縮放倍數
+  // 1個 = 2倍, 逐漸遞減到 14+ 個 = 1倍
+  const sizeMultiplier = (() => {
+    const count = elements.length
+    if (count <= 1) return 2
+    if (count === 2) return 1.85
+    if (count === 3) return 1.7
+    if (count === 4) return 1.6
+    if (count === 5) return 1.5
+    if (count === 6) return 1.4
+    if (count === 7) return 1.3
+    if (count === 8) return 1.25
+    if (count === 9) return 1.2
+    if (count === 10) return 1.15
+    if (count === 11) return 1.1
+    if (count === 12) return 1.07
+    if (count === 13) return 1.03
+    return 1
+  })()
+
   // 觸發掉落
   useEffect(() => {
     if (!isVisible || !isReady || hasSpawnedRef.current || !engineRef.current || !containerRef.current) {
@@ -109,34 +159,44 @@ export default function FallingElements({ elements, isVisible }: FallingElements
     hasSpawnedRef.current = true
     const containerWidth = containerRef.current.offsetWidth
 
+    // 計算生成位置，避免重疊
+    const columns = Math.min(elements.length, 3)
+    const columnWidth = (containerWidth - 80) / columns
+
     elements.forEach((element, i) => {
       setTimeout(() => {
         if (!engineRef.current) return
 
-        const size = 80 + Math.random() * 60 // 80-140px
-        const spawnX = 60 + Math.random() * (containerWidth - 120)
-        const spawnY = -80 - Math.random() * 200 - i * 60
+        // 基礎大小 60-100px，乘以倍數
+        const baseSize = 60 + Math.random() * 40
+        const size = Math.round(baseSize * sizeMultiplier)
 
-        const body = Matter.Bodies.rectangle(
+        // 分散在不同列生成
+        const column = i % columns
+        const spawnX = 40 + column * columnWidth + columnWidth / 2 + (Math.random() - 0.5) * 30
+        const spawnY = -80 - Math.floor(i / columns) * 100 - Math.random() * 50
+
+        const body = Matter.Bodies.circle(
           spawnX,
           spawnY,
-          size,
-          size,
+          size * 0.4,
           {
-            restitution: 0.3,
-            friction: 0.6,
-            frictionAir: 0.015,
-            density: 0.002,
-            angle: (Math.random() - 0.5) * 0.5,
-            chamfer: { radius: 8 },
+            restitution: 0.4,
+            friction: 0.4,
+            frictionAir: 0.02,
+            density: 0.001,
+            label: `element-${element.id}`,
           }
         )
 
-        Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.06)
+        // @ts-ignore
+        body.plugin = { size }
+
+        Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.04)
 
         Matter.World.add(engineRef.current.world, body)
         bodiesRef.current[element.id] = body
-      }, i * 200)
+      }, i * 250)
     })
   }, [isVisible, isReady, elements])
 
@@ -147,7 +207,7 @@ export default function FallingElements({ elements, isVisible }: FallingElements
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0  pointer-events-none"
+      className="absolute inset-0 pointer-events-none"
     >
       {elements.map((element) => (
         <img
@@ -155,8 +215,8 @@ export default function FallingElements({ elements, isVisible }: FallingElements
           ref={(el) => (elementRefs.current[element.id] = el)}
           src={element.src}
           alt=""
-          className="absolute top-0 left-0 opacity-0 w-24 h-24 md:w-32 md:h-32 object-contain"
-          style={{ filter: 'brightness(0.7)' }}
+          className="absolute top-0 left-0 opacity-0 object-contain"
+          style={{ filter: 'brightness(0.6)' }}
         />
       ))}
     </div>
