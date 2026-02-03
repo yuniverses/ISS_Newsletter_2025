@@ -91,7 +91,7 @@ export default function ChapterSection({
       />
 
       {/* Chapter Content */}
-      <div className="bg-white px-8 md:px-16 lg:px-32 mb-72 max-w-6xl mx-auto">
+      <div className="bg-white md:px-16 lg:px-32 mb-72 max-w-6xl mx-auto">
         {/* Chapter Meta Info */}
         <div className="mb-16 max-w-4xl">
           {/* Chapter Description */}

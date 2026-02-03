@@ -217,12 +217,19 @@ export default function ChapterHero({
 
     if (!hero || !container || !image || !content) return;
 
+    // 響應式設定：手機版需要更早觸發動畫
+    const isMobile = window.innerWidth < 768;
+
+    // 手機版：前 40% 顯示內容，後 60% 縮小
+    // 電腦版：前 60% 顯示內容，後 40% 縮小
+    const contentEndPercent = isMobile ? "25%" : "40%";
+    const shrinkStartPercent = isMobile ? "40%" : "60%";
+
     const ctx = gsap.context(() => {
       // The hero is min-h-[200vh] with a sticky container
       // As user scrolls through the 200vh, the sticky container stays in place
-      // We want: first 60% = full screen, last 40% = shrink to 0.5
 
-      // Image scale animation - stays full for first 60%, shrinks in last 40%
+      // Image scale animation
       gsap.fromTo(image,
         { scale: 1 },
         {
@@ -230,14 +237,14 @@ export default function ChapterHero({
           ease: "none",
           scrollTrigger: {
             trigger: hero,
-            start: "60% bottom", // Start shrinking when 60% of hero has scrolled
-            end: "bottom bottom", // End when hero bottom reaches viewport bottom
+            start: `${shrinkStartPercent} bottom`,
+            end: "bottom bottom",
             scrub: 0.5,
           }
         }
       );
 
-      // Content fade in - fade in during first part of scroll (0-60%)
+      // Content fade in - fade in earlier on mobile
       gsap.fromTo(content,
         { opacity: 0 },
         {
@@ -245,14 +252,14 @@ export default function ChapterHero({
           ease: "none",
           scrollTrigger: {
             trigger: hero,
-            start: "top bottom",    // Start when hero enters viewport
-            end: "40% bottom",      // Fully visible by 40%
+            start: "top bottom",
+            end: `${contentEndPercent} bottom`,
             scrub: 0.5,
           }
         }
       );
 
-      // Preface fade in - fade in when shrinking starts (60%-100%)
+      // Preface fade in - fade in when shrinking starts
       if (prefaceEl) {
         gsap.fromTo(prefaceEl,
           { opacity: 0 },
@@ -261,7 +268,7 @@ export default function ChapterHero({
             ease: "none",
             scrollTrigger: {
               trigger: hero,
-              start: "60% bottom",
+              start: `${shrinkStartPercent} bottom`,
               end: "bottom bottom",
               scrub: 0.5,
             }
@@ -269,10 +276,10 @@ export default function ChapterHero({
         );
       }
 
-      // Trigger falling elements when shrinking begins (at 60%)
+      // Trigger falling elements when shrinking begins
       ScrollTrigger.create({
         trigger: hero,
-        start: "60% bottom",
+        start: `${shrinkStartPercent} bottom`,
         onEnter: () => {
           if (!hasSpawnedRef.current && engineRef.current && container) {
             hasSpawnedRef.current = true;
@@ -282,7 +289,16 @@ export default function ChapterHero({
       });
     }, hero);
 
-    return () => ctx.revert();
+    // 處理視窗大小變化
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      ctx.revert();
+    };
   }, []);
 
   // Spawn particles function

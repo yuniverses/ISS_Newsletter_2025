@@ -147,7 +147,7 @@ export default function FallingElements({ elements, isVisible }: FallingElements
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 overflow-hidden pointer-events-none"
+      className="absolute inset-0  pointer-events-none"
     >
       {elements.map((element) => (
         <img
