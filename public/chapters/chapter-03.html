@@ -1,167 +1,127 @@
-<div class="chapter-content">
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap");
 
-  <!-- 發現一：模擬者 -->
-  <div style="margin-bottom: 6rem;">
-    <!-- 小標題 -->
-    <div style="display: flex; align-items: flex-start; gap: 2rem; margin-bottom: 3rem;">
-      <div style="font-size: 4rem; font-weight: 300; color: #e5e7eb; line-height: 1;">01</div>
-      <div style="flex: 1; padding-top: 0.5rem;">
-        <h3>使用大型語言模型（LLMs）來模擬合成消費者</h3>
-        <p style="color: #6b7280; margin-top: 0.5rem;">AI 是個能在市場研究模擬人類情感的模擬者</p>
+  .ch11-container {
+    font-family: "Shippori Mincho", "Noto Serif TC", serif;
+    color: #1a1a1a;
+    width: 100%;
+    background-color: #ffffff;
+  }
+  .ch11-sans { font-family: "Noto Sans TC", sans-serif; }
+  .vertical-text { writing-mode: vertical-rl; text-orientation: mixed; }
+  .text-justify-palt { text-align: justify; font-feature-settings: "palt"; }
+  .ch11-container::-webkit-scrollbar { display: none; }
+  .ch11-container p { margin-bottom: 1rem; }
+  @media (min-width: 768px) { .ch11-container p { margin-bottom: 1rem; } }
+
+  .img-full {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 3rem 0;
+  }
+
+  .img-large {
+    width: 80%;
+    max-width: 900px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 2.5rem auto;
+    display: block;
+  }
+
+  .img-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-2 img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .img-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-3 img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .img-caption {
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.75rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .img-large { width: 92%; }
+    .img-grid-2 { grid-template-columns: 1fr; }
+    .img-grid-3 { grid-template-columns: 1fr; }
+    .img-grid-2 img, .img-grid-3 img { height: 220px; }
+  }
+</style>
+
+<div class="ch11-container not-prose pb-24 overflow-visible">
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <div class="col-span-2 hidden lg:flex h-[600px] justify-center items-start pt-16">
+        <div class="h-full border-r border-gray-900 pr-6">
+          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">慈昱學姊</h2>
+          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">在校服科人</p>
+        </div>
       </div>
-    </div>
 
-    <!-- 內容 -->
-    <div style="margin-left: 0;">
-      <p>傳統的市場研究不僅成本高昂，且充滿限制。當研究人員試圖讓大型語言模型（LLM）模擬消費者，直接提供數字評分（如 1-5 分的李克特量表）時，卻發現結果完全不切實際。</p>
-
-      <!-- 問題所在 -->
-      <div style="margin-top: 2rem; margin-bottom: 2rem; background: #f9fafb; padding: 2.5rem; border-radius: 2px;">
-        <h4>問題所在：數字評分的失真</h4>
-        <p>根據一項針對 57 項產品、涵蓋 9,300 份人類回饋的大規模研究，當直接要求 LLM 進行數字評分（Direct Likert Rating, DLR）時，模型表現出強烈的「趨中性」。它傾向於選擇安全的「3」分，幾乎從不選擇極端的「1」或「5」。</p>
-        <p>這與真實的人類數據形成鮮明對比，在後者中，「4」和「5」分才是最常見的選項。這種過於狹窄且偏斜的回應分佈，讓直接評分法幾乎毫無用處。</p>
-      </div>
-
-      <!-- 解決方案 -->
-      <h4>解決方案：「語義相似度評級」的突破</h4>
-      <p>研究人員提出了一種巧妙的方法——語義相似度評級（Semantic Similarity Rating, SSR）。此方法不直接要求數字，而是先引導 LLM 生成一段自由文本來表達其購買意願。接著，透過自然語言處理技術，分析這段文本與一系列預設的「錨點陳述」之間的語義相似度，從而將文本映射到一個更真實、更細膩的李克特分數分佈。</p>
-
-      <!-- 引用塊 -->
-      <blockquote style="border-left: 4px solid #000; padding-left: 2rem; margin: 3rem 0; font-style: italic; color: #6b7280;">
-        <p>「這些發現表明，先前使用 LLM 作為調查對象的嘗試中出現的許多缺點——例如分佈偏斜、過度正面或回歸平均值——並非 LLM 的內在限制，而是回應引導方式所造成的人為結果。」</p>
-      </blockquote>
-
-      <!-- 成效 -->
-      <h4>驚人的成效</h4>
-      <p>SSR 方法的成效斐然，不僅達到了人類重測信度的 90%，其產生的回應分佈與真實數據的相似度更高達 85% 以上。</p>
-      <p>更令人驚訝的是，LLM 生成的質化回饋（自由文本）在資訊豐富度上甚至超越了普通人類的回應。它們不僅能提供更深入的產品優缺點分析，且似乎較少受到人類常見的「正面評價偏誤」影響，為產品研究帶來了過去難以觸及的洞察深度。這項突破對企業領袖而言意義重大，它意味著一種更快速、更低成本，且可能更誠實的消費者洞察方式已經出現，將在產品開發週期中創造顯著的競爭優勢。</p>
-    </div>
-  </div>
-
-  <!-- 發現二：使用者 -->
-  <div style="margin-bottom: 6rem;">
-    <div style="display: flex; align-items: flex-start; gap: 2rem; margin-bottom: 3rem;">
-      <div style="font-size: 4rem; font-weight: 300; color: #e5e7eb; line-height: 1;">02</div>
-      <div style="flex: 1; padding-top: 0.5rem;">
-        <h3>AI 不再只是工具，它是你的新同事—甚至是你的新客戶</h3>
-        <p style="color: #6b7280; margin-top: 0.5rem;">設計的下一個使用者，可能不是人類</p>
-      </div>
-    </div>
-
-    <div>
-      <p>長久以來，服務設計的黃金法則是「以人為本」。我們理所當然地認為，服務的最終使用者永遠是人類。然而，一個顛覆性的概念正在浮現：AI 不再僅僅是服務的提供者，它正逐漸成為服務的「使用者」或「客戶」。</p>
-
-      <!-- 框架說明 -->
-      <h4>從「人類中心」到「混合人機服務接觸」</h4>
-      <p>傳統服務中，AI 的角色通常是提供者（例如 Netflix 的推薦演算法）。但最新的「混合人機服務接觸 (Hybrid Human–AI Service Encounter)」框架指出，一種新的互動模式正在興起：「人提供服務給 AI (Human Provider to AI User)」。</p>
-      <p>在這個模式中，AI 系統可以代表人類自主執行任務。一個著名且具體的例子是 Google Duplex，它能以近乎真人的方式與人類服務提供者互動，自主完成餐廳訂位等任務。</p>
-
-      <!-- 四種模式 -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 3rem 0;">
-        <div style="background: #f9fafb; padding: 2rem; border-radius: 2px;">
-          <h5 style="margin-bottom: 1rem;">人對人（H2H）</h5>
-          <p style="font-size: 0.875rem; color: #6b7280;">最傳統的模式，但 AI 已在幕後扮演關鍵角色。例如遠程醫療諮詢中，AI 即時分析病歷，為醫生提供診斷建議。</p>
+      <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl">
+        <div class="space-y-6">
+          <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight">慈昱學姊</h2>
+          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">影像紀錄與校園日常片段</p>
         </div>
 
-        <div style="background: #f9fafb; padding: 2rem; border-radius: 2px;">
-          <h5 style="margin-bottom: 1rem;">人對 AI（H2AI）</h5>
-          <p style="font-size: 0.875rem; color: #6b7280;">AI 成為了服務的「使用者」，代表人類自主執行任務。你的 AI 助理分析偏好後直接完成預訂，餐廳系統面對的「客戶」是 AI。</p>
+        <div class="space-y-6">
+          <p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">本章目前先整理慈昱學姊的影像紀錄，延續「在校服科人」的日常觀察與成長軌跡。後續若有訪談逐字稿，將可直接擴充在本頁排版中。</p>
         </div>
 
-        <div style="background: #f9fafb; padding: 2rem; border-radius: 2px;">
-          <h5 style="margin-bottom: 1rem;">AI 對人（AI2H）</h5>
-          <p style="font-size: 0.875rem; color: #6b7280;">目前最常見的模式。AI 直接向人類提供服務，例如 Netflix 的推薦演算法或銀行的聊天機器人。</p>
+        <img src="/assets/chapter-03-ciyu/ciyu-01.jpg" alt="慈昱學姊照片 1" class="img-large" />
+
+        <div class="img-grid-2">
+          <img src="/assets/chapter-03-ciyu/ciyu-02.jpg" alt="慈昱學姊照片 2" />
+          <img src="/assets/chapter-03-ciyu/ciyu-03.jpg" alt="慈昱學姊照片 3" />
         </div>
 
-        <div style="background: #f9fafb; padding: 2rem; border-radius: 2px;">
-          <h5 style="margin-bottom: 1rem;">AI 對 AI（AI2AI）</h5>
-          <p style="font-size: 0.875rem; color: #6b7280;">演算法之間自主互動。智慧冰箱偵測到牛奶快沒了，自動向電商平台的 AI 下訂單，整個過程無需人類介入。</p>
+        <div class="img-grid-3">
+          <img src="/assets/chapter-03-ciyu/ciyu-04.jpg" alt="慈昱學姊照片 4" />
+          <img src="/assets/chapter-03-ciyu/ciyu-05.jpg" alt="慈昱學姊照片 5" />
+          <img src="/assets/chapter-03-ciyu/ciyu-06.jpg" alt="慈昱學姊照片 6" />
+        </div>
+
+        <p class="img-caption">Photo archive · 慈昱學姊</p>
+      </div>
+
+      <div class="col-span-2 hidden lg:block pt-20">
+        <div class="sticky top-10 space-y-6">
+          <div class="border border-black p-4">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">影像章節／Photo essay</p>
+          </div>
         </div>
       </div>
-
-      <!-- 影響 -->
-      <h4>對設計師的深遠影響</h4>
-      <p>這對設計師意味著根本性的角色轉變。他們不再只是為人類的情感回應或對話細微差別進行設計，而是必須開始為演算法設計互動協議和介面。設計的重點變成了確保服務環境能夠提供 AI 可讀取的結構化數據、清晰的規則和充足的上下文，以便 AI 能夠做出明智、準確的決策。</p>
-      <p>這標誌著一個全新、價值上兆的市場的誕生：「演算法客戶」。能夠學會以數據和邏輯與之溝通的企業，將掌握巨大的競爭優勢。</p>
     </div>
-  </div>
-
-  <!-- 發現三：協作者 -->
-  <div style="margin-bottom: 6rem;">
-    <div style="display: flex; align-items: flex-start; gap: 2rem; margin-bottom: 3rem;">
-      <div style="font-size: 4rem; font-weight: 300; color: #e5e7eb; line-height: 1;">03</div>
-      <div style="flex: 1; padding-top: 0.5rem;">
-        <h3>一種新的創意路徑</h3>
-        <p style="color: #6b7280; margin-top: 0.5rem;">AI 不僅是效率工具，更是激發「意外之喜」的創意夥伴</p>
-      </div>
-    </div>
-
-    <div>
-      <p>我們不僅必須為作為使用者的 AI 進行設計，研究更顯示，我們還必須學會與 AI 這位非人類的創意夥伴一同設計，它能以我們無法企及的方式洞察世界。關於「AI 將取代創意工作」的焦慮普遍存在，但研究顯示，AI 在創意流程中的真正價值並非替代，而是增強——它提供了一種與人類截然不同的分析視角，從而激發「意外之喜 (serendipity)」。</p>
-
-      <!-- AI 的思維 -->
-      <h4>AI 的非人類「思維」</h4>
-      <p>人類設計師在思考時，往往會受到既有框架和經驗的束縛。然而，AI（特別是資料科學技術如聚類分析）可以完全不受這些限制。它能幫助設計師擺脫自身的認知偏誤與先入為主的框架，直接從龐大的用戶行為數據中，發現全新的、人類可能從未想到的群體模式。</p>
-      <p>例如，一項針對加拿大公共交通數據的分析發現，傳統的年齡分層並非理解乘客行為的最佳方式；反之，透過 AI 將乘客按「出行模式」進行聚類，能帶來更有價值的設計洞察。</p>
-
-      <!-- 引用 -->
-      <blockquote style="border-left: 4px solid #000; padding-left: 2rem; margin: 3rem 0; font-style: italic; color: #6b7280;">
-        <p>「應用資料科學技術的分析性質與設計師的創意思維過程有顯著不同。這為創意設計師提供了一條發現新穎解決方案的新路徑。」</p>
-      </blockquote>
-
-      <!-- 協作價值 -->
-      <p>這種人機協作的價值，在於兩種思維模式的互補。AI 負責揭示隱藏的、反直覺的數據模式，而設計師則利用他們的專業知識和創造力來解讀這些模式，並將其轉化為新穎的解決方案。</p>
-      <p>AI 並非要取代設計師的創意火花，而是提供了一種獨特的燃料，幫助他們擺脫思維定勢，看到那些被忽略的關聯與機會。對商業策略師而言，這是一個強大的工具，能用來識別那些被傳統分析方法完全忽略的隱形市場區隔與未滿足的需求。</p>
-    </div>
-  </div>
-
-  <!-- 發現四：行動者 -->
-  <div style="margin-bottom: 6rem;">
-    <div style="display: flex; align-items: flex-start; gap: 2rem; margin-bottom: 3rem;">
-      <div style="font-size: 4rem; font-weight: 300; color: #e5e7eb; line-height: 1;">04</div>
-      <div style="flex: 1; padding-top: 0.5rem;">
-        <h3>最重要的對話，正發生在你看不到的 AI 之間</h3>
-        <p style="color: #6b7280; margin-top: 0.5rem;">AI-to-AI：服務設計的隱形前線</p>
-      </div>
-    </div>
-
-    <div>
-      <p>我們習慣於關注人與人、人與 AI 之間的互動，但服務設計的下一個前沿，可能發生在我們完全看不見的地方：AI 與 AI 之間的自主互動。</p>
-
-      <!-- 隱藏的互動層 -->
-      <h4>揭示隱藏的互動層</h4>
-      <p>在「混合人機服務接觸」框架中，存在一個「AI 提供服務給 AI (AI-to-AI)」的象限。在此模式下，演算法在沒有人類直接干預的情況下自主互動，以提供服務。雖然這些互動對終端使用者來說是完全不可見的，但它們正深刻地影響著我們的體驗。</p>
-
-      <!-- 實例 -->
-      <div style="background: #f9fafb; padding: 2.5rem; margin: 2rem 0; border-radius: 2px;">
-        <h4>無人參與的服務</h4>
-        <p>具體的例子無處不在。一個自動化的交通監控系統，其中一個演算法持續分析交通流量，另一個演算法則根據分析結果預測擁堵，並即時調整交通信號。</p>
-        <p>在更先進的場景中，自動駕駛車輛之間為了高效執行送貨任務而相互通信、協調路線。人類是最終的受益者，而活動主要在機器之間展開。</p>
-      </div>
-
-      <!-- 設計啟示 -->
-      <h4>對設計的未來啟示</h4>
-      <p>這項挑戰將設計師的任務從單純的介面設計，提升到更宏觀的「系統設計」(systemic design) 層次，要求他們設計系統間的溝通協議、數據流、治理規則和倫理保障，確保這些自主系統之間的互動是可追溯、負責任且符合人類價值觀的。</p>
-      <p>因此，設計師不再只是設計體驗，他們正在成為一個看不見的自主機器經濟的架構師。他們今天寫下的規則，將治理明日的服務樣貌。</p>
-    </div>
-  </div>
-
-  <!-- 結論 -->
-  <div style="margin-bottom: 4rem;">
-    <h3>結論：擁抱新夥伴關係，重新思考設計的未來</h3>
-
-    <p>從上述四個發現中，我們看到一個清晰的趨勢：AI 的角色遠比一個簡單的「工具」要複雜得多。它既是可以模擬人類情感的<strong>模擬者</strong>，也是服務的直接<strong>使用者</strong>；它不僅是激發創意的<strong>靈感來源</strong>，更是能夠在幕後自主協作的<strong>行動者</strong>。</p>
-
-    <p>這四個角色並非各自獨立，而是一個單一新興實體的不同面向：一個在我們的經濟與創意生態系中，前所未見的非人類行動者。我們現在必須學習去理解它、與它協作，並為它設計。</p>
-
-    <!-- 最終引用 -->
-    <blockquote style="border-left: 4px solid #000; padding-left: 2rem; margin: 3rem 0; font-style: italic; color: #6b7280;">
-      <p style="font-size: 1.125rem;">我們正邁入一個人類與 AI 共同創造和體驗服務的新時代。這不僅僅是技術的演進，更是夥伴關係的重塑。這也迫使我們提出一個更深層次的問題：當我們的設計不僅要為人類服務，還要與 AI 合作、甚至為 AI 設計時，「以人為本」的真正意義是什麼？</p>
-    </blockquote>
-  </div>
-
-  <!-- 分號符號：延續的象徵 -->
-  <div style="text-align: center; padding: 4rem 0;">
-    <span style="font-size: 5rem; color: #d1d5db; font-weight: 300; line-height: 1;">;</span>
   </div>
 </div>

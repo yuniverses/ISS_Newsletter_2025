@@ -1,4 +1,149 @@
-<div class="chapter-content">
-  <h2>Chapter 0${i}</h2>
-  <p>這是章節內容的佔位符。請編輯此 HTML 文件以添加你的實際內容。</p>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap");
+
+  .ch11-container {
+    font-family: "Shippori Mincho", "Noto Serif TC", serif;
+    color: #1a1a1a;
+    width: 100%;
+    background-color: #ffffff;
+  }
+  .ch11-sans { font-family: "Noto Sans TC", sans-serif; }
+  .vertical-text { writing-mode: vertical-rl; text-orientation: mixed; }
+  .text-justify-palt { text-align: justify; font-feature-settings: "palt"; }
+  .ch11-container::-webkit-scrollbar { display: none; }
+  .ch11-container p { margin-bottom: 1rem; }
+  @media (min-width: 768px) { .ch11-container p { margin-bottom: 1rem; } }
+
+  .img-full {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 3rem 0;
+  }
+
+  .img-large {
+    width: 80%;
+    max-width: 900px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 2.5rem auto;
+    display: block;
+  }
+
+  .img-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-2 img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .img-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-3 img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .img-caption {
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.75rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .img-large { width: 92%; }
+    .img-grid-2 { grid-template-columns: 1fr; }
+    .img-grid-3 { grid-template-columns: 1fr; }
+    .img-grid-2 img, .img-grid-3 img { height: 220px; }
+  }
+</style>
+
+<div class="ch11-container not-prose pb-24 overflow-visible">
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <div class="col-span-2 hidden lg:flex h-[640px] justify-center items-start pt-16">
+        <div class="h-full border-r border-gray-900 pr-6">
+          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">IS 馮元詰</h2>
+          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">服科前輩們</p>
+        </div>
+      </div>
+
+      <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl">
+        <div class="space-y-6">
+          <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight">當工程師懂服務設計，後台也可以是舞台</h2>
+          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">——專訪薩泰爾全端工程師 馮元詰</p>
+        </div>
+
+        
+
+        <div class="space-y-2">
+          <p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">從統計系出身、原本拿到美光（Micron）offer，到後來選擇加入薩泰爾，成為全端工程師，和上司 Sunny 一起組成「薩泰爾服務科學實驗室」，這一路看似充滿偶然，其實每一步都和他對「體驗」以及「人」的理解緊緊相扣。</p>
+<blockquote class="border-l-2 border-gray-900 pl-6 my-8"><p class="text-xl md:text-2xl text-gray-700 font-light italic leading-relaxed">「工作是在路上撿的。」</p></blockquote>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">研究所畢業前，小馮學長其實已經拿到美光的錄取通知。對多數人來說，那是一條再清楚不過的「正確道路」——穩定、待遇好、前景明確。但當時的他有另一個考量：想去台北，離女朋友近一點。於是他去參加就業博覽會，在現場遇到薩泰爾共同創辦人Sunny。聊著聊著，他就這樣進了薩泰爾。</p>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">雖然薩泰爾的薪資是美光的一半，但這份工作給予他極大的彈性與發揮空間，讓他得以經營多重身分：到大學教書、為保養品公司與成人產業進行數據分析與營運優化，更參與薩泰爾的內部創業計畫。對他來說，收入不是優先考量，真正重要的是能不能做出有意思、能被使用的東西。</p>
+<blockquote class="border-l-2 border-gray-900 pl-6 my-8"><p class="text-xl md:text-2xl text-gray-700 font-light italic leading-relaxed">「你們不用買票，我可以自己加票」</p></blockquote>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">這句帥氣的台詞，對上的是小馮學長最具代表性的專案之一——內部創業的禮賓系統inviti（源自世界語的 invite）。在大型演出與巡迴活動中，貴賓名單動輒上千人，不同組別、不同場次，各自使用表單管理，資料分散、更新困難，後續還要處理座位安排、提醒與確認信件，整體流程極度仰賴人工。</p>
+
+<div class="img-grid-2">
+  <img src="/assets/chapter-04-feng/feng-01.jpg" alt="馮元詰學長訪談照片 1" />
+  <img src="/assets/chapter-04-feng/feng-02.jpg" alt="馮元詰學長訪談照片 2" />
+</div>
+<div class="img-grid-2">
+  <img src="/assets/chapter-04-feng/feng-03.jpg" alt="馮元詰學長訪談照片 3" />
+  <img src="/assets/chapter-04-feng/feng-04.jpg" alt="馮元詰學長訪談照片 4" />
+</div>
+<p class="img-caption">Photo archive · 馮元詰</p>
+
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">於是 inviti 出現了。這個專案由他和 PM Jerry 搭檔完成，Jerry 負責流程梳理，小馮學長則負責系統實作。他形容兩人的分工是：「我負責寫程式的一切，他負責寫程式以外的一切。」系統上線後，從《夜夜秀》、《炎上》，到博恩、怡岑的專場，全都使用這套系統，禮賓統籌的工作量減少 60～80%，成效驚人。</p>
+<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">不是所有問題，都能立刻被程式解決</h3>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">另一個小馮學長的挑戰，是薩泰爾內部的工具網頁，小馮學長同樣負責實作，Sunny 則負責規則制定。在組織重整期間，帳務流程被重新設計。過去公司所有帳務都建在 Google Sheet 上，再用 Google Apps Script 串資料與權限。問題很明顯：「資料一多，效能就開始崩壞」不只處理效率很慢，若資料同步過程中發生錯誤，溯源也需要花不少時間。</p>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">小馮學長其實很早就意識到，若想徹底解決問題，終究得自己管資料庫、做全端網站。但面對 Sunny 管理方面的考量「Google工具如果故障，大家都能修，但系統壞掉，只有你能修。」，以及大家轉換工具的陣痛期，這場拉鋸，讓小馮學長開始思考：系統化中有什麼可以保留彈性？什麼不行？</p>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在開始設計系統前，小馮學長花了很多時間做使用者調查，團隊也在舊工具中觀察並調整了將近三季，才開始判斷：哪些欄位是長期穩定、不需要彈性的？哪些流程一旦定義清楚，就值得搬進系統？把所有顆粒攤開、理解完之後，才會真正進入到寫系統的時刻。</p>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">新系統上線後，營運端至少省下 60% 的時間。漂亮的數字背後，是一段漫長的過程，數位轉型、打造系統從不會只停留在一個時間節點，而是一條無限延伸的時間軸，在過程中持續解決使用者的「痛」，再挖掘新的問題、不斷迭代。</p>
+<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">AI 能模擬，但無法替你體驗</h3>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">談到 AI，小馮學長不認為 AI 能真正取代使用者研究。「你可以說它在模擬，但體驗這件事，還是得人親自下去做。」他舉報帳流程為例：「使用者的報帳行為，跟會計看到的報帳，是完全不同的東西。」這也是為什麼，他反而越來越相信服務設計的價值。</p>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">當「會寫程式」不再稀缺，真正拉開差距的，會是誰比較懂人、懂脈絡、懂問題怎麼被定義。在他眼中，服務設計正好站在那個交會點——能洞察需求、又能把語言講清楚，讓 AI 或工程師知道該做什麼。</p>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">另外，想要寫出一個好的系統，基礎也不能放掉。他形容沒有基礎就用 AI 寫程式，就像「小孩開大車」，寫出一個漂亮但難以維護的程式，累積不少技術債。這也是他回到校園教書的原因：不只要學生會用 AI 寫程式，還要有能力用靠學習累積的基礎知識，更好的管理 AI 寫出來的程式。</p>
+<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">不是每一條路都筆直，但每一步都算數</h3>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">小馮學長很坦白地說，他大學時的學習幾乎都不在課堂內。大二原本想走行銷，後來在鮭魚之亂那年，一個無釐頭企劃創造的流量，勝過無數專案，讓他決定轉向技術。</p>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在沒有 AI 的年代，他嘗試自己寫 Python，改善校內工讀生填班表的系統，系統用到的爬蟲技術，一路延伸到他的畢業專題，讓大學成績倒數的他成為專題第一名，也因此進了服科所。「真的就是一環扣一環。」</p>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">回頭看自己最大的選擇——美光與薩泰爾，小馮學長從來沒有後悔。他看著在科技大廠輪班、壓力極大的朋友，再看看自己現在的生活狀態，只覺得一切都是選擇堆疊的結果。「如果你沒有做某個決定，你就不會站在現在的位置。」既然如此，那就沒必要反覆內耗。</p>
+<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">這也是他送給學弟妹的一句話：「不要內耗、不要後悔自己做過的決定。」</p>
+        </div>
+      </div>
+
+      <div class="col-span-2 hidden lg:block pt-20">
+        <div class="sticky top-10 space-y-6">
+          <div class="border border-black p-4">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">專訪／長文整理<br />章節排版採用 chapter-11 元件</p>
+          </div>
+          <div class="border-t border-black pt-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">THEME</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">分號、服務設計、實務觀察</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -5,75 +5,91 @@
     {
       "id": "chapter-01",
       "order": 1,
-      "title": "認識服務科學研究所",
+      "title": "服科所介紹；課程、老師",
       "description": "",
       "htmlFile": "/chapters/chapter-01.html",
       "authors": [],
-      "tag": "服務聲精選",
+      "category": "服科的入口",
       "theme": "light"
     },
     {
       "id": "chapter-02",
       "order": 2,
-      "title": "AI 時代的服務設計",
+      "title": "薐嘉學姊",
       "description": "",
       "htmlFile": "/chapters/chapter-02.html",
-      "authors": [],
-      "tag": "服務聲精選",
+      "authors": ["薐嘉學姊"],
+      "category": "在校服科人",
       "theme": "light"
     },
     {
       "id": "chapter-03",
       "order": 3,
-      "title": "AI時代，為何「懂人心」比「懂技術」更重要？",
+      "title": "慈昱學姊",
       "description": "",
       "htmlFile": "/chapters/chapter-03.html",
-      "authors": ["Sunny 鄭晴元"],
+      "authors": ["慈昱學姊"],
+      "category": "在校服科人",
       "theme": "light"
     },
     {
       "id": "chapter-04",
       "order": 4,
-      "title": "慈昱學姊時間管理心法",
+      "title": "IS－馮元詰",
       "description": "",
       "htmlFile": "/chapters/chapter-04.html",
-      "authors": ["慈昱學姊"],
+      "authors": ["馮元詰"],
+      "category": "服科前輩們",
       "theme": "light"
     },
     {
       "id": "chapter-05",
       "order": 5,
-      "title": "薐嘉學姊創業故事",
+      "title": "SID－曾婉婷 ViewSonic UI/UX Designer",
       "description": "",
       "htmlFile": "/chapters/chapter-05.html",
-      "authors": ["薐嘉學姊"],
+      "authors": ["曾婉婷"],
+      "category": "服科前輩們",
       "theme": "light"
     },
     {
       "id": "chapter-06",
       "order": 6,
-      "title": "薩泰爾娛樂 全端工程師",
+      "title": "BA－徐子珺 Intel Taiwan / Data Analyst",
       "description": "",
       "htmlFile": "/chapters/chapter-06.html",
-      "authors": ["馮元詰"],
+      "authors": ["徐子珺"],
+      "category": "服科前輩們",
       "theme": "light"
     },
     {
       "id": "chapter-07",
       "order": 7,
-      "title": "ViewSonic UI/UX Designer",
+      "title": "SMM－陳旻 台灣連線（LINE）PM",
       "description": "",
       "htmlFile": "/chapters/chapter-07.html",
-      "authors": ["曾婉婷"],
+      "authors": ["陳旻"],
+      "category": "服科前輩們",
       "theme": "light"
     },
     {
       "id": "chapter-08",
       "order": 8,
-      "title": "設計的政治學:在複雜系統中創造改變",
-      "description": "從教科書到展覽場，一個工程背景設計師的跨界敘事",
+      "title": "Sunny",
+      "description": "",
       "htmlFile": "/chapters/chapter-08.html",
+      "authors": ["Sunny 鄭晴元"],
+      "category": "展開專訪",
+      "theme": "light"
+    },
+    {
+      "id": "chapter-09",
+      "order": 9,
+      "title": "陳慕天設計師",
+      "description": "從教科書到展覽場，一個工程背景設計師的跨界敘事",
+      "htmlFile": "/chapters/chapter-09.html",
       "authors": ["陳慕天"],
+      "category": "展開專訪",
       "theme": "light",
       "coverImage": "/assets/chapter-covers/chapter-08-陳慕天-coverImage.jpg",
       "date": "2025 . 11",
@@ -93,14 +109,15 @@
       ]
     },
     {
-      "id": "chapter-09",
-      "order": 9,
-      "title": "Opentaipei 2025打開台北",
+      "id": "chapter-10",
+      "order": 10,
+      "title": "徐千捷主理人",
       "description": "",
-      "htmlFile": "/chapters/chapter-09.html",
+      "htmlFile": "/chapters/chapter-10.html",
       "authors": ["徐千捷"],
+      "category": "展開專訪",
       "theme": "light",
-            "coverImage": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2023/08/06/0/23799517.jpg&x=0&y=0&sw=0&sh=0&exp=3600",
+      "coverImage": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2023/08/06/0/23799517.jpg&x=0&y=0&sw=0&sh=0&exp=3600",
       "date": "2025 . 11",
       "credits": [
         { "name": "陳冠宇", "role": "主編 設計" },
@@ -111,26 +128,15 @@
         "/assets/menu-shapes/shape-2.png",
         "/assets/menu-shapes/shape-3.png"
       ]
-
-    },
-    {
-      "id": "chapter-10",
-      "order": 10,
-      "title": "ISS 年度活動",
-      "description": "",
-      "htmlFile": "/chapters/chapter-10.html",
-      "authors": [],
-      "tag": "服務聲精選",
-      "theme": "light"
     },
     {
       "id": "chapter-11",
       "order": 11,
-      "title": "連結的分號",
+      "title": "活動項目",
       "description": "",
       "htmlFile": "/chapters/chapter-11.html",
       "authors": [],
-      "tag": "服務聲精選",
+      "category": "活動現場",
       "theme": "light"
     }
   ]

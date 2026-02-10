@@ -295,7 +295,7 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
             {/* Group 1: Intro */}
             <div className="relative">
                <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
-                 <h2 className="text-xl font-bold">服科的入口</h2>
+                 <h2 className="text-xl font-bold">/ 服科的入口 /</h2>
                  <span className="text-xs font-light">GROUP 01</span>
                </div>
                {chapters.filter(c => ['chapter-01'].includes(c.id)).map(chapter => (
@@ -306,7 +306,7 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
             {/* Group 2: AI */}
             <div className="relative">
                <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
-                 <h2 className="text-xl font-bold">AI</h2>
+                 <h2 className="text-xl font-bold">...在校服科人...</h2>
                  <span className="text-xs font-light">GROUP 02</span>
                </div>
                {chapters.filter(c => ['chapter-02', 'chapter-03'].includes(c.id)).map(chapter => (
@@ -317,7 +317,7 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
             {/* Group 3: Alumni */}
             <div className="relative">
                <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
-                 <h2 className="text-xl font-bold">學長姐 救我</h2>
+                 <h2 className="text-xl font-bold">@服科前輩們@</h2>
                  <span className="text-xs font-light">GROUP 03</span>
                </div>
                {chapters.filter(c => ['chapter-04', 'chapter-05', 'chapter-06', 'chapter-07'].includes(c.id)).map(chapter => (
@@ -328,10 +328,10 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
             {/* Group 4: Behind Scenes */}
             <div className="relative">
                <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
-                 <h2 className="text-xl font-bold">展開 幕後</h2>
+                 <h2 className="text-xl font-bold">: 展開專訪 :</h2>
                  <span className="text-xs font-light">GROUP 04</span>
                </div>
-               {chapters.filter(c => ['chapter-08', 'chapter-09'].includes(c.id)).map(chapter => (
+               {chapters.filter(c => ['chapter-08', 'chapter-09', 'chapter-10'].includes(c.id)).map(chapter => (
                  <ChapterItem key={chapter.id} chapter={chapter} onClick={() => handleChapterClick(chapter.id)} />
                ))}
             </div>
@@ -339,10 +339,10 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
             {/* Group 5: Events */}
             <div className="relative">
                <div className="flex justify-between items-baseline border-b-2 border-black pb-2 mb-6">
-                 <h2 className="text-xl font-bold">活動現場</h2>
+                 <h2 className="text-xl font-bold"># 活動現場 #</h2>
                  <span className="text-xs font-light">GROUP 05</span>
                </div>
-               {chapters.filter(c => ['chapter-10', 'chapter-11'].includes(c.id)).map(chapter => (
+               {chapters.filter(c => ['chapter-11'].includes(c.id)).map(chapter => (
                  <ChapterItem key={chapter.id} chapter={chapter} onClick={() => handleChapterClick(chapter.id)} />
                ))}
             </div>

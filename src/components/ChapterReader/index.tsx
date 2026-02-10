@@ -1,9 +1,11 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Newsletter } from '@/types'
 import { useChapterPreload } from '@/hooks/useChapterPreload'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { useChapterProgress } from '@/hooks/useChapterProgress'
+import { getGroupByChapterId, isGroupBoundary } from '@/config/chapterGroups'
 import ChapterSection from './ChapterSection'
+import GroupTransitionSection from './GroupTransitionSection'
 
 interface ChapterReaderProps {
   newsletter: Newsletter
@@ -12,6 +14,10 @@ interface ChapterReaderProps {
   scrollToChapterId?: string | null
   onScrollComplete?: () => void
 }
+
+type ReaderRenderItem =
+  | { type: 'group-transition'; key: string; toChapterId: string }
+  | { type: 'chapter'; key: string; chapterId: string }
 
 export default function ChapterReader({
   newsletter,
@@ -190,20 +196,58 @@ export default function ChapterReader({
     enabled: hasMore,
   })
 
+  const chapterMap = useMemo(
+    () => new Map(newsletter.chapters.map((chapter) => [chapter.id, chapter])),
+    [newsletter.chapters]
+  )
+
+  const renderSequence = useMemo<ReaderRenderItem[]>(() => {
+    const items: ReaderRenderItem[] = []
+
+    visibleChapterIds.forEach((chapterId, index) => {
+      if (index > 0) {
+        const prevChapterId = visibleChapterIds[index - 1]
+
+        if (isGroupBoundary(prevChapterId, chapterId)) {
+          items.push({
+            type: 'group-transition',
+            key: `group-transition-${prevChapterId}-${chapterId}`,
+            toChapterId: chapterId,
+          })
+        }
+      }
+
+      items.push({
+        type: 'chapter',
+        key: `chapter-${chapterId}`,
+        chapterId,
+      })
+    })
+
+    return items
+  }, [visibleChapterIds])
+
   return (
     <div ref={containerRef} className="relative">
-      {visibleChapterIds.map((chapterId) => {
-        const chapter = newsletter.chapters.find((c) => c.id === chapterId)
-        const chapterContent = getChapter(chapterId)
+      {renderSequence.map((item) => {
+        if (item.type === 'group-transition') {
+          const group = getGroupByChapterId(item.toChapterId)
+          if (!group) return null
+
+          return <GroupTransitionSection key={item.key} group={group} />
+        }
+
+        const chapter = chapterMap.get(item.chapterId)
+        const chapterContent = getChapter(item.chapterId)
 
         if (!chapter) return null
 
         return (
           <ChapterSection
-            key={chapterId}
+            key={item.key}
             chapter={chapter}
             content={chapterContent?.content}
-            isActive={chapterId === currentChapterId}
+            isActive={item.chapterId === currentChapterId}
           />
         )
       })}
