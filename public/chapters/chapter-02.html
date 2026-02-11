@@ -7,134 +7,84 @@
     width: 100%;
     background-color: #ffffff;
   }
-  .ch11-sans { font-family: "Noto Sans TC", sans-serif; }
-  .vertical-text { writing-mode: vertical-rl; text-orientation: mixed; }
-  .text-justify-palt { text-align: justify; font-feature-settings: "palt"; }
-  .ch11-container::-webkit-scrollbar { display: none; }
-  .ch11-container p { margin-bottom: 1rem; }
-  @media (min-width: 768px) { .ch11-container p { margin-bottom: 1rem; } }
-
-  .img-full {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 3rem 0;
-  }
-
-  .img-large {
-    width: 80%;
-    max-width: 900px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 2.5rem auto;
-    display: block;
-  }
-
-  .img-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin: 2.5rem 0;
-  }
-
-  .img-grid-2 img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
-  .img-grid-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    margin: 2.5rem 0;
-  }
-
-  .img-grid-3 img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
-  .img-caption {
+  .ch11-sans {
     font-family: "Noto Sans TC", sans-serif;
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-top: 0.75rem;
-    text-align: center;
-    letter-spacing: 0.05em;
-    line-height: 1.5;
+  }
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+  .text-justify-palt {
+    text-align: justify;
+    font-feature-settings: "palt";
   }
 
-  @media (max-width: 768px) {
-    .img-large { width: 92%; }
-    .img-grid-2 { grid-template-columns: 1fr; }
-    .img-grid-3 { grid-template-columns: 1fr; }
-    .img-grid-2 img, .img-grid-3 img { height: 220px; }
+  .ch11-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ch11-container p {
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .ch11-container p {
+      margin-bottom: 1rem;
+    }
   }
 </style>
 
 <div class="ch11-container not-prose pb-24 overflow-visible">
   <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-      <div class="col-span-2 hidden lg:flex h-[640px] justify-center items-start pt-16">
+      <div
+        class="col-span-2 hidden lg:flex h-[680px] justify-center items-start pt-16"
+      >
         <div class="h-full border-r border-gray-900 pr-6">
-          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">薐嘉學姊</h2>
-          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">在校服科人</p>
+          <h2
+            class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900"
+          >
+            在校服科人
+          </h2>
+          <p
+            class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans"
+          >
+            專訪／黃薐嘉
+          </p>
         </div>
       </div>
 
-      <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl">
+      <div
+        class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl"
+      >
         <div class="space-y-6">
-          <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight">穿梭多重身分的創業修煉，把服務科學說成企業語言</h2>
-          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">—— 專訪服科所碩二 黃薐嘉</p>
+          <div
+            class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+          >
+            <p>
+              穿梭多重身分的創業修煉，把服務科學說成企業語言。
+              這是服科所碩二黃薐嘉在研究生、創業者與顧問之間反覆切換後，給出的答案。
+            </p>
+            <p>
+              她大學雙主修哲學與財經，大三大四就萌生創業念頭；
+              進入服科所後，開始把「理想的服務設計」翻譯成「現實可執行的商業邏輯」。
+              在她眼中，創業不是一個暑假結束的專案，而是一條需要長期修煉的路。
+            </p>
+          </div>
         </div>
 
-        
-
-        <div class="space-y-2">
-          <blockquote class="border-l-2 border-gray-900 pl-6 my-8"><p class="text-xl md:text-2xl text-gray-700 font-light italic leading-relaxed">「創業不是一個暑假就做完的事情，它是一個很長的歷程，暑假只是公司成立的一個節點。」</p></blockquote>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">大學雙主修哲學與財經的薐嘉，早在大三大四便萌生創業念頭，為了完善顧客體驗而進入服科所。目前同時經營電商團隊與 B2B 企業轉型顧問工作。她不僅在學生與老闆的身份間切換，更在「理想的服務設計」與「現實的商業邏輯」之間，不斷進行翻譯與修補。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">然而，從構想到落地的過程，最難跨越的不是技術，而是心理瓶頸。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">時間決定看待問題的焦距</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「第一次遇到的困境，現在回想起來，已經好像不算是問題了。」回想創業初期，薐嘉記得自己曾經被許多問題困住，但後來她發現，讓自己停在原地的，往往不是事情本身，而是對事情的想像。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">當時，資金來源、資本額規模、貸款流程等現實壓力接踵而來。她曾經很在意公司的資本額大小，擔心外出洽談合作時會被輕視，「但現在回頭看，資本額只是帳面數字，市場真正在乎的是解決問題的能力。」</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">另一個讓她備感煎熬的是「人」。初期與朋友合夥，卻因理念不合而面臨夥伴離去。當團隊只剩下一、兩人，不確定感讓她反覆自問：這條路還走得下去嗎？如今，她對那種絕望感有了新的體悟：「很多時候是我們『過度預設』，才讓自己陷入焦慮。在別人眼裡，這或許根本不是問題，許多創業者也是自己從頭做到尾。」</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">獨特的「抽離」儀式</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">當然，心態轉變並不是一夜間就能促成的，還需要更廣闊的視野來輔助，才能重新定位問題的真實面貌。當壓力大到喘不過氣時，薐嘉有一套獨特的排解方式：先透過洗澡或運動，讓自己從痛苦的情境中短暫「物理抽離」。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">接著，她會尋求「心理抽離」——找長輩、甚至是路邊陌生的阿公阿嬤聊天。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">長輩們多活了二三十年，歷經歲月洗鍊，這些對話讓她意識到，眼前看起來天大的事情，放在漫長的人生尺度裡，可能只是微不足道的插曲。「或許等我活到六十歲，也不會記得現在這個對我來說很大的挑戰。」這種視角轉換，讓她能迅速從情緒泥沼中拔腿，繼續前行。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">多重身份的時間管理心法</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">維持穩定、推進行動的另一個重點，便是薐嘉的時間管理方式。身兼研究生、創業者、顧問多職，她會透過經典的「艾森豪矩陣」將任務可視化，拆分為緊急、重要組成的四象限。在緊急和重要兩者之間，她選擇優先處理「重要」。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">正如她對焦慮的看法，所謂的「緊急」往往只是心理壓力，但真正具長遠價值的事若一再延宕，反而會累積巨大的隱形負擔。至於那些不重要也不緊急的瑣事？她笑著說：「就放心地外包出去吧！」</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在生活節奏上，比起碎片化的休息，她更傾向高強度的集中衝刺，再換取一次性的長假。若將時間攤平來看，工作、學業與生活（睡眠、運動）大約各佔三成，維持著一種動態的穩定。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">將服務科學「翻譯」成企業語言</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">進入服科所後，薐嘉發現所學與實務高度相關，但最大的挑戰在於「語言轉換」。在顧問現場，她最常面對的並不是「要不要改變」，而是「怎麼談改變」。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">把工具藏在對話裡</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「如果你跟客戶談『創新』，他會覺得你想推翻他過去三十年的成功經驗。」因此，她從不強調自己在操作特定工具，而是將其包裝為「新的管理方式」。她分享了三個課堂中常見、但經過她「改良」的實戰工具：</p>
-<ul class="list-disc pl-8 text-lg leading-10 text-gray-800 font-light text-justify-palt space-y-3 my-6">
-<li>旅程地圖： 在 B2B 情境中，她跳脫瞄準單一顧客的視角，不僅分析客戶自身的運作流程，還會分析「客戶的客戶（To C）」——也就是終端客戶的旅程。將兩者疊合後，便能找出降低流程成本、提升效率的關鍵節點。「當你能幫企業客戶解決下游的繁瑣，直接搞定 To C 端的問題，他自然會選擇你。」</li>
-<li>商業模式圖： 她發現企業內部各部門對「目標客群」的認知常有落差。透過完成這張圖，讓主管們在過程中對齊認知，進而達成共識。</li>
-<li>利害關係人地圖： 這是最常被忽略卻至關重要的工具。企業運作牽涉上游供應鏈、下游通路與政府制度。在申請補助或處理供應鏈關係時，這張圖能協助釐清客戶之外，還有哪些關鍵角色左右著成敗。</li>
-</ul>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">「以人為本」的溝通緩衝區</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「以人為本」是服科的一大重心，設計過程中的溝通，往往需要覺察不同角色的心境，找到對應的切角。身為二代，薐嘉對家族企業的痛點感同身受。親近的人往往說話更直接，導致一代與二代間常因溝通斷裂而僵持。「上一代擔心的其實不是創新，而是怕孩子失敗受挫。」但這份愛，常被包裝成控制。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">因此，她的顧問角色不僅是提供策略，更像是一位「世代翻譯官」。她挖掘上一代說不出口的擔憂，轉譯給二代聽；同時將二代想創新的邏輯，轉化為上一代聽得懂的語言（如：成本控管、效率提升），搭起溝通的橋樑。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">同樣的邏輯也應用於她自己的創業團隊。在對齊認知時，她不強推理論，而是將工具拆解為模塊化的提問，讓成員在會議中自然分享想法，最後再由她還原為完整的模型。她給予成員試錯空間，在賦能團隊的同時，也讓自己從執行細節中解放。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">現實的商業叢林</h3>
-<blockquote class="border-l-2 border-gray-900 pl-6 my-8"><p class="text-xl md:text-2xl text-gray-700 font-light italic leading-relaxed">「老實說，踏入工作領域後，想像力確實變少了。」薐嘉坦承，學生時期做專案更天馬行空，但成為老闆後，腦中第一個跳出的念頭往往是：「這要花多少成本？要投入多少人力？」</p></blockquote>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「現在『人』真的很貴。」學生提案常忽略人力成本，但對資源有限的小公司而言，增加一個人力就是巨大的負擔。這種從「理想面」轉向「成本與可行性」的務實考量，雖然犧牲了一點浪漫，卻是專案落地的關鍵。不過，回到課堂上，這種務實反而讓她成為團隊的整合者，協助將發散的創意融合，收攏為可執行的方案。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">學校沒教的「隱藏學分」</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">談及學生創業的優勢，她認為「學生身分」確實是一張很好的保護傘，社會大眾對學生較為寬容。她也推薦「中小企業網路大學校」這個平台上的公開課程，爲想創業的人提供其中一個準備方向。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">不過她提醒，真實的商業世界充滿了學校沒教的事——例如繁瑣的政府貸款流程，要上課、寫報告、看報表，且實際核貸金額可能並沒有宣傳上說的漂亮。節稅、用人等問題，也需要靠實務經驗慢慢累積「這些在沒碰到之前真的想不到，也沒有人會教你。」因此，她正將學習重心聚焦於這兩點上，為自己的事業修築更堅實的護城河。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">給未來的服科人</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">訪談最後，薐嘉引用了大學哲學老師在她迷茫時說的一句話：</p>
-<blockquote class="border-l-2 border-gray-900 pl-6 my-8"><p class="text-xl md:text-2xl text-gray-700 font-light italic leading-relaxed">「設計教給我們的不是答案，是尋找未知的一個方式。」</p></blockquote>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在薐嘉身上能看到服科精神的投射，服科所給予的從來不是標準解答，而是一套能在混亂中理出頭緒、在斷裂處搭起橋樑的思考方式。她運用同理和洞察，在商業與人本之間找到平衡，在未知中保持彈性、持續試錯。</p>
+        <div class="relative py-12 md:py-16">
+          <h3
+            class="text-3xl md:text-5xl font-black text-center leading-tight tracking-tight px-4"
+          >
+            「創業不是一個暑假就做完的事情，<br class="hidden md:block" />
+            它是一個很長的歷程。」
+          </h3>
+          <p
+            class="mt-6 text-center text-sm md:text-base text-gray-600 ch11-sans tracking-widest"
+          >
+            —— 黃薐嘉
+          </p>
         </div>
       </div>
 
@@ -142,11 +92,236 @@
         <div class="sticky top-10 space-y-6">
           <div class="border border-black p-4">
             <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
-            <p class="mt-2 text-sm leading-7 text-gray-800">專訪／長文整理<br />章節排版採用 chapter-11 元件</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              人物專訪／創業實戰反思<br />
+              服務設計 × 商業落地
+            </p>
           </div>
           <div class="border-t border-black pt-6">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">THEME</p>
-            <p class="mt-2 text-sm leading-7 text-gray-800">分號、服務設計、實務觀察</p>
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">KEYWORDS</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              創業、時間管理、世代溝通、B2B、服務科學
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-20">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            時間焦距
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">時間決定看待問題的焦距</h3>
+        </div>
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            回想創業初期，資金來源、資本額規模、貸款流程等現實壓力同時湧來。
+            她曾擔心資本額太小會被合作對象輕視，但後來發現「資本額只是帳面數字，市場真正看的是你能不能解決問題」。
+          </p>
+          <p>
+            比資源更煎熬的，是「人」：初期與朋友合夥，卻因理念不合而分開。
+            團隊只剩一兩人時，不確定感讓她反覆懷疑自己。
+            如今回頭看，她說很多焦慮其實來自過度預設，並非事情本身不可解。
+          </p>
+          <p>
+            「第一次遇到的困境，現在回想起來，已經好像不算是問題了。」
+            當時間拉長，問題的尺度就會改變，原本像山一樣高的阻礙，往往變成路上的小坡。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-8 md:mt-20">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            抽離儀式
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">把自己拉出情緒泥沼</h3>
+        </div>
+
+        <div class="p-6 md:p-8 border border-black">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">METHOD</p>
+          <h4 class="mt-2 text-2xl font-bold tracking-wider">薐嘉的雙重抽離法</h4>
+          <div class="mt-6 space-y-4 text-base leading-8 text-gray-800 font-light">
+            <p><span class="font-medium">物理抽離</span>：洗澡或運動，先把身體帶離高壓現場。</p>
+            <p><span class="font-medium">心理抽離</span>：和長輩、甚至陌生長者聊天，借用更長的人生尺度重看眼前難題。</p>
+            <p><span class="font-medium">視角轉換</span>：把「當下很大」放到「一生很長」去看，焦慮自然下降。</p>
+          </div>
+        </div>
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            她說，心態的轉變很少靠一次頓悟完成，而是靠不斷換鏡頭。
+            當你站在六十歲的時間尺度回頭看，許多現在看似致命的挑戰，可能只是過場。
+          </p>
+          <p>
+            這個能力讓她能更快從情緒裡抽身，再回到行動：不被恐懼卡住，而是繼續往前。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-8 md:mt-20">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            任務管理
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">多重身分的時間管理心法</h3>
+        </div>
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            身兼研究生、創業者、顧問，薐嘉用艾森豪矩陣把任務可視化。
+            她不是先做「最急」，而是先做「最重要」，因為很多緊急其實是心理壓力，不是長期價值。
+          </p>
+          <p>
+            生活節奏上，她偏好高強度集中衝刺，再換取一次性的長假。
+            以長期平均來看，工作、學業、生活（睡眠與運動）大約各占三成，維持動態平衡。
+          </p>
+        </div>
+
+        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="border p-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">01</p>
+            <h4 class="mt-2 text-xl font-bold tracking-wider">重要優先</h4>
+            <p class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt">
+              長期價值的事情先做，避免隱形負債累積。
+            </p>
+          </div>
+          <div class="border p-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">02</p>
+            <h4 class="mt-2 text-xl font-bold tracking-wider">任務外包</h4>
+            <p class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt">
+              不重要也不緊急的瑣事，交給系統或他人處理。
+            </p>
+          </div>
+          <div class="border p-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">03</p>
+            <h4 class="mt-2 text-xl font-bold tracking-wider">節奏切換</h4>
+            <p class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt">
+              集中投入與完整休息交替，保持可持續輸出。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-8 md:mt-20">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+          >
+            企業語言
+          </h3>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <h3 class="mt-2 text-3xl font-black tracking-tight">把服務科學翻譯成企業聽得懂的話</h3>
+        </div>
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            她在顧問現場最常面對的，不是「要不要改變」，而是「怎麼談改變」。
+            她不直接說自己在做創新工具，而是把工具包裝成企業可接受的管理語言。
+          </p>
+          <p>
+            旅程地圖、商業模式圖、利害關係人地圖，都被她轉化成可操作的提問。
+            讓不同部門先對齊認知，再談方案，避免改革在一開始就卡在語言落差。
+          </p>
+        </div>
+
+        <div class="p-6 md:p-8 border border-black">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">TOOLKIT</p>
+          <h4 class="mt-2 text-2xl font-bold tracking-wider">三個高頻實戰工具</h4>
+          <div class="mt-6 space-y-4 text-base leading-8 text-gray-800 font-light">
+            <p><span class="font-medium">旅程地圖</span>：不只看 B2B 客戶，也看客戶的客戶（To C）旅程，找出真正可降本增效的節點。</p>
+            <p><span class="font-medium">商業模式圖</span>：揭露部門間對目標客群的認知落差，建立共同語言。</p>
+            <p><span class="font-medium">利害關係人地圖</span>：把供應鏈、通路、政府角色一起納入，避免只看單一客戶視角。</p>
+          </div>
+        </div>
+
+        <div
+          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        >
+          <p>
+            在家族企業與世代溝通上，她也扮演「翻譯官」：
+            把上一代說不出口的擔憂轉譯給二代，把二代的創新語言換成上一代能理解的成本與效率。
+            這份同理不是軟性技巧，而是方案能否推進的關鍵。
+          </p>
+          <p>
+            她也坦言，成為老闆後想像力確實會被成本與人力現實壓縮；
+            但正是這份務實，讓發散創意最終能落地成為真正可執行的方案。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
+    <div class="pt-10 border-t border-black">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-4">
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">OUTRO</p>
+          <h3 class="mt-3 text-3xl md:text-4xl font-black tracking-tight">
+            給未來服科人的一句話
+          </h3>
+        </div>
+
+        <div class="lg:col-span-8 space-y-8 max-w-4xl">
+          <div class="text-lg leading-10 text-gray-800 font-light text-justify-palt">
+            <p>
+              「設計教給我們的不是答案，是尋找未知的一種方式。」
+              薐嘉把這句老師送給她的話，變成自己穿越創業不確定性的底層方法。
+            </p>
+            <p>
+              服科所給的不是標準答案，而是一套在混亂中理清脈絡、在斷裂處搭橋的能力。
+              在她的實踐裡，服務科學不是口號，而是能被企業採用、被團隊理解、被現場驗證的方法。
+            </p>
           </div>
         </div>
       </div>

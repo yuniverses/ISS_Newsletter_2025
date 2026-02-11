@@ -7,12 +7,28 @@
     width: 100%;
     background-color: #ffffff;
   }
-  .ch11-sans { font-family: "Noto Sans TC", sans-serif; }
-  .vertical-text { writing-mode: vertical-rl; text-orientation: mixed; }
-  .text-justify-palt { text-align: justify; font-feature-settings: "palt"; }
-  .ch11-container::-webkit-scrollbar { display: none; }
-  .ch11-container p { margin-bottom: 1rem; }
-  @media (min-width: 768px) { .ch11-container p { margin-bottom: 1rem; } }
+
+  .ch11-sans {
+    font-family: "Noto Sans TC", sans-serif;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .text-justify-palt {
+    text-align: justify;
+    font-feature-settings: "palt";
+  }
+
+  .ch11-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ch11-container p {
+    margin-bottom: 1rem;
+  }
 
   .img-full {
     width: 100%;
@@ -20,16 +36,6 @@
     object-fit: cover;
     border-radius: 8px;
     margin: 3rem 0;
-  }
-
-  .img-large {
-    width: 80%;
-    max-width: 900px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 2.5rem auto;
-    display: block;
   }
 
   .img-grid-2 {
@@ -41,21 +47,7 @@
 
   .img-grid-2 img {
     width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
-  .img-grid-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    margin: 2.5rem 0;
-  }
-
-  .img-grid-3 img {
-    width: 100%;
-    height: 250px;
+    height: 320px;
     object-fit: cover;
     border-radius: 8px;
   }
@@ -71,20 +63,23 @@
   }
 
   @media (max-width: 768px) {
-    .img-large { width: 92%; }
-    .img-grid-2 { grid-template-columns: 1fr; }
-    .img-grid-3 { grid-template-columns: 1fr; }
-    .img-grid-2 img, .img-grid-3 img { height: 220px; }
+    .img-grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .img-grid-2 img {
+      height: 220px;
+    }
   }
 </style>
 
 <div class="ch11-container not-prose pb-24 overflow-visible">
   <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-      <div class="col-span-2 hidden lg:flex h-[640px] justify-center items-start pt-16">
+      <div class="col-span-2 hidden lg:flex h-[680px] justify-center items-start pt-16">
         <div class="h-full border-r border-gray-900 pr-6">
-          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">Sunny</h2>
-          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">展開專訪</p>
+          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">展開專訪</h2>
+          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">專訪／Sunny 鄭晴元</p>
         </div>
       </div>
 
@@ -94,61 +89,79 @@
           <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">—— 專訪薩泰爾娛樂共同創辦人 Sunny鄭晴元</p>
         </div>
 
-        
-
-        <div class="space-y-2">
-          <p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">這次專訪薩泰爾娛樂（STR Network）共同創辦人 Sunny 的初衷很單純：一個沒有程式背景的管理者，是如何靠 AI 協作打造出自動化流程？又是用什麼視角看待 AI 浪潮？</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">沒想到，我們在過程中收穫了許多關於「人」的哲學。不論 AI 工具如何迭代，「你想要建造什麼樣的未來？」才是我們該反覆叩問的。擁有世界觀的人，會被好奇心跟想像力帶到更遠的地方，而薩泰爾的數位轉型與「服務科學實驗室」，正是始於對理想未來的想像。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">減輕痛苦的自動化魔法</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「一般來說，不太會有喜劇公司有 IT 部門。」薩泰爾「服務科學實驗室」的誕生，其實源於 2023 年底、一場由 Sunny 發起的「自動化實驗」。當時為了應對龐大的外部協作與嚴謹的現金流需求，繁瑣的合約文書往返不僅讓外部夥伴痛苦，也讓內部行政人員疲於奔命。於是她在 ChatGPT 的協助下撰寫 Apps Script（Google 的腳本語言），成功打造出串接合約與勞報單的自動化程式。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">這次「讓東西動起來」的突破，不僅大幅降低作業痛苦指數，更讓她看見數位轉型的巨大潛力。帶著這份成果，她在 2024 年初的就業博覽會上，遇到了當時已拿到美光 Offer 的工程師小馮。兩人從兼職磨合到正式合作，最終一個不想去台中的工程師，遇上了一個想把公司變好玩的管理者，兩人一拍即合，「薩泰爾服務科學實驗室」正式成立。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">數位轉型的初心：讓步伐更輕盈</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">提到數位轉型，許多人想到的是冷冰冰的數據與效率，但在薩泰爾的「服務科學實驗室」，初心卻意外地單純——怎麼讓大家工作起來更快樂？</p>
-
-<img src="/assets/chapter-08-sunny/sunny-01.jpg" alt="Sunny 訪談照片 1" class="img-large" />
-<div class="img-grid-2">
-  <img src="/assets/chapter-08-sunny/sunny-02.jpg" alt="Sunny 訪談照片 2" />
-  <img src="/assets/chapter-08-sunny/sunny-03.jpg" alt="Sunny 訪談照片 3" />
-</div>
-<div class="img-grid-2">
-  <img src="/assets/chapter-08-sunny/sunny-04.jpg" alt="Sunny 訪談照片 4" />
-  <img src="/assets/chapter-08-sunny/sunny-05.jpg" alt="Sunny 訪談照片 5" />
-</div>
-<p class="img-caption">Photo archive · Sunny 鄭晴元</p>
-
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">這個實驗室關注的，不只是如何在重複勞動中找到規律、用自動化節省時間，更在於敏銳地察覺工具轉換期中，團隊成員可能面臨的心理門檻。「以人為本」是實驗室成員的默契，他們用洞察力與同理心，像水一樣填滿團隊中的空隙，接住需求，讓大家的步伐更輕盈。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">薩泰爾的秦始皇：Align, Empower, Transform</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">作為管理者，Sunny 打趣地形容自己是薩泰爾的秦始皇：「我要的就是『書同文，車同軌』。」</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在這句霸氣宣言下，服務科學實驗室的三個關鍵字浮出水面：Align（對齊認知）、Empower（賦能）、Transform（改變）。這三者環環相扣，成為後續所有溝通與系統設計的基石。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">面對千頭萬緒的行政流程，Sunny 在電子報《相信的事情列表》中寫道：「處理架構優於處理狀況。」可以自動化的流程很多，自動化的方式也很多，該用什麼切入點？她有一個明確的標準：「不要想著處理十個人的問題，先處理好最關鍵的『那一個人』，剩下的九個人自然會適應。」</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">找對關鍵人物後，下一步是「對齊語言」。Sunny 引入 Domain Storytelling （領域故事建模）的概念，讓核心人物用自己的語言、專業與視角，把工作場景完整的展開，你會發現這個故事比想像中更複雜，如果直接用工作事項或步驟來定義，難免會去脈絡化。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">沙盒與緩衝：使用者永遠超乎想像</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">定義完問題，進入改革期時，Sunny 並沒有急著「焚書坑儒」廢除舊制，而是將團隊習慣的 Google 生態系——特別是 Google Sheets ——作為「沙盒」，觀察同事如何在試算表中活動、甚至創造。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「使用者永遠會超乎你的想像。」這句話背後肯定是不少故事堆疊出來的。觀察的同時，逐步將表格欄位定義清楚，將資料過濾乾淨，縮短未來轉換到新系統的陣痛期。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">（Sunny說之後薩泰爾招人可能會考試算表使用邏輯，看到這邊等於賺到）</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">讓改變不知不覺：從自動化到遊戲化</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在數位轉型的過程中，最痛苦的就是違背人的慣性，Sunny 認為：「改變應該是在不知不覺間，使用者不是『學會』，而是自然而然就會的。」比起強制轉換，更重要的是讓使用者感受到「聲音被聽見」，在迭代中用正向回饋去證明新系統存在的價值。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「當流程自動化後，我覺得下一步是『遊戲化』。」回扣到數位轉型的終極目標是「快樂」這點，這是實驗室另一個「以人為本」的完美體現。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">當付款通知改為「土匪來襲」，他們讓大家在枯燥的請款程序中，嘴角有機會活動一下；但凡學校行政流程也叫「仙女送公文」，小編要從台積館飛到山下幾遍都沒問題。薩泰爾的幽默魅力不只在台前，更融入了公司文化——把好玩變必要，把必要變好玩。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">統一六國之後：打造產業生態系</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在完成內部的統一後，薩泰爾秦始皇將目光投向了更遠的地方：「我想做的是整個生態系。畢竟公司要好起來，就必須讓整個環境一起好。」外包、現金付款的生態，都是薩泰爾在數位轉型中的重要痛點，也是整個娛樂產業都會面對到的問題。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「任何的產業都在講供應鏈，只是我們的供應鏈是人。」Sunny 希望將這套經過驗證的管理系統分享給其他公司，帶動整個行業一起數位轉型，解決共同的結構性難題，讓產業中無數的接案者與創作者能被公平對待。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">給服科人的話：「去愛吧！」</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">訪談最後，Sunny 送給服科所學弟妹一句話：「去繞彎路、去探索、去愛與被愛。」</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">服務科學重視的同理心，從來不是只靠獨自升級。只有在體驗過各種真實的感受後，受器才能在一次次的刺激下變得敏銳。Sunny 分享她在畢業後做了一年的自由接案者，當過演唱會 VJ、跟著新媒體藝術家做案子，甚至去蛋糕店打工，這些體驗都成為她理解世界的養分。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">Sunny 證明了服務科學不僅是理性的數據管理，更是一場關於「人」的溫柔實驗——在標準化中保留個性，在自動化中注入幽默，讓改變在不知不覺中發生。</p>
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>這次專訪薩泰爾娛樂（STR Network）共同創辦人 Sunny 的初衷很單純：一個沒有程式背景的管理者，是如何靠 AI 協作打造出自動化流程？又是用什麼視角看待 AI 浪潮？</p>
+          <p>沒想到，我們在過程中收穫了許多關於「人」的哲學。不論 AI 工具如何迭代，「你想要建造什麼樣的未來？」才是我們該反覆叩問的。擁有世界觀的人，會被好奇心跟想像力帶到更遠的地方，而薩泰爾的數位轉型與「服務科學實驗室」，正是始於對理想未來的想像。</p>
         </div>
+
+        <figure class="my-10">
+          <img src="/assets/chapter-08-sunny/sunny-01.jpg" class="img-full" alt="Sunny 專訪照片" />
+          <figcaption class="img-caption">Sunny 鄭晴元｜薩泰爾娛樂共同創辦人</figcaption>
+        </figure>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">減輕痛苦的自動化魔法</h3>
+          <p>「一般來說，不太會有喜劇公司有 IT 部門。」薩泰爾「服務科學實驗室」的誕生，其實源於 2023 年底、一場由 Sunny 發起的「自動化實驗」。當時為了應對龐大的外部協作與嚴謹的現金流需求，繁瑣的合約文書往返不僅讓外部夥伴痛苦，也讓內部行政人員疲於奔命。於是她在 ChatGPT 的協助下撰寫 Apps Script（Google 的腳本語言），成功打造出串接合約與勞報單的自動化程式。</p>
+          <p>這次「讓東西動起來」的突破，不僅大幅降低作業痛苦指數，更讓她看見數位轉型的巨大潛力。帶著這份成果，她在 2024 年初的就業博覽會上，遇到了當時已拿到美光 Offer 的工程師小馮。兩人從兼職磨合到正式合作，最終一個不想去台中的工程師，遇上了一個想把公司變好玩的管理者，兩人一拍即合，「薩泰爾服務科學實驗室」正式成立。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">數位轉型的初心：讓步伐更輕盈</h3>
+          <p>提到數位轉型，許多人想到的是冷冰冰的數據與效率，但在薩泰爾的「服務科學實驗室」，初心卻意外地單純——怎麼讓大家工作起來更快樂？</p>
+          <p>這個實驗室關注的，不只是如何在重複勞動中找到規律、用自動化節省時間，更在於敏銳地察覺工具轉換期中，團隊成員可能面臨的心理門檻。「以人為本」是實驗室成員的默契，他們用洞察力與同理心，像水一樣填滿團隊中的空隙，接住需求，讓大家的步伐更輕盈。</p>
+        </div>
+
+        <div class="img-grid-2">
+          <img src="/assets/chapter-08-sunny/sunny-02.jpg" alt="Sunny 專訪照片 2" />
+          <img src="/assets/chapter-08-sunny/sunny-03.jpg" alt="Sunny 專訪照片 3" />
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">薩泰爾的秦始皇：Align, Empower, Transform</h3>
+          <p>作為管理者，Sunny 打趣地形容自己是薩泰爾的秦始皇：「我要的就是『書同文，車同軌』。」</p>
+          <p>在這句霸氣宣言下，服務科學實驗室的三個關鍵字浮出水面：Align（對齊認知）、Empower（賦能）、Transform（改變）。這三者環環相扣，成為後續所有溝通與系統設計的基石。</p>
+          <p>面對千頭萬緒的行政流程，Sunny 在電子報《相信的事情列表》中寫道：「處理架構優於處理狀況。」可以自動化的流程很多，自動化的方式也很多，該用什麼切入點？她有一個明確的標準：「不要想著處理十個人的問題，先處理好最關鍵的『那一個人』，剩下的九個人自然會適應。」</p>
+          <p>找對關鍵人物後，下一步是「對齊語言」。Sunny 引入 Domain Storytelling （領域故事建模）的概念，讓核心人物用自己的語言、專業與視角，把工作場景完整的展開，你會發現這個故事比想像中更複雜，如果直接用工作事項或步驟來定義，難免會去脈絡化。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">沙盒與緩衝：使用者永遠超乎想像</h3>
+          <p>定義完問題，進入改革期時，Sunny 並沒有急著「焚書坑儒」廢除舊制，而是將團隊習慣的 Google 生態系——特別是 Google Sheets ——作為「沙盒」，觀察同事如何在試算表中活動、甚至創造。</p>
+          <p>「使用者永遠會超乎你的想像。」這句話背後肯定是不少故事堆疊出來的。觀察的同時，逐步將表格欄位定義清楚，將資料過濾乾淨，縮短未來轉換到新系統的陣痛期。</p>
+          <p>（Sunny說之後薩泰爾招人可能會考試算表使用邏輯，看到這邊等於賺到）</p>
+        </div>
+
+        <img src="/assets/chapter-08-sunny/sunny-04.jpg" class="img-full" alt="Sunny 專訪照片 4" />
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">讓改變不知不覺：從自動化到遊戲化</h3>
+          <p>在數位轉型的過程中，最痛苦的就是違背人的慣性，Sunny 認為：「改變應該是在不知不覺間，使用者不是『學會』，而是自然而然就會的。」比起強制轉換，更重要的是讓使用者感受到「聲音被聽見」，在迭代中用正向回饋去證明新系統存在的價值。</p>
+          <p>「當流程自動化後，我覺得下一步是『遊戲化』。」回扣到數位轉型的終極目標是「快樂」這點，這是實驗室另一個「以人為本」的完美體現。</p>
+          <p>當付款通知改為「土匪來襲」，他們讓大家在枯燥的請款程序中，嘴角有機會活動一下；但凡學校行政流程也叫「仙女送公文」，小編要從台積館飛到山下幾遍都沒問題。薩泰爾的幽默魅力不只在台前，更融入了公司文化——把好玩變必要，把必要變好玩。 </p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">統一六國之後：打造產業生態系</h3>
+          <p>在完成內部的統一後，薩泰爾秦始皇將目光投向了更遠的地方：「我想做的是整個生態系。畢竟公司要好起來，就必須讓整個環境一起好。」外包、現金付款的生態，都是薩泰爾在數位轉型中的重要痛點，也是整個娛樂產業都會面對到的問題。</p>
+          <p>「任何的產業都在講供應鏈，只是我們的供應鏈是人。」Sunny 希望將這套經過驗證的管理系統分享給其他公司，帶動整個行業一起數位轉型，解決共同的結構性難題，讓產業中無數的接案者與創作者能被公平對待。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">給服科人的話：「去愛吧！」</h3>
+          <p>訪談最後，Sunny 送給服科所學弟妹一句話：「去繞彎路、去探索、去愛與被愛。」</p>
+          <p>服務科學重視的同理心，從來不是只靠獨自升級。只有在體驗過各種真實的感受後，受器才能在一次次的刺激下變得敏銳。Sunny 分享她在畢業後做了一年的自由接案者，當過演唱會 VJ、跟著新媒體藝術家做案子，甚至去蛋糕店打工，這些體驗都成為她理解世界的養分。</p>
+          <p>Sunny 證明了服務科學不僅是理性的數據管理，更是一場關於「人」的溫柔實驗——在標準化中保留個性，在自動化中注入幽默，讓改變在不知不覺中發生。</p>
+        </div>
+
+        <img src="/assets/chapter-08-sunny/sunny-05.jpg" class="img-full" alt="Sunny 專訪照片 5" />
       </div>
 
       <div class="col-span-2 hidden lg:block pt-20">
         <div class="sticky top-10 space-y-6">
           <div class="border border-black p-4">
             <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
-            <p class="mt-2 text-sm leading-7 text-gray-800">專訪／長文整理<br />章節排版採用 chapter-11 元件</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              人物專訪／完整原稿<br />
+              依來源文稿逐段置入
+            </p>
           </div>
           <div class="border-t border-black pt-6">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">THEME</p>
-            <p class="mt-2 text-sm leading-7 text-gray-800">分號、服務設計、實務觀察</p>
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">KEYWORDS</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              服務科學、自動化、數位轉型、組織文化、生態系
+            </p>
           </div>
         </div>
       </div>

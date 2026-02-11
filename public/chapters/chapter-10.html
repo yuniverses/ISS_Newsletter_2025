@@ -7,84 +7,44 @@
     width: 100%;
     background-color: #ffffff;
   }
-  .ch11-sans { font-family: "Noto Sans TC", sans-serif; }
-  .vertical-text { writing-mode: vertical-rl; text-orientation: mixed; }
-  .text-justify-palt { text-align: justify; font-feature-settings: "palt"; }
-  .ch11-container::-webkit-scrollbar { display: none; }
-  .ch11-container p { margin-bottom: 1rem; }
-  @media (min-width: 768px) { .ch11-container p { margin-bottom: 1rem; } }
 
-  .img-full {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 3rem 0;
-  }
-
-  .img-large {
-    width: 80%;
-    max-width: 900px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 2.5rem auto;
-    display: block;
-  }
-
-  .img-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin: 2.5rem 0;
-  }
-
-  .img-grid-2 img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
-  .img-grid-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    margin: 2.5rem 0;
-  }
-
-  .img-grid-3 img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
-  .img-caption {
+  .ch11-sans {
     font-family: "Noto Sans TC", sans-serif;
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-top: 0.75rem;
-    text-align: center;
-    letter-spacing: 0.05em;
-    line-height: 1.5;
   }
 
-  @media (max-width: 768px) {
-    .img-large { width: 92%; }
-    .img-grid-2 { grid-template-columns: 1fr; }
-    .img-grid-3 { grid-template-columns: 1fr; }
-    .img-grid-2 img, .img-grid-3 img { height: 220px; }
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .text-justify-palt {
+    text-align: justify;
+    font-feature-settings: "palt";
+  }
+
+  .ch11-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ch11-container p {
+    margin-bottom: 1rem;
+  }
+
+  .quote-block {
+    border-top: 1px solid #111;
+    border-bottom: 1px solid #111;
+    padding: 2rem 0;
+    margin: 2rem 0 3rem;
   }
 </style>
 
 <div class="ch11-container not-prose pb-24 overflow-visible">
   <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-      <div class="col-span-2 hidden lg:flex h-[640px] justify-center items-start pt-16">
+      <div class="col-span-2 hidden lg:flex h-[680px] justify-center items-start pt-16">
         <div class="h-full border-r border-gray-900 pr-6">
-          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">徐千捷</h2>
-          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">展開專訪</p>
+          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">展開專訪</h2>
+          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">專訪／徐千捷</p>
         </div>
       </div>
 
@@ -94,63 +54,74 @@
           <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">—— 專訪「打開台北」主理人 徐千捷</p>
         </div>
 
-        
+        <div class="quote-block">
+          <p class="text-2xl md:text-4xl font-black leading-tight tracking-tight">"A building is a society of rooms."</p>
+          <p class="text-sm md:text-base text-gray-600 ch11-sans tracking-wide">「建築的本質，是人與時間、空間的交流與對話」—— Louis Kahn</p>
+        </div>
 
-        <div class="space-y-2">
-          <p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">今年的打開台北官網介紹，引用了建築大師 Louis Kahn 的話：「A building is a society of rooms.（建築的本質，是人與時間、空間的交流與對話）」如果說城市裡的每一扇門都是一個句點，區隔了公眾與私人、日常與秘境，那「打開台北（Open House Taipei）」就是試圖將句點轉化為「分號」的關鍵行動。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">許多人看見的是每年那 48 小時的熱鬧—— 100 個空間的限時開放、萬人空巷的搶票盛況，但在這兩天的狂歡之外，支撐這個龐大系統運作的，其實是無數細緻的服務設計與管理邏輯。透過專訪打開台北主理人徐千捷，從工商管理與策展的雙重視角，解構這個讓城市持續對話的服務系統。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">從 2 天到 365 天的影響力擴散</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">作為一個強調「限時開放」的活動，如何在非活動期間延續其影響力？徐千捷指出，打開台北並非「煙火式」的一次性活動，而是一個持續滾動的社群。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「11月是開放百場空間的大型慶典，但我們在其他時間裡，每兩三個月就會針對特定區塊舉辦『限定場』的小型活動或演講。」這種長尾效應的經營，讓互動和感動得以延續。此外，團隊會持續撰寫回顧文章，記錄空間故事、志工的視角以及服務心得，讓活動的餘韻在網路上持續發酵。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">從志工到核心團隊的轉化路徑</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">這種延續性更體現在「人」的培養上。根據團隊長達三、四年的問卷追蹤，志工在參與後對城市的認同感、讀懂城市中優質設計的能力，都有很高評價的回饋。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">徐千捷更透露了在參與中演變的角色機制：「我們很多成員第一年是服務志工，第二年參加了 30 小時的導覽培訓，成為導覽志工，累積更多對議題的認識，最後進入核心團隊工作。」可見打開台北不僅是空間的策展，更是一個城市人才的孵化器，讓參與者從建築的門外漢，到能捕捉設計的美和議題的脈絡；從單純的執行者，轉變為城市故事的講述者。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">直面資源配置的系統難題</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">服務設計的核心在於不斷修正。徐千捷坦言，這幾年面臨的最大挑戰就是「僧多粥少」——熱門空間數量有限，但全台北的民眾都在搶，導致票券系統當機、民眾注意力過度集中。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">此外，隨著國境解封、出國旅遊潮回升，以及各地類似的「秘境開放」活動出現，團隊敏銳地觀察到關注度與人流的下滑。最棘手的痛點是「No Show（缺席）」率，民眾搶了票卻不來，導致空間主理人的挫折與資源浪費。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">快速迭代與跨國借鏡</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">面對這些問題，團隊不怕試錯，但也盡可能降低風險「我們不會等到年底大活動才測試系統。而是利用平日的小型場次，針對不同票券平台進行介面與流程的測試。」</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在空間選擇上，也會盡量提供多種不同特質的空間，讓視線不會只聚焦在少數，而是能滿足不同觀眾的好奇心，分散需求。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">同時，打開台北也與歐洲的城市保持密切交流。透過論壇與互動，徐千捷發現「No Show」是全球性的痛點，各國都在嘗試解方，例如改採「收費導覽」或「保證金制度」。這也讓團隊思考，如何在內容推廣與使用者體驗之間，透過機制設計找到新的平衡點。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">後台的品質控管：預演失敗，成就完美</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">分號連接了兩個獨立的子句，在打開台北的脈絡中，這兩個子句往往是「空間主理人」與「參訪民眾」。如何讓這兩個原本平行的世界順暢對接？徐千捷從「動機」與「經驗」兩個維度，剖析了空間主理人在這張服務藍圖中的樣態：</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">動機光譜：從熱情分享到被動指派</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在藍圖的前台，主理人的心態會影響服務的溫度。</p>
-<ul class="list-disc pl-8 text-lg leading-10 text-gray-800 font-light text-justify-palt space-y-3 my-6">
-<li>主動報名者： 為了品牌推廣或理念分享而來，溝通成本低，較積極優化與民眾的互動。</li>
-<li>被指派的基層人員： 往往是由長官交辦任務，對活動初衷理解不深，心態常停留在「如何最不費力地完成任務」。這類接觸點最容易成為服務斷點，需要策展團隊投入更多心力去引導與補位。</li>
-</ul>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">經驗落差：想像與現實的距離</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">許多空間平時並不對外開放，缺乏面對大量公眾的經驗。從報到流程、動線引導、時間掌控到簡報內容，每個細節都對觀展體驗有很大的影響。「最怕那種覺得自己動線很單純、叫志工當天再來就好的空間。」徐千捷苦笑著說。許多主理人腦中只有美好的「概念」，卻缺乏具體的「執行畫面」。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">為了消弭主理人的盲點，團隊建立了一套嚴謹的檢驗機制：</h3>
-<ul class="list-disc pl-8 text-lg leading-10 text-gray-800 font-light text-justify-palt space-y-3 my-6">
-<li>實地踩點： 團隊必須親自走訪空間，模擬民眾視角檢視動線，將抽象的規劃轉化為具體建議。</li>
-<li>志工培訓： 要求空間進行志工培訓，並繳交紀錄供團隊審核，確保第一線人員具備應變能力。</li>
-<li>預判衝突點： 徐千捷舉例，許多空間同時運行「預約導覽」與「自由參觀」，若動線沒有實體區隔，兩股人流極易在現場「打架」。</li>
-</ul>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「即便是參加過好幾年的老空間，也有可能出錯。」更不論有心參加、但經驗較少的空間主理人。面對他們，單純的建議有時難以奏效，而分享過往的「失敗案例」便成為最有力的溝通工具——帶領主理人看見潛在的混亂，才能推動他們跨越舒適圈進行調整。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">從議題鉤子 (Hook) 到鏟子</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">打開台北近年致力於共融、創生等議題，試圖用有趣的活動包裝嚴肅的主題。公部門對於議題討論的積極程度，以及參與民眾對於議題的認識深度，都大大影響了空間推廣的效果。而打開台北也期待從吸引大家認識空間，逐漸深化為帶大家思考議題。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">「Wow」之後的挑戰</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">以社會住宅為例，隨著社宅話題熱度降低、政策重心轉移，社宅蓋完後的問題默默地浮出水面。打開台北不只想打破社宅的傳統印象，更想透過互動，帶大家的反思其中的隱憂。徐千捷誠實地指出了目前的困境：「社宅導覽非常受歡迎，但民眾往往停留在『哇！蓋得好漂亮』的驚嘆中，很難在短暫的參觀裡，引導到更深層的政策反思，例如後續的維護成本、管理機制等問題。」</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">這顯示了單一服務接觸點的侷限性，雖然活動成功開啟了關注，但要深化討論，可能需要搭配講座或研討會才能達成，打開台北也在這幾年間，努力嘗試加入更多互動。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">1/3的黃金平衡與政治風險</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在組織韌性方面，打開台北遵循倫敦總部的建議，維持「政府補助、企業贊助、自籌營收」各佔三分之一的結構。徐千捷分析：</p>
-<ul class="list-disc pl-8 text-lg leading-10 text-gray-800 font-light text-justify-palt space-y-3 my-6">
-<li>企業贊助： 容易帶給觀展者過度商業化、置入性行銷的感受，需慎選重視CSR或文化公益活動的夥伴，而非單純追求轉換率的企業。</li>
-<li>政府補助： 雖然穩定，但面臨「選舉年」的政治風險。</li>
-<li>自籌營收： 透過承接策展案、收費導覽提高自籌比例，是確保策展自主性、不受單一金主箝制的關鍵。</li>
-</ul>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">徐千捷點出在台灣需要面對的「選舉風險」，部分公共建設（如水圳開蓋、大型建設）容易被視為特定政黨或候選人的政績。在選舉期間，這些空間可能成為宣傳亮點，也可能成為被攻擊的靶心，策展團隊必須更小心翼翼，避免讓政治角力模糊焦點。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">給服科人的實戰筆記</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">面對服科所學生常有的「跨領域焦慮」——學得很廣，但核心專業究竟是什麼？大學主修工商管理的徐千捷，給出了經過實踐驗證的建議。</p>
-<h4 class="text-xl md:text-2xl font-bold leading-tight tracking-tight mt-10 mb-4">1. 換位思考的實戰應用：What&#39;s in it for me?</h4>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">「無法單靠一個崇高理想就讓大家自動運轉。」在跨單位合作中，每個利害關係人都在問「這對我有什麼好處？」，所以必須學會切換頻道：對公部門談政績效益、對企業談流量曝光、對志工談自我成長。針對不同利害關係人轉換語言和對話重心，是推動專案最關鍵的能力，也是在實戰過程中才有機會累積的經驗。不過即便一開始可能抓不到訣竅，透過課堂中的理論，也有機會加速練習的效率，像是用設計思考、商業模式等角度來看，就是要針對不同組織或角色，分析他們的需求，提出對應的價值主張。</p>
-<h4 class="text-xl md:text-2xl font-bold leading-tight tracking-tight mt-10 mb-4">2. 以一套方法論，解讀萬千世界</h4>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">面對不同專業的合作對象與龐雜的知識，徐千捷認為只需要紮實地掌握一套體系，「無論是行銷的架構、資訊的系統邏輯，或是設計的工具。當你精通、熟悉了一套方法論，就能用它去解讀、串聯不同領域的知識，發展一套屬於自己的知識網絡。」如同跨域學習的本質是「以核心專業為基礎，向外延伸學習、進行知識整合」。這套方法同樣也是他知識管理的邏輯之一，讓他能歸納出不同角色的共通語言。</p>
-<h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-6">「分號」的具象化</h3>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">在打開台北，有許多連結在悄悄發生：有觀眾變成志工，有志工變成空間主理人，有的從陌生人變成場域新客群。打開台北也不斷探索新的話題、素材與空間，讓城市樣貌能更完整的展現。</p>
-<p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">這正是「分號」精神的最佳註解。打開台北不只是一個限時活動，透過精密的服務流程設計，以及對現實限制的調和，在城市中置入了一個又一個的分號，讓原本無關的人產生關係，讓原本封閉的空間開始對話，並讓這股力量在活動結束後，依然在城市的各個角落，未完待續。</p>
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>今年的打開台北官網介紹，引用了建築大師 Louis Kahn 的話：「A building is a society of rooms.（建築的本質，是人與時間、空間的交流與對話）」如果說城市裡的每一扇門都是一個句點，區隔了公眾與私人、日常與秘境，那「打開台北（Open House Taipei）」就是試圖將句點轉化為「分號」的關鍵行動。</p>
+          <p>許多人看見的是每年那 48 小時的熱鬧—— 100 個空間的限時開放、萬人空巷的搶票盛況，但在這兩天的狂歡之外，支撐這個龐大系統運作的，其實是無數細緻的服務設計與管理邏輯。透過專訪打開台北主理人徐千捷，從工商管理與策展的雙重視角，解構這個讓城市持續對話的服務系統。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">從 2 天到 365 天的影響力擴散</h3>
+          <p>作為一個強調「限時開放」的活動，如何在非活動期間延續其影響力？徐千捷指出，打開台北並非「煙火式」的一次性活動，而是一個持續滾動的社群。</p>
+          <p>「11月是開放百場空間的大型慶典，但我們在其他時間裡，每兩三個月就會針對特定區塊舉辦『限定場』的小型活動或演講。」這種長尾效應的經營，讓互動和感動得以延續。此外，團隊會持續撰寫回顧文章，記錄空間故事、志工的視角以及服務心得，讓活動的餘韻在網路上持續發酵。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">從志工到核心團隊的轉化路徑</h3>
+          <p>這種延續性更體現在「人」的培養上。根據團隊長達三、四年的問卷追蹤，志工在參與後對城市的認同感、讀懂城市中優質設計的能力，都有很高評價的回饋。</p>
+          <p>徐千捷更透露了在參與中演變的角色機制：「我們很多成員第一年是服務志工，第二年參加了 30 小時的導覽培訓，成為導覽志工，累積更多對議題的認識，最後進入核心團隊工作。」可見打開台北不僅是空間的策展，更是一個城市人才的孵化器，讓參與者從建築的門外漢，到能捕捉設計的美和議題的脈絡；從單純的執行者，轉變為城市故事的講述者。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">直面資源配置的系統難題</h3>
+          <p>服務設計的核心在於不斷修正。徐千捷坦言，這幾年面臨的最大挑戰就是「僧多粥少」——熱門空間數量有限，但全台北的民眾都在搶，導致票券系統當機、民眾注意力過度集中。</p>
+          <p>此外，隨著國境解封、出國旅遊潮回升，以及各地類似的「秘境開放」活動出現，團隊敏銳地觀察到關注度與人流的下滑。最棘手的痛點是「No Show（缺席）」率，民眾搶了票卻不來，導致空間主理人的挫折與資源浪費。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">快速迭代與跨國借鏡</h3>
+          <p>面對這些問題，團隊不怕試錯，但也盡可能降低風險「我們不會等到年底大活動才測試系統。而是利用平日的小型場次，針對不同票券平台進行介面與流程的測試。」</p>
+          <p>在空間選擇上，也會盡量提供多種不同特質的空間，讓視線不會只聚焦在少數，而是能滿足不同觀眾的好奇心，分散需求。</p>
+          <p>同時，打開台北也與歐洲的城市保持密切交流。透過論壇與互動，徐千捷發現「No Show」是全球性的痛點，各國都在嘗試解方，例如改採「收費導覽」或「保證金制度」。這也讓團隊思考，如何在內容推廣與使用者體驗之間，透過機制設計找到新的平衡點。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">後台的品質控管：預演失敗，成就完美</h3>
+          <p>分號連接了兩個獨立的子句，在打開台北的脈絡中，這兩個子句往往是「空間主理人」與「參訪民眾」。如何讓這兩個原本平行的世界順暢對接？徐千捷從「動機」與「經驗」兩個維度，剖析了空間主理人在這張服務藍圖中的樣態：</p>
+
+          <h4 class="text-xl md:text-2xl font-bold leading-tight tracking-tight mt-10 mb-3">動機光譜：從熱情分享到被動指派</h4>
+          <p>在藍圖的前台，主理人的心態會影響服務的溫度。</p>
+          <p>• 主動報名者： 為了品牌推廣或理念分享而來，溝通成本低，較積極優化與民眾的互動。</p>
+          <p>• 被指派的基層人員： 往往是由長官交辦任務，對活動初衷理解不深，心態常停留在「如何最不費力地完成任務」。這類接觸點最容易成為服務斷點，需要策展團隊投入更多心力去引導與補位。</p>
+
+          <h4 class="text-xl md:text-2xl font-bold leading-tight tracking-tight mt-10 mb-3">經驗落差：想像與現實的距離</h4>
+          <p>許多空間平時並不對外開放，缺乏面對大量公眾的經驗。從報到流程、動線引導、時間掌控到簡報內容，每個細節都對觀展體驗有很大的影響。「最怕那種覺得自己動線很單純、叫志工當天再來就好的空間。」徐千捷苦笑著說。許多主理人腦中只有美好的「概念」，卻缺乏具體的「執行畫面」。</p>
+          <p>為了消弭主理人的盲點，團隊建立了一套嚴謹的檢驗機制：</p>
+          <p>• 實地踩點： 團隊必須親自走訪空間，模擬民眾視角檢視動線，將抽象的規劃轉化為具體建議。</p>
+          <p>• 志工培訓： 要求空間進行志工培訓，並繳交紀錄供團隊審核，確保第一線人員具備應變能力。</p>
+          <p>• 預判衝突點： 徐千捷舉例，許多空間同時運行「預約導覽」與「自由參觀」，若動線沒有實體區隔，兩股人流極易在現場「打架」。</p>
+          <p>「即便是參加過好幾年的老空間，也有可能出錯。」更不論有心參加、但經驗較少的空間主理人。面對他們，單純的建議有時難以奏效，而分享過往的「失敗案例」便成為最有力的溝通工具——帶領主理人看見潛在的混亂，才能推動他們跨越舒適圈進行調整。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">從議題鉤子 (Hook) 到鏟子</h3>
+          <p>打開台北近年致力於共融、創生等議題，試圖用有趣的活動包裝嚴肅的主題。公部門對於議題討論的積極程度，以及參與民眾對於議題的認識深度，都大大影響了空間推廣的效果。而打開台北也期待從吸引大家認識空間，逐漸深化為帶大家思考議題。</p>
+
+          <h4 class="text-xl md:text-2xl font-bold leading-tight tracking-tight mt-10 mb-3">「Wow」之後的挑戰</h4>
+          <p>以社會住宅為例，隨著社宅話題熱度降低、政策重心轉移，社宅蓋完後的問題默默地浮出水面。打開台北不只想打破社宅的傳統印象，更想透過互動，帶大家的反思其中的隱憂。徐千捷誠實地指出了目前的困境：「社宅導覽非常受歡迎，但民眾往往停留在『哇！蓋得好漂亮』的驚嘆中，很難在短暫的參觀裡，引導到更深層的政策反思，例如後續的維護成本、管理機制等問題。」</p>
+          <p>這顯示了單一服務接觸點的侷限性，雖然活動成功開啟了關注，但要深化討論，可能需要搭配講座或研討會才能達成，打開台北也在這幾年間，努力嘗試加入更多互動。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">1/3的黃金平衡與政治風險</h3>
+          <p>在組織韌性方面，打開台北遵循倫敦總部的建議，維持「政府補助、企業贊助、自籌營收」各佔三分之一的結構。徐千捷分析：</p>
+          <p>• 企業贊助： 容易帶給觀展者過度商業化、置入性行銷的感受，需慎選重視CSR或文化公益活動的夥伴，而非單純追求轉換率的企業。</p>
+          <p>• 政府補助： 雖然穩定，但面臨「選舉年」的政治風險。</p>
+          <p>• 自籌營收： 透過承接策展案、收費導覽提高自籌比例，是確保策展自主性、不受單一金主箝制的關鍵。</p>
+          <p>徐千捷點出在台灣需要面對的「選舉風險」，部分公共建設（如水圳開蓋、大型建設）容易被視為特定政黨或候選人的政績。在選舉期間，這些空間可能成為宣傳亮點，也可能成為被攻擊的靶心，策展團隊必須更小心翼翼，避免讓政治角力模糊焦點。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">給服科人的實戰筆記</h3>
+          <p>面對服科所學生常有的「跨領域焦慮」——學得很廣，但核心專業究竟是什麼？大學主修工商管理的徐千捷，給出了經過實踐驗證的建議。</p>
+
+          <h4 class="text-xl md:text-2xl font-bold leading-tight tracking-tight mt-10 mb-3">1. 換位思考的實戰應用：What's in it for me?</h4>
+          <p>「無法單靠一個崇高理想就讓大家自動運轉。」在跨單位合作中，每個利害關係人都在問「這對我有什麼好處？」，所以必須學會切換頻道：對公部門談政績效益、對企業談流量曝光、對志工談自我成長。針對不同利害關係人轉換語言和對話重心，是推動專案最關鍵的能力，也是在實戰過程中才有機會累積的經驗。不過即便一開始可能抓不到訣竅，透過課堂中的理論，也有機會加速練習的效率，像是用設計思考、商業模式等角度來看，就是要針對不同組織或角色，分析他們的需求，提出對應的價值主張。</p>
+
+          <h4 class="text-xl md:text-2xl font-bold leading-tight tracking-tight mt-10 mb-3">2. 以一套方法論，解讀萬千世界</h4>
+          <p>面對不同專業的合作對象與龐雜的知識，徐千捷認為只需要紮實地掌握一套體系，「無論是行銷的架構、資訊的系統邏輯，或是設計的工具。當你精通、熟悉了一套方法論，就能用它去解讀、串聯不同領域的知識，發展一套屬於自己的知識網絡。」如同跨域學習的本質是「以核心專業為基礎，向外延伸學習、進行知識整合」。這套方法同樣也是他知識管理的邏輯之一，讓他能歸納出不同角色的共通語言。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">「分號」的具象化</h3>
+          <p>在打開台北，有許多連結在悄悄發生：有觀眾變成志工，有志工變成空間主理人，有的從陌生人變成場域新客群。打開台北也不斷探索新的話題、素材與空間，讓城市樣貌能更完整的展現。</p>
+          <p>這正是「分號」精神的最佳註解。打開台北不只是一個限時活動，透過精密的服務流程設計，以及對現實限制的調和，在城市中置入了一個又一個的分號，讓原本無關的人產生關係，讓原本封閉的空間開始對話，並讓這股力量在活動結束後，依然在城市的各個角落，未完待續。</p>
         </div>
       </div>
 
@@ -158,11 +129,16 @@
         <div class="sticky top-10 space-y-6">
           <div class="border border-black p-4">
             <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
-            <p class="mt-2 text-sm leading-7 text-gray-800">專訪／長文整理<br />章節排版採用 chapter-11 元件</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              人物專訪／完整原稿<br />
+              依來源文稿逐段置入
+            </p>
           </div>
           <div class="border-t border-black pt-6">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">THEME</p>
-            <p class="mt-2 text-sm leading-7 text-gray-800">分號、服務設計、實務觀察</p>
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">KEYWORDS</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              打開台北、服務系統、志工培力、No Show、跨域協作
+            </p>
           </div>
         </div>
       </div>

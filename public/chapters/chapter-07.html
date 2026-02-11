@@ -1,4 +1,107 @@
-<div class="chapter-content">
-  <h2>Chapter 0${i}</h2>
-  <p>這是章節內容的佔位符。請編輯此 HTML 文件以添加你的實際內容。</p>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap");
+
+  .ch11-container {
+    font-family: "Shippori Mincho", "Noto Serif TC", serif;
+    color: #1a1a1a;
+    width: 100%;
+    background-color: #ffffff;
+  }
+
+  .ch11-sans {
+    font-family: "Noto Sans TC", sans-serif;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .text-justify-palt {
+    text-align: justify;
+    font-feature-settings: "palt";
+  }
+
+  .ch11-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ch11-container p {
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="ch11-container not-prose pb-24 overflow-visible">
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <div class="col-span-2 hidden lg:flex h-[680px] justify-center items-start pt-16">
+        <div class="h-full border-r border-gray-900 pr-6">
+          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">服科前輩們</h2>
+          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">專訪／陳旻</p>
+        </div>
+      </div>
+
+      <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl">
+        <div class="space-y-4">
+          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">Final陳旻學姊</p>
+          <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight">從 LINE 到台積電，跨越產業的「服務」思維——專訪陳旻學姊</h2>
+          <p class="text-sm md:text-base text-gray-500 ch11-sans tracking-wide">已回傳文章給學姊確認內容 尚未定稿</p>
+          <p class="text-sm md:text-base text-gray-500 ch11-sans tracking-wide">採訪／邱筠婷、胡育慈、陳冠宇</p>
+          <p class="text-sm md:text-base text-gray-500 ch11-sans tracking-wide">撰文／胡育慈</p>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>對於許多嚮往科技業的服科所同學來說「產品經理（Product Manager, PM）」是一個充滿魅力卻又帶著高門檻的職位。我們常問：沒有技術背景可以嗎？不同產業的Domain Knowledge 該如何補足？</p>
+          <p>這次《服務聲》專訪了畢業於清大服科所的陳旻學姊。她的職涯路徑本身就是一場精彩的跨界旅程：她在畢業後進入鴻海與緯創擔任硬體 PM，隨後轉戰金融科技（國泰世華）、社群軟體（LINE），目前則在半導體龍頭台積電擔任內部系統 PM。</p>
+          <p>從硬體到軟體，再從極度自由的互聯網跨入講求紀律的半導體。我們好奇的是，在這些轉換中，是什麼樣的核心能力支撐著她？</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">初心與本質：產業會變，但 PM 的靈魂不變</h3>
+          <p>訪談一開始，我們便拋出了最大的疑問：如何在截然不同的產業間適應？陳旻學姊的回答意外地單純：「其實做的事是一模一樣的，我都是在做軟體 PM。」</p>
+          <p>對她而言，無論身處何處，PM的核心價值始終圍繞著「溝通」與「規劃」。在國泰世華，她的任務是透過eKYC（數位身分驗證）優化用戶體驗；在LINE，目標是開拓新客群；到了台積電，則是確保製造系統能精準符合晶圓出貨品質。「PM 就是產品的負責人，不管在哪個產業，你的任務都是制定策略，思考如何透過產品為公司帶來最大效益。」</p>
+          <p>然而，產業的屬性確實會影響「做事的方法」。學姊舉了生動的例子：在LINE工作時，團隊全遠端工作，溝通仰賴大量的文字訊息，必須把前因後果寫得詳盡；現進入台積電，面對的是不能帶手機進廠的環境，溝通變成了直接的電話與面對面，且在台積電的文化中，提問前必須先有自己的答案與準備。</p>
+          <p>「沒有所謂既定的知識框架」學姊強調「進入新環境前，基本的產業調查是必須，但更重要的是透過『提問』去摸索出該組織的合作模式。」</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">戰術與心法：PM的四大關鍵軟實力！</h3>
+          <p>談及PM必備的軟實力，學姊點出了四個關鍵：溝通、判斷、規劃與提問。她認為，PM 不只是協調者，更是對方向負責的人，這四種能力共同決定了產品是否能往正確的目標前進。</p>
+          <p>溝通，是讓不同角色對齊目標。PM必須能在工程、設計、行銷與管理層之間轉譯語言，讓每個人都知道「現在要做什麼、為什麼要這樣做」。這不是單向說服，而是讓團隊理解彼此在意什麼，避免資訊落差造成事倍功半。</p>
+          <p>判斷，是敢於篩選聲音，而不是討好所有人。學姊指出，學生時期做小組作業時，大家常習慣統合所有意見，試圖做出一個人人都不反對方案，但在職場中，這樣反而很危險。不是每一個建議都值得被採納，一味收攏只會產生一個無法回應目標、也缺乏方向的「四不像方案」。PM的責任不是讓每個人滿意，而是辨識哪些聲音真正有助於產品前進，哪些需要被理性地篩選掉。</p>
+          <p>規劃，是做一步、想三步的全局視角。學姊在她看來，規劃能力不是憑空而來，而是來自對流程的預演。就像要賣一台筆電，不能只想到生產與出貨，還要想到賣完之後誰來支援、如何維修、客服怎麼接手。當你能把前後幾步都在腦海中跑過一遍，規劃的雛形就出來了。</p>
+          <p>提問，是進入未知時最重要的起點。</p>
+          <p>她認為，不懂並不可怕，不問才可怕。進入新產業、新專案時，PM往往需要快速補齊各種領域的Domain knowledge，而很多關鍵資訊不是上網就查得到，而是必須透過向具備專業背景的同事請教，才能真正理解細節與脈絡。也因此，提問不只是在釐清外部的使用者需求，更同時是 PM 在內部團隊中建立共識、掌握專業語言與工作節奏的重要工具。這種「問對問題」的能力，往往比急著給答案更重要，也能讓PM在面對未知時，快速站穩腳步。</p>
+          <p>學姊也分享，在LINE負責開發面向Z世代的新社群平台時，團隊曾為留言該具名還是匿名爭論不休。她沒有讓個人偏好主導，而是回到使用者訪談與數據，發現年輕族群更偏好匿名、互動率也更高，符合當時「快速獲客」的產品目標。即使這個選擇違背她的直覺與想法，她仍清楚向利害關係人說明風險與預期效益，在衝突中凝聚共識。她認為，這正是PM的修煉——在溝通、判斷、規劃與提問之間，帶領團隊往正確方向前進。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">連結服科：那些被「電」出來的洞察力</h3>
+          <p>回首清大服科所的時光，陳旻學姊認為那是一段「實作大於理論」的珍貴訓練。</p>
+          <p>特別提到過去嚴秀茹老師與許裴舫老師的指導。在服務創新與論文撰寫的過程中，她學會了如何「問出好問題」。學姊笑著回憶，以前常被老師「電」，但也正是在這一次次被挑戰邏輯、被要求具體化的過程中，練就了挖掘Insight（洞察）的能力。</p>
+          <p>「學生時期是最可以發問的時候，因為你的問題笨，才會被反饋。」學姊鼓勵學弟妹善用在校資源，不論是課堂上的服務設計專案，還是碩二時聽學長姐報告，都要練習開口發問。這些看似天馬行空的發想與邏輯攻防，其實正是未來職場上定義產品定位、釐清用戶痛點的基本功。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">展望未來：與AI協作，保持彈性</h3>
+          <p>面對席捲而來的AI浪潮，以及學弟妹對於「考證照」的焦慮，學姊給出了務實的建議。</p>
+          <p>對於證照，她認為那是讓履歷好看的「敲門磚」，但並非能力的保證。「證照只代表你知道，不代表你會。」比起盲目考取PMP或SQL證照，她更強調「實戰經驗」與「AI 應用能力」。</p>
+          <p>在台積電，即便是內部系統的PM，學姊也會利用AI工具來輔助撰寫報告甚至查詢程式碼。「現在連工程師的角色都可能被AI輔助，我們更該思考的是：人能做什麼？」AI 可以生成時程、產出代碼，但它無法取代PM對產品價值的判斷與對使用者的細膩同理。</p>
+          <p>訪談最後，陳旻學姊送給服科所學弟妹一句話：「慢慢來，比較快。」</p>
+          <p>從服科所走到科技業PM，陳旻學姊的歷程並不是一蹴可幾，而是一步一步累積而來。她證明了，專業不只來自背景，更來自長時間的自學、調整與耐心。無論是硬體轉軟體的陣痛，還是跨文化、跨產業的適應，她都選擇不急著證明自己，而是先把每一段路走穩。正因如此，她才能在不斷變動的產業中，慢慢建立屬於自己的節奏與定位。</p>
+          <p>在AI加速世界運轉的時代，真正拉開距離的，不是誰走得最快，而是誰走得最穩。願每一位服科人，都能在不確定中保持學習的彈性，也在自己的節奏裡，慢慢走出最遠的路。</p>
+        </div>
+      </div>
+
+      <div class="col-span-2 hidden lg:block pt-20">
+        <div class="sticky top-10 space-y-6">
+          <div class="border border-black p-4">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              人物專訪／完整原稿<br />
+              依來源文稿逐段置入
+            </p>
+          </div>
+          <div class="border-t border-black pt-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">KEYWORDS</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              PM、跨產業轉換、溝通、規劃、AI 協作
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

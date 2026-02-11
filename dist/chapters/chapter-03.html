@@ -7,12 +7,28 @@
     width: 100%;
     background-color: #ffffff;
   }
-  .ch11-sans { font-family: "Noto Sans TC", sans-serif; }
-  .vertical-text { writing-mode: vertical-rl; text-orientation: mixed; }
-  .text-justify-palt { text-align: justify; font-feature-settings: "palt"; }
-  .ch11-container::-webkit-scrollbar { display: none; }
-  .ch11-container p { margin-bottom: 1rem; }
-  @media (min-width: 768px) { .ch11-container p { margin-bottom: 1rem; } }
+
+  .ch11-sans {
+    font-family: "Noto Sans TC", sans-serif;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .text-justify-palt {
+    text-align: justify;
+    font-feature-settings: "palt";
+  }
+
+  .ch11-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ch11-container p {
+    margin-bottom: 1rem;
+  }
 
   .img-full {
     width: 100%;
@@ -20,16 +36,6 @@
     object-fit: cover;
     border-radius: 8px;
     margin: 3rem 0;
-  }
-
-  .img-large {
-    width: 80%;
-    max-width: 900px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 2.5rem auto;
-    display: block;
   }
 
   .img-grid-2 {
@@ -41,21 +47,7 @@
 
   .img-grid-2 img {
     width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
-  .img-grid-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    margin: 2.5rem 0;
-  }
-
-  .img-grid-3 img {
-    width: 100%;
-    height: 250px;
+    height: 320px;
     object-fit: cover;
     border-radius: 8px;
   }
@@ -71,54 +63,94 @@
   }
 
   @media (max-width: 768px) {
-    .img-large { width: 92%; }
-    .img-grid-2 { grid-template-columns: 1fr; }
-    .img-grid-3 { grid-template-columns: 1fr; }
-    .img-grid-2 img, .img-grid-3 img { height: 220px; }
+    .img-grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .img-grid-2 img {
+      height: 220px;
+    }
   }
 </style>
 
 <div class="ch11-container not-prose pb-24 overflow-visible">
   <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-      <div class="col-span-2 hidden lg:flex h-[600px] justify-center items-start pt-16">
+      <div class="col-span-2 hidden lg:flex h-[680px] justify-center items-start pt-16">
         <div class="h-full border-r border-gray-900 pr-6">
-          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">慈昱學姊</h2>
-          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">在校服科人</p>
+          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">在校服科人</h2>
+          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">專訪／鄭慈昱</p>
         </div>
       </div>
 
       <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl">
         <div class="space-y-6">
-          <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight">慈昱學姊</h2>
-          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">影像紀錄與校園日常片段</p>
+          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">慈昱學姊專訪</p>
+          <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight">在多重角色間，找到收斂的關鍵字——專訪慈昱學姊</h2>
+          <p class="text-sm md:text-base text-gray-500 ch11-sans tracking-wide">採訪／邱筠婷</p>
+          <p class="text-sm md:text-base text-gray-500 ch11-sans tracking-wide">撰文／胡育慈</p>
         </div>
 
-        <div class="space-y-6">
-          <p class="text-lg leading-10 text-gray-800 font-light text-justify-palt">本章目前先整理慈昱學姊的影像紀錄，延續「在校服科人」的日常觀察與成長軌跡。後續若有訪談逐字稿，將可直接擴充在本頁排版中。</p>
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>在服科所的課堂與活動現場，常能看見鄭慈昱學姊從容自信的身影。她是碩士二年級的學生，卻同時身兼研究生、科技業AI產品實習PM與自媒體經營者等多重角色。這次專訪我們希望從她的服科所之路出發，探索她如何在課業與工作之間分配時間，並在多重角色中維持穩定的節奏與平衡。</p>
+
+          <img src="/assets/chapter-03-ciyu/ciyu-01.jpg" class="img-full" alt="慈昱學姊專訪照片" />
+          <figcaption class="img-caption">鄭慈昱｜服科所在校生・AI 產品實習 PM</figcaption>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">抉擇的勇氣：先迷惘，再堅定</h3>
+          <p>「其實我在大學畢業時，就已經決定要回來唸書了。」</p>
+          <p>慈昱學姊的求學路並非直線，大四時的她徘徊於行銷與資管之間，為了釐清方向，她選擇先進入職場摸索。在理解市場現況與自身需求後，她毅然決定回到校園，而清大服科所成了她的首選，甚至是當時心中的「第一志願」。</p>
+          <p>為什麼不是背景較接近的資管所？慈昱學姊給出了很務實的觀察。相較於傳統資管所著重技術開發，服科所提供了更全面的視角。「在寫Code之前，我們更在乎『為什麼』。」她提到，服科的訓練讓她學會運用使用者旅程地圖（User Journey Map）、服務藍圖（Service Blueprint）等工具，去挖掘真正的痛點。「這兩種思維邏輯產出的架構是完全不一樣的，確認了應用場景的準確性，開發出來的產品才是真正被需要的。」</p>
+
+          <div class="img-grid-2">
+            <img src="/assets/chapter-03-ciyu/ciyu-02.jpg" alt="慈昱學姊專訪照片 2" />
+            <img src="/assets/chapter-03-ciyu/ciyu-03.jpg" alt="慈昱學姊專訪照片 3" />
+          </div>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">時間的煉金術：極致專注與徹底放空</h3>
+          <p>身兼數職的慈昱學姊，對時間管理有一套獨特的「圓餅圖哲學」。她以一週為單位，將生活精確地劃分為五大區塊。有趣的是，佔比最大的除了基本的生理需求外，「放空／滑社群」竟佔了將近18%，甚至比論文或運動的時間還多。</p>
+          <p>「對我來說，最重要的行程其實是『放空』。」她笑著解釋，這不是單純的發呆，而是在觀看影劇或滑Threads的過程中，讓大腦後台運作，梳理思緒或安排下一階段的計畫。此外，每週固定的「運動」時間也是不可或缺的儀式，透過練舞或打球的大爆汗，將累積的焦慮與思緒清空，讓身心歸零重置。</p>
+          <p>然而，當壓力來襲，多工處理的極限被挑戰時，她會切換成「J人模式」。</p>
+          <p>在上個學期，她同時面臨碩一繁重課業、新竹林口兩地通勤實習、論文進度以及自媒體經營的四重夾擊。她的策略是將所有時程表攤開，像準備準備學測般制定嚴密的作戰計畫。「在工作狀態時，我強迫自己要有100%的專注度；但切換回休息狀態，我就會變成0%的一坨會呼吸的肉。」這種在極度緊繃與徹底鬆弛間的快速切換，正是她保持穩定的秘訣。</p>
+
+          <img src="/assets/chapter-03-ciyu/ciyu-04.jpg" class="img-full" alt="慈昱學姊專訪照片 4" />
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">實習與實務：PM 是職場的「翻譯蒟蒻」</h3>
+          <p>目前在研華實習，擔任AI產品PM的慈昱學姊，將自己定位為團隊中的「翻譯蒟蒻」。</p>
+          <p>她的實習工作橫跨產品從0到1的完整流程。暑期期間，她負責AI產品的前期規劃，從使用者問卷、競品分析出發，進行產品發想與需求驗證，產出設計方向與技術分析規格書，作為開發依據；進入執行階段後，則以PM身分與工程師、UI團隊協作，進行技術可行性評估、開發內容協商與進度控管，並參與Chatbot優化、功能測試與產品發表。</p>
+          <p>學期中，她轉向電腦視覺相關產品，負責整包產品的官網與Chatbot規劃，從閱讀技術文件、整理產品重點，到設計頁面架構與對外溝通內容，並與工程師完成技術整合。</p>
+          <p>「PM 是一個很吃溝通與協作的角色。」懂程式，能減少與工程師的溝通成本；懂設計，能縮短產出與期待的落差；懂行銷，則能更好地傳遞產品的商業價值。因此，她鮮少拒絕不同領域的工作機會，因為每一個角色都是未來的養分。</p>
+          <p>在實習中，她觀察到職場對「實習 PM」與「正職 PM」的期待截然不同。正職PM被要求即戰力與變現能力，解決客戶痛點；而實習 PM 則被賦予了「打破框架」的特權。主管鼓勵她提出天馬行空的想法，甚至期待透過新血的視角，衝擊團隊既有的思考僵局。</p>
+          <p>回到學校，服科所的「同儕效應」則給了她另一種震撼。「在這裡，大家不只是交作業，而是在做一個『作品』。」看著同學們在簡報邏輯、分析顆粒度上的高標準，讓原本文組出身、對細節較隨性的她，也逐漸轉變為一名「細節控」，學會從微小的線索中串聯出龐大的洞察。</p>
+
+          <div class="img-grid-2">
+            <img src="/assets/chapter-03-ciyu/ciyu-05.jpg" alt="慈昱學姊專訪照片 5" />
+            <img src="/assets/chapter-03-ciyu/ciyu-06.jpg" alt="慈昱學姊專訪照片 6" />
+          </div>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">放在心中的靈魂拷問：想清楚「關鍵字」</h3>
+          <p>展望未來一到三年，慈昱學姊期許自己能克服惰性，保持如學生時代般的好奇心，在產品PM 的領域持續深耕。</p>
+          <p>訪談最後，面對同樣處於迷惘期的學弟妹，她給出了一句最真誠的建議：「先想好你自己到底要什麼。」</p>
+          <p>服科所擁有極高的自由度與多樣性，但也容易讓人迷失在過多的選擇中。慈昱學姊認為，不需要一開始就畫出完美的藍圖，但心中要有一個核心的「關鍵字」——無論是特定的職涯目標、想學的技術，或是創業的夢想。</p>
+          <p>「當你有了這個關鍵字，無論是選課、實習，甚至是找教授諮詢，你都能以此為濾鏡，篩選出對你真正有幫助的養分。」</p>
+          <p>就像分號一樣，慈昱學姊的故事還在繼續。她用行動證明了，只要確立了核心，那些看似發散的斜槓角色，終將匯聚成一條持續延伸、充滿可能性的道路。</p>
         </div>
-
-        <img src="/assets/chapter-03-ciyu/ciyu-01.jpg" alt="慈昱學姊照片 1" class="img-large" />
-
-        <div class="img-grid-2">
-          <img src="/assets/chapter-03-ciyu/ciyu-02.jpg" alt="慈昱學姊照片 2" />
-          <img src="/assets/chapter-03-ciyu/ciyu-03.jpg" alt="慈昱學姊照片 3" />
-        </div>
-
-        <div class="img-grid-3">
-          <img src="/assets/chapter-03-ciyu/ciyu-04.jpg" alt="慈昱學姊照片 4" />
-          <img src="/assets/chapter-03-ciyu/ciyu-05.jpg" alt="慈昱學姊照片 5" />
-          <img src="/assets/chapter-03-ciyu/ciyu-06.jpg" alt="慈昱學姊照片 6" />
-        </div>
-
-        <p class="img-caption">Photo archive · 慈昱學姊</p>
       </div>
 
       <div class="col-span-2 hidden lg:block pt-20">
         <div class="sticky top-10 space-y-6">
           <div class="border border-black p-4">
             <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
-            <p class="mt-2 text-sm leading-7 text-gray-800">影像章節／Photo essay</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              人物專訪／完整原稿<br />
+              依來源文稿逐段置入
+            </p>
+          </div>
+          <div class="border-t border-black pt-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">KEYWORDS</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              在校服科人、時間管理、AI 產品 PM、多重角色、職涯探索
+            </p>
           </div>
         </div>
       </div>

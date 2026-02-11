@@ -1,4 +1,128 @@
-<div class="chapter-content">
-  <h2>Chapter 0${i}</h2>
-  <p>這是章節內容的佔位符。請編輯此 HTML 文件以添加你的實際內容。</p>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap");
+
+  .ch11-container {
+    font-family: "Shippori Mincho", "Noto Serif TC", serif;
+    color: #1a1a1a;
+    width: 100%;
+    background-color: #ffffff;
+  }
+
+  .ch11-sans {
+    font-family: "Noto Sans TC", sans-serif;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .text-justify-palt {
+    text-align: justify;
+    font-feature-settings: "palt";
+  }
+
+  .ch11-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ch11-container p {
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="ch11-container not-prose pb-24 overflow-visible">
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <div class="col-span-2 hidden lg:flex h-[680px] justify-center items-start pt-16">
+        <div class="h-full border-r border-gray-900 pr-6">
+          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">服科前輩們</h2>
+          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">專訪／曾婉婷</p>
+        </div>
+      </div>
+
+      <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl">
+        <div class="space-y-6">
+          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">婉婷學姊專訪</p>
+          <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight">在教育 × 硬體 × 軟體之間，重新定義 UI/UX 的角色</h2>
+          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">——曾婉婷學姊談 ViewSonic 的 UI/UX Designer 工作現場</p>
+          <p class="text-sm md:text-base text-gray-500 ch11-sans tracking-wide">採訪／朱庭萱、邱筠婷、胡育慈</p>
+          <p class="text-sm md:text-base text-gray-500 ch11-sans tracking-wide">撰文／胡育慈</p>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>當 UI/UX 設計走進教育現場、硬體設備與大型組織結構之中，所面對的，不只是介面好不好用的問題，而是——設計的角色，如何在複雜系統中被理解、被協作、被實踐。</p>
+          <p>這次的訪談，與其說是在介紹一個 UI/UX Designer 的職稱，不如說是在探索：當設計進入真實世界的限制之中，UI/UX 的角色該如何被重新定義？</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">UI/UX Designer 的實際工作長什麼樣？</h3>
+          <p>曾婉婷學姊目前於 ViewSonic 擔任 UI/UX Designer，但她更傾向以「Product Designer」來形容自己的工作狀態。她所屬的 VSX 部門，專注於教育相關的 SaaS 產品開發，產品型態為 B2B2C——服務對象是政府、學校與學區，而實際的使用者，則是第一線的老師與學生。</p>
+          <p>她的工作橫跨完整的產品流程。從前期訪談老師、進入學校觀課、理解使用情境開始，接著與 PM 一起釐清需求、切分 scope；進入設計階段後，從 Wireframe、User Flow 一路推進到 UI，並交付給工程師進行開發。產品上線後，視情況進行易用性測試，蒐集使用者與 Sales 的回饋，再持續迭代。</p>
+          <p>在產品即將上線的階段，她也需要與 Customer Success（CS）與 Marketing 團隊密切合作，清楚說明功能設計背後的目的與預期效益，協助各地區團隊進行後續推廣。</p>
+          <p>在這樣的角色中，設計並非單點產出，而是一條貫穿產品生命週期的協作路徑。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">硬體企業中的軟體轉型：ViewSonic 的組織背景</h3>
+          <p>ViewSonic 以硬體起家，螢幕與投影機是最為人熟知的產品。近年公司積極轉型，從單一硬體銷售，走向整合式的軟體解決方案（Solutions），而婉婷學姊所在的 VSX 部門，正是這段轉型中的關鍵單位。</p>
+          <p>相較於純 Web-based 的 SaaS 公司，這樣的背景也為設計帶來不同限制。數位產品不僅在手機與電腦上流暢運作，更需延伸至互動電子白板等硬體裝置。因應載體的多元化，設計過程必須更全面地考量互動模式、技術限制及使用情境的差異。</p>
+          <p>「像大螢幕就沒有Hover（滑鼠懸停）」她舉例，「那你在互動設計上就要想其他替代方案。」</p>
+          <p>此外，帳號系統、韌體，以及不同軟體服務之間的串接，往往牽涉多個部門。設計師不只是在畫介面，更需要在複雜的組織結構中，持續溝通、協調與翻譯彼此的語言。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">VSX：為轉型而生的實驗場域</h3>
+          <p>婉婷學姊目前所屬的部門名為 VSX。「VS」取自 ViewSonic，而「X」則象徵未知與實驗。這個部門最初以教育元宇宙相關軟體為起點成立，也被定位為公司內部嘗試創新與新型態產品的實驗場域。</p>
+          <p>因此，VSX 的團隊整體年齡層相對年輕，在公司內部也被視為較具彈性與活力的單位。組織上，VSX 隸屬於特定 Business Unit（BU），由 BU Head 負責，向上銜接至公司高層，並需與其他部門進行密切的跨單位合作。</p>
+          <p>在實際工作節奏上，VSX 以 Functional Team 分工，但產品開發採用敏捷模式。每個 Scrum Team 中，皆包含 PM、Designer、前後端工程師與 QA，由 Scrum Master 協調推進。相較於強調完整驗證流程的成熟 SaaS 組織，這裡更重視「先落地、再修正」的回饋循環。</p>
+          <p>這樣的組織定位，也直接形塑了 UX 在其中能夠發揮的方式——在高度不確定的轉型過程中，設計更像是一種持續調整方向的工具，而非一次到位的完美解法。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">團隊中的 UX 角色：在 Product Team 裡協作前進</h3>
+          <p>在 VSX 部門內部，組織分工相當清楚。工程端由工程主管與前端、後端、QA 等 Tech Head 組成；產品端則是由 PM 與 Designer 所構成的 Product Team。UX Designer 便是在這樣的產品團隊中，與 PM、工程師密切協作。</p>
+          <p>AI 工程師雖隸屬於另一個部門，但在實際專案中，仍需頻繁合作。UX 的價值，並非來自單一專業的獨立發揮，而是在跨角色的溝通、協調與共創之中逐步成形。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">離開同溫層之後：UX 不一定總是被理解</h3>
+          <p>談到職場現實，婉婷學姊坦言，當離開校園與過往 UX 成熟度較高的組織後，理想與現實間的斷層顯而易見，那份落差感遠比預期深刻。</p>
+          <p>在服科所，或是在重視使用者研究的環境中，UX 的價值往往不需要反覆被解釋；但進入不同組織後，並非每一位主管或合作夥伴，都具備相同的背景與認知。</p>
+          <p>「有時候會覺得，我做到 60 分跟做到 80 分，對某些人來說好像是差不多的。」</p>
+          <p>她並不將這樣的狀況視為對錯，而是選擇重新理解「受不受重視」這件事。本質上，關鍵不在於 UX 是否被高舉，而在於產品所處的階段，以及組織當下最迫切的需求。</p>
+          <p>在產品初期、需要快速驗證市場的階段，短時間內累積小幅成功，可能比一次到位的完美體驗更重要；而當產品逐漸成熟、影響大量使用者時，UX 的評估與決策，自然需要更加謹慎。</p>
+          <p>UX 是否受重視，核心往往不在於職稱，而在於實質的影響力。 團隊文化與決策層對 UX 的認知，決定了設計與研究能否進入核心決策；若缺乏此一認知，即使設計品質卓越，在評價與推行上仍難以突破僵局。因此，UX 專業者的首要任務，是尋求能有效觸動決策層與利害關係人的溝通路徑。</p>
+          <p>然而，她也提醒，UX 尚未高度制度化的環境，未必全然是壞事。對仍在早期、需要快速試錯的產品而言，高容錯率與快速迭代，反而可能帶來更多學習與影響的空間。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">什麼樣的人，才算是一位「夠格」的 UX 設計師？</h3>
+          <p>談到什麼樣的人才算是 Qualified UX Designer，婉婷學姊並不給出標準答案。她認為，每間公司、每個產品階段，對「合格」的定義都不同。與其追求一份通用的技能清單，不如回到一個更核心的問題：</p>
+          <p>「我能不能在這個時刻，幫助產品往正確的方向前進？」</p>
+          <p>在某些情境中，數據分析能力是基本門檻；在另一些場域，對特定領域（如教育制度、文化差異）的理解，反而更加關鍵。研究方法與設計工具固然重要，但真正拉開差距的，往往是能否理解組織需求，並將自身能力轉譯成對當下環境「有用」的形式。</p>
+          <p>她也分享自己面對職涯初期的實際策略——找工作時，務實地從 Job Description 出發。JD 所列的能力，往往是公司心目中的理想狀態，而非實際能找到的平均值。「如果看完覺得自己符合一半，其實就已經可以試試看了。」</p>
+          <p>對仍在累積經驗的新人而言，與其急著對標「理想型設計師」，不如先將自己定位為 Junior，觀察市場上多數 Junior UX Designer 職缺反覆出現的能力需求，從市場回推自身定位與成長方向。</p>
+          <p>在她看來，UX 的專業從來不是靜態的，而是一種不斷與環境對話、調整姿態的過程。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">技能之外，更重要的是同理心與批判性思維</h3>
+          <p>談到能力養成，她仍強調基礎技能的重要性——研究員需具備訪談與易用性測試能力，設計師則需熟悉相關設計工具（如 Figma）。但跨過某個門檻後，差異往往不再來自工具熟練度。</p>
+          <p>她特別提到兩個關鍵能力：同理心與批判性思維。</p>
+          <p>使用者說出口的話，未必等同於行為背後的真實動機；理解對方，需要同理，但判斷資訊是否可信，則需要保持距離。而在實際的跨職能合作中，她也發現，比起不斷證明自己的專業能力，能否建立信任，往往才是設計師能否發揮影響力的關鍵。</p>
+          <p>這樣的經驗，也讓她在實務中更深刻體會到服務科學所強調的「以人為本」與「價值共創」，不只適用於使用者，也同樣適用於組織中的每一個人。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">分號之後 ;</h3>
+          <p>回顧過去的學習與職涯歷程，路徑並非一條直線，而是不斷在不同角色與場域中移動、調整、接續。每一次轉換，都不是結束，而是替下一段經驗留下空間。</p>
+          <p>在訪談的最後，我們也邀請她留一句話，給仍在書寫自己道路的讀者——</p>
+          <p>如果抽離了工作與職稱，我會怎麼介紹我自己？</p>
+        </div>
+      </div>
+
+      <div class="col-span-2 hidden lg:block pt-20">
+        <div class="sticky top-10 space-y-6">
+          <div class="border border-black p-4">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              人物專訪／完整原稿<br />
+              依來源文稿逐段置入
+            </p>
+          </div>
+          <div class="border-t border-black pt-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">KEYWORDS</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              UI/UX、產品設計、教育 SaaS、跨部門協作、轉型
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

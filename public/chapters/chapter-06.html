@@ -1,4 +1,118 @@
-<div class="chapter-content">
-  <h2>Chapter 0${i}</h2>
-  <p>這是章節內容的佔位符。請編輯此 HTML 文件以添加你的實際內容。</p>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap");
+
+  .ch11-container {
+    font-family: "Shippori Mincho", "Noto Serif TC", serif;
+    color: #1a1a1a;
+    width: 100%;
+    background-color: #ffffff;
+  }
+
+  .ch11-sans {
+    font-family: "Noto Sans TC", sans-serif;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .text-justify-palt {
+    text-align: justify;
+    font-feature-settings: "palt";
+  }
+
+  .ch11-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ch11-container p {
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="ch11-container not-prose pb-24 overflow-visible">
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <div class="col-span-2 hidden lg:flex h-[680px] justify-center items-start pt-16">
+        <div class="h-full border-r border-gray-900 pr-6">
+          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">服科前輩們</h2>
+          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">專訪／徐子珺</p>
+        </div>
+      </div>
+
+      <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl">
+        <div class="space-y-6">
+          <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight">分號人生：數據是理性的未完，溝通是感性的延續</h2>
+          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">——專訪 Intel 數據分析師 徐子珺 學姊</p>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>分號（；），在語法上連接了兩個獨立卻相關的子句。它不似句號般武斷地終結，也不像逗號般僅是短暫的換氣；它代表著一種「延續中的轉折」。</p>
+          <p>對徐子珺學姊而言，職涯正是這樣的節奏：哲學與傳播、廣告與資料、對外與對內、創意與收益——她用自身的經歷告訴我們：職涯沒有標準答案，只有不斷試錯後的持續書寫。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">從好奇「影響」開始：哲學與傳播走向服務科學</h3>
+          <p>一切的起點，是想理解人為什麼做選擇。</p>
+          <p>大學同時修習哲學與傳播的她，最初並沒有設定自己會走向資料分析。她對廣告與行銷產生興趣，因此雙主修傳播，也因為好奇「廣告如何影響消費者做選擇」，開始接觸相關實習。</p>
+          <p>真正讓她決定踏入數據領域的契機，源自於一次實習中的震撼。當時客戶希望了解自身消費者輪廓，傳統的行銷直覺似乎碰到了天花板。團隊一開始並不知道如何處理，於是他們與 IT 合作，嘗試從資料著手，爬取了粉絲專頁的海量留言。那段經驗讓她看見另一種理解市場的方式：用數據去影響、了解消費者。這也讓她對商業分析產生興趣，進而在研究所選擇服務科學研究所的商業分析模組。</p>
+          <p>而在服科所的課堂上，來自資管、設計、人文等不同背景的同學組成小組，這種多元視角的激盪，成為她日後適應跨部門溝通的預演。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">從對外到對內：利害關係人不同，核心邏輯不變</h3>
+          <p>角色改變，但工作本質仍是回應需求。</p>
+          <p>在 Ogilvy 擔任 AE 時，徐子珺學姊的核心任務是理解客戶需求、整合內部資源，並將策略轉化為可執行的方案；進入 Microsoft 實習與 Intel 工作後，角色逐漸轉向內部系統與數據，合作對象也從客戶變成業務。</p>
+          <p>她形容兩種角色其實有相似之處：都是在滿足利害關係人的需求。差異則來自產業與產出形式——廣告產業偏創意與軟性價值，而現在的工作是提供數據解決方案，直接指向銷售與收益。</p>
+          <p>在廣告業，她習慣了接收整合好的調查，在預算框架內完成廣吿投放；但在 Intel，她必須主動提供市場需求的調查，協助業務推展銷售。角色從「執行溝通」轉為「提供決策依據」，工作語言也隨之轉變。</p>
+          <p>雖然產業屬性從「創意導向」變成了「營收導向」，但她發現，AE 時期的經驗在數據工作中意外地關鍵。</p>
+          <p>「因為我當過業務，所以我知道他們面臨的業績壓力有多大。」</p>
+          <p>當業務急著要資料、語氣強硬時，徐子珺學姊相對純技術背景的分析師更能夠同理這是他們壓力的展現，也因為業務的背景，讓她更能夠了解業務的需求。這份同理心在內部合作中變得格外重要。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">在 Intel：實戰與溝通</h3>
+          <h4 class="text-xl md:text-2xl font-bold leading-tight tracking-tight mt-6 mb-3">從數據了解產業鏈。</h4>
+          <p>目前徐子珺學姊在 Intel 擔任數據分析師，關注的是整個客戶產業鏈：從產品出貨到 end customer 的路徑與相關數據。這看似是一個高度自動化的工作，但實務上卻充滿了人為的複雜性與博弈。「我們想了解整個 Intel 產品的流向，從出貨、經過 ODM，最後賣給哪個 End Customer。」徐子珺學姊解釋。</p>
+          <p>就像是一場貓捉老鼠的遊戲。Intel 提供回饋獎勵回報數據的客戶，但也必須透過自動化程式抓出違規從 Open Market 購買低價水貨的行為。</p>
+          <p>然而，數據分析師面臨的最大挑戰，往往是「資料治理的混亂」以及「數據與經驗的衝突」。</p>
+          <p>徐子珺學姊提到一個極具代表性的痛點：資料對齊（Alignment）。「Intel 的客戶遍佈全球，同一間公司，在系統裡可能有英文名、中文名，甚至泰國分公司用泰文登記的名字。」面對這種混亂，她每半年會手動進行一次 Mapping，並不斷與業務確認客戶關係，用人工去補足那最後一哩路。</p>
+
+          <h4 class="text-xl md:text-2xl font-bold leading-tight tracking-tight mt-10 mb-3">當數據與經驗衝突：溝通與信任比工具更關鍵。</h4>
+          <p>在大型組織中，資料來源複雜且分散，不同部門使用的數據可能不同，導致分析結果與既有經驗產生衝突。她的做法是先確認分析本身沒有錯誤，再清楚說明資料來源與背景，避免雙方基於不同基準討論。</p>
+          <p>除此之外，「信任」更是另一大挑戰。當分析出的結果與業務資深前輩的經驗相左時，該怎麼辦？</p>
+          <p>「這時候最重要的不是分析能力，而是溝通能力。」</p>
+          <p>徐子珺學姊認為最關鍵、卻常被低估的能力，是溝通能力。 有些資深的業務對資料庫與系統完全不信任，來自不同背景的主管也對資料價值理解較低，這些都會影響合作方式。面對這種信任危機，她並沒有急著辯駁。她花了一年的時間，提供完整的資料背景，說明數據來源與邏輯，並反覆確認自己的分析步驟，慢慢去驗證給對方看。透過長時間的驗證與一致性，逐步建立信任。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">AI 時代：流程不變，但設計流程變快</h3>
+          <p>AI 改變的是速度，而不是本質。</p>
+          <p>在 AI 工具快速發展的情境下，徐子珺學姊的分析流程與工具本身並未大幅改變，但在設計流程與自動化時，AI 成為加速器能夠更快理解與實作。但同時，她也不諱言 AI 帶來的衝擊與焦慮。</p>
+          <p>「我常常會覺得我是會被取代的人。」</p>
+          <p>她觀察到，商業分析師角色可能逐漸淡化，部分例行工作可能被 AI、自動化或外包取代。她也提到，在她過去的討論中，普遍認為 senior 角色較不易被取代，而 junior 面臨較大壓力。</p>
+          <p>但她也認為，而未來更重要的能力，將會是溝通與提報等軟實力。AI 可以產出完美的報表，但無法理解業務背後的政治角力，無法同理利害關係人的焦慮，也無法在數據與現實衝突時進行談判與說服。這些「人的工作」，是數據分析師在 AI 時代最珍貴的價值。</p>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-12 mb-4">未完待續：用刪去法去探索人生</h3>
+          <p>最後，徐子珺學姊想要給服科所學弟妹或仍在探索定位的人的建議非常務實且中肯：</p>
+          <p>「去探索，用『刪去法』找到方向。」</p>
+          <p>她認為自己雖然一直在探索產業與自我，但仍覺得可以更早、更深。她的方法很直接：</p>
+          <p>「我非常推薦去實習。實習是成本最低的試錯。」</p>
+          <p>在實習過程中，除了吸收經驗、完成工作外，也可以多觀察那些正職前輩在做什麼，然後問自己：「未來三到五年，我想成為那樣的人嗎？」 如果不想，就刪掉這個選項。</p>
+          <p>她也鼓勵服科所的學生多與不同背景的人交流。那些交流不一定直接指向「答案」，但會幫你看見更多選項。多元背景意味著多種可能，而探索本身，也是職涯前進的一部分。</p>
+        </div>
+      </div>
+
+      <div class="col-span-2 hidden lg:block pt-20">
+        <div class="sticky top-10 space-y-6">
+          <div class="border border-black p-4">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              人物專訪／完整原稿<br />
+              依來源文稿逐段置入
+            </p>
+          </div>
+          <div class="border-t border-black pt-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">KEYWORDS</p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              商業分析、Intel、跨部門溝通、資料治理、AI
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -6,81 +6,177 @@
       "id": "chapter-01",
       "order": 1,
       "title": "服科所介紹；課程、老師",
-      "description": "",
+      "description": "服科所課程脈絡與師資導讀。",
       "htmlFile": "/chapters/chapter-01.html",
       "authors": [],
       "category": "服科的入口",
-      "theme": "light"
+      "theme": "light",
+      "coverImage": "/assets/IMG_6561.png",
+      "date": "2026 . 02",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" },
+        { "name": "邱筠婷", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
     },
     {
       "id": "chapter-02",
       "order": 2,
       "title": "薐嘉學姊",
-      "description": "",
+      "description": "穿梭多重身分的創業修煉，把服務科學說成企業語言。",
       "htmlFile": "/chapters/chapter-02.html",
       "authors": ["薐嘉學姊"],
       "category": "在校服科人",
-      "theme": "light"
+      "theme": "light",
+      "coverImage": "/assets/IMG_6561.png",
+      "date": "2026 . 02",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" },
+        { "name": "邱筠婷", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
     },
     {
       "id": "chapter-03",
       "order": 3,
       "title": "慈昱學姊",
-      "description": "",
+      "description": "在校服科人的學習與實踐觀察。",
       "htmlFile": "/chapters/chapter-03.html",
       "authors": ["慈昱學姊"],
       "category": "在校服科人",
-      "theme": "light"
+      "theme": "light",
+      "coverImage": "/assets/chapter-03-ciyu/ciyu-01.jpg",
+      "date": "2026 . 02",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" },
+        { "name": "邱筠婷", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
     },
     {
       "id": "chapter-04",
       "order": 4,
       "title": "IS－馮元詰",
-      "description": "",
+      "description": "當工程師懂服務設計，後台也可以是舞台。",
       "htmlFile": "/chapters/chapter-04.html",
       "authors": ["馮元詰"],
       "category": "服科前輩們",
-      "theme": "light"
+      "theme": "light",
+      "coverImage": "/assets/chapter-04-feng/feng-01.jpg",
+      "date": "2026 . 02",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" },
+        { "name": "邱筠婷", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
     },
     {
       "id": "chapter-05",
       "order": 5,
       "title": "SID－曾婉婷 ViewSonic UI/UX Designer",
-      "description": "",
+      "description": "服科前輩職涯專訪。",
       "htmlFile": "/chapters/chapter-05.html",
       "authors": ["曾婉婷"],
       "category": "服科前輩們",
-      "theme": "light"
+      "theme": "light",
+      "coverImage": "/assets/IMG_6561.png",
+      "date": "2026 . 02",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" },
+        { "name": "邱筠婷", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
     },
     {
       "id": "chapter-06",
       "order": 6,
       "title": "BA－徐子珺 Intel Taiwan / Data Analyst",
-      "description": "",
+      "description": "服科前輩職涯專訪。",
       "htmlFile": "/chapters/chapter-06.html",
       "authors": ["徐子珺"],
       "category": "服科前輩們",
-      "theme": "light"
+      "theme": "light",
+      "coverImage": "/assets/IMG_6561.png",
+      "date": "2026 . 02",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" },
+        { "name": "邱筠婷", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
     },
     {
       "id": "chapter-07",
       "order": 7,
       "title": "SMM－陳旻 台灣連線（LINE）PM",
-      "description": "",
+      "description": "服科前輩職涯專訪。",
       "htmlFile": "/chapters/chapter-07.html",
       "authors": ["陳旻"],
       "category": "服科前輩們",
-      "theme": "light"
+      "theme": "light",
+      "coverImage": "/assets/IMG_6561.png",
+      "date": "2026 . 02",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" },
+        { "name": "邱筠婷", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
     },
     {
       "id": "chapter-08",
       "order": 8,
       "title": "Sunny",
-      "description": "",
+      "description": "一間喜劇公司的服務科學實驗室到底在做什麼？",
       "htmlFile": "/chapters/chapter-08.html",
       "authors": ["Sunny 鄭晴元"],
       "category": "展開專訪",
-      "theme": "light"
+      "theme": "light",
+      "coverImage": "/assets/chapter-08-sunny/sunny-01.jpg",
+      "date": "2026 . 02",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" },
+        { "name": "邱筠婷", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
     },
     {
       "id": "chapter-09",
@@ -112,7 +208,7 @@
       "id": "chapter-10",
       "order": 10,
       "title": "徐千捷主理人",
-      "description": "",
+      "description": "城市裡的分號：盛會背後的服務系統。",
       "htmlFile": "/chapters/chapter-10.html",
       "authors": ["徐千捷"],
       "category": "展開專訪",
@@ -133,11 +229,23 @@
       "id": "chapter-11",
       "order": 11,
       "title": "活動項目",
-      "description": "",
+      "description": "活動現場紀錄與回顧。",
       "htmlFile": "/chapters/chapter-11.html",
       "authors": [],
       "category": "活動現場",
-      "theme": "light"
+      "theme": "light",
+      "coverImage": "/assets/IMG_6561.png",
+      "date": "2026 . 02",
+      "credits": [
+        { "name": "陳冠宇", "role": "主編 設計" },
+        { "name": "胡育慈", "role": "主編 設計" },
+        { "name": "邱筠婷", "role": "主編 設計" }
+      ],
+      "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
+      ]
     }
   ]
 }
