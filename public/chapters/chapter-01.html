@@ -7,13 +7,16 @@
     width: 100%;
     background-color: #ffffff;
   }
+
   .ch11-sans {
     font-family: "Noto Sans TC", sans-serif;
   }
+
   .vertical-text {
     writing-mode: vertical-rl;
     text-orientation: mixed;
   }
+
   .text-justify-palt {
     text-align: justify;
     font-feature-settings: "palt";
@@ -23,701 +26,252 @@
     display: none;
   }
 
-  /* Paragraph spacing */
   .ch11-container p {
     margin-bottom: 1rem;
   }
 
-  @media (min-width: 768px) {
-    .ch11-container p {
-      margin-bottom: 1rem;
-    }
+  .section-divider {
+    border-top: 1px solid #111827;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
   }
 
-  /* ===== Image Styles ===== */
-  .img-full {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 3rem 0;
+  .question-list {
+    padding-left: 1.2rem;
+    margin: 1rem 0 2rem;
   }
 
-  .img-large {
-    width: 80%;
-    max-width: 900px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 2.5rem auto;
-    display: block;
+  .question-list li {
+    margin-bottom: 0.8rem;
+    line-height: 1.9;
   }
 
-  .img-medium {
-    width: 60%;
-    max-width: 600px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 2rem auto;
-    display: block;
+  .course-block {
+    border-top: 1px dashed #9ca3af;
+    padding-top: 1.5rem;
+    margin-top: 1.75rem;
   }
 
-  .img-small {
-    width: 40%;
-    max-width: 400px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 1.5rem auto;
-    display: block;
+  .course-block:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+    margin-top: 0;
   }
 
-  .img-small-left {
-    width: 40%;
-    max-width: 400px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    float: left;
-    margin: 0.5rem 2rem 1.5rem 0;
+  .q-head {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 1.1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
   }
 
-  .img-small-right {
-    width: 40%;
-    max-width: 400px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    float: right;
-    margin: 0.5rem 0 1.5rem 2rem;
+  .teacher-card {
+    border: 1px solid #d1d5db;
+    padding: 1rem 1.1rem;
+    margin-top: 1rem;
+    background: #fff;
   }
 
-  .img-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin: 2.5rem 0;
-  }
-
-  .img-grid-2 img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
-  .img-grid-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    margin: 2.5rem 0;
-  }
-
-  .img-grid-3 img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
-  @media (max-width: 768px) {
-    .img-large,
-    .img-medium {
-      width: 90%;
-    }
-
-    .img-small,
-    .img-small-left,
-    .img-small-right {
-      width: 100%;
-      float: none;
-      margin: 1.5rem auto;
-    }
-
-    .img-grid-2 {
-      grid-template-columns: 1fr;
-    }
-
-    .img-grid-3 {
-      grid-template-columns: 1fr;
-    }
-
-    .img-grid-2 img,
-    .img-grid-3 img {
-      height: 200px;
-    }
-  }
-  .img-caption {
-    font-family: "Noto Sans TC", sans-serif;
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-top: 0.75rem;
-    text-align: center;
-    letter-spacing: 0.05em;
-    line-height: 1.5;
+  .teacher-card p {
+    margin-bottom: 0.75rem;
   }
 </style>
 
 <div class="ch11-container not-prose pb-24 overflow-visible">
-  <!-- INTRO SECTION -->
   <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-      <!-- Vertical Title (Desktop) -->
-      <div
-        class="col-span-2 hidden lg:flex h-[600px] justify-center items-start pt-16"
-      >
+      <div class="col-span-2 hidden lg:flex h-[700px] justify-center items-start pt-16">
         <div class="h-full border-r border-gray-900 pr-6">
-          <h2
-            class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900"
-          >
-            設計系統展示
-          </h2>
-          <p
-            class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans"
-          >
-            排版範例／Demo
-          </p>
+          <h2 class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900">服科的入口</h2>
+          <p class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans">課程介紹／老師留言</p>
         </div>
       </div>
 
-      <!-- Main Content -->
-      <div
-        class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl"
-      >
-        <!-- Lead -->
+      <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl">
         <div class="space-y-6">
-          <div
-            class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-          >
-            <p>
-              本頁面展示了電子書中所有可用的設計元素，包括文字排版、圖片樣式、引言區塊、
-              邊框卡片等。透過實際的文章格式，你可以看到這些元素如何在真實情境中被使用。
-              這些設計元素都經過精心調整，確保在不同裝置上都能呈現最佳的閱讀體驗。
-            </p>
-            <p>
-              每個元素都考慮了可讀性、視覺層次和整體美感。從字體選擇到間距設定，
-              從圖片尺寸到色彩運用，都遵循一致的設計原則。接下來的內容將逐一展示這些元素，
-              讓你了解如何運用它們來創造專業且吸引人的內容。
-            </p>
+          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">服科所介紹；課程、老師</p>
+          <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight">課程介紹 × 老師留言</h2>
+          <p class="text-sm md:text-base text-gray-500 ch11-sans tracking-wide">內容來源：原文整理（不改寫）</p>
+        </div>
+
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-2 mb-2">課程介紹</h3>
+          <p><strong>服科所介紹；課程</strong></p>
+          <ol class="question-list ch11-sans">
+            <li>這門課在上什麼／核心學習重點</li>
+            <li>你覺得這門課最大的收穫是什麼</li>
+            <li>適合什麼樣的學弟妹來修（例如是否需要程式基礎、適合哪一類背景）</li>
+            <li>上課方式或作業特色（如專題、實作、討論等）</li>
+            <li>你會不會推薦這門課，以及原因</li>
+          </ol>
+
+          <div class="course-block">
+            <h4 class="text-2xl font-bold leading-tight tracking-tight">IS-服務導向資訊系統架構SOA（Vick）</h4>
+            <p class="ch11-sans text-base text-gray-600"><strong>服務導向資訊系統架構（SOA）</strong><br />撰文／范振宇</p>
+
+            <p class="q-head">這門課在上什麼／核心學習重點</p>
+            <p>這門課以「服務導向資訊系統架構（SOA）」為核心，透過 Ruby 語言實際建構一個完整的系統。課堂時間著重在架構概念、設計思維與系統分工，下課後則是和團隊一起把專案真正做出來，整體專案架構是模仿老師的實務專案 <em>Code Praise</em>，從設計、版控、到部署都會實際碰到。</p>
+
+            <p class="q-head">你覺得這門課最大的收穫是什麼</p>
+            <p>最大的收穫不是學會 Ruby 本身，而是學會「怎麼看待系統與合作」。第一次真正體會物件導向的思維、團隊版控、服務拆分與整體系統架構，也更清楚程式其實是一種工具，真正重要的是背後的概念與邏輯。老師在課堂上分享的設計觀念與工程思維，是那種會用一輩子的知識。</p>
+
+            <p class="q-head">適合什麼樣的學弟妹來修</p>
+            <p>適合願意挑戰自己、不排斥學新技術的人修，但建議要有強大的程式背景，不然會很辛苦；比較不適合只想輕鬆拿學分的人。對設計、服務、系統架構或跨領域有興趣的同學，會學得很有感。</p>
+
+            <p class="q-head">上課方式或作業特色</p>
+            <p>課程以專題實作為主，強調團隊合作與實際產出。老師本身非常投入、熱情又幽默，甚至連 git blame 都被他轉化成正向的「Praise」，專案本身也是老師為了真實需求所設計，用來評估每位組員的貢獻，整體非常有意義（雖然 loading 真的偏重）。</p>
+
+            <p class="q-head">你會不會推薦這門課，以及原因</p>
+            <p>會非常推薦。這是一門「硬，但值得」的課。雖然作業量大、壓力不小，但只要組員願意一起撐，收穫真的很扎實。老師的教學態度、課程設計與學到的觀念，都會讓人覺得一切都很值得，也會對「服務 × 系統 × 合作」有完全不同的理解。</p>
+
+            <p class="ch11-sans text-base text-gray-600">loading 真的是出了名的重<br />-vick</p>
+          </div>
+
+          <div class="course-block">
+            <h4 class="text-2xl font-bold leading-tight tracking-tight">BA-程式設計與商業分析PBA（柏緯）</h4>
+            <p class="ch11-sans text-base text-gray-600"><strong>BA-程式設計與商業分析PBA</strong><br />撰文／林柏緯</p>
+
+            <p class="q-head">這門課在上什麼／核心學習重點</p>
+            <p>這堂課是以資料分析結合統計理論與程式設計（R）為核心的課程。隨然名字裡有程式設計，但是這堂課更像是在建立一個完整的資料分析的思維模式。老師會從實際的資料集出發，利用R語言進行資料整理與視覺化，讓雜亂的資料轉換成可分析的格式，並用圖表清楚呈現資料在說什麼；接著也會介紹抽樣分佈、bootstrap、信賴區間、假設檢定、因果推論與迴歸模型，來增加我們在做資料分析的深度及廣度。期末也會自己挑選感興趣的主題，做出一份完整且嚴謹的資料分析報告。</p>
+
+            <p class="q-head">你覺得這門課最大的收穫是什麼</p>
+            <p>在修這堂課前，我其實很在意分析的「結果」，覺得如果最終的結果並不顯著的話，那麼一切的分析都是徒勞。在做這堂課的期末專案的過程中，我也發現了我挑選的主題分析的結果其實沒有我想像中的顯著，但老師告訴我，p-value 與顯著性並不是判斷對錯的絕對鐵則，不顯著何嘗不是一種結果？很多我們看到的結果，都只是眾多可能結果中的一個，而資料分析的責任，是誠實地面對這種不確定性。</p>
+            <p>這讓我以後在看資料時把重點從「差異有沒有顯著」轉向思考這個差異在現實世界中是否有意義，我覺得這對我在資料分析上的觀念有很大的轉變，也是我在這門課學到最大的收穫。</p>
+
+            <p class="q-head">適合什麼樣的學弟妹來修（例如是否需要程式基礎、適合哪一類背景）</p>
+            <p>我覺得PBA這堂課非常適合商管、資管、統計、經濟或社科背景，並且希望把資料分析實際應用在真實問題上的同學。這門課並不要求非常扎實的程式基礎，但需要你願意動手寫程式、嘗試錯誤，並花時間理解統計背後的邏輯。老師也會一步一步教你需要用到的語法和工具，對於程式能力的要求算是非常的新手友善！</p>
+            <p>但如果你期待的是一門只要照著範例操作、快速完成作業的課，PBA 可能會覺得有點吃力；但如果你希望真正搞清楚資料分析在做什麼，不只是會用工具而已，這門課會帶來很大的收穫和成長。</p>
+
+            <p class="q-head">上課方式或作業特色（如專題、實作、討論等）</p>
+            <p>PBA 是一門實作導向的課程。幾乎每個重要概念，都會搭配實際的資料集並用 R語言程式操作，作業也不是單純計算答案，而是要求學生解釋自己的分析流程與結論。</p>
+            <p>而期末專題是課程中很重要的一環，學生會分組並自由選擇感興趣的主題，從查找文獻、資料蒐集、整理、視覺化、模型分析到結果解釋都需要自行完成，當然過程中也可以與老師討論。完成的結過會是一份非常完整的分析結果報告。</p>
+
+            <p class="q-head">你會不會推薦這門課，以及原因</p>
+            <p>我會推薦這門課，雖然PBA 並不是一門輕鬆的課，但它教會你的，不僅僅是R語言或統計方法，而是在一個真實且充滿不確定性的世界中，如何透過資料做出負責任的判斷的能力。如果你希望在研究所階段，為未來的研究或工作打下扎實的資料分析基礎，這麼課會是值得投入時間與心力的選擇。</p>
+          </div>
+
+          <div class="course-block">
+            <h4 class="text-2xl font-bold leading-tight tracking-tight">SID-社會創業、服務創新</h4>
+            <p class="ch11-sans text-base text-gray-600"><strong>SID-社會創業</strong><br />撰文/陳冠宇</p>
+
+            <p class="q-head">這門課在上什麼/核心學習重點</p>
+            <p>這門課的核心在於實際帶你走過一次完整的創業流程,從發想、驗證、測試到修正。不同於多數創業課程停留在提案或概念階段,社會創業要求每位學生在學期內真正做出一個具社會影響力的專案,並在實際場域中進行測試與迭代。</p>
+            <p>課程採用精實創業(Lean Startup)的「建構-衡量-學習」循環,讓我們學習如何快速建立MVP、解讀市場訊號、並根據回饋做出調整。老師特別強調的不只是「把產品做好」,更重要的是思考如何建立難以複製的競爭優勢。在AI時代,許多創新點都可能被快速模仿,因此如何在商業模式、合作網絡或後端系統上建立護城河,成為課程中反覆討論的核心議題。</p>
+            <p>此外,課程也導入商業理論,包括市場洞察、需求定義、營運模式等,讓我們不只關注產品功能,更理解商業競爭背後的思維邏輯。</p>
+
+            <p class="q-head">你覺得這門課最大的收穫是什麼</p>
+            <p>我認為最大的收穫是理解到創業不是線性過程,而是充滿不確定性的動態調整。一開始的想法與實際執行後面對的現實,往往有巨大落差。在這個過程中,你必須不斷面對使用者回饋、市場訊號、團隊協作等各種變數,並學會在資訊不完整的情況下做出判斷。</p>
+            <p>而且也更具體地理解「創業不是一蹴可幾」。一開始的想法通常自認很完整、很合理,但只要真正投入執行,就會遇到各種訊號:使用者不買單、情境不成立、資源與時間不夠、假設根本站不住腳。這門課讓我學到的不是「如何避免失敗」,而是「如何讀懂失敗」並把每一次挫敗變成下一輪迭代的線索。</p>
+
+            <p class="q-head">適合什麼樣的學弟妹來修</p>
+            <p>這門課不需要程式背景,但需要具備以下特質:對創業有熱情、能接受高度不確定性、願意走出教室進入實際場域驗證想法,以及對商業邏輯與社會議題有興趣。</p>
+            <p>特別適合跨領域背景的同學——設計、資訊、社會科學、管理等不同專業都能在這門課找到發揮空間。因為創業從來不是一個人的事,課程本身就是一個很好的跨領域合作練習場。如果你想挑戰自己、想理解「想法如何變成現實」,或對商業運作與社會創新感興趣,都很適合來修這門課。</p>
+
+            <p class="q-head">上課方式或作業特色</p>
+            <p>課程以專題實作為主軸,搭配理論導讀與業界分享。每週會邀請創業者或業界講師演講,同時安排小組進度發表,讓各組接受老師與同學的回饋。老師鼓勵(要求)走入實際場域,與使用者互動、測試產品,不能只停留在紙上談兵。</p>
+            <p>課程提供實際經費支持專案落地。此外,老師主持多個USR計畫(如關西地方創生、東門市場青年創新基地),提供豐富的場域資源,讓同學可以快速進入實作環境。</p>
+            <p>作業形式包括每1-2週的進度報告、市場測試記錄、使用者訪談、MVP開發等。評分重點不在於「做出完美產品」,而是「記錄你的學習與修正過程」,老師更在意你如何面對失敗、如何從中學習並調整策略。</p>
+
+            <p class="q-head">你會不會推薦這門課,以及原因</p>
+            <p>我會推薦這門課。雖然過程中確實會遇到很多挫折——想法被市場否定、使用者反應與預期不同、團隊協作出現摩擦——但這些「不如預期」反而是最珍貴的學習時刻。</p>
+            <p>這門課提供了一個低風險但高學習價值的實驗場。你可以用一學期的時間,在有資源、有場域、有指導的環境下,完整走過創業的起承轉合。更重要的是,課程強調的不只是「成功」,而是「從試錯中驗證想法」。</p>
+          </div>
+
+          <div class="course-block">
+            <h4 class="text-2xl font-bold leading-tight tracking-tight">SMM-跨文化行銷溝通（胡）</h4>
+            <p class="ch11-sans text-base text-gray-600"><strong>SMM-跨文化行銷溝通</strong><br />撰文／胡育慈</p>
+
+            <p class="q-head">這門課在上什麼／核心學習重點</p>
+            <p>這門課的核心在於透過學術研究與實際案例，理解行銷溝通在不同文化情境下所產生的差異與影響。課程每週需閱讀約 2–3 篇國際期刊論文，乍看之下閱讀量偏高，但在實際操作上，可以搭配 AI 工具協助快速掌握研究重點，再回到原文深入閱讀，因此整體負擔仍在可接受範圍內。</p>
+            <p>此外，老師挑選的研究主題與案例都相當貼近當代議題，也具備跨文化的對照性。我在課堂中提報的研究題目為 Do lonely people seek robot companionship? A comparative examination of the Loneliness–Robot anthropomorphism link in the United States and China，探討不同文化背景下，人們在孤獨感受與對機器人擬人化連結之間的差異。研究結果與一般對文化刻板印象的想像有所出入，讓我意識到跨文化研究往往能顛覆直覺，也因此更加有趣。</p>
+
+            <p class="q-head">你覺得這門課最大的收穫是什麼</p>
+            <p>我認為最大的收穫來自於高度國際化的學習環境。修課學生中有超過一半是外籍生，無論是課堂討論或分組作業，都必須以英文進行。整個學期共有四次作業，且每次都需與不同成員合作，這樣的安排雖然充滿挑戰，但也迫使我不斷調整自己的溝通方式與合作策略。</p>
+            <p>在與來自不同國家的同學合作過程中，可以明顯感受到各自不同的做事節奏、討論習慣與決策邏輯，這些差異本身就成為一種很實際的跨文化學習經驗。</p>
+
+            <p class="q-head">適合什麼樣的學弟妹來修</p>
+            <p>這門課特別適合喜歡與人互動、對跨文化議題或行銷溝通有興趣的學生。即使沒有行銷或商管背景，也能透過課程逐步理解相關概念與研究方法，只要願意閱讀、討論與表達想法，就能從中獲得收穫。</p>
+
+            <p class="q-head">上課方式或作業特色</p>
+            <p>課程以論文閱讀、案例討論與小組合作為主，強調在理論基礎下進行跨文化行銷企劃的思考與實作。作業多以分組形式進行，並鼓勵跨文化組隊，使學生能在實際合作中體會文化差異如何影響溝通與策略制定。</p>
+
+            <p class="q-head">你會不會推薦這門課，以及原因</p>
+            <p>我會推薦這門課。雖然需要閱讀不少英文期刊，對我來說確實有點吃力，但能與來自世界各地的同學共同完成行銷企劃，是非常難得的經驗。這門課不只是學習行銷知識，更像是一個模擬未來國際工作環境的練習場，對有志於海外發展或跨國合作的學生而言，是一門既實用又有趣的課程。</p>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-2 mb-2">老師</h3>
+          <p><strong>服科所介紹；老師</strong></p>
+          <p>親愛的服科所老師們您好：我們正在規劃本期《服務聲》的主題內容，誠摯邀請老師一同參與分享。本期核心概念為「分號（;）」。在語言中，分號不是結束，而是讓句子得以延續；對我們而言，它也象徵一種仍在進行中的關係與對話——思考尚未停下，行動仍在醞釀之中。我們想邀請老師，從自身經驗出發，簡單分享一段您與服科所之間的連結或感受。可以是一個片段、一個仍在思考中的狀態，或是一段尚未被下結論的經驗。若方便，也想請老師用「一個符號」來形容這樣的狀態，並簡要說明其意義。文字長度 300 字以內即可，形式自由，不需完整結論。非常期待老師的分享，也謝謝老師們一路以來的引導與陪伴。</p>
+
+          <div class="teacher-card">
+            <h4 class="text-xl font-bold leading-tight tracking-tight">Galit 徐茉莉 老師</h4>
+            <p>My connection with ISS:</p>
+            <p><strong>I am part of a whole that is constantly evolving—surprising, comforting, challenging, growing, learning. Parts come and go, renew and transform, yet it is always ISS.</strong></p>
+            <p><strong>I love the symbol ~</strong></p>
+            <p>It means so many different things, and especially is different in Taiwan compared to other places.</p>
+            <p>It conveys flexibility, connection, and flow.</p>
+          </div>
+
+          <div class="teacher-card">
+            <h4 class="text-xl font-bold leading-tight tracking-tight">Patricia 郭珮宜 老師</h4>
+            <p><strong>「問號 ？」：</strong></p>
+            <p>有些時候，問號不是因為不知道答案，而是因為答案變得不再那麼單一。</p>
+            <p>回望之際，才意識到想像與初衷之間，出現了一段靜默的距離。</p>
+            <p>於是，選擇先留下這個「問號」，讓它提醒我們：思考仍在進行中，而方向，或許還有更多可能。</p>
+          </div>
+
+          <div class="teacher-card">
+            <h4 class="text-xl font-bold leading-tight tracking-tight">Pei-Fang Hsu 許裴舫 老師</h4>
+            <p><strong>2008 Service Science ??? Pei-Fang Hsu</strong></p>
+            <p>I joined ISS with uncertainty and curiosity, my mind filled with question marks.</p>
+            <p><strong>2008–2025 Service Science … Pei-Fang Hsu</strong></p>
+            <p>I learned from ISS faculty and students, growing from having never heard of personas, analytics, or co-creation to collaborating closely with them. Through challenges and shared achievements, I gradually came to understand what Service Science means to me. Over time, I was able to connect the dots…as Steve Jobs once described.</p>
+            <p><strong>2026 Service Science — Pei-Fang Hsu</strong></p>
+            <p>This is a great year we can shape Service Science together as the ISS family.</p>
+          </div>
+
+          <div class="teacher-card">
+            <h4 class="text-xl font-bold leading-tight tracking-tight">Soumya</h4>
+            <p>Greetings,</p>
+            <p>Here is my small piece. The symbol I chose is very similar to the semi-colon: it is the Em Dash (—).</p>
+            <p><strong>An Ode to the Em Dash</strong></p>
+            <p>I have always been proud and picky about English writing. One of my minor joys is explaining the difference between the hyphen (-), en dash (–), and em dash (—). The em dash in particular litters my writing. It is my go-to punctuation to mark a break in thought—a pause, followed by reflection, and then continuation. It matches my rhythm of thinking and breathing when reading and writing.</p>
+            <p>Then, to my horror, I came across multiple articles observing how the em dash is now a sign of LLM generated text. It was my small joy, but can never be again. So this is our dilemma: For AI to become something more than machine, we must lose some things that made us human.</p>
+            <p>The technologists and industrialists who champion this future seem gleeful at our loss. Our tech heroes now walk and talk like villains. We cannot fight against or slow down the AI wave—it has the momentum of indiscriminate money and power behind it.</p>
+            <p>At ISS we understand that technology should serve humanity; humans must not submit to technology. But for a time, we have to swallow our pride in the small joys. We must spend our time lost in the desert, discovering how to grab hold of this alien technology and twist it to serve our humanity.</p>
+            <p>I have started using AI for my passion projects, especially vibe coding. I thought I would hate it but in fact I love it. I enjoy making tools that serve people, instead of worrying about syntax or bugs.</p>
+            <p>So let us pause, reflect, and continue. We may lose a few joys to make space for new joys. And we must rediscover why SERVICE to humanity—not “IT”, “data”, “marketing”, or “design”—is what defines us most of all.</p>
+            <p>我一直對英文寫作感到驕傲，也相當挑剔。我其中一個微小但確實的樂趣，就是向人解釋連字號（-）、en dash（–）和 em dash（—）之間的差別。尤其是 em dash，幾乎散落在我所有的文字裡——它是我最常用的標點，用來標示思緒的中斷：一個停頓，接著反思，然後繼續往前。它完全符合我在閱讀與書寫時的思考與呼吸節奏。</p>
+            <p>直到有一天，我驚恐地看到好幾篇文章指出：em dash 如今成了大型語言模型生成文本的標誌。那原本屬於我的小小快樂，似乎再也回不來了。於是我們面臨這樣的困境：若 AI 要變得不只是機器，我們就必須失去一些曾讓我們之所以為人的東西。</p>
+            <p>那些擁抱這個未來的科技人與產業領袖，似乎對這樣的失去感到興高采烈。我們曾經仰慕的科技英雄，如今看起來、說起來，都更像反派。我們無法對抗或減緩 AI 的浪潮——它背後有著不加選擇的金錢與權力推動。</p>
+            <p>在 ISS，我們相信科技應該服務人類；人類不該向科技低頭。但在這段時間裡，我們必須暫時吞下自尊，放下那些微小卻珍貴的樂趣。我們必須容許自己迷失在沙漠之中，摸索如何抓住這項陌生的技術，並將它扭轉成服務人性的工具。</p>
+            <p>我已經開始在自己的熱情專案中使用 AI，尤其是在 vibe coding 上。我原以為自己會討厭它，但事實上，我很喜歡。能專心做出真正服務他人的工具，而不用把心力耗在語法或除錯上，這件事讓我感到快樂。</p>
+            <p>所以，讓我們停下來、反思，然後繼續前行。我們或許會失去一些舊的樂趣，才能為新的樂趣騰出空間。而我們也必須重新找回：究竟是什麼定義了我們——是對人類的「服務」，而不是「IT」、「資料」、「行銷」或「設計」。</p>
+          </div>
+
+          <div class="teacher-card">
+            <h4 class="text-xl font-bold leading-tight tracking-tight">王貞雅 老師</h4>
+            <p>I choose (&amp;) to represent my experience with ISS. For me, it means “and” rather than “or”—different disciplines working together, learning from one another, and coexisting without having to become the same. This is how I experience ISS: a place where ideas remain open, connected, and always evolving---perhaps with more &amp; in the future!</p>
           </div>
         </div>
-
-        <!-- Big Quote -->
-        <div class="relative py-12 md:py-16">
-          <h3
-            class="text-3xl md:text-5xl font-black text-center leading-tight tracking-tight px-4"
-          >
-            「設計不只是美觀，更是有效溝通的工具」
-          </h3>
-          <p
-            class="mt-6 text-center text-sm md:text-base text-gray-600 ch11-sans tracking-widest"
-          >
-            ——設計系統的核心理念
-          </p>
-        </div>
       </div>
 
-      <!-- Right Rail (Meta) -->
       <div class="col-span-2 hidden lg:block pt-20">
         <div class="sticky top-10 space-y-6">
           <div class="border border-black p-4">
             <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
             <p class="mt-2 text-sm leading-7 text-gray-800">
-              設計系統展示<br />
-              完整排版範例
+              原先章節版型<br />
+              課程介紹 × 老師留言
             </p>
           </div>
           <div class="border-t border-black pt-6">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-              KEYWORDS
-            </p>
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">KEYWORDS</p>
             <p class="mt-2 text-sm leading-7 text-gray-800">
-              排版、視覺設計、內容結構、圖片運用
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION: 文字排版展示 -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-20">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      <div class="lg:col-span-8 space-y-8 max-w-4xl">
-        <div
-          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <p>
-            文字排版不僅僅是選擇字體那麼簡單。它涉及字級大小、行距、字距、段落間距等多個層面。
-            本設計系統採用 Shippori Mincho
-            和思源宋體作為主要字體，營造優雅而專業的氛圍。 中文內文使用 18px
-            字級，行高設定為 2.5，確保舒適的閱讀體驗。
-          </p>
-          <p>
-            在段落排版上，我們採用兩端對齊的方式，並運用了
-            font-feature-settings: "palt"
-            來優化標點符號的呈現。段落之間保持適當的間距，讓讀者在閱讀長文時不會感到疲勞。
-            這些細節的調整，都是為了創造最佳的閱讀體驗。
-          </p>
-        </div>
-
-        <!-- 示範：全寬圖片 -->
-        <figure class="my-12">
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            class="w-full h-auto object-cover rounded-lg"
-            alt="全寬圖片展示設計細節"
-          />
-          <figcaption class="img-caption">
-            全寬圖片展示設計細節（caption example）
-          </figcaption>
-        </figure>
-
-        <div
-          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <p>
-            上方展示的是全寬圖片樣式（img-full），適合用於需要強烈視覺衝擊的場景。
-            這種圖片會佔據整個內容寬度，為文章增添豐富的視覺層次。圖片自動裁切並保持比例，
-            確保在不同螢幕尺寸下都能完美呈現。
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION: 圖片尺寸展示 -->
-  <div
-    class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24 mt-8 mb-8"
-  >
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      <div class="lg:col-span-3 hidden lg:block">
-        <div class="sticky top-10">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            CHAPTER 2
-          </p>
-          <h3
-            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
-          >
-            圖片的多種呈現
-          </h3>
-        </div>
-      </div>
-
-      <div class="lg:col-span-9 space-y-8 max-w-4xl">
-        <div class="lg:hidden">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            CHAPTER 2
-          </p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">
-            圖片的多種呈現
-          </h3>
-        </div>
-
-        <div
-          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <p>
-            視覺元素在內容傳達中扮演關鍵角色。本設計系統提供了八種不同的圖片樣式，
-            讓創作者能根據內容需求選擇最適合的呈現方式。從全寬到小圖，從單張到多欄，
-            每種樣式都經過精心設計，確保視覺美感與功能性的完美平衡。
-          </p>
-        </div>
-
-        <!-- 示範：大圖 (80%) -->
-        <figure class="w-[80%] mx-auto my-10 block">
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            class="w-full h-auto object-cover rounded-lg"
-            alt="大圖樣式展示"
-          />
-          <figcaption class="img-caption">
-            大圖樣式展示（80% 寬度）
-          </figcaption>
-        </figure>
-
-        <div
-          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <p>
-            上方是大圖樣式（img-large），佔據內容寬度的 80%，居中顯示。
-            這種樣式適合重要但不需要完全填滿畫面的圖片，保留適當的留白讓版面更有呼吸感。
-          </p>
-        </div>
-
-        <!-- 示範：中等圖片 (60%) -->
-        <figure class="w-[60%] mx-auto my-8 block">
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            class="w-full h-auto object-cover rounded-lg"
-            alt="中等圖片樣式展示"
-          />
-          <figcaption class="img-caption">
-            中等圖片樣式展示（60% 寬度）
-          </figcaption>
-        </figure>
-
-        <div
-          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <p>
-            中等圖片（img-medium）佔據 60% 寬度，適合用於輔助說明的圖片。
-            這種尺寸既能清楚呈現圖片細節，又不會過度搶走文字的注意力。
-          </p>
-        </div>
-
-        <!-- Pull Quote -->
-        <div class="py-8 md:py-10">
-          <p
-            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
-          >
-            「每一個設計決策，都是為了更好的閱讀體驗」
-          </p>
-        </div>
-
-        <!-- 示範：小圖 (40%) -->
-        <figure class="w-[40%] mx-auto my-6 block">
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            class="w-full h-auto object-cover rounded-lg"
-            alt="小圖樣式展示"
-          />
-          <figcaption class="img-caption">
-            小圖樣式展示（40% 寬度）
-          </figcaption>
-        </figure>
-
-        <div
-          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <p>
-            小圖樣式（img-small）佔據 40%
-            寬度，適合用於圖示、小型插圖或不需要太多視覺比重的圖片。
-            這種尺寸讓圖片成為內容的點綴，而非主角。
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION: 文繞圖展示 -->
-  <div
-    class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24 mt-8 mb-8"
-  >
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      <div class="lg:col-span-3 hidden lg:block">
-        <div class="sticky top-10">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            CHAPTER 3
-          </p>
-          <h3
-            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
-          >
-            文字與圖片的對話
-          </h3>
-        </div>
-      </div>
-
-      <div class="lg:col-span-9 space-y-8 max-w-4xl">
-        <div class="lg:hidden">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            CHAPTER 3
-          </p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">
-            文字與圖片的對話
-          </h3>
-        </div>
-
-        <!-- 示範：左浮動文繞圖 -->
-        <div
-          class="text-base md:text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            class="img-small-left"
-            alt="左浮動圖片示例"
-          />
-          <p>
-            文繞圖是一種優雅的排版方式，讓圖片與文字自然地融合在一起。
-            當圖片設定為左浮動（img-small-left）時，文字會自動環繞在圖片右側，
-            創造出流暢的閱讀動線。這種排版特別適合用於人物專訪、產品介紹等需要圖文並茂的內容。
-            讀者可以一邊閱讀文字，一邊參考圖片，獲得更完整的資訊。文繞圖的關鍵在於保持適當的間距，
-            確保文字不會太靠近圖片而影響閱讀。我們在左浮動圖片的右側設定了 2rem
-            的間距，
-            在行動裝置上則會自動調整為區塊排列，確保在小螢幕上也能有良好的閱讀體驗。
-          </p>
-        </div>
-
-        <!-- 示範：右浮動文繞圖 -->
-        <div
-          class="text-base md:text-lg leading-10 text-gray-800 font-light text-justify-palt"
-          style="clear: both"
-        >
-          <img
-            src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-            class="img-small-right"
-            alt="右浮動圖片示例"
-          />
-          <p>
-            右浮動圖片（img-small-right）則讓文字環繞在圖片左側，創造不同的視覺節奏。
-            在長文章中，可以交替使用左右浮動，避免版面過於單調。這種變化不僅增加了視覺趣味，
-            也幫助讀者更好地理解內容結構。右浮動圖片的左側同樣保持 2rem 的間距，
-            確保文字有足夠的呼吸空間。文繞圖的另一個優點是節省版面空間，
-            讓更多內容能在同一個視窗內呈現，減少讀者需要滾動的距離。
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION: 多欄圖片展示 -->
-  <div
-    class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24 mt-8 mb-8"
-    style="clear: both"
-  >
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      <div class="lg:col-span-3 hidden lg:block">
-        <div class="sticky top-10">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            CHAPTER 4
-          </p>
-          <h3
-            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
-          >
-            並列的視覺敘事
-          </h3>
-        </div>
-      </div>
-
-      <div class="lg:col-span-9 space-y-8 max-w-4xl">
-        <div class="lg:hidden">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            CHAPTER 4
-          </p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">
-            並列的視覺敘事
-          </h3>
-        </div>
-
-        <div
-          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <p>
-            當需要同時呈現多張相關圖片時，多欄網格佈局是最佳選擇。
-            雙欄圖片（img-grid-2）適合用於前後對比、不同角度的展示，或是並列的案例說明。
-            這種排列方式讓讀者能同時看到兩張圖片，方便比較和理解。
-          </p>
-        </div>
-
-        <!-- 示範：雙欄圖片 -->
-        <figure class="my-10">
-          <div class="img-grid-2" style="margin: 0 0 0.5rem 0;">
-            <img
-              src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-              alt="雙欄圖片示例 1"
-            />
-            <img
-              src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-              alt="雙欄圖片示例 2"
-            />
-          </div>
-          <figcaption class="img-caption">
-            雙欄圖片說明範例
-          </figcaption>
-        </figure>
-
-        <div
-          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <p>
-            三欄圖片（img-grid-3）則適合展示系列作品、步驟說明或多個相關案例。
-            這種排列創造出豐富的視覺層次，特別適合需要呈現多樣性的內容。
-            在行動裝置上，多欄圖片會自動轉為單欄垂直排列，確保圖片在小螢幕上也能清楚顯示。
-          </p>
-        </div>
-
-        <!-- 示範：三欄圖片 -->
-        <figure class="my-10">
-          <div class="img-grid-3" style="margin: 0 0 0.5rem 0;">
-            <img
-              src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-              alt="三欄圖片示例 1"
-            />
-            <img
-              src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-              alt="三欄圖片示例 2"
-            />
-            <img
-              src="https://storage.googleapis.com/tdri/designexpo/2025/exhibition_pic/image/449/thumb_image_821311.jpg"
-              alt="三欄圖片示例 3"
-            />
-          </div>
-          <figcaption class="img-caption">
-            三欄圖片說明範例
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION: 資訊區塊展示 -->
-  <div
-    class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24 mt-8 mb-8"
-  >
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      <div class="lg:col-span-3 hidden lg:block">
-        <div class="sticky top-10">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            CHAPTER 5
-          </p>
-          <h3
-            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
-          >
-            結構化的資訊
-          </h3>
-        </div>
-      </div>
-
-      <div class="lg:col-span-9 space-y-8 max-w-4xl">
-        <div class="lg:hidden">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            CHAPTER 5
-          </p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">結構化的資訊</h3>
-        </div>
-
-        <div
-          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <p>
-            除了文字和圖片，資訊區塊是另一個重要的設計元素。
-            邊框區塊能有效地將重要資訊從正文中區隔出來，吸引讀者的注意力。
-            這些區塊適合用於工具說明、重點整理、補充資料等內容。
-          </p>
-        </div>
-
-        <!-- 示範：邊框資訊區塊 -->
-        <div class="p-6 md:p-8">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">TOOL</p>
-          <h4 class="mt-2 text-2xl font-bold tracking-wider">設計原則摘要</h4>
-          <div
-            class="mt-6 space-y-4 text-base leading-8 text-gray-800 font-light"
-          >
-            <p>
-              <span class="font-medium">一致性</span
-              >：所有元素遵循統一的設計語言
-            </p>
-            <p>
-              <span class="font-medium">可讀性</span
-              >：優先考慮內容的易讀性與理解度
-            </p>
-            <p>
-              <span class="font-medium">層次感</span
-              >：運用大小、粗細創造清晰的視覺層次
-            </p>
-            <p>
-              <span class="font-medium">響應式</span
-              >：確保在各種裝置上都能完美呈現
-            </p>
-          </div>
-        </div>
-
-        <!-- 示範：卡片網格 -->
-        <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div class="border p-6">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">01</p>
-            <h4 class="mt-2 text-xl font-bold tracking-wider">文字排版</h4>
-            <p
-              class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
-            >
-              字體、字級、行距的精心設計，創造舒適的閱讀體驗。
-            </p>
-          </div>
-          <div class="border p-6">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">02</p>
-            <h4 class="mt-2 text-xl font-bold tracking-wider">圖片運用</h4>
-            <p
-              class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
-            >
-              八種圖片樣式，滿足不同內容需求的視覺呈現。
-            </p>
-          </div>
-          <div class="border p-6">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">03</p>
-            <h4 class="mt-2 text-xl font-bold tracking-wider">資訊區塊</h4>
-            <p
-              class="mt-4 text-sm leading-7 text-gray-800 font-light text-justify-palt"
-            >
-              邊框與卡片樣式，有效組織和呈現結構化資訊。
-            </p>
-          </div>
-        </div>
-
-        <div
-          class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
-        >
-          <p>
-            卡片網格特別適合用於展示並列的項目、功能列表或案例集錦。
-            每個卡片都是獨立的資訊單元，讀者可以快速瀏覽並找到感興趣的內容。
-            網格佈局在桌面版可以是二欄或三欄，在平板和手機上會自動調整為單欄，
-            確保在所有裝置上都有最佳的閱讀體驗。
-          </p>
-        </div>
-
-        <!-- Pull Quote -->
-        <div class="py-8 md:py-10">
-          <p
-            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
-          >
-            「好的設計系統，讓創作者專注於內容，<br class="hidden md:block" />
-            而非格式的調整」
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24 mt-8 mb-8
-  <!-- OUTRO -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
-    <div class="pt-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div class="lg:col-span-4">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">OUTRO</p>
-          <h3 class="mt-3 text-3xl md:text-4xl font-black tracking-tight">
-            開始創作你的內容
-          </h3>
-          <p class="mt-6 text-base leading-8 text-gray-700 ch11-sans">
-            這些設計元素都已經準備好，等待被運用在你的文章中。 複製相應的 HTML
-            代碼，替換內容和圖片，就能創造出專業且美觀的內容。
-          </p>
-        </div>
-
-        <div class="lg:col-span-8 space-y-8 max-w-4xl">
-          <div
-            class="text-lg leading-10 text-gray-800 font-light text-justify-palt"
-          >
-            <p>
-              本展示頁面涵蓋了服務聲 2026 電子書設計系統的所有主要元素。
-              從基礎的文字排版到複雜的多欄佈局，每個元素都經過精心設計和測試，
-              確保能在各種情境下發揮最佳效果。記住，設計的目的是服務內容，
-              而非喧賓奪主。選擇最適合你內容的元素，創造出有意義且吸引人的作品。
-            </p>
-          </div>
-
-          <div class="p-6 md:p-8">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-              SUMMARY
-            </p>
-            <h4 class="mt-2 text-2xl font-bold tracking-wider">
-              設計系統核心要素
-            </h4>
-            <p
-              class="mt-6 text-2xl md:text-3xl font-black leading-snug tracking-tight"
-            >
-              一致的視覺語言，<br class="hidden md:block" />
-              靈活的排版選項，<br class="hidden md:block" />
-              優雅的閱讀體驗。
+              服科課程、核心收穫、跨域學習、分號主題、老師留言
             </p>
           </div>
         </div>
