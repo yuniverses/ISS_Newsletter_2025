@@ -69,6 +69,126 @@ export default function ChapterSection({
     };
   }, [content]); // Re-run when content loads
 
+  useEffect(() => {
+    if (!content || !articleRef.current) return;
+
+    const syncBlocks = Array.from(
+      articleRef.current.querySelectorAll<HTMLElement>("[data-story-sync]")
+    );
+    if (!syncBlocks.length) return;
+
+    const cleanups: Array<() => void> = [];
+
+    syncBlocks.forEach((block) => {
+      const frames = Array.from(
+        block.querySelectorAll<HTMLElement>("[data-story-frame]")
+      );
+      const entries = Array.from(
+        block.querySelectorAll<HTMLElement>("[data-story-entry]")
+      );
+      const markers = entries.map((entry) => {
+        const marker = entry.querySelector<HTMLElement>("[data-story-marker]");
+        return marker ?? entry;
+      });
+      const chips = Array.from(
+        block.querySelectorAll<HTMLElement>("[data-story-goto]")
+      );
+      const progressBars = Array.from(
+        block.querySelectorAll<HTMLElement>("[data-story-progress]")
+      );
+      const nextButton = block.querySelector<HTMLElement>("[data-story-next]");
+
+      const maxIndex = Math.min(frames.length, entries.length) - 1;
+      if (maxIndex < 0) return;
+
+      let currentIndex = 0;
+
+      const clampIndex = (index: number) =>
+        Math.max(0, Math.min(maxIndex, index));
+
+      const setActive = (index: number, options?: { scrollTo?: boolean }) => {
+        const nextIndex = clampIndex(index);
+        currentIndex = nextIndex;
+
+        frames.forEach((frame, frameIndex) => {
+          frame.classList.toggle("is-active", frameIndex === nextIndex);
+        });
+        entries.forEach((entry, entryIndex) => {
+          entry.classList.toggle("is-active", entryIndex === nextIndex);
+        });
+        chips.forEach((chip, chipIndex) => {
+          chip.classList.toggle("is-active", chipIndex === nextIndex);
+        });
+        progressBars.forEach((bar, barIndex) => {
+          bar.classList.toggle("is-active", barIndex <= nextIndex);
+        });
+
+        if (options?.scrollTo) {
+          entries[nextIndex].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      };
+
+      setActive(0);
+
+      const observer = new IntersectionObserver(
+        (observedEntries) => {
+          const visibleEntries = observedEntries.filter(
+            (entry) => entry.isIntersecting
+          );
+          if (!visibleEntries.length) return;
+
+          const viewportCenter = window.innerHeight / 2;
+          const targetEntry = visibleEntries.sort((a, b) => {
+            const distanceA = Math.abs(a.boundingClientRect.top - viewportCenter);
+            const distanceB = Math.abs(b.boundingClientRect.top - viewportCenter);
+            return distanceA - distanceB;
+          })[0];
+
+          const index = markers.indexOf(targetEntry.target as HTMLElement);
+          if (index !== -1 && index !== currentIndex) {
+            setActive(index);
+          }
+        },
+        {
+          threshold: 0,
+          rootMargin: "-45% 0px -45% 0px",
+        }
+      );
+
+      markers.forEach((marker) => observer.observe(marker));
+      cleanups.push(() => observer.disconnect());
+
+      chips.forEach((chip) => {
+        const onChipClick = () => {
+          const targetIndex = Number(chip.getAttribute("data-story-goto"));
+          if (!Number.isNaN(targetIndex)) {
+            setActive(targetIndex, { scrollTo: true });
+          }
+        };
+
+        chip.addEventListener("click", onChipClick);
+        cleanups.push(() => chip.removeEventListener("click", onChipClick));
+      });
+
+      if (nextButton) {
+        const onNextClick = () => {
+          const targetIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+          setActive(targetIndex, { scrollTo: true });
+        };
+
+        nextButton.addEventListener("click", onNextClick);
+        cleanups.push(() => nextButton.removeEventListener("click", onNextClick));
+      }
+    });
+
+    return () => {
+      cleanups.forEach((cleanup) => cleanup());
+    };
+  }, [content]);
+
   return (
     <section
       id={chapter.id}

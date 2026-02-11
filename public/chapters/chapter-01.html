@@ -58,6 +58,12 @@
     margin-top: 0;
   }
 
+  .course-block.course-block-first {
+    border-top: 0;
+    padding-top: 0;
+    margin-top: 0;
+  }
+
   .q-head {
     font-size: 1.1rem;
     font-weight: 700;
@@ -75,6 +81,257 @@
 
   .teacher-card p {
     margin-bottom: 0.75rem;
+  }
+
+  .story-scroll-sync {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+
+  .story-sync-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 1.35rem;
+    align-items: start;
+  }
+
+  .story-phone-col {
+    position: sticky;
+    top: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .story-phone {
+    width: 280px;
+    border: 6px solid #111827;
+    border-radius: 32px;
+    background: #111827;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 6px;
+  }
+
+  .story-screen {
+    position: relative;
+    height: 500px;
+    border-radius: 26px;
+    overflow: hidden;
+    background: #0f172a;
+  }
+
+  .story-progress {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    z-index: 5;
+  }
+
+  .story-progress span {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.32);
+    border-radius: 99px;
+    transition: background 0.25s ease;
+  }
+
+  .story-progress span.is-active {
+    background: #ffffff;
+  }
+
+  .story-header {
+    position: absolute;
+    top: 20px;
+    left: 12px;
+    right: 12px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #ffffff;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+  }
+
+  .story-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  }
+
+  .story-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+  }
+
+  .story-frame {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .story-frame.is-active {
+    opacity: 1;
+  }
+
+  .story-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(1.03);
+  }
+
+  .story-gradient {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 34%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .story-label {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 14px;
+    z-index: 4;
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  .story-label p {
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .story-label .story-small {
+    font-size: 0.8rem;
+    opacity: 0.92;
+  }
+
+  .story-label .story-big {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 0.15rem;
+  }
+
+  .story-next-hotspot {
+    position: absolute;
+    inset: 48px 0 0 0;
+    z-index: 6;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .story-next-hotspot:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: -4px;
+  }
+
+  .story-nav {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.15rem;
+  }
+
+  .story-nav-btn {
+    border: 1px solid #d1d5db;
+    padding: 0.28rem 0.62rem;
+    font-size: 0.76rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #fff;
+    color: #374151;
+  }
+
+  .story-nav-btn.is-active {
+    border-color: #111827;
+    background: #111827;
+    color: #ffffff;
+  }
+
+  .story-tip {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .story-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .story-entry {
+    border: 0;
+    background: transparent;
+    padding: 0 0 2.3rem 0;
+    margin-bottom: 2rem;
+    border-bottom: 1px dashed #9ca3af;
+    transition: opacity 0.25s ease;
+  }
+
+  .story-entry.is-active {
+    opacity: 1;
+  }
+
+  .story-entry:not(.is-active) {
+    opacity: 0.9;
+  }
+
+  .story-entry h5 {
+    font-size: 1.08rem;
+    font-weight: 700;
+    margin: 0 0 0.4rem 0;
+    line-height: 1.55;
+  }
+
+  .story-entry p {
+    margin-bottom: 0.75rem;
+    line-height: 1.9;
+    color: #374151;
+  }
+
+  @media (max-width: 1024px) {
+    .story-sync-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .story-phone-col {
+      position: static;
+    }
+
+    .story-phone {
+      width: 300px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .story-phone {
+      width: 272px;
+    }
+
+    .story-screen {
+      height: 460px;
+    }
   }
 </style>
 
@@ -106,98 +363,147 @@
             <li>你會不會推薦這門課，以及原因</li>
           </ol>
 
-          <div class="course-block">
-            <h4 class="text-2xl font-bold leading-tight tracking-tight">IS-服務導向資訊系統架構SOA（Vick）</h4>
-            <p class="ch11-sans text-base text-gray-600"><strong>服務導向資訊系統架構（SOA）</strong><br />撰文／范振宇</p>
+          <div class="story-scroll-sync ch11-sans" data-story-sync>
+            <div class="story-sync-layout">
+              <div class="story-phone-col">
+                <div class="story-phone">
+                  <div class="story-screen">
+                    <div class="story-progress">
+                      <span class="is-active" data-story-progress="0"></span>
+                      <span data-story-progress="1"></span>
+                      <span data-story-progress="2"></span>
+                      <span data-story-progress="3"></span>
+                    </div>
 
-            <p class="q-head">這門課在上什麼／核心學習重點</p>
-            <p>這門課以「服務導向資訊系統架構（SOA）」為核心，透過 Ruby 語言實際建構一個完整的系統。課堂時間著重在架構概念、設計思維與系統分工，下課後則是和團隊一起把專案真正做出來，整體專案架構是模仿老師的實務專案 <em>Code Praise</em>，從設計、版控、到部署都會實際碰到。</p>
+                    <div class="story-header">
+                      <div class="story-user">
+                        <span class="story-dot"></span>
+                        <span>iss_course_story</span>
+                      </div>
+                      <span>滾動同步</span>
+                    </div>
 
-            <p class="q-head">你覺得這門課最大的收穫是什麼</p>
-            <p>最大的收穫不是學會 Ruby 本身，而是學會「怎麼看待系統與合作」。第一次真正體會物件導向的思維、團隊版控、服務拆分與整體系統架構，也更清楚程式其實是一種工具，真正重要的是背後的概念與邏輯。老師在課堂上分享的設計觀念與工程思維，是那種會用一輩子的知識。</p>
+                    <figure class="story-frame is-active" data-story-frame="0">
+                      <img src="/assets/chapter-04-feng/feng-01.jpg" alt="SOA 課程限時動態照片" />
+                      <figcaption class="story-label">
+                        <p class="story-small">IS / SOA</p>
+                        <p class="story-big">硬，但值得</p>
+                      </figcaption>
+                    </figure>
 
-            <p class="q-head">適合什麼樣的學弟妹來修</p>
-            <p>適合願意挑戰自己、不排斥學新技術的人修，但建議要有強大的程式背景，不然會很辛苦；比較不適合只想輕鬆拿學分的人。對設計、服務、系統架構或跨領域有興趣的同學，會學得很有感。</p>
+                    <figure class="story-frame" data-story-frame="1">
+                      <img src="/assets/chapter-08-sunny/sunny-01.jpg" alt="PBA 課程限時動態照片" />
+                      <figcaption class="story-label">
+                        <p class="story-small">BA / PBA</p>
+                        <p class="story-big">不顯著，也是一種結果</p>
+                      </figcaption>
+                    </figure>
 
-            <p class="q-head">上課方式或作業特色</p>
-            <p>課程以專題實作為主，強調團隊合作與實際產出。老師本身非常投入、熱情又幽默，甚至連 git blame 都被他轉化成正向的「Praise」，專案本身也是老師為了真實需求所設計，用來評估每位組員的貢獻，整體非常有意義（雖然 loading 真的偏重）。</p>
+                    <figure class="story-frame" data-story-frame="2">
+                      <img src="/assets/chapter-03-ciyu/ciyu-01.jpg" alt="SID 課程限時動態照片" />
+                      <figcaption class="story-label">
+                        <p class="story-small">SID</p>
+                        <p class="story-big">創業是動態調整</p>
+                      </figcaption>
+                    </figure>
 
-            <p class="q-head">你會不會推薦這門課，以及原因</p>
-            <p>會非常推薦。這是一門「硬，但值得」的課。雖然作業量大、壓力不小，但只要組員願意一起撐，收穫真的很扎實。老師的教學態度、課程設計與學到的觀念，都會讓人覺得一切都很值得，也會對「服務 × 系統 × 合作」有完全不同的理解。</p>
+                    <figure class="story-frame" data-story-frame="3">
+                      <img src="/assets/IMG_6561.png" alt="SMM 課程限時動態照片" />
+                      <figcaption class="story-label">
+                        <p class="story-small">SMM</p>
+                        <p class="story-big">跨文化溝通實戰</p>
+                      </figcaption>
+                    </figure>
 
-            <p class="ch11-sans text-base text-gray-600">loading 真的是出了名的重<br />-vick</p>
-          </div>
+                    <div class="story-gradient"></div>
+                    <button type="button" class="story-next-hotspot" data-story-next aria-label="下一個限時動態"></button>
+                  </div>
+                </div>
 
-          <div class="course-block">
-            <h4 class="text-2xl font-bold leading-tight tracking-tight">BA-程式設計與商業分析PBA（柏緯）</h4>
-            <p class="ch11-sans text-base text-gray-600"><strong>BA-程式設計與商業分析PBA</strong><br />撰文／林柏緯</p>
+                <div class="story-nav">
+                  <button type="button" class="story-nav-btn is-active" data-story-goto="0">SOA</button>
+                  <button type="button" class="story-nav-btn" data-story-goto="1">PBA</button>
+                  <button type="button" class="story-nav-btn" data-story-goto="2">SID</button>
+                  <button type="button" class="story-nav-btn" data-story-goto="3">SMM</button>
+                </div>
+                <p class="story-tip">往下滑右側心得會自動切圖；也可點手機或標籤切換。</p>
+              </div>
 
-            <p class="q-head">這門課在上什麼／核心學習重點</p>
-            <p>這堂課是以資料分析結合統計理論與程式設計（R）為核心的課程。隨然名字裡有程式設計，但是這堂課更像是在建立一個完整的資料分析的思維模式。老師會從實際的資料集出發，利用R語言進行資料整理與視覺化，讓雜亂的資料轉換成可分析的格式，並用圖表清楚呈現資料在說什麼；接著也會介紹抽樣分佈、bootstrap、信賴區間、假設檢定、因果推論與迴歸模型，來增加我們在做資料分析的深度及廣度。期末也會自己挑選感興趣的主題，做出一份完整且嚴謹的資料分析報告。</p>
+              <div class="story-entries">
+                <article class="story-entry is-active" data-story-entry="0">
+                  <h5 data-story-marker="0">IS-服務導向資訊系統架構SOA（Vick）</h5>
+                  <p class="ch11-sans text-base text-gray-600"><strong>服務導向資訊系統架構（SOA）</strong><br />撰文／范振宇</p>
+                  <p class="q-head">這門課在上什麼／核心學習重點</p>
+                  <p>這門課以「服務導向資訊系統架構（SOA）」為核心，透過 Ruby 語言實際建構一個完整的系統。課堂時間著重在架構概念、設計思維與系統分工，下課後則是和團隊一起把專案真正做出來，整體專案架構是模仿老師的實務專案 <em>Code Praise</em>，從設計、版控、到部署都會實際碰到。</p>
+                  <p class="q-head">你覺得這門課最大的收穫是什麼</p>
+                  <p>最大的收穫不是學會 Ruby 本身，而是學會「怎麼看待系統與合作」。第一次真正體會物件導向的思維、團隊版控、服務拆分與整體系統架構，也更清楚程式其實是一種工具，真正重要的是背後的概念與邏輯。老師在課堂上分享的設計觀念與工程思維，是那種會用一輩子的知識。</p>
+                  <p class="q-head">適合什麼樣的學弟妹來修</p>
+                  <p>適合願意挑戰自己、不排斥學新技術的人修，但建議要有強大的程式背景，不然會很辛苦；比較不適合只想輕鬆拿學分的人。對設計、服務、系統架構或跨領域有興趣的同學，會學得很有感。</p>
+                  <p class="q-head">上課方式或作業特色</p>
+                  <p>課程以專題實作為主，強調團隊合作與實際產出。老師本身非常投入、熱情又幽默，甚至連 git blame 都被他轉化成正向的「Praise」，專案本身也是老師為了真實需求所設計，用來評估每位組員的貢獻，整體非常有意義（雖然 loading 真的偏重）。</p>
+                  <p class="q-head">你會不會推薦這門課，以及原因</p>
+                  <p>會非常推薦。這是一門「硬，但值得」的課。雖然作業量大、壓力不小，但只要組員願意一起撐，收穫真的很扎實。老師的教學態度、課程設計與學到的觀念，都會讓人覺得一切都很值得，也會對「服務 × 系統 × 合作」有完全不同的理解。</p>
+                  <p class="ch11-sans text-base text-gray-600">loading 真的是出了名的重<br />-vick</p>
+                </article>
 
-            <p class="q-head">你覺得這門課最大的收穫是什麼</p>
-            <p>在修這堂課前，我其實很在意分析的「結果」，覺得如果最終的結果並不顯著的話，那麼一切的分析都是徒勞。在做這堂課的期末專案的過程中，我也發現了我挑選的主題分析的結果其實沒有我想像中的顯著，但老師告訴我，p-value 與顯著性並不是判斷對錯的絕對鐵則，不顯著何嘗不是一種結果？很多我們看到的結果，都只是眾多可能結果中的一個，而資料分析的責任，是誠實地面對這種不確定性。</p>
-            <p>這讓我以後在看資料時把重點從「差異有沒有顯著」轉向思考這個差異在現實世界中是否有意義，我覺得這對我在資料分析上的觀念有很大的轉變，也是我在這門課學到最大的收穫。</p>
+                <article class="story-entry" data-story-entry="1">
+                  <h5 data-story-marker="1">BA-程式設計與商業分析PBA（柏緯）</h5>
+                  <p class="ch11-sans text-base text-gray-600"><strong>BA-程式設計與商業分析PBA</strong><br />撰文／林柏緯</p>
+                  <p class="q-head">這門課在上什麼／核心學習重點</p>
+                  <p>這堂課是以資料分析結合統計理論與程式設計（R）為核心的課程。隨然名字裡有程式設計，但是這堂課更像是在建立一個完整的資料分析的思維模式。老師會從實際的資料集出發，利用R語言進行資料整理與視覺化，讓雜亂的資料轉換成可分析的格式，並用圖表清楚呈現資料在說什麼；接著也會介紹抽樣分佈、bootstrap、信賴區間、假設檢定、因果推論與迴歸模型，來增加我們在做資料分析的深度及廣度。期末也會自己挑選感興趣的主題，做出一份完整且嚴謹的資料分析報告。</p>
+                  <p class="q-head">你覺得這門課最大的收穫是什麼</p>
+                  <p>在修這堂課前，我其實很在意分析的「結果」，覺得如果最終的結果並不顯著的話，那麼一切的分析都是徒勞。在做這堂課的期末專案的過程中，我也發現了我挑選的主題分析的結果其實沒有我想像中的顯著，但老師告訴我，p-value 與顯著性並不是判斷對錯的絕對鐵則，不顯著何嘗不是一種結果？很多我們看到的結果，都只是眾多可能結果中的一個，而資料分析的責任，是誠實地面對這種不確定性。</p>
+                  <p>這讓我以後在看資料時把重點從「差異有沒有顯著」轉向思考這個差異在現實世界中是否有意義，我覺得這對我在資料分析上的觀念有很大的轉變，也是我在這門課學到最大的收穫。</p>
+                  <p class="q-head">適合什麼樣的學弟妹來修（例如是否需要程式基礎、適合哪一類背景）</p>
+                  <p>我覺得PBA這堂課非常適合商管、資管、統計、經濟或社科背景，並且希望把資料分析實際應用在真實問題上的同學。這門課並不要求非常扎實的程式基礎，但需要你願意動手寫程式、嘗試錯誤，並花時間理解統計背後的邏輯。老師也會一步一步教你需要用到的語法和工具，對於程式能力的要求算是非常的新手友善！</p>
+                  <p>但如果你期待的是一門只要照著範例操作、快速完成作業的課，PBA 可能會覺得有點吃力；但如果你希望真正搞清楚資料分析在做什麼，不只是會用工具而已，這門課會帶來很大的收穫和成長。</p>
+                  <p class="q-head">上課方式或作業特色（如專題、實作、討論等）</p>
+                  <p>PBA 是一門實作導向的課程。幾乎每個重要概念，都會搭配實際的資料集並用 R語言程式操作，作業也不是單純計算答案，而是要求學生解釋自己的分析流程與結論。</p>
+                  <p>而期末專題是課程中很重要的一環，學生會分組並自由選擇感興趣的主題，從查找文獻、資料蒐集、整理、視覺化、模型分析到結果解釋都需要自行完成，當然過程中也可以與老師討論。完成的結過會是一份非常完整的分析結果報告。</p>
+                  <p class="q-head">你會不會推薦這門課，以及原因</p>
+                  <p>我會推薦這門課，雖然PBA 並不是一門輕鬆的課，但它教會你的，不僅僅是R語言或統計方法，而是在一個真實且充滿不確定性的世界中，如何透過資料做出負責任的判斷的能力。如果你希望在研究所階段，為未來的研究或工作打下扎實的資料分析基礎，這麼課會是值得投入時間與心力的選擇。</p>
+                </article>
 
-            <p class="q-head">適合什麼樣的學弟妹來修（例如是否需要程式基礎、適合哪一類背景）</p>
-            <p>我覺得PBA這堂課非常適合商管、資管、統計、經濟或社科背景，並且希望把資料分析實際應用在真實問題上的同學。這門課並不要求非常扎實的程式基礎，但需要你願意動手寫程式、嘗試錯誤，並花時間理解統計背後的邏輯。老師也會一步一步教你需要用到的語法和工具，對於程式能力的要求算是非常的新手友善！</p>
-            <p>但如果你期待的是一門只要照著範例操作、快速完成作業的課，PBA 可能會覺得有點吃力；但如果你希望真正搞清楚資料分析在做什麼，不只是會用工具而已，這門課會帶來很大的收穫和成長。</p>
+                <article class="story-entry" data-story-entry="2">
+                  <h5 data-story-marker="2">SID-社會創業、服務創新</h5>
+                  <p class="ch11-sans text-base text-gray-600"><strong>SID-社會創業</strong><br />撰文/陳冠宇</p>
+                  <p class="q-head">這門課在上什麼/核心學習重點</p>
+                  <p>這門課的核心在於實際帶你走過一次完整的創業流程,從發想、驗證、測試到修正。不同於多數創業課程停留在提案或概念階段,社會創業要求每位學生在學期內真正做出一個具社會影響力的專案,並在實際場域中進行測試與迭代。</p>
+                  <p>課程採用精實創業(Lean Startup)的「建構-衡量-學習」循環,讓我們學習如何快速建立MVP、解讀市場訊號、並根據回饋做出調整。老師特別強調的不只是「把產品做好」,更重要的是思考如何建立難以複製的競爭優勢。在AI時代,許多創新點都可能被快速模仿,因此如何在商業模式、合作網絡或後端系統上建立護城河,成為課程中反覆討論的核心議題。</p>
+                  <p>此外,課程也導入商業理論,包括市場洞察、需求定義、營運模式等,讓我們不只關注產品功能,更理解商業競爭背後的思維邏輯。</p>
+                  <p class="q-head">你覺得這門課最大的收穫是什麼</p>
+                  <p>我認為最大的收穫是理解到創業不是線性過程,而是充滿不確定性的動態調整。一開始的想法與實際執行後面對的現實,往往有巨大落差。在這個過程中,你必須不斷面對使用者回饋、市場訊號、團隊協作等各種變數,並學會在資訊不完整的情況下做出判斷。</p>
+                  <p>而且也更具體地理解「創業不是一蹴可幾」。一開始的想法通常自認很完整、很合理,但只要真正投入執行,就會遇到各種訊號:使用者不買單、情境不成立、資源與時間不夠、假設根本站不住腳。這門課讓我學到的不是「如何避免失敗」,而是「如何讀懂失敗」並把每一次挫敗變成下一輪迭代的線索。</p>
+                  <p class="q-head">適合什麼樣的學弟妹來修</p>
+                  <p>這門課不需要程式背景,但需要具備以下特質:對創業有熱情、能接受高度不確定性、願意走出教室進入實際場域驗證想法,以及對商業邏輯與社會議題有興趣。</p>
+                  <p>特別適合跨領域背景的同學——設計、資訊、社會科學、管理等不同專業都能在這門課找到發揮空間。因為創業從來不是一個人的事,課程本身就是一個很好的跨領域合作練習場。如果你想挑戰自己、想理解「想法如何變成現實」,或對商業運作與社會創新感興趣,都很適合來修這門課。</p>
+                  <p class="q-head">上課方式或作業特色</p>
+                  <p>課程以專題實作為主軸,搭配理論導讀與業界分享。每週會邀請創業者或業界講師演講,同時安排小組進度發表,讓各組接受老師與同學的回饋。老師鼓勵(要求)走入實際場域,與使用者互動、測試產品,不能只停留在紙上談兵。</p>
+                  <p>課程提供實際經費支持專案落地。此外,老師主持多個USR計畫(如關西地方創生、東門市場青年創新基地),提供豐富的場域資源,讓同學可以快速進入實作環境。</p>
+                  <p>作業形式包括每1-2週的進度報告、市場測試記錄、使用者訪談、MVP開發等。評分重點不在於「做出完美產品」,而是「記錄你的學習與修正過程」,老師更在意你如何面對失敗、如何從中學習並調整策略。</p>
+                  <p class="q-head">你會不會推薦這門課,以及原因</p>
+                  <p>我會推薦這門課。雖然過程中確實會遇到很多挫折——想法被市場否定、使用者反應與預期不同、團隊協作出現摩擦——但這些「不如預期」反而是最珍貴的學習時刻。</p>
+                  <p>這門課提供了一個低風險但高學習價值的實驗場。你可以用一學期的時間,在有資源、有場域、有指導的環境下,完整走過創業的起承轉合。更重要的是,課程強調的不只是「成功」,而是「從試錯中驗證想法」。</p>
+                </article>
 
-            <p class="q-head">上課方式或作業特色（如專題、實作、討論等）</p>
-            <p>PBA 是一門實作導向的課程。幾乎每個重要概念，都會搭配實際的資料集並用 R語言程式操作，作業也不是單純計算答案，而是要求學生解釋自己的分析流程與結論。</p>
-            <p>而期末專題是課程中很重要的一環，學生會分組並自由選擇感興趣的主題，從查找文獻、資料蒐集、整理、視覺化、模型分析到結果解釋都需要自行完成，當然過程中也可以與老師討論。完成的結過會是一份非常完整的分析結果報告。</p>
-
-            <p class="q-head">你會不會推薦這門課，以及原因</p>
-            <p>我會推薦這門課，雖然PBA 並不是一門輕鬆的課，但它教會你的，不僅僅是R語言或統計方法，而是在一個真實且充滿不確定性的世界中，如何透過資料做出負責任的判斷的能力。如果你希望在研究所階段，為未來的研究或工作打下扎實的資料分析基礎，這麼課會是值得投入時間與心力的選擇。</p>
-          </div>
-
-          <div class="course-block">
-            <h4 class="text-2xl font-bold leading-tight tracking-tight">SID-社會創業、服務創新</h4>
-            <p class="ch11-sans text-base text-gray-600"><strong>SID-社會創業</strong><br />撰文/陳冠宇</p>
-
-            <p class="q-head">這門課在上什麼/核心學習重點</p>
-            <p>這門課的核心在於實際帶你走過一次完整的創業流程,從發想、驗證、測試到修正。不同於多數創業課程停留在提案或概念階段,社會創業要求每位學生在學期內真正做出一個具社會影響力的專案,並在實際場域中進行測試與迭代。</p>
-            <p>課程採用精實創業(Lean Startup)的「建構-衡量-學習」循環,讓我們學習如何快速建立MVP、解讀市場訊號、並根據回饋做出調整。老師特別強調的不只是「把產品做好」,更重要的是思考如何建立難以複製的競爭優勢。在AI時代,許多創新點都可能被快速模仿,因此如何在商業模式、合作網絡或後端系統上建立護城河,成為課程中反覆討論的核心議題。</p>
-            <p>此外,課程也導入商業理論,包括市場洞察、需求定義、營運模式等,讓我們不只關注產品功能,更理解商業競爭背後的思維邏輯。</p>
-
-            <p class="q-head">你覺得這門課最大的收穫是什麼</p>
-            <p>我認為最大的收穫是理解到創業不是線性過程,而是充滿不確定性的動態調整。一開始的想法與實際執行後面對的現實,往往有巨大落差。在這個過程中,你必須不斷面對使用者回饋、市場訊號、團隊協作等各種變數,並學會在資訊不完整的情況下做出判斷。</p>
-            <p>而且也更具體地理解「創業不是一蹴可幾」。一開始的想法通常自認很完整、很合理,但只要真正投入執行,就會遇到各種訊號:使用者不買單、情境不成立、資源與時間不夠、假設根本站不住腳。這門課讓我學到的不是「如何避免失敗」,而是「如何讀懂失敗」並把每一次挫敗變成下一輪迭代的線索。</p>
-
-            <p class="q-head">適合什麼樣的學弟妹來修</p>
-            <p>這門課不需要程式背景,但需要具備以下特質:對創業有熱情、能接受高度不確定性、願意走出教室進入實際場域驗證想法,以及對商業邏輯與社會議題有興趣。</p>
-            <p>特別適合跨領域背景的同學——設計、資訊、社會科學、管理等不同專業都能在這門課找到發揮空間。因為創業從來不是一個人的事,課程本身就是一個很好的跨領域合作練習場。如果你想挑戰自己、想理解「想法如何變成現實」,或對商業運作與社會創新感興趣,都很適合來修這門課。</p>
-
-            <p class="q-head">上課方式或作業特色</p>
-            <p>課程以專題實作為主軸,搭配理論導讀與業界分享。每週會邀請創業者或業界講師演講,同時安排小組進度發表,讓各組接受老師與同學的回饋。老師鼓勵(要求)走入實際場域,與使用者互動、測試產品,不能只停留在紙上談兵。</p>
-            <p>課程提供實際經費支持專案落地。此外,老師主持多個USR計畫(如關西地方創生、東門市場青年創新基地),提供豐富的場域資源,讓同學可以快速進入實作環境。</p>
-            <p>作業形式包括每1-2週的進度報告、市場測試記錄、使用者訪談、MVP開發等。評分重點不在於「做出完美產品」,而是「記錄你的學習與修正過程」,老師更在意你如何面對失敗、如何從中學習並調整策略。</p>
-
-            <p class="q-head">你會不會推薦這門課,以及原因</p>
-            <p>我會推薦這門課。雖然過程中確實會遇到很多挫折——想法被市場否定、使用者反應與預期不同、團隊協作出現摩擦——但這些「不如預期」反而是最珍貴的學習時刻。</p>
-            <p>這門課提供了一個低風險但高學習價值的實驗場。你可以用一學期的時間,在有資源、有場域、有指導的環境下,完整走過創業的起承轉合。更重要的是,課程強調的不只是「成功」,而是「從試錯中驗證想法」。</p>
-          </div>
-
-          <div class="course-block">
-            <h4 class="text-2xl font-bold leading-tight tracking-tight">SMM-跨文化行銷溝通（胡）</h4>
-            <p class="ch11-sans text-base text-gray-600"><strong>SMM-跨文化行銷溝通</strong><br />撰文／胡育慈</p>
-
-            <p class="q-head">這門課在上什麼／核心學習重點</p>
-            <p>這門課的核心在於透過學術研究與實際案例，理解行銷溝通在不同文化情境下所產生的差異與影響。課程每週需閱讀約 2–3 篇國際期刊論文，乍看之下閱讀量偏高，但在實際操作上，可以搭配 AI 工具協助快速掌握研究重點，再回到原文深入閱讀，因此整體負擔仍在可接受範圍內。</p>
-            <p>此外，老師挑選的研究主題與案例都相當貼近當代議題，也具備跨文化的對照性。我在課堂中提報的研究題目為 Do lonely people seek robot companionship? A comparative examination of the Loneliness–Robot anthropomorphism link in the United States and China，探討不同文化背景下，人們在孤獨感受與對機器人擬人化連結之間的差異。研究結果與一般對文化刻板印象的想像有所出入，讓我意識到跨文化研究往往能顛覆直覺，也因此更加有趣。</p>
-
-            <p class="q-head">你覺得這門課最大的收穫是什麼</p>
-            <p>我認為最大的收穫來自於高度國際化的學習環境。修課學生中有超過一半是外籍生，無論是課堂討論或分組作業，都必須以英文進行。整個學期共有四次作業，且每次都需與不同成員合作，這樣的安排雖然充滿挑戰，但也迫使我不斷調整自己的溝通方式與合作策略。</p>
-            <p>在與來自不同國家的同學合作過程中，可以明顯感受到各自不同的做事節奏、討論習慣與決策邏輯，這些差異本身就成為一種很實際的跨文化學習經驗。</p>
-
-            <p class="q-head">適合什麼樣的學弟妹來修</p>
-            <p>這門課特別適合喜歡與人互動、對跨文化議題或行銷溝通有興趣的學生。即使沒有行銷或商管背景，也能透過課程逐步理解相關概念與研究方法，只要願意閱讀、討論與表達想法，就能從中獲得收穫。</p>
-
-            <p class="q-head">上課方式或作業特色</p>
-            <p>課程以論文閱讀、案例討論與小組合作為主，強調在理論基礎下進行跨文化行銷企劃的思考與實作。作業多以分組形式進行，並鼓勵跨文化組隊，使學生能在實際合作中體會文化差異如何影響溝通與策略制定。</p>
-
-            <p class="q-head">你會不會推薦這門課，以及原因</p>
-            <p>我會推薦這門課。雖然需要閱讀不少英文期刊，對我來說確實有點吃力，但能與來自世界各地的同學共同完成行銷企劃，是非常難得的經驗。這門課不只是學習行銷知識，更像是一個模擬未來國際工作環境的練習場，對有志於海外發展或跨國合作的學生而言，是一門既實用又有趣的課程。</p>
+                <article class="story-entry" data-story-entry="3">
+                  <h5 data-story-marker="3">SMM-跨文化行銷溝通（胡）</h5>
+                  <p class="ch11-sans text-base text-gray-600"><strong>SMM-跨文化行銷溝通</strong><br />撰文／胡育慈</p>
+                  <p class="q-head">這門課在上什麼／核心學習重點</p>
+                  <p>這門課的核心在於透過學術研究與實際案例，理解行銷溝通在不同文化情境下所產生的差異與影響。課程每週需閱讀約 2–3 篇國際期刊論文，乍看之下閱讀量偏高，但在實際操作上，可以搭配 AI 工具協助快速掌握研究重點，再回到原文深入閱讀，因此整體負擔仍在可接受範圍內。</p>
+                  <p>此外，老師挑選的研究主題與案例都相當貼近當代議題，也具備跨文化的對照性。我在課堂中提報的研究題目為 Do lonely people seek robot companionship? A comparative examination of the Loneliness–Robot anthropomorphism link in the United States and China，探討不同文化背景下，人們在孤獨感受與對機器人擬人化連結之間的差異。研究結果與一般對文化刻板印象的想像有所出入，讓我意識到跨文化研究往往能顛覆直覺，也因此更加有趣。</p>
+                  <p class="q-head">你覺得這門課最大的收穫是什麼</p>
+                  <p>我認為最大的收穫來自於高度國際化的學習環境。修課學生中有超過一半是外籍生，無論是課堂討論或分組作業，都必須以英文進行。整個學期共有四次作業，且每次都需與不同成員合作，這樣的安排雖然充滿挑戰，但也迫使我不斷調整自己的溝通方式與合作策略。</p>
+                  <p>在與來自不同國家的同學合作過程中，可以明顯感受到各自不同的做事節奏、討論習慣與決策邏輯，這些差異本身就成為一種很實際的跨文化學習經驗。</p>
+                  <p class="q-head">適合什麼樣的學弟妹來修</p>
+                  <p>這門課特別適合喜歡與人互動、對跨文化議題或行銷溝通有興趣的學生。即使沒有行銷或商管背景，也能透過課程逐步理解相關概念與研究方法，只要願意閱讀、討論與表達想法，就能從中獲得收穫。</p>
+                  <p class="q-head">上課方式或作業特色</p>
+                  <p>課程以論文閱讀、案例討論與小組合作為主，強調在理論基礎下進行跨文化行銷企劃的思考與實作。作業多以分組形式進行，並鼓勵跨文化組隊，使學生能在實際合作中體會文化差異如何影響溝通與策略制定。</p>
+                  <p class="q-head">你會不會推薦這門課，以及原因</p>
+                  <p>我會推薦這門課。雖然需要閱讀不少英文期刊，對我來說確實有點吃力，但能與來自世界各地的同學共同完成行銷企劃，是非常難得的經驗。這門課不只是學習行銷知識，更像是一個模擬未來國際工作環境的練習場，對有志於海外發展或跨國合作的學生而言，是一門既實用又有趣的課程。</p>
+                </article>
+              </div>
+            </div>
           </div>
 
           <div class="section-divider"></div>
