@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && node scripts/generate-static.cjs && node scripts/generate-sitemap.cjs",
-    "start": "serve -s dist -l ${PORT:-3000}",
+    "start": "serve dist -l ${PORT:-3000} -c ../serve.json -n",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
