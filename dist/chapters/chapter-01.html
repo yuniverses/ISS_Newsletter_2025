@@ -108,10 +108,9 @@
 
   .story-phone {
     width: 280px;
-    border: 6px solid #111827;
+    border: 3px solid #111827;
     border-radius: 32px;
     background: #111827;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     padding: 6px;
   }
 
@@ -125,7 +124,7 @@
 
   .story-progress {
     position: absolute;
-    top: 8px;
+    top: 16px;
     left: 8px;
     right: 8px;
     display: grid;
@@ -164,6 +163,27 @@
     align-items: center;
     gap: 0.35rem;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  }
+
+  .story-user-label {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    max-width: 220px;
+    text-align: left;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .story-user-label:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
   .story-dot {
@@ -239,31 +259,6 @@
   .story-next-hotspot:focus-visible {
     outline: 2px solid #ffffff;
     outline-offset: -4px;
-  }
-
-  .story-nav {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 0.15rem;
-  }
-
-  .story-nav-btn {
-    border: 1px solid #d1d5db;
-    padding: 0.28rem 0.62rem;
-    font-size: 0.76rem;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: #fff;
-    color: #374151;
-  }
-
-  .story-nav-btn.is-active {
-    border-color: #111827;
-    background: #111827;
-    color: #ffffff;
   }
 
   .story-tip {
@@ -346,22 +341,12 @@
       </div>
 
       <div class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl">
-        <div class="space-y-6">
-          <p class="text-base md:text-lg text-gray-600 ch11-sans tracking-wide">服科所介紹；課程、老師</p>
-          <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight">課程介紹 × 老師留言</h2>
-          <p class="text-sm md:text-base text-gray-500 ch11-sans tracking-wide">內容來源：原文整理（不改寫）</p>
-        </div>
+
 
         <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
-          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-2 mb-2">課程介紹</h3>
-          <p><strong>服科所介紹；課程</strong></p>
-          <ol class="question-list ch11-sans">
-            <li>這門課在上什麼／核心學習重點</li>
-            <li>你覺得這門課最大的收穫是什麼</li>
-            <li>適合什麼樣的學弟妹來修（例如是否需要程式基礎、適合哪一類背景）</li>
-            <li>上課方式或作業特色（如專題、實作、討論等）</li>
-            <li>你會不會推薦這門課，以及原因</li>
-          </ol>
+          <h3 class="text-2xl md:text-3xl font-bold leading-tight tracking-tight mt-2 mb-2">課程分享</h3>
+          <p><strong>服科所精選課程心得分享</strong></p>
+
 
           <div class="story-scroll-sync ch11-sans" data-story-sync>
             <div class="story-sync-layout">
@@ -378,59 +363,41 @@
                     <div class="story-header">
                       <div class="story-user">
                         <span class="story-dot"></span>
-                        <span>iss_course_story</span>
+                        <button type="button" class="story-user-label" data-story-label aria-label="切換課程心得">IS-服務導向資訊系統架構SOA</button>
                       </div>
-                      <span>滾動同步</span>
                     </div>
 
                     <figure class="story-frame is-active" data-story-frame="0">
                       <img src="/assets/chapter-04-feng/feng-01.jpg" alt="SOA 課程限時動態照片" />
-                      <figcaption class="story-label">
-                        <p class="story-small">IS / SOA</p>
-                        <p class="story-big">硬，但值得</p>
-                      </figcaption>
+
                     </figure>
 
                     <figure class="story-frame" data-story-frame="1">
                       <img src="/assets/chapter-08-sunny/sunny-01.jpg" alt="PBA 課程限時動態照片" />
-                      <figcaption class="story-label">
-                        <p class="story-small">BA / PBA</p>
-                        <p class="story-big">不顯著，也是一種結果</p>
-                      </figcaption>
+
                     </figure>
 
                     <figure class="story-frame" data-story-frame="2">
                       <img src="/assets/chapter-03-ciyu/ciyu-01.jpg" alt="SID 課程限時動態照片" />
-                      <figcaption class="story-label">
-                        <p class="story-small">SID</p>
-                        <p class="story-big">創業是動態調整</p>
-                      </figcaption>
+
                     </figure>
 
                     <figure class="story-frame" data-story-frame="3">
                       <img src="/assets/IMG_6561.png" alt="SMM 課程限時動態照片" />
-                      <figcaption class="story-label">
-                        <p class="story-small">SMM</p>
-                        <p class="story-big">跨文化溝通實戰</p>
-                      </figcaption>
+
                     </figure>
+
+                  
 
                     <div class="story-gradient"></div>
                     <button type="button" class="story-next-hotspot" data-story-next aria-label="下一個限時動態"></button>
                   </div>
                 </div>
 
-                <div class="story-nav">
-                  <button type="button" class="story-nav-btn is-active" data-story-goto="0">SOA</button>
-                  <button type="button" class="story-nav-btn" data-story-goto="1">PBA</button>
-                  <button type="button" class="story-nav-btn" data-story-goto="2">SID</button>
-                  <button type="button" class="story-nav-btn" data-story-goto="3">SMM</button>
-                </div>
-                <p class="story-tip">往下滑右側心得會自動切圖；也可點手機或標籤切換。</p>
               </div>
 
               <div class="story-entries">
-                <article class="story-entry is-active" data-story-entry="0">
+                <article class="story-entry is-active" data-story-entry="0" data-story-title="IS-服務導向資訊系統架構SOA">
                   <h5 data-story-marker="0">IS-服務導向資訊系統架構SOA（Vick）</h5>
                   <p class="ch11-sans text-base text-gray-600"><strong>服務導向資訊系統架構（SOA）</strong><br />撰文／范振宇</p>
                   <p class="q-head">這門課在上什麼／核心學習重點</p>
@@ -446,7 +413,7 @@
                   <p class="ch11-sans text-base text-gray-600">loading 真的是出了名的重<br />-vick</p>
                 </article>
 
-                <article class="story-entry" data-story-entry="1">
+                <article class="story-entry" data-story-entry="1" data-story-title="BA-程式設計與商業分析PBA">
                   <h5 data-story-marker="1">BA-程式設計與商業分析PBA（柏緯）</h5>
                   <p class="ch11-sans text-base text-gray-600"><strong>BA-程式設計與商業分析PBA</strong><br />撰文／林柏緯</p>
                   <p class="q-head">這門課在上什麼／核心學習重點</p>
@@ -464,7 +431,7 @@
                   <p>我會推薦這門課，雖然PBA 並不是一門輕鬆的課，但它教會你的，不僅僅是R語言或統計方法，而是在一個真實且充滿不確定性的世界中，如何透過資料做出負責任的判斷的能力。如果你希望在研究所階段，為未來的研究或工作打下扎實的資料分析基礎，這麼課會是值得投入時間與心力的選擇。</p>
                 </article>
 
-                <article class="story-entry" data-story-entry="2">
+                <article class="story-entry" data-story-entry="2" data-story-title="SID-社會創業、服務創新">
                   <h5 data-story-marker="2">SID-社會創業、服務創新</h5>
                   <p class="ch11-sans text-base text-gray-600"><strong>SID-社會創業</strong><br />撰文/陳冠宇</p>
                   <p class="q-head">這門課在上什麼/核心學習重點</p>
@@ -486,7 +453,7 @@
                   <p>這門課提供了一個低風險但高學習價值的實驗場。你可以用一學期的時間,在有資源、有場域、有指導的環境下,完整走過創業的起承轉合。更重要的是,課程強調的不只是「成功」,而是「從試錯中驗證想法」。</p>
                 </article>
 
-                <article class="story-entry" data-story-entry="3">
+                <article class="story-entry" data-story-entry="3" data-story-title="SMM-跨文化行銷溝通">
                   <h5 data-story-marker="3">SMM-跨文化行銷溝通（胡）</h5>
                   <p class="ch11-sans text-base text-gray-600"><strong>SMM-跨文化行銷溝通</strong><br />撰文／胡育慈</p>
                   <p class="q-head">這門課在上什麼／核心學習重點</p>

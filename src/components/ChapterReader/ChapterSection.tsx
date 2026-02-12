@@ -25,9 +25,11 @@ export default function ChapterSection({
     if (!content || !articleRef.current) return;
 
     // Select elements to animate: paragraphs, headings, images, lists, blockquotes, figures
-    const elements = articleRef.current.querySelectorAll(
-      "p, h2, h3, h4, img, ul, ol, blockquote, figure, .img-grid-2, .img-grid-3, .p-6, .border"
-    );
+    const elements = Array.from(
+      articleRef.current.querySelectorAll<HTMLElement>(
+        "p, h2, h3, h4, img, ul, ol, blockquote, figure, .img-grid-2, .img-grid-3, .p-6, .border"
+      )
+    ).filter((el) => !el.closest("[data-story-sync]"));
 
     elements.forEach((el) => {
       // Skip if already animated (optional check, but ScrollTrigger .batch or individual creates are fine)
@@ -93,10 +95,20 @@ export default function ChapterSection({
       const chips = Array.from(
         block.querySelectorAll<HTMLElement>("[data-story-goto]")
       );
+      const storyLabel = block.querySelector<HTMLElement>("[data-story-label]");
       const progressBars = Array.from(
         block.querySelectorAll<HTMLElement>("[data-story-progress]")
       );
       const nextButton = block.querySelector<HTMLElement>("[data-story-next]");
+      const storyTitles = entries.map((entry, index) => {
+        const titleFromData = entry.getAttribute("data-story-title");
+        if (titleFromData?.trim()) return titleFromData.trim();
+
+        const markerTitle = markers[index]?.textContent?.trim();
+        if (markerTitle) return markerTitle;
+
+        return `Story ${index + 1}`;
+      });
 
       const maxIndex = Math.min(frames.length, entries.length) - 1;
       if (maxIndex < 0) return;
@@ -122,6 +134,9 @@ export default function ChapterSection({
         progressBars.forEach((bar, barIndex) => {
           bar.classList.toggle("is-active", barIndex <= nextIndex);
         });
+        if (storyLabel) {
+          storyLabel.textContent = storyTitles[nextIndex] ?? "";
+        }
 
         if (options?.scrollTo) {
           entries[nextIndex].scrollIntoView({
@@ -172,6 +187,18 @@ export default function ChapterSection({
         chip.addEventListener("click", onChipClick);
         cleanups.push(() => chip.removeEventListener("click", onChipClick));
       });
+
+      if (storyLabel) {
+        const onStoryLabelClick = () => {
+          const targetIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+          setActive(targetIndex, { scrollTo: true });
+        };
+
+        storyLabel.addEventListener("click", onStoryLabelClick);
+        cleanups.push(() =>
+          storyLabel.removeEventListener("click", onStoryLabelClick)
+        );
+      }
 
       if (nextButton) {
         const onNextClick = () => {
