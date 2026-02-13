@@ -103,6 +103,13 @@ const SplitText: React.FC<SplitTextProps> = ({
         charsClass: 'split-char',
         reduceWhiteSpace: false,
         onSplit: (self: any) => {
+          // GSAP may inject a top-level nowrap wrapper, which can force long CJK titles to overflow.
+          Array.from(el.children).forEach((child) => {
+            if (child instanceof HTMLElement && child.style.whiteSpace === 'nowrap') {
+              child.style.whiteSpace = 'normal';
+            }
+          });
+
           assignTargets(self);
           const tween = gsap.fromTo(
             targets,
@@ -166,9 +173,13 @@ const SplitText: React.FC<SplitTextProps> = ({
     const style: React.CSSProperties = {
       textAlign: textAlign as any,
       overflow: 'hidden',
-      display: 'inline-block',
+      display: 'block',
+      width: '100%',
+      maxWidth: '100%',
       whiteSpace: 'normal',
       wordWrap: 'break-word',
+      overflowWrap: 'anywhere',
+      wordBreak: 'break-word',
       willChange: 'transform, opacity'
     };
     const classes = `split-parent ${className}`;
