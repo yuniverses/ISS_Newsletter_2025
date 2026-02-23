@@ -18,6 +18,8 @@ export interface Chapter {
   date?: string
   credits?: Credit[]
   fallingElements?: string[]
+  heroVariant?: 'default' | 'scene-html'
+  heroSceneHtml?: string
 }
 
 export interface Newsletter {

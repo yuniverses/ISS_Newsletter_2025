@@ -23,6 +23,8 @@ interface ChapterHeroProps {
   date?: string;
   credits?: Credit[];
   fallingElements?: string[];
+  heroVariant?: 'default' | 'scene-html';
+  heroSceneHtml?: string;
 }
 
 export default function ChapterHero({
@@ -37,6 +39,8 @@ export default function ChapterHero({
   date,
   credits,
   fallingElements = [],
+  heroVariant = 'default',
+  heroSceneHtml,
 }: ChapterHeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -423,6 +427,8 @@ export default function ChapterHero({
     };
   }, [particles.length]);
 
+  const useSceneIframe = heroVariant === 'scene-html' && Boolean(heroSceneHtml);
+
   return (
     <div ref={heroRef} className="relative w-full min-h-[200vh] bg-white">
       {/* Sticky Container */}
@@ -451,10 +457,19 @@ export default function ChapterHero({
           ref={imageRef}
           className="absolute inset-0 will-change-transform z-10"
         >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${coverImage})` }}
-          />
+          {useSceneIframe ? (
+            <iframe
+              src={heroSceneHtml}
+              title={`${title} chapter hero scene`}
+              className="absolute inset-0 h-full w-full border-0 pointer-events-none"
+            />
+          ) : (
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${coverImage})` }}
+            />
+          )}
+          {!useSceneIframe && <div className="absolute inset-0 bg-black/10" />}
         </div>
 
         {/* Content Overlay */}

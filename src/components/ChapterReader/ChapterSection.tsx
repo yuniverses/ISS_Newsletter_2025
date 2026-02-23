@@ -235,6 +235,8 @@ export default function ChapterSection({
         date={chapter.date}
         credits={chapter.credits}
         fallingElements={chapter.fallingElements}
+        heroVariant={chapter.heroVariant}
+        heroSceneHtml={chapter.heroSceneHtml}
       />
 
       {/* Chapter Content */}

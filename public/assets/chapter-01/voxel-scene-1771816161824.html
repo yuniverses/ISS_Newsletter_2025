@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voxel Slashes</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: transparent;
+            font-family: sans-serif;
+        }
+        html {
+            background: transparent;
+        }
+        canvas {
+            display: block;
+        }
+        #info {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #ccc;
+            pointer-events: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+    </style>
+
+    <style>
+      /* Hides common overlay IDs and classes used in Three.js examples and generated code */
+      #info, #loading, #ui, #instructions, .label, .overlay, #description {
+        display: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+      }
+      /* Ensure the body doesn't show selected text cursor interaction outside canvas */
+      body {
+        user-select: none !important;
+      }
+    </style>
+  </head>
+<body>
+    <div id="info">Double Slash Voxel Art</div>
+    
+    <!-- Import map for Three.js -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- Configuration ---
+        const CONFIG = {
+            voxelSize: 1,
+            gap: 0.1, // Space between voxels
+            color: 0x1a1a1a, // Dark grey/black like the image
+            shadowOpacity: 0.15,
+            height: 16,
+            thickness: 2, // How thick the slashes are (depth)
+            width: 2,     // How wide the lines are
+            spacing: 6    // Distance between the two slashes
+        };
+
+        // --- Scene Setup ---
+        const scene = new THREE.Scene();
+        scene.background = null;
+        scene.fog = null;
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+        camera.position.set(0, 8, 32);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+
+        // --- Controls ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.minPolarAngle = 0;
+        controls.maxPolarAngle = Math.PI / 2 - 0.1; // Don't go below ground
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.5;
+
+        // --- Lighting ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        dirLight.position.set(10, 20, 10);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+        dirLight.shadow.camera.near = 0.5;
+        dirLight.shadow.camera.far = 50;
+        dirLight.shadow.camera.left = -20;
+        dirLight.shadow.camera.right = 20;
+        dirLight.shadow.camera.top = 20;
+        dirLight.shadow.camera.bottom = -20;
+        dirLight.shadow.bias = -0.001;
+        scene.add(dirLight);
+
+        // Fill light to soften shadows
+        const fillLight = new THREE.DirectionalLight(0xeef0ff, 0.4);
+        fillLight.position.set(-10, 10, -10);
+        scene.add(fillLight);
+
+        // --- Floor (Shadow Catcher) ---
+        // A plane that is transparent but receives shadows
+        const planeGeometry = new THREE.PlaneGeometry(100, 100);
+        const planeMaterial = new THREE.ShadowMaterial({ 
+            opacity: CONFIG.shadowOpacity,
+            color: 0x000000 
+        });
+        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotation.x = -Math.PI / 2;
+        plane.position.y = -8; // Position below the floating voxels
+        plane.receiveShadow = true;
+        scene.add(plane);
+
+        // --- Voxel Logic ---
+        
+        // 1. Calculate positions
+        const voxels = [];
+        
+        function addSlash(xOffset) {
+            for (let y = 0; y < CONFIG.height; y++) {
+                // The diagonal slope logic: x moves as y moves
+                const slopeX = (y * 1.0) - (CONFIG.height / 2); 
+                const baseY = y - (CONFIG.height / 2);
+                
+                // Create thickness
+                for (let w = 0; w < CONFIG.width; w++) {
+                    for (let d = 0; d < CONFIG.thickness; d++) {
+                        voxels.push({
+                            x: slopeX + xOffset + (w * CONFIG.voxelSize),
+                            y: baseY,
+                            z: (d * CONFIG.voxelSize) - (CONFIG.thickness * CONFIG.voxelSize / 2),
+                            // Store initial position for animation
+                            initialY: baseY, 
+                            offset: y * 0.2 + xOffset // Phase offset for wave animation
+                        });
+                    }
+                }
+            }
+        }
+
+        // Create Left Slash
+        addSlash(-CONFIG.spacing / 2);
+        // Create Right Slash
+        addSlash(CONFIG.spacing / 2);
+
+        // 2. Create InstancedMesh
+        // InstancedMesh is much more performant than creating individual Mesh objects
+        const geometry = new THREE.BoxGeometry(
+            CONFIG.voxelSize - CONFIG.gap, 
+            CONFIG.voxelSize - CONFIG.gap, 
+            CONFIG.voxelSize - CONFIG.gap
+        );
+        
+        // Matte black material
+        const material = new THREE.MeshStandardMaterial({ 
+            color: CONFIG.color,
+            roughness: 0.7,
+            metalness: 0.1
+        });
+
+        const mesh = new THREE.InstancedMesh(geometry, material, voxels.length);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        scene.add(mesh);
+
+        const dummy = new THREE.Object3D();
+
+        // --- Animation Loop ---
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = clock.getElapsedTime();
+
+            // Animate Voxels (Wave Effect)
+            let i = 0;
+            voxels.forEach((data) => {
+                const { x, initialY, z, offset } = data;
+                
+                // Gentle floating sine wave
+                const y = initialY + Math.sin(time * 2 + offset) * 0.3;
+
+                dummy.position.set(x, y, z);
+                
+                // Subtle rotation for dynamic feel
+                // dummy.rotation.y = Math.sin(time + offset) * 0.05;
+                // dummy.rotation.x = Math.cos(time + offset) * 0.05;
+                
+                dummy.updateMatrix();
+                mesh.setMatrixAt(i++, dummy.matrix);
+            });
+            mesh.instanceMatrix.needsUpdate = true;
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // --- Resize Handler ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>
