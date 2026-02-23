@@ -72,66 +72,204 @@
     line-height: 1.6;
   }
 
-  .teacher-card {
-    border: 1px solid #d1d5db;
-    padding: 1rem 1.1rem;
-    margin-top: 1rem;
-    background: #fff;
+  .teacher-window-stack {
+    position: relative;
+    margin-top: 1.3rem;
+    --teacher-window-height: min(74vh, 760px);
   }
 
-  .teacher-card p {
-    margin-bottom: 0.75rem;
+  .teacher-window-scroll {
+    position: relative;
+    min-height: var(--teacher-scroll-height, 420vh);
   }
 
-  .teacher-story-sync .teacher-sync-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 300px;
-    gap: 1.35rem;
-    align-items: start;
+  .teacher-window-stage {
+    position: sticky;
+    top: 96px;
+    height: var(--teacher-window-height);
   }
 
-  .teacher-story-sync .story-phone-col {
-    align-items: flex-end;
+  .teacher-window {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(17, 24, 39, 0.74);
+    border-radius: 14px;
+    background: linear-gradient(152deg, rgba(244, 245, 244, 0.98), rgba(231, 234, 231, 0.99));
+    color: #111111;
+    box-shadow:
+      0 22px 46px rgba(0, 0, 0, 0.16),
+      0 0 0 1px rgba(41, 67, 56, 0.18) inset;
+    overflow: hidden;
+    transform-origin: center top;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 0.44s cubic-bezier(0.2, 0.7, 0.25, 1),
+      opacity 0.3s ease,
+      filter 0.3s ease;
+    will-change: transform, opacity;
   }
 
-  .teacher-story-sync .story-phone {
-    width: 300px;
-    border: 0;
-    border-radius: 0;
-    padding: 0;
-    background: transparent;
-    box-shadow: none;
+  .teacher-window.is-top {
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  .teacher-story-sync .story-screen {
-    height: 540px;
-    background: transparent;
+  .teacher-window-stage .teacher-window:first-of-type:not(.is-top):not(.is-behind):not(.is-dismissed) {
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  .teacher-story-sync .story-frame {
-    background: transparent;
+  .teacher-window.is-behind {
+    opacity: calc(1 - (var(--stack-index, 1) * 0.16));
+    transform:
+      translate3d(calc(var(--stack-index, 1) * 16px), calc(var(--stack-index, 1) * 18px), 0)
+      scale(calc(1 - (var(--stack-index, 1) * 0.025)));
+    filter: grayscale(0.08);
+  }
+
+  .teacher-window.is-dismissed {
+    opacity: 0;
+    transform: translate3d(-8%, -118%, 0) rotate(-4deg) scale(0.96);
+    filter: blur(1px);
+  }
+
+  .teacher-window-header {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.65rem;
+    padding: 0.48rem 0.75rem;
+    border-bottom: 1px solid rgba(39, 67, 55, 0.62);
+    background: rgba(16, 16, 16, 0.97);
+    min-height: 48px;
   }
 
-  .teacher-story-sync .story-frame img {
+  .teacher-window-title {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    color: #e5ece8;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .teacher-window-controls {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+  }
+
+  .teacher-window-chip {
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgba(43, 74, 62, 0.86);
+    border-radius: 2px;
+    background: rgba(194, 210, 201, 0.78);
+  }
+
+  .teacher-window-close {
+    width: 2.15rem;
+    height: 2.15rem;
+    border: 1px solid rgba(42, 72, 61, 0.9);
+    border-radius: 6px;
+    background: rgba(243, 245, 243, 0.98);
+    color: #111111;
+    font-size: 1.05rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .teacher-window-close:hover:not(:disabled) {
+    background: rgba(37, 64, 53, 0.95);
+    color: #f3f5f3;
+    transform: translateY(-1px);
+  }
+
+  .teacher-window-close:focus-visible {
+    outline: 2px solid #294538;
+    outline-offset: 2px;
+  }
+
+  .teacher-window-close:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .teacher-window-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(140px, 190px);
+    gap: 1rem;
+    height: calc(var(--teacher-window-height) - 48px);
+    padding: 1rem 1.1rem 1.15rem;
+  }
+
+  .teacher-window-content {
+    min-width: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.45rem;
+    position: relative;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(37, 64, 53, 0.55) rgba(17, 24, 39, 0.08);
+  }
+
+  .teacher-window-content::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .teacher-window-content::-webkit-scrollbar-track {
+    background: rgba(17, 24, 39, 0.08);
+    border-radius: 999px;
+  }
+
+  .teacher-window-content::-webkit-scrollbar-thumb {
+    background: rgba(37, 64, 53, 0.6);
+    border-radius: 999px;
+  }
+
+  .teacher-window-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(37, 64, 53, 0.78);
+  }
+
+  .teacher-window-content p {
+    margin-bottom: 0.62rem;
+    font-size: 0.97rem;
+    line-height: 1.72;
+    color: rgba(16, 16, 16, 0.95);
+  }
+
+  .teacher-window-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .teacher-window-portrait-wrap {
+    align-self: end;
+    justify-self: end;
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .teacher-window-portrait-wrap img {
+    width: 100%;
+    max-height: 100%;
     object-fit: contain;
+    object-position: bottom center;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
     filter: none;
-  }
-
-  .teacher-story-sync .story-gradient {
-    display: none;
-  }
-
-  .teacher-story-sync .story-entry h5 {
-    font-size: 1.15rem;
-  }
-
-  .teacher-story-sync .story-entry p {
-    color: #1f2937;
   }
 
   .story-scroll-sync {
@@ -368,12 +506,25 @@
       width: 300px;
     }
 
-    .teacher-story-sync .teacher-sync-layout {
-      grid-template-columns: 1fr;
+    .teacher-window-stage {
+      top: 84px;
     }
 
-    .teacher-story-sync .story-phone-col {
+    .teacher-window-body {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .teacher-window-portrait-wrap {
       order: -1;
+      justify-self: center;
+      align-self: start;
+      width: min(170px, 45vw);
+      max-height: 190px;
+    }
+
+    .teacher-window-content {
+      padding-right: 0.1rem;
     }
   }
 
@@ -384,6 +535,32 @@
 
     .story-screen {
       height: 460px;
+    }
+
+    .teacher-window-stack {
+      --teacher-window-height: min(78vh, 680px);
+    }
+
+    .teacher-window-stage {
+      top: 72px;
+    }
+
+    .teacher-window-header {
+      padding: 0.44rem 0.58rem;
+    }
+
+    .teacher-window-title {
+      font-size: 0.84rem;
+    }
+
+    .teacher-window-close {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .teacher-window-content p {
+      font-size: 0.92rem;
+      line-height: 1.62;
     }
 
   }
@@ -549,109 +726,151 @@
           <p><strong>服科所介紹；老師</strong></p>
           <p>親愛的服科所老師們您好：我們正在規劃本期《服務聲》的主題內容，誠摯邀請老師一同參與分享。本期核心概念為「分號（;）」。在語言中，分號不是結束，而是讓句子得以延續；對我們而言，它也象徵一種仍在進行中的關係與對話——思考尚未停下，行動仍在醞釀之中。我們想邀請老師，從自身經驗出發，簡單分享一段您與服科所之間的連結或感受。可以是一個片段、一個仍在思考中的狀態，或是一段尚未被下結論的經驗。若方便，也想請老師用「一個符號」來形容這樣的狀態，並簡要說明其意義。文字長度 300 字以內即可，形式自由，不需完整結論。非常期待老師的分享，也謝謝老師們一路以來的引導與陪伴。</p>
 
-          <div class="story-scroll-sync teacher-story-sync ch11-sans" data-story-sync>
-            <div class="teacher-sync-layout">
-              <div class="story-entries">
-                <article class="story-entry is-active" data-story-entry="0" data-story-title="Galit 徐茉莉 老師">
-                  <h5 data-story-marker="0">Galit 徐茉莉 老師</h5>
-                  <p>My connection with ISS:</p>
-                  <p><strong>I am part of a whole that is constantly evolving—surprising, comforting, challenging, growing, learning. Parts come and go, renew and transform, yet it is always ISS.</strong></p>
-                  <p><strong>I love the symbol ~</strong></p>
-                  <p>It means so many different things, and especially is different in Taiwan compared to other places.</p>
-                  <p>It conveys flexibility, connection, and flow.</p>
-                </article>
-
-                <article class="story-entry" data-story-entry="1" data-story-title="Patricia 郭珮宜 老師">
-                  <h5 data-story-marker="1">Patricia 郭珮宜 老師</h5>
-                  <p><strong>「問號 ？」：</strong></p>
-                  <p>有些時候，問號不是因為不知道答案，而是因為答案變得不再那麼單一。</p>
-                  <p>回望之際，才意識到想像與初衷之間，出現了一段靜默的距離。</p>
-                  <p>於是，選擇先留下這個「問號」，讓它提醒我們：思考仍在進行中，而方向，或許還有更多可能。</p>
-                </article>
-
-                <article class="story-entry" data-story-entry="2" data-story-title="Pei-Fang Hsu 許裴舫 老師">
-                  <h5 data-story-marker="2">Pei-Fang Hsu 許裴舫 老師</h5>
-                  <p><strong>2008 Service Science ??? Pei-Fang Hsu</strong></p>
-                  <p>I joined ISS with uncertainty and curiosity, my mind filled with question marks.</p>
-                  <p><strong>2008–2025 Service Science … Pei-Fang Hsu</strong></p>
-                  <p>I learned from ISS faculty and students, growing from having never heard of personas, analytics, or co-creation to collaborating closely with them. Through challenges and shared achievements, I gradually came to understand what Service Science means to me. Over time, I was able to connect the dots…as Steve Jobs once described.</p>
-                  <p><strong>2026 Service Science — Pei-Fang Hsu</strong></p>
-                  <p>This is a great year we can shape Service Science together as the ISS family.</p>
-                </article>
-
-                <article class="story-entry" data-story-entry="3" data-story-title="Soumya">
-                  <h5 data-story-marker="3">Soumya</h5>
-                  <p>Greetings,</p>
-                  <p>Here is my small piece. The symbol I chose is very similar to the semi-colon: it is the Em Dash (—).</p>
-                  <p><strong>An Ode to the Em Dash</strong></p>
-                  <p>I have always been proud and picky about English writing. One of my minor joys is explaining the difference between the hyphen (-), en dash (–), and em dash (—). The em dash in particular litters my writing. It is my go-to punctuation to mark a break in thought—a pause, followed by reflection, and then continuation. It matches my rhythm of thinking and breathing when reading and writing.</p>
-                  <p>Then, to my horror, I came across multiple articles observing how the em dash is now a sign of LLM generated text. It was my small joy, but can never be again. So this is our dilemma: For AI to become something more than machine, we must lose some things that made us human.</p>
-                  <p>The technologists and industrialists who champion this future seem gleeful at our loss. Our tech heroes now walk and talk like villains. We cannot fight against or slow down the AI wave—it has the momentum of indiscriminate money and power behind it.</p>
-                  <p>At ISS we understand that technology should serve humanity; humans must not submit to technology. But for a time, we have to swallow our pride in the small joys. We must spend our time lost in the desert, discovering how to grab hold of this alien technology and twist it to serve our humanity.</p>
-                  <p>I have started using AI for my passion projects, especially vibe coding. I thought I would hate it but in fact I love it. I enjoy making tools that serve people, instead of worrying about syntax or bugs.</p>
-                  <p>So let us pause, reflect, and continue. We may lose a few joys to make space for new joys. And we must rediscover why SERVICE to humanity—not “IT”, “data”, “marketing”, or “design”—is what defines us most of all.</p>
-                  <p>我一直對英文寫作感到驕傲，也相當挑剔。我其中一個微小但確實的樂趣，就是向人解釋連字號（-）、en dash（–）和 em dash（—）之間的差別。尤其是 em dash，幾乎散落在我所有的文字裡——它是我最常用的標點，用來標示思緒的中斷：一個停頓，接著反思，然後繼續往前。它完全符合我在閱讀與書寫時的思考與呼吸節奏。</p>
-                  <p>直到有一天，我驚恐地看到好幾篇文章指出：em dash 如今成了大型語言模型生成文本的標誌。那原本屬於我的小小快樂，似乎再也回不來了。於是我們面臨這樣的困境：若 AI 要變得不只是機器，我們就必須失去一些曾讓我們之所以為人的東西。</p>
-                  <p>那些擁抱這個未來的科技人與產業領袖，似乎對這樣的失去感到興高采烈。我們曾經仰慕的科技英雄，如今看起來、說起來，都更像反派。我們無法對抗或減緩 AI 的浪潮——它背後有著不加選擇的金錢與權力推動。</p>
-                  <p>在 ISS，我們相信科技應該服務人類；人類不該向科技低頭。但在這段時間裡，我們必須暫時吞下自尊，放下那些微小卻珍貴的樂趣。我們必須容許自己迷失在沙漠之中，摸索如何抓住這項陌生的技術，並將它扭轉成服務人性的工具。</p>
-                  <p>我已經開始在自己的熱情專案中使用 AI，尤其是在 vibe coding 上。我原以為自己會討厭它，但事實上，我很喜歡。能專心做出真正服務他人的工具，而不用把心力耗在語法或除錯上，這件事讓我感到快樂。</p>
-                  <p>所以，讓我們停下來、反思，然後繼續前行。我們或許會失去一些舊的樂趣，才能為新的樂趣騰出空間。而我們也必須重新找回：究竟是什麼定義了我們——是對人類的「服務」，而不是「IT」、「資料」、「行銷」或「設計」。</p>
-                </article>
-
-                <article class="story-entry" data-story-entry="4" data-story-title="王貞雅 老師">
-                  <h5 data-story-marker="4">王貞雅 老師</h5>
-                  <p>I choose (&amp;) to represent my experience with ISS. For me, it means “and” rather than “or”—different disciplines working together, learning from one another, and coexisting without having to become the same. This is how I experience ISS: a place where ideas remain open, connected, and always evolving---perhaps with more &amp; in the future!</p>
-                </article>
-
-                <article class="story-entry" data-story-entry="5" data-story-title="陳巧莛 Chiao-Ting Chen 老師">
-                  <h5 data-story-marker="5">陳巧莛 Chiao-Ting Chen 老師</h5>
-                  <p>加入服科所這一年半來，遇到許多不同的人事物，也常常在思考這些經驗背後所帶來的意義是什麼。</p>
-                  <p>我想，最適合用來形容這段旅程的符號應該是「且( &amp; )」，在程式邏輯中，它是一種聯集的概念，對我而言，它代表資工背景的我加上了服科所的多元，讓我能用各種不同的角度去看待事情，是一個不斷疊加並產生新意義的連結過程。</p>
-                  <p>在這段日子中，如何將技術與服務完美交織仍是努力的目標，這段對話，正在進行中。</p>
-                  <p class="ch11-sans text-base text-gray-600">--<br />陳巧莛 Chiao-Ting Chen, Ph.D.</p>
-                </article>
-              </div>
-
-              <div class="story-phone-col">
-                <div class="story-phone">
-                  <div class="story-screen">
-                    <div class="story-progress">
-                      <span class="is-active" data-story-progress="0"></span>
-                      <span data-story-progress="1"></span>
-                      <span data-story-progress="2"></span>
-                      <span data-story-progress="3"></span>
-                      <span data-story-progress="4"></span>
-                      <span data-story-progress="5"></span>
+          <div class="teacher-window-stack ch11-sans" data-teacher-stack>
+            <div class="teacher-window-scroll" data-teacher-scroll>
+              <div class="teacher-window-stage" data-teacher-stage>
+                <article class="teacher-window" data-teacher-window>
+                  <div class="teacher-window-header">
+                    <h5 class="teacher-window-title">Galit 徐茉莉 老師</h5>
+                    <div class="teacher-window-controls">
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <button type="button" class="teacher-window-close" data-teacher-close aria-label="關閉 Galit 徐茉莉 老師視窗">✕</button>
                     </div>
-
-                    <figure class="story-frame is-active" data-story-frame="0">
-                      <img src="/assets/chapter-01/teacher%20img/Galit%20徐茉莉%20老師.png" alt="Galit 徐茉莉老師留言配圖" />
-                    </figure>
-
-                    <figure class="story-frame" data-story-frame="1">
-                      <img src="/assets/chapter-01/teacher%20img/Patricia%20郭珮宜%20老師.png" alt="Patricia 郭珮宜老師留言配圖" />
-                    </figure>
-
-                    <figure class="story-frame" data-story-frame="2">
-                      <img src="/assets/chapter-01/teacher%20img/Pei-Fang%20Hsu%20許裴舫%20老師.png" alt="許裴舫老師留言配圖" />
-                    </figure>
-
-                    <figure class="story-frame" data-story-frame="3">
-                      <img src="/assets/chapter-01/teacher%20img/Soumya.png" alt="Soumya 老師留言配圖" />
-                    </figure>
-
-                    <figure class="story-frame" data-story-frame="4">
-                      <img src="/assets/chapter-01/teacher%20img/王貞雅%20老師.png" alt="王貞雅老師留言配圖" />
-                    </figure>
-
-                    <figure class="story-frame" data-story-frame="5">
-                      <img src="/assets/chapter-01/teacher%20img/陳巧莛%20Chiao-Ting%20Chen%20老師.png" alt="陳巧莛老師留言配圖" />
-                    </figure>
-
-                    <div class="story-gradient"></div>
                   </div>
-                </div>
-                
+                  <div class="teacher-window-body">
+                    <div class="teacher-window-content">
+                      <p>My connection with ISS:</p>
+                      <p><strong>I am part of a whole that is constantly evolving—surprising, comforting, challenging, growing, learning. Parts come and go, renew and transform, yet it is always ISS.</strong></p>
+                      <p><strong>I love the symbol ~</strong></p>
+                      <p>It means so many different things, and especially is different in Taiwan compared to other places.</p>
+                      <p>It conveys flexibility, connection, and flow.</p>
+                    </div>
+                    <figure class="teacher-window-portrait-wrap">
+                      <img src="/assets/chapter-01/teacher%20img/Galit%20徐茉莉%20老師.png" alt="Galit 徐茉莉老師" />
+                    </figure>
+                  </div>
+                </article>
+
+                <article class="teacher-window" data-teacher-window>
+                  <div class="teacher-window-header">
+                    <h5 class="teacher-window-title">Patricia 郭珮宜 老師</h5>
+                    <div class="teacher-window-controls">
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <button type="button" class="teacher-window-close" data-teacher-close aria-label="關閉 Patricia 郭珮宜 老師視窗">✕</button>
+                    </div>
+                  </div>
+                  <div class="teacher-window-body">
+                    <div class="teacher-window-content">
+                      <p><strong>「問號 ？」：</strong></p>
+                      <p>有些時候，問號不是因為不知道答案，而是因為答案變得不再那麼單一。</p>
+                      <p>回望之際，才意識到想像與初衷之間，出現了一段靜默的距離。</p>
+                      <p>於是，選擇先留下這個「問號」，讓它提醒我們：思考仍在進行中，而方向，或許還有更多可能。</p>
+                    </div>
+                    <figure class="teacher-window-portrait-wrap">
+                      <img src="/assets/chapter-01/teacher%20img/Patricia%20郭珮宜%20老師.png" alt="Patricia 郭珮宜老師" />
+                    </figure>
+                  </div>
+                </article>
+
+                <article class="teacher-window" data-teacher-window>
+                  <div class="teacher-window-header">
+                    <h5 class="teacher-window-title">Pei-Fang Hsu 許裴舫 老師</h5>
+                    <div class="teacher-window-controls">
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <button type="button" class="teacher-window-close" data-teacher-close aria-label="關閉 Pei-Fang Hsu 許裴舫 老師視窗">✕</button>
+                    </div>
+                  </div>
+                  <div class="teacher-window-body">
+                    <div class="teacher-window-content">
+                      <p><strong>2008 Service Science ??? Pei-Fang Hsu</strong></p>
+                      <p>I joined ISS with uncertainty and curiosity, my mind filled with question marks.</p>
+                      <p><strong>2008–2025 Service Science … Pei-Fang Hsu</strong></p>
+                      <p>I learned from ISS faculty and students, growing from having never heard of personas, analytics, or co-creation to collaborating closely with them. Through challenges and shared achievements, I gradually came to understand what Service Science means to me. Over time, I was able to connect the dots…as Steve Jobs once described.</p>
+                      <p><strong>2026 Service Science — Pei-Fang Hsu</strong></p>
+                      <p>This is a great year we can shape Service Science together as the ISS family.</p>
+                    </div>
+                    <figure class="teacher-window-portrait-wrap">
+                      <img src="/assets/chapter-01/teacher%20img/Pei-Fang%20Hsu%20許裴舫%20老師.png" alt="許裴舫老師" />
+                    </figure>
+                  </div>
+                </article>
+
+                <article class="teacher-window" data-teacher-window>
+                  <div class="teacher-window-header">
+                    <h5 class="teacher-window-title">Soumya</h5>
+                    <div class="teacher-window-controls">
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <button type="button" class="teacher-window-close" data-teacher-close aria-label="關閉 Soumya 視窗">✕</button>
+                    </div>
+                  </div>
+                  <div class="teacher-window-body">
+                    <div class="teacher-window-content">
+                      <p>Greetings,</p>
+                      <p>Here is my small piece. The symbol I chose is very similar to the semi-colon: it is the Em Dash (—).</p>
+                      <p><strong>An Ode to the Em Dash</strong></p>
+                      <p>I have always been proud and picky about English writing. One of my minor joys is explaining the difference between the hyphen (-), en dash (–), and em dash (—). The em dash in particular litters my writing. It is my go-to punctuation to mark a break in thought—a pause, followed by reflection, and then continuation. It matches my rhythm of thinking and breathing when reading and writing.</p>
+                      <p>Then, to my horror, I came across multiple articles observing how the em dash is now a sign of LLM generated text. It was my small joy, but can never be again. So this is our dilemma: For AI to become something more than machine, we must lose some things that made us human.</p>
+                      <p>The technologists and industrialists who champion this future seem gleeful at our loss. Our tech heroes now walk and talk like villains. We cannot fight against or slow down the AI wave—it has the momentum of indiscriminate money and power behind it.</p>
+                      <p>At ISS we understand that technology should serve humanity; humans must not submit to technology. But for a time, we have to swallow our pride in the small joys. We must spend our time lost in the desert, discovering how to grab hold of this alien technology and twist it to serve our humanity.</p>
+                      <p>I have started using AI for my passion projects, especially vibe coding. I thought I would hate it but in fact I love it. I enjoy making tools that serve people, instead of worrying about syntax or bugs.</p>
+                      <p>So let us pause, reflect, and continue. We may lose a few joys to make space for new joys. And we must rediscover why SERVICE to humanity—not “IT”, “data”, “marketing”, or “design”—is what defines us most of all.</p>
+                      <p>我一直對英文寫作感到驕傲，也相當挑剔。我其中一個微小但確實的樂趣，就是向人解釋連字號（-）、en dash（–）和 em dash（—）之間的差別。尤其是 em dash，幾乎散落在我所有的文字裡——它是我最常用的標點，用來標示思緒的中斷：一個停頓，接著反思，然後繼續往前。它完全符合我在閱讀與書寫時的思考與呼吸節奏。</p>
+                      <p>直到有一天，我驚恐地看到好幾篇文章指出：em dash 如今成了大型語言模型生成文本的標誌。那原本屬於我的小小快樂，似乎再也回不來了。於是我們面臨這樣的困境：若 AI 要變得不只是機器，我們就必須失去一些曾讓我們之所以為人的東西。</p>
+                      <p>那些擁抱這個未來的科技人與產業領袖，似乎對這樣的失去感到興高采烈。我們曾經仰慕的科技英雄，如今看起來、說起來，都更像反派。我們無法對抗或減緩 AI 的浪潮——它背後有著不加選擇的金錢與權力推動。</p>
+                      <p>在 ISS，我們相信科技應該服務人類；人類不該向科技低頭。但在這段時間裡，我們必須暫時吞下自尊，放下那些微小卻珍貴的樂趣。我們必須容許自己迷失在沙漠之中，摸索如何抓住這項陌生的技術，並將它扭轉成服務人性的工具。</p>
+                      <p>我已經開始在自己的熱情專案中使用 AI，尤其是在 vibe coding 上。我原以為自己會討厭它，但事實上，我很喜歡。能專心做出真正服務他人的工具，而不用把心力耗在語法或除錯上，這件事讓我感到快樂。</p>
+                      <p>所以，讓我們停下來、反思，然後繼續前行。我們或許會失去一些舊的樂趣，才能為新的樂趣騰出空間。而我們也必須重新找回：究竟是什麼定義了我們——是對人類的「服務」，而不是「IT」、「資料」、「行銷」或「設計」。</p>
+                    </div>
+                    <figure class="teacher-window-portrait-wrap">
+                      <img src="/assets/chapter-01/teacher%20img/Soumya.png" alt="Soumya 老師" />
+                    </figure>
+                  </div>
+                </article>
+
+                <article class="teacher-window" data-teacher-window>
+                  <div class="teacher-window-header">
+                    <h5 class="teacher-window-title">王貞雅 老師</h5>
+                    <div class="teacher-window-controls">
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <button type="button" class="teacher-window-close" data-teacher-close aria-label="關閉 王貞雅 老師視窗">✕</button>
+                    </div>
+                  </div>
+                  <div class="teacher-window-body">
+                    <div class="teacher-window-content">
+                      <p>I choose (&amp;) to represent my experience with ISS. For me, it means “and” rather than “or”—different disciplines working together, learning from one another, and coexisting without having to become the same. This is how I experience ISS: a place where ideas remain open, connected, and always evolving---perhaps with more &amp; in the future!</p>
+                    </div>
+                    <figure class="teacher-window-portrait-wrap">
+                      <img src="/assets/chapter-01/teacher%20img/王貞雅%20老師.png" alt="王貞雅老師" />
+                    </figure>
+                  </div>
+                </article>
+
+                <article class="teacher-window" data-teacher-window>
+                  <div class="teacher-window-header">
+                    <h5 class="teacher-window-title">陳巧莛 Chiao-Ting Chen 老師</h5>
+                    <div class="teacher-window-controls">
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <span class="teacher-window-chip" aria-hidden="true"></span>
+                      <button type="button" class="teacher-window-close" data-teacher-close aria-label="關閉 陳巧莛 Chiao-Ting Chen 老師視窗">✕</button>
+                    </div>
+                  </div>
+                  <div class="teacher-window-body">
+                    <div class="teacher-window-content">
+                      <p>加入服科所這一年半來，遇到許多不同的人事物，也常常在思考這些經驗背後所帶來的意義是什麼。</p>
+                      <p>我想，最適合用來形容這段旅程的符號應該是「且( &amp; )」，在程式邏輯中，它是一種聯集的概念，對我而言，它代表資工背景的我加上了服科所的多元，讓我能用各種不同的角度去看待事情，是一個不斷疊加並產生新意義的連結過程。</p>
+                      <p>在這段日子中，如何將技術與服務完美交織仍是努力的目標，這段對話，正在進行中。</p>
+                      <p>--<br />陳巧莛 Chiao-Ting Chen, Ph.D.</p>
+                    </div>
+                    <figure class="teacher-window-portrait-wrap">
+                      <img src="/assets/chapter-01/teacher%20img/陳巧莛%20Chiao-Ting%20Chen%20老師.png" alt="陳巧莛 Chiao-Ting Chen 老師" />
+                    </figure>
+                  </div>
+                </article>
               </div>
             </div>
           </div>
