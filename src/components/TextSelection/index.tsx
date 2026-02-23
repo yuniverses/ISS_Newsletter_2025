@@ -1,10 +1,11 @@
-import { useEffect, useCallback, useRef } from 'react'
+import { useEffect, useCallback, useRef, useState } from 'react'
 import { Chapter } from '@/types'
 import { useReadingMemories } from '@/hooks/useReadingMemories'
 import { gsap } from 'gsap'
 
 interface TextSelectionProps {
   chapters: Chapter[]
+  currentChapterId?: string
 }
 
 interface SelectionData {
@@ -14,10 +15,75 @@ interface SelectionData {
   rect: DOMRect
 }
 
-export default function TextSelection({ chapters }: TextSelectionProps) {
+interface HintPosition {
+  left: number
+  top: number
+}
+
+const TEXT_SELECTION_HINT_STORAGE_KEY = 'iss_hint_text_selection_seen'
+
+const getFirstTextNode = (node: Node): Text | null => {
+  if (node.nodeType === Node.TEXT_NODE) {
+    const textNode = node as Text
+    if (textNode.textContent?.trim()) {
+      return textNode
+    }
+  }
+
+  for (const child of Array.from(node.childNodes)) {
+    const textNode = getFirstTextNode(child)
+    if (textNode) return textNode
+  }
+
+  return null
+}
+
+export default function TextSelection({ chapters, currentChapterId }: TextSelectionProps) {
   const { addMemory, isDuplicate } = useReadingMemories()
   const buttonRef = useRef<HTMLButtonElement | null>(null)
   const selectionDataRef = useRef<SelectionData | null>(null)
+  const selectionHintRef = useRef<HTMLDivElement | null>(null)
+  const [showSelectionHint, setShowSelectionHint] = useState(false)
+  const [hintPosition, setHintPosition] = useState<HintPosition | null>(null)
+  const hasPromptedSelectionHintRef = useRef(false)
+
+  const markSelectionHintSeen = useCallback(() => {
+    try {
+      localStorage.setItem(TEXT_SELECTION_HINT_STORAGE_KEY, '1')
+    } catch {
+      // noop
+    }
+  }, [])
+
+  const dismissSelectionHint = useCallback(() => {
+    setShowSelectionHint(false)
+    setHintPosition(null)
+    markSelectionHintSeen()
+  }, [markSelectionHintSeen])
+
+  const positionHintNearRect = useCallback((rect: DOMRect) => {
+    const viewportWidth = window.innerWidth || 1
+    const viewportHeight = window.innerHeight || 1
+    const bubbleWidth = selectionHintRef.current?.offsetWidth || Math.min(viewportWidth * 0.72, 240)
+    const bubbleHeight = selectionHintRef.current?.offsetHeight || 108
+    const gap = 12
+
+    let left = rect.right + gap
+    if (left + bubbleWidth > viewportWidth - gap) {
+      left = rect.left - bubbleWidth - gap
+    }
+    if (left < gap) {
+      left = gap
+    }
+
+    let top = rect.top + rect.height / 2 - bubbleHeight / 2
+    top = Math.min(
+      Math.max(gap, top),
+      viewportHeight - bubbleHeight - gap
+    )
+
+    setHintPosition({ left, top })
+  }, [])
 
   // 獲取章節標題
   const getChapterTitle = useCallback((chapterId: string): string => {
@@ -32,12 +98,15 @@ export default function TextSelection({ chapters }: TextSelectionProps) {
     let current: Node | null = node
     while (current) {
       if (current instanceof HTMLElement) {
-        const htmlEl = current as HTMLElement
-        if (htmlEl.dataset?.chapterId) {
-          return htmlEl
+        const currentElement = current
+        if (currentElement.dataset?.chapterId) {
+          return currentElement
         }
-        if (htmlEl.id && chapters.some(c => c.id === htmlEl.id)) {
-          return htmlEl
+        if (
+          currentElement.id &&
+          chapters.some(c => c.id === currentElement.id)
+        ) {
+          return currentElement
         }
       }
       current = current.parentNode
@@ -57,12 +126,13 @@ export default function TextSelection({ chapters }: TextSelectionProps) {
     `
     document.body.appendChild(toast)
 
-    gsap.fromTo(toast,
+    gsap.fromTo(
+      toast,
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 0.3 }
     )
 
-    setTimeout(() => {
+    window.setTimeout(() => {
       gsap.to(toast, {
         opacity: 0,
         y: -20,
@@ -74,7 +144,6 @@ export default function TextSelection({ chapters }: TextSelectionProps) {
 
   // 創建飄落的文字動畫
   const createFallingText = useCallback((text: string, rect: DOMRect) => {
-    // 創建一個漂浮的文字元素
     const floatingText = document.createElement('div')
     floatingText.className = 'fixed z-[9999] pointer-events-none px-3 py-2 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-gray-200 text-sm text-gray-800 max-w-[200px] line-clamp-3'
     floatingText.style.cssText = `
@@ -86,35 +155,30 @@ export default function TextSelection({ chapters }: TextSelectionProps) {
     document.body.appendChild(floatingText)
 
     const windowHeight = window.innerHeight
-
-    // 動畫時間線
     const tl = gsap.timeline({
       onComplete: () => floatingText.remove()
     })
 
-    // 1. 放大 + 彈起
     tl.to(floatingText, {
       scale: 1.2,
       y: -100,
       rotation: (Math.random() - 0.5) * 30,
       duration: 0.4,
-      ease: "power2.out",
+      ease: 'power2.out',
     })
 
-    // 2. 落下穿過螢幕底部
     tl.to(floatingText, {
       y: windowHeight + 200,
       rotation: (Math.random() - 0.5) * 180,
       scale: 0.8,
       duration: 0.8,
-      ease: "power2.in",
+      ease: 'power2.in',
     })
 
-    // 3. 淡出
     tl.to(floatingText, {
       opacity: 0,
       duration: 0.2,
-    }, "-=0.2")
+    }, '-=0.2')
   }, [])
 
   // 隱藏選取按鈕
@@ -140,36 +204,26 @@ export default function TextSelection({ chapters }: TextSelectionProps) {
     const data = selectionDataRef.current
     if (!data) return
 
-    // 保存記憶
     addMemory({
       text: data.text,
       chapterId: data.chapterId,
       chapterTitle: data.chapterTitle
     })
 
-    // 創建飄落動畫
     createFallingText(data.text, data.rect)
-
-    // 顯示提示
     showToast()
-
-    // 隱藏按鈕
     hideButton()
-
-    // 清除選取
     window.getSelection()?.removeAllRanges()
   }, [addMemory, createFallingText, showToast, hideButton])
 
   // 顯示選取按鈕
   const showButton = useCallback((rect: DOMRect) => {
-    // 移除舊按鈕
     if (buttonRef.current) {
       buttonRef.current.remove()
     }
 
-    // 創建新按鈕
     const button = document.createElement('button')
-    button.className = 'fixed z-[9999] px-4 py-2 bg-black text-white text-sm rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center gap-2'
+    button.className = 'fixed z-[9999] min-h-[44px] px-4 py-2 bg-black text-white text-sm rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white'
     button.innerHTML = `
       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -177,7 +231,6 @@ export default function TextSelection({ chapters }: TextSelectionProps) {
       <span>收集</span>
     `
 
-    // 定位在選取文字上方
     const buttonX = rect.left + rect.width / 2
     const buttonY = rect.top - 10
     button.style.cssText = `
@@ -190,47 +243,113 @@ export default function TextSelection({ chapters }: TextSelectionProps) {
     document.body.appendChild(button)
     buttonRef.current = button
 
-    // 點擊事件
     button.addEventListener('click', (e) => {
       e.preventDefault()
       e.stopPropagation()
       handleCollect()
     })
 
-    // 動畫顯示
     gsap.to(button, {
       opacity: 1,
       scale: 1,
       duration: 0.2,
-      ease: "back.out(1.7)"
+      ease: 'back.out(1.7)'
     })
   }, [handleCollect])
+
+  const runSelectionDemo = useCallback((): boolean => {
+    const selection = window.getSelection()
+    if (!selection) return false
+
+    const viewportCenter = (window.innerHeight || 1) / 2
+    const paragraphs = Array.from(
+      document.querySelectorAll<HTMLElement>('section[data-chapter-id="chapter-01"] article p')
+    )
+      .filter((paragraph) => (paragraph.textContent || '').trim().length >= 12)
+      .sort((a, b) => {
+        const rectA = a.getBoundingClientRect()
+        const rectB = b.getBoundingClientRect()
+        const centerA = (rectA.top + rectA.bottom) / 2
+        const centerB = (rectB.top + rectB.bottom) / 2
+        return Math.abs(centerA - viewportCenter) - Math.abs(centerB - viewportCenter)
+      })
+
+    for (const paragraph of paragraphs) {
+      const textNode = getFirstTextNode(paragraph)
+      if (!textNode || !textNode.textContent) continue
+
+      const rawText = textNode.textContent
+      let start = 0
+      while (start < rawText.length && /\s/.test(rawText[start])) {
+        start += 1
+      }
+
+      const end = Math.min(rawText.length, start + 20)
+      if (end - start < 5) continue
+
+      const range = document.createRange()
+      try {
+        range.setStart(textNode, start)
+        range.setEnd(textNode, end)
+      } catch {
+        continue
+      }
+
+      const text = range.toString().trim()
+      if (text.length < 5 || text.length > 200 || isDuplicate(text)) {
+        continue
+      }
+
+      const chapterElement = findParentChapter(textNode)
+      if (!chapterElement) {
+        continue
+      }
+
+      selection.removeAllRanges()
+      selection.addRange(range)
+
+      const rect = range.getBoundingClientRect()
+      if (!rect.width && !rect.height) {
+        selection.removeAllRanges()
+        continue
+      }
+
+      const chapterId = chapterElement.dataset?.chapterId || chapterElement.id
+      selectionDataRef.current = {
+        text,
+        chapterId,
+        chapterTitle: getChapterTitle(chapterId),
+        rect
+      }
+
+      showButton(rect)
+      positionHintNearRect(rect)
+      return true
+    }
+
+    return false
+  }, [findParentChapter, getChapterTitle, isDuplicate, positionHintNearRect, showButton])
 
   // 處理選取事件
   const handleSelection = useCallback(() => {
     const selection = window.getSelection()
 
-    // 如果沒有選取或選取為空
     if (!selection || selection.isCollapsed) {
       hideButton()
       return
     }
 
     const text = selection.toString().trim()
-
-    // 驗證長度
     if (text.length < 5 || text.length > 200) {
       hideButton()
       return
     }
 
-    // 檢查是否重複
     if (isDuplicate(text)) {
       hideButton()
       return
     }
 
-    // 找到所屬章節
     const chapterElement = findParentChapter(selection.anchorNode)
     if (!chapterElement) {
       hideButton()
@@ -241,7 +360,6 @@ export default function TextSelection({ chapters }: TextSelectionProps) {
     const range = selection.getRangeAt(0)
     const rect = range.getBoundingClientRect()
 
-    // 保存選取數據
     selectionDataRef.current = {
       text,
       chapterId,
@@ -249,24 +367,33 @@ export default function TextSelection({ chapters }: TextSelectionProps) {
       rect
     }
 
-    // 顯示按鈕
     showButton(rect)
-  }, [isDuplicate, findParentChapter, getChapterTitle, showButton, hideButton])
+
+    if (showSelectionHint) {
+      positionHintNearRect(rect)
+    }
+  }, [
+    findParentChapter,
+    getChapterTitle,
+    hideButton,
+    isDuplicate,
+    positionHintNearRect,
+    showButton,
+    showSelectionHint
+  ])
 
   // 註冊事件監聽
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout | null = null
+    let timeoutId: number | null = null
 
     const debouncedHandler = () => {
-      if (timeoutId) clearTimeout(timeoutId)
-      timeoutId = setTimeout(handleSelection, 150)
+      if (timeoutId) window.clearTimeout(timeoutId)
+      timeoutId = window.setTimeout(handleSelection, 150)
     }
 
-    // 點擊其他地方隱藏按鈕
     const handleClickOutside = (e: MouseEvent) => {
       if (buttonRef.current && !buttonRef.current.contains(e.target as Node)) {
-        // 延遲檢查，讓選取事件先處理
-        setTimeout(() => {
+        window.setTimeout(() => {
           const selection = window.getSelection()
           if (!selection || selection.isCollapsed) {
             hideButton()
@@ -283,11 +410,117 @@ export default function TextSelection({ chapters }: TextSelectionProps) {
       document.removeEventListener('mouseup', debouncedHandler)
       document.removeEventListener('touchend', debouncedHandler)
       document.removeEventListener('mousedown', handleClickOutside)
-      if (timeoutId) clearTimeout(timeoutId)
+      if (timeoutId) window.clearTimeout(timeoutId)
       if (buttonRef.current) buttonRef.current.remove()
     }
   }, [handleSelection, hideButton])
 
-  // 這個組件不渲染任何東西（按鈕直接加到 body）
-  return null
+  useEffect(() => {
+    let hasSeenHint = false
+    try {
+      hasSeenHint = localStorage.getItem(TEXT_SELECTION_HINT_STORAGE_KEY) === '1'
+    } catch {
+      hasSeenHint = true
+    }
+    if (hasSeenHint) return
+
+    let retryTimerId: number | null = null
+
+    const maybeShowHint = () => {
+      if (hasPromptedSelectionHintRef.current) return
+      if (currentChapterId !== 'chapter-01') return
+
+      const chapterOneSection = document.getElementById('chapter-01')
+      if (!chapterOneSection) return
+
+      const rect = chapterOneSection.getBoundingClientRect()
+      const viewportHeight = window.innerHeight || 1
+      const chapterOneInView =
+        rect.top < viewportHeight * 0.75 &&
+        rect.bottom > viewportHeight * 0.2
+
+      if (!chapterOneInView) return
+
+      const didRunDemo = runSelectionDemo()
+      if (!didRunDemo) return
+
+      hasPromptedSelectionHintRef.current = true
+      setShowSelectionHint(true)
+
+      window.removeEventListener('scroll', maybeShowHint)
+      if (retryTimerId) {
+        window.clearInterval(retryTimerId)
+        retryTimerId = null
+      }
+    }
+
+    maybeShowHint()
+    window.addEventListener('scroll', maybeShowHint, { passive: true })
+    retryTimerId = window.setInterval(maybeShowHint, 1200)
+
+    return () => {
+      window.removeEventListener('scroll', maybeShowHint)
+      if (retryTimerId) window.clearInterval(retryTimerId)
+    }
+  }, [currentChapterId, markSelectionHintSeen, runSelectionDemo])
+
+  useEffect(() => {
+    if (!showSelectionHint) return
+
+    const syncHintPosition = () => {
+      const selection = window.getSelection()
+      if (!selection || selection.rangeCount === 0 || selection.isCollapsed) return
+
+      const range = selection.getRangeAt(0)
+      const rect = range.getBoundingClientRect()
+      if (!rect.width && !rect.height) return
+
+      positionHintNearRect(rect)
+
+      if (selectionDataRef.current) {
+        selectionDataRef.current = {
+          ...selectionDataRef.current,
+          rect
+        }
+      }
+    }
+
+    syncHintPosition()
+    const initialTimer = window.setTimeout(syncHintPosition, 0)
+    window.addEventListener('scroll', syncHintPosition, { passive: true })
+    window.addEventListener('resize', syncHintPosition)
+    document.addEventListener('selectionchange', syncHintPosition)
+
+    return () => {
+      window.clearTimeout(initialTimer)
+      window.removeEventListener('scroll', syncHintPosition)
+      window.removeEventListener('resize', syncHintPosition)
+      document.removeEventListener('selectionchange', syncHintPosition)
+    }
+  }, [positionHintNearRect, showSelectionHint])
+
+  if (!showSelectionHint || !hintPosition) return null
+
+  return (
+    <div
+      ref={selectionHintRef}
+      className="fixed z-[9998] w-[min(72vw,240px)] rounded-xl border border-white/15 bg-black/80 px-3 py-2 text-white shadow-2xl backdrop-blur-sm"
+      style={{
+        left: hintPosition.left,
+        top: hintPosition.top,
+      }}
+    >
+      <p className="text-[10px] tracking-[0.18em] uppercase text-white/65">新手提示</p>
+      <p className="mt-1.5 text-[11px] leading-relaxed md:text-xs">
+        我先幫你選了一段文字，直接按旁邊「收集」就能存到封底。
+      </p>
+      <button
+        type="button"
+        onClick={dismissSelectionHint}
+        className="mt-2 inline-flex min-h-[40px] items-center rounded-full border border-white/30 px-3 py-1 text-[10px] tracking-wide text-white/90 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/80"
+      >
+        我知道了
+      </button>
+    </div>
+  )
 }

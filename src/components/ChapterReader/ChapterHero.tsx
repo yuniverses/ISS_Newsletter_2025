@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo, useCallback } from "react";
+import { useEffect, useRef, useMemo, useCallback, useState } from "react";
 import { cn } from "@/utils/cn";
 import { Link } from "lucide-react";
 import { Credit } from "@/types";
@@ -10,6 +10,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReadingMemories } from "@/hooks/useReadingMemories";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const FALLING_HINT_STORAGE_KEY = "iss_hint_falling_elements_seen";
+const FALLING_HINT_CHAPTER_ID = "chapter-01";
 
 interface ChapterHeroProps {
   chapterNumber: string;
@@ -52,6 +55,11 @@ export default function ChapterHero({
   const copiedRef = useRef(false);
   const copyButtonRef = useRef<HTMLButtonElement>(null);
   const copyLabelRef = useRef<HTMLSpanElement>(null);
+  const [showFallingHint, setShowFallingHint] = useState(false);
+  const hasSeenFallingHintRef = useRef(true);
+  const showFallingHintRef = useRef(false);
+  const fallingHintRef = useRef<HTMLDivElement>(null);
+  const fallingHintTargetIdRef = useRef<number | null>(null);
 
   // Physics Refs
   const engineRef = useRef<Matter.Engine | null>(null);
@@ -71,6 +79,94 @@ export default function ChapterHero({
       src,
     }));
   }, [fallingElements]);
+
+  useEffect(() => {
+    if (particles.length === 0) return;
+
+    try {
+      hasSeenFallingHintRef.current =
+        localStorage.getItem(FALLING_HINT_STORAGE_KEY) === "1";
+    } catch {
+      hasSeenFallingHintRef.current = true;
+    }
+  }, [particles.length]);
+
+  useEffect(() => {
+    showFallingHintRef.current = showFallingHint;
+  }, [showFallingHint]);
+
+  const markFallingHintSeen = useCallback(() => {
+    hasSeenFallingHintRef.current = true;
+    try {
+      localStorage.setItem(FALLING_HINT_STORAGE_KEY, "1");
+    } catch {
+      // noop
+    }
+  }, []);
+
+  const dismissFallingHint = useCallback(() => {
+    setShowFallingHint(false);
+    fallingHintTargetIdRef.current = null;
+    markFallingHintSeen();
+  }, [markFallingHintSeen]);
+
+  const maybeShowFallingHint = useCallback(() => {
+    if (chapterId !== FALLING_HINT_CHAPTER_ID) return;
+    if (hasSeenFallingHintRef.current) return;
+
+    const firstTarget = particles.find((p) => !collectedIdsRef.current.has(p.id));
+    if (!firstTarget) return;
+
+    fallingHintTargetIdRef.current = firstTarget.id;
+    setShowFallingHint(true);
+  }, [chapterId, particles]);
+
+  const updateFallingHintPosition = useCallback(() => {
+    if (!showFallingHintRef.current) return;
+
+    const container = containerRef.current;
+    const hint = fallingHintRef.current;
+    if (!container || !hint) return;
+
+    let targetId = fallingHintTargetIdRef.current;
+    if (targetId == null || !bodiesRef.current[targetId]) {
+      const fallbackId = Object.keys(bodiesRef.current)
+        .map((id) => Number(id))
+        .find((id) => !collectedIdsRef.current.has(id));
+      if (fallbackId == null) return;
+      fallingHintTargetIdRef.current = fallbackId;
+      targetId = fallbackId;
+    }
+
+    const targetBody = bodiesRef.current[targetId];
+    if (!targetBody) return;
+
+    // @ts-ignore
+    const size = targetBody.plugin?.originalSize || 100;
+    const safePadding = 12;
+    const gap = 10;
+    const hintWidth = hint.offsetWidth || 220;
+    const hintHeight = hint.offsetHeight || 110;
+    const targetX = targetBody.position.x;
+    const targetY = targetBody.position.y - size * 0.45;
+
+    let left = targetX + size * 0.5 + gap;
+    if (left + hintWidth > container.offsetWidth - safePadding) {
+      left = targetX - size * 0.5 - hintWidth - gap;
+    }
+    left = Math.min(
+      Math.max(safePadding, left),
+      container.offsetWidth - hintWidth - safePadding
+    );
+
+    let top = targetY - hintHeight * 0.5;
+    top = Math.min(
+      Math.max(safePadding, top),
+      container.offsetHeight - hintHeight - safePadding
+    );
+
+    hint.style.transform = `translate(${left}px, ${top}px)`;
+  }, []);
 
   // Initialize collected state (no React state, use ref)
   useEffect(() => {
@@ -369,6 +465,8 @@ export default function ChapterHero({
     const engine = engineRef.current;
     if (!container || !engine) return;
 
+    maybeShowFallingHint();
+
     const containerWidth = container.offsetWidth;
 
     particles.forEach((p, i) => {
@@ -396,7 +494,7 @@ export default function ChapterHero({
         bodiesRef.current[p.id] = body;
       }, i * 150);
     });
-  }, [particles]);
+  }, [particles, maybeShowFallingHint]);
 
   // Initialize Physics Engine
   useEffect(() => {
@@ -475,6 +573,8 @@ export default function ChapterHero({
           el.style.opacity = '1';
         }
       });
+
+      updateFallingHintPosition();
     });
 
     return () => {
@@ -483,7 +583,7 @@ export default function ChapterHero({
       Matter.World.clear(world, false);
       Matter.Engine.clear(engine);
     };
-  }, [particles.length]);
+  }, [particles.length, updateFallingHintPosition]);
 
   const useSceneIframe = heroVariant === 'scene-html' && Boolean(heroSceneHtml);
 
@@ -494,6 +594,28 @@ export default function ChapterHero({
         ref={containerRef}
         className="sticky top-0 h-screen w-full flex flex-col items-center justify-center bg-white overflow-hidden"
       >
+        {showFallingHint && (
+          <div
+            ref={fallingHintRef}
+            className="pointer-events-auto absolute left-0 top-0 z-40 w-[min(72vw,220px)] rounded-xl border border-white/25 bg-black/70 px-3 py-2 text-white shadow-xl backdrop-blur-sm"
+            style={{ transform: 'translate(-9999px, -9999px)' }}
+          >
+            <p className="text-[10px] tracking-[0.18em] uppercase text-white/70">
+              小提示
+            </p>
+            <p className="mt-1.5 text-[11px] leading-relaxed md:text-xs">
+              點一下掉落元素可收藏，封底會再看到它。
+            </p>
+            <button
+              type="button"
+              onClick={dismissFallingHint}
+              className="mt-2 inline-flex min-h-[40px] items-center rounded-full border border-white/30 px-3 py-1 text-[10px] tracking-wide text-white/90 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/80"
+            >
+              知道了
+            </button>
+          </div>
+        )}
+
         {/* Falling Elements Layer */}
         <div className="absolute inset-0 z-30 pointer-events-none">
           {particles.map((p) => (
