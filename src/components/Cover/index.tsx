@@ -129,6 +129,10 @@ const CrossfadeLoop = ({
 };
 
 export default function Cover({ onEnter }: CoverProps) {
+  const CARD_RELAY_REVEAL_START = 0.8;
+  const CARD_RELAY_REVEAL_DISTANCE = 0.1;
+  const CARD_RELAY_OPEN_THRESHOLD = 0.95;
+
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyWrapperRef = useRef<HTMLDivElement>(null);
   const leftVideoWrapperRef = useRef<HTMLDivElement>(null);
@@ -338,16 +342,16 @@ export default function Cover({ onEnter }: CoverProps) {
 
       // --- Card Opacity & Interaction (Scroll Driven) ---
       let cardOpacity = 0;
-      if (p > 0.72) {
-        cardOpacity = (p - 0.72) / 0.08;
+      if (p > CARD_RELAY_REVEAL_START) {
+        cardOpacity = (p - CARD_RELAY_REVEAL_START) / CARD_RELAY_REVEAL_DISTANCE;
         if (cardOpacity > 1) cardOpacity = 1;
       }
       
       if (cardOverlay) {
         cardOverlay.style.opacity = cardOpacity.toString();
-        if (cardOpacity >= 0.95 && !isCardOpen) {
+        if (cardOpacity >= CARD_RELAY_OPEN_THRESHOLD && !isCardOpen) {
            setIsCardOpen(true);
-        } else if (cardOpacity < 0.95 && isCardOpen) {
+        } else if (cardOpacity < CARD_RELAY_OPEN_THRESHOLD && isCardOpen) {
            setIsCardOpen(false);
         }
       }
@@ -573,6 +577,15 @@ export default function Cover({ onEnter }: CoverProps) {
               {/* Bottom Section: Input */}
               {!hasContributed && (
                 <div className="pt-8 md:pt-12 border-t border-white/10 relative">
+                  <div className="max-w-2xl mx-auto mb-6 md:mb-8 text-center">
+                    <p className="text-[10px] md:text-xs tracking-[0.24em] uppercase text-white/45 mb-2">
+                      分號接龍
+                    </p>
+                    <p className="text-xs md:text-sm text-white/70 leading-relaxed font-light">
+                      你現在讀到的這句話，來自另一位在不同時間、不同空間閱讀的讀者。
+                      請接著寫下你的下一句，讓這條分號跨越距離，繼續連結下一位讀者。
+                    </p>
+                  </div>
                   <div className="relative group max-w-2xl mx-auto">
                     <textarea
                       className="w-full h-32 md:h-40 bg-transparent border-none p-0 text-xl md:text-3xl font-light text-white/90 placeholder-white/10 focus:ring-0 focus:outline-none transition-all resize-none text-center font-serif leading-relaxed tracking-wide"
@@ -820,7 +833,7 @@ export default function Cover({ onEnter }: CoverProps) {
         </div>
 
         {/* Extended Scroll Spacer - Transparent to show video */}
-        <div className="h-[450vh] w-full bg-transparent" />
+        <div className="h-[520vh] w-full bg-transparent" />
 
         {/* Block Transition */}
         <div className="w-full pointer-events-none">
