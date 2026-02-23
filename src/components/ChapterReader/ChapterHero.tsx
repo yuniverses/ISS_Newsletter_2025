@@ -45,10 +45,13 @@ export default function ChapterHero({
   const heroRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const imageFrameRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const contentCardRef = useRef<HTMLDivElement>(null);
   const prefaceRef = useRef<HTMLDivElement>(null);
   const copiedRef = useRef(false);
   const copyButtonRef = useRef<HTMLButtonElement>(null);
+  const copyLabelRef = useRef<HTMLSpanElement>(null);
 
   // Physics Refs
   const engineRef = useRef<Matter.Engine | null>(null);
@@ -196,17 +199,17 @@ export default function ChapterHero({
     navigator.clipboard.writeText(url);
     copiedRef.current = true;
 
-    // Update button icon
+    // Update share button state
     if (copyButtonRef.current) {
-      copyButtonRef.current.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-      copyButtonRef.current.classList.add('text-white', 'bg-white/20');
+      copyButtonRef.current.classList.add("bg-black/15");
+      if (copyLabelRef.current) copyLabelRef.current.textContent = "Copied";
     }
 
     setTimeout(() => {
       copiedRef.current = false;
       if (copyButtonRef.current) {
-        copyButtonRef.current.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`;
-        copyButtonRef.current.classList.remove('text-white', 'bg-white/20');
+        copyButtonRef.current.classList.remove("bg-black/15");
+        if (copyLabelRef.current) copyLabelRef.current.textContent = "Share";
       }
     }, 2000);
   }, [chapterId]);
@@ -216,10 +219,12 @@ export default function ChapterHero({
     const hero = heroRef.current;
     const container = containerRef.current;
     const image = imageRef.current;
+    const imageFrame = imageFrameRef.current;
     const content = contentRef.current;
+    const contentCard = contentCardRef.current;
     const prefaceEl = prefaceRef.current;
 
-    if (!hero || !container || !image || !content) return;
+    if (!hero || !container || !image || !imageFrame || !content || !contentCard) return;
 
     // 響應式設定：手機版需要更早觸發動畫
     const isMobile = window.innerWidth < 768;
@@ -233,18 +238,39 @@ export default function ChapterHero({
       // The hero is min-h-[200vh] with a sticky container
       // As user scrolls through the 200vh, the sticky container stays in place
 
-      // Image scale animation
-      gsap.fromTo(image,
-        { scale: 1 },
+      const finalInset = isMobile
+        ? "14% 6% 44% 6%"
+        : "10% 18% 40% 18%";
+
+      // Full-bleed image transitions into centered framed image.
+      gsap.fromTo(
+        imageFrame,
+        { inset: "0% 0% 0% 0%" },
         {
-          scale: 0.5,
+          inset: finalInset,
           ease: "none",
           scrollTrigger: {
             trigger: hero,
             start: `${shrinkStartPercent} bottom`,
             end: "bottom bottom",
             scrub: 0.5,
-          }
+          },
+        }
+      );
+
+      gsap.fromTo(
+        image,
+        { scale: 1.06, opacity: 1 },
+        {
+          scale: 1,
+          opacity: 0.4,
+          ease: "none",
+          scrollTrigger: {
+            trigger: hero,
+            start: `${shrinkStartPercent} bottom`,
+            end: "bottom bottom",
+            scrub: 0.5,
+          },
         }
       );
 
@@ -262,6 +288,38 @@ export default function ChapterHero({
           }
         }
       );
+
+      gsap.fromTo(
+        contentCard,
+        { y: 56 },
+        {
+          y: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: hero,
+            start: `${shrinkStartPercent} bottom`,
+            end: "bottom bottom",
+            scrub: 0.5,
+          },
+        }
+      );
+
+      // Keep white + difference during full-bleed stage, then end as black text on normal blend.
+      contentCard.style.setProperty("--hero-text-rgb", "255 255 255");
+      contentCard.style.mixBlendMode = "difference";
+
+      ScrollTrigger.create({
+        trigger: hero,
+        start: `${shrinkStartPercent} bottom`,
+        end: "bottom bottom",
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const t = Math.min(Math.max((self.progress - 0.68) / 0.32, 0), 1);
+          const channel = Math.round(255 * (1 - t));
+          contentCard.style.setProperty("--hero-text-rgb", `${channel} ${channel} ${channel}`);
+          contentCard.style.mixBlendMode = t > 0.92 ? "normal" : "difference";
+        },
+      });
 
       // Preface fade in - fade in when shrinking starts
       if (prefaceEl) {
@@ -457,77 +515,34 @@ export default function ChapterHero({
           ref={imageRef}
           className="absolute inset-0 will-change-transform z-10"
         >
-          {useSceneIframe ? (
-            <iframe
-              src={heroSceneHtml}
-              title={`${title} chapter hero scene`}
-              className="absolute inset-0 h-full w-full border-0 pointer-events-none"
-            />
-          ) : (
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${coverImage})` }}
-            />
-          )}
-          {!useSceneIframe && <div className="absolute inset-0 bg-black/10" />}
+          <div ref={imageFrameRef} className="absolute inset-0 overflow-hidden">
+            {useSceneIframe ? (
+              <iframe
+                src={heroSceneHtml}
+                title={`${title} chapter hero scene`}
+                className="absolute inset-0 h-full w-full border-0 pointer-events-none"
+              />
+            ) : (
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${coverImage})` }}
+              />
+            )}
+            {!useSceneIframe && <div className="absolute inset-0 bg-black/10" />}
+          </div>
         </div>
 
         {/* Content Overlay */}
         <div
           ref={contentRef}
-          className="absolute inset-0 px-8 md:px-16 lg:px-24 xl:px-32 py-12 md:py-16 lg:py-20 will-change-opacity flex flex-col justify-between mx-auto z-20 mix-blend-difference text-white opacity-0"
+          className="absolute inset-0 z-20 flex items-end justify-center px-8 pb-10 md:px-16 md:pb-14 lg:px-24 lg:pb-20 will-change-opacity opacity-0 pointer-events-none"
         >
-          {/* Top section with title */}
-          <div className="flex items-start justify-between gap-8">
-            <div className="flex-1">
-              <SplitText
-                text={title}
-                className={cn(
-                  "text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold",
-                  "tracking-[-0.04em] leading-[0.95] mb-4"
-                )}
-                delay={100}
-                duration={0.6}
-                ease="power3.out"
-                splitType="chars"
-                from={{ opacity: 0, y: 40 }}
-                to={{ opacity: 1, y: 0 }}
-                threshold={0.1}
-                rootMargin="-100px"
-                textAlign="start"
-                tag="h1"
-              />
-            </div>
-          </div>
-
-          {/* Subtitle */}
-          {subtitle && (
-            <div className="flex-1 max-w-md max-w-6xl">
-              <AnimatedContent
-                distance={50}
-                direction="vertical"
-                reverse={false}
-                duration={1.0}
-                ease="power3.out"
-                initialOpacity={0}
-                animateOpacity={true}
-                scale={0.95}
-                threshold={0.1}
-                delay={0.2}
-              >
-                <p className={cn(
-                  "text-sm md:text-base lg:text-lg",
-                  "font-light tracking-[-0.02em] leading-relaxed"
-                )}>
-                  {subtitle}
-                </p>
-              </AnimatedContent>
-            </div>
-          )}
-
-          {/* Bottom section with details */}
-          <div className="flex items-end justify-between">
-            <div className="space-y-4">
+          <div
+            ref={contentCardRef}
+            className="pointer-events-auto w-full max-w-[760px]"
+            style={{ color: "rgb(var(--hero-text-rgb, 255 255 255))", mixBlendMode: "difference" }}
+          >
+            <div className="text-center">
               {date && (
                 <AnimatedContent
                   distance={30}
@@ -542,70 +557,93 @@ export default function ChapterHero({
                 </AnimatedContent>
               )}
 
-              {credits && credits.length > 0 ? (
+              <SplitText
+                text={title}
+                className={cn(
+                  "mt-6 text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold",
+                  "tracking-[-0.04em] leading-[0.95]"
+                )}
+                delay={80}
+                duration={0.6}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 32 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.1}
+                rootMargin="-100px"
+                textAlign="center"
+                tag="h1"
+              />
+
+              {subtitle && (
                 <AnimatedContent
-                  distance={30}
+                  distance={36}
                   direction="vertical"
                   reverse={false}
-                  duration={0.8}
-                  delay={0.5}
+                  duration={1.0}
+                  ease="power3.out"
+                  initialOpacity={0}
+                  animateOpacity={true}
+                  scale={0.98}
+                  threshold={0.1}
+                  delay={0.18}
                 >
-                  <div className="space-y-1">
-                    {credits.map((credit, idx) => (
-                      <div key={idx} className="flex flex-col md:flex-row gap-1 md:gap-3 text-sm md:text-base">
-                        <span className="font-bold">{credit.name}</span>
-                        <span className="hidden md:inline text-white/60">/</span>
-                        <span className="font-light text-white/80">{credit.role}</span>
-                      </div>
-                    ))}
-                  </div>
-                </AnimatedContent>
-              ) : (
-                <AnimatedContent
-                  distance={30}
-                  direction="vertical"
-                  reverse={false}
-                  duration={0.8}
-                  delay={0.5}
-                >
-                  <div className="space-y-2 text-white/80">
-                    {category && (
-                      <div className="flex gap-3 text-xs md:text-sm">
-                        <span className="font-light text-white/60">分類</span>
-                        <span className="font-normal">{category}</span>
-                      </div>
-                    )}
-                    {authors && authors.length > 0 && (
-                      <div className="flex gap-3 text-xs md:text-sm">
-                        <span className="font-light text-white/60">作者</span>
-                        <span className="font-normal">{authors.join(" / ")}</span>
-                      </div>
-                    )}
-                    <div className="flex gap-3 text-xs md:text-sm">
-                      <span className="font-light text-white/60">期刊</span>
-                      <span className="font-normal">服務聲 2026</span>
-                    </div>
-                    <div className="flex gap-3 text-xs md:text-sm">
-                      <span className="font-light text-white/60">章節</span>
-                      <span className="font-normal">{chapterNumber}</span>
-                    </div>
-                  </div>
+                  <p className={cn(
+                    "mx-auto mt-5 max-w-[680px] text-sm md:text-base lg:text-lg",
+                    "font-light tracking-[-0.02em] leading-relaxed"
+                  )}>
+                    {subtitle}
+                  </p>
                 </AnimatedContent>
               )}
             </div>
 
-            {/* Copy Link Button */}
-            {chapterId && (
-              <button
-                ref={copyButtonRef}
-                onClick={handleCopyLink}
-                className="p-3 rounded-full transition-all duration-200 text-white hover:text-white/80 hover:bg-white/10 backdrop-blur-sm"
-                title="複製章節連結"
-                aria-label="複製章節連結"
-              >
-                <Link size={20} />
-              </button>
-            )}
+            <div
+              className="mt-8 border-t pt-5 md:mt-10 md:pt-6"
+              style={{ borderColor: "currentColor" }}
+            >
+              <div className="flex items-end justify-between gap-6">
+                <div className="space-y-1 text-sm md:text-base">
+                  {credits && credits.length > 0 ? (
+                    credits.map((credit, idx) => (
+                      <div key={idx} className="flex flex-col md:flex-row gap-1 md:gap-2">
+                        <span className="font-bold">{credit.name}</span>
+                        <span className="hidden md:inline" style={{ opacity: 0.7 }}>/</span>
+                        <span className="font-light" style={{ opacity: 0.85 }}>{credit.role}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      {authors && authors.length > 0 && (
+                        <div className="flex flex-col md:flex-row gap-1 md:gap-2">
+                          <span className="font-bold">{authors.join(" / ")}</span>
+                          <span className="hidden md:inline" style={{ opacity: 0.7 }}>/</span>
+                          <span className="font-light" style={{ opacity: 0.85 }}>作者</span>
+                        </div>
+                      )}
+                      <div className="flex flex-col md:flex-row gap-1 md:gap-2">
+                        <span className="font-bold">{category}</span>
+                        <span className="hidden md:inline" style={{ opacity: 0.7 }}>/</span>
+                        <span className="font-light" style={{ opacity: 0.85 }}>章節 {chapterNumber}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {chapterId && (
+                  <button
+                    ref={copyButtonRef}
+                    onClick={handleCopyLink}
+                    className="inline-flex min-h-[44px] items-center gap-2 rounded-full px-3 py-2 text-sm transition-colors hover:bg-black/10 md:text-base"
+                    title="複製章節連結"
+                    aria-label="複製章節連結"
+                  >
+                    <Link size={18} />
+                    <span ref={copyLabelRef}>Share</span>
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
