@@ -226,6 +226,63 @@
     }
   }
 
+  @keyframes groupSymbolEllipsisFloat {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes groupSymbolSlashSway {
+    0%, 100% {
+      transform: rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+  }
+
+  @keyframes groupSymbolAtPulse {
+    0%, 100% {
+      transform: scale(1) rotate(0deg);
+    }
+    40% {
+      transform: scale(1.05) rotate(6deg);
+    }
+    70% {
+      transform: scale(0.98) rotate(-6deg);
+    }
+  }
+
+  @keyframes groupSymbolColonBlink {
+    0%, 45%, 100% {
+      opacity: 1;
+    }
+    50%, 60% {
+      opacity: 0.35;
+    }
+  }
+
+  @keyframes groupSymbolHashJitter {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(-2px);
+    }
+    40% {
+      transform: translateX(2px);
+    }
+    60% {
+      transform: translateX(-1px);
+    }
+    80% {
+      transform: translateX(1px);
+    }
+  }
+
   .group-transition-symbol {
     animation-name: punctuationFall;
     animation-timing-function: linear;
@@ -242,9 +299,36 @@
       caretBlink 0.8s step-end infinite;
   }
 
+  .group-symbol-motion-ellipsis {
+    animation: groupSymbolEllipsisFloat 1.8s ease-in-out infinite;
+  }
+
+  .group-symbol-motion-slash {
+    animation: groupSymbolSlashSway 2.1s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  .group-symbol-motion-at {
+    animation: groupSymbolAtPulse 2.2s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  .group-symbol-motion-colon {
+    animation: groupSymbolColonBlink 1.9s ease-in-out infinite;
+  }
+
+  .group-symbol-motion-hash {
+    animation: groupSymbolHashJitter 1.4s steps(4, end) infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .group-transition-symbol,
-    .group-transition-type {
+    .group-transition-type,
+    .group-symbol-motion-ellipsis,
+    .group-symbol-motion-slash,
+    .group-symbol-motion-at,
+    .group-symbol-motion-colon,
+    .group-symbol-motion-hash {
       animation: none !important;
       border-right: 0;
       width: auto;

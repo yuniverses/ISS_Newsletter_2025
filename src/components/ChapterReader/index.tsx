@@ -234,7 +234,13 @@ export default function ChapterReader({
           const group = getGroupByChapterId(item.toChapterId)
           if (!group) return null
 
-          return <GroupTransitionSection key={item.key} group={group} />
+          return (
+            <GroupTransitionSection
+              key={item.key}
+              group={group}
+              chapters={newsletter.chapters}
+            />
+          )
         }
 
         const chapter = chapterMap.get(item.chapterId)
