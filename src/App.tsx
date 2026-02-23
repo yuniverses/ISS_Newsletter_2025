@@ -7,11 +7,18 @@ import LayoutsDemo from './pages/LayoutsDemo'
 import SemicolonIntro from './components/SemicolonIntro'
 
 function App() {
-  const [showIntro, setShowIntro] = useState(true);
+  const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/'
+  const introDurationMode = normalizedPath === '/' ? 'normal' : 'short'
+  const [showIntro, setShowIntro] = useState(true)
 
   return (
     <HelmetProvider>
-      {showIntro && <SemicolonIntro onComplete={() => setShowIntro(false)} />}
+      {showIntro && (
+        <SemicolonIntro
+          durationMode={introDurationMode}
+          onComplete={() => setShowIntro(false)}
+        />
+      )}
       <Router>
         <Routes>
           <Route path="/" element={<Home isIntroComplete={!showIntro} />} />

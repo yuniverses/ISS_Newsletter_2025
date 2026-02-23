@@ -13,6 +13,7 @@ interface ChapterReaderProps {
   initialChapterId?: string
   scrollToChapterId?: string | null
   onScrollComplete?: () => void
+  onHasMoreChange?: (hasMore: boolean) => void
 }
 
 type ReaderRenderItem =
@@ -24,10 +25,13 @@ export default function ChapterReader({
   onChapterChange,
   initialChapterId,
   scrollToChapterId,
-  onScrollComplete
+  onScrollComplete,
+  onHasMoreChange
 }: ChapterReaderProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [visibleChapterIds, setVisibleChapterIds] = useState<string[]>([])
+  const [isLoadingNext, setIsLoadingNext] = useState(false)
+  const isLoadingNextRef = useRef(false)
   const { loadChapter, preloadChapter, getChapter } = useChapterPreload()
 
   // Track current chapter based on scroll position
@@ -43,25 +47,38 @@ export default function ChapterReader({
 
   // Load next chapter
   const loadNextChapter = useCallback(async () => {
+    if (isLoadingNextRef.current) return
+
     // Find the index of the last visible chapter in the full list
-    const lastVisibleId = visibleChapterIds[visibleChapterIds.length - 1];
-    const lastVisibleIndex = newsletter.chapters.findIndex(c => c.id === lastVisibleId);
+    const lastVisibleId = visibleChapterIds[visibleChapterIds.length - 1]
+    const lastVisibleIndex = newsletter.chapters.findIndex((c) => c.id === lastVisibleId)
     
     // If last visible is the actual last chapter, stop.
     if (lastVisibleIndex === -1 || lastVisibleIndex >= newsletter.chapters.length - 1) return
 
     const nextChapter = newsletter.chapters[lastVisibleIndex + 1]
+    const afterNext = newsletter.chapters[lastVisibleIndex + 2]
 
-    // Add to visible chapters
-    setVisibleChapterIds((prev) => [...prev, nextChapter.id])
+    isLoadingNextRef.current = true
+    setIsLoadingNext(true)
 
-    // Load the chapter content
-    await loadChapter(nextChapter.id, nextChapter.htmlFile)
+    try {
+      // Add to visible chapters (dedupe to avoid duplicate ids and unstable scrolling)
+      setVisibleChapterIds((prev) => {
+        if (prev.includes(nextChapter.id)) return prev
+        return [...prev, nextChapter.id]
+      })
 
-    // Preload the next chapter if available
-    if (lastVisibleIndex + 2 < newsletter.chapters.length) {
-      const afterNext = newsletter.chapters[lastVisibleIndex + 2]
-      preloadChapter(afterNext.id, afterNext.htmlFile)
+      // Load the chapter content
+      await loadChapter(nextChapter.id, nextChapter.htmlFile)
+
+      // Preload the next chapter if available
+      if (afterNext) {
+        await preloadChapter(afterNext.id, afterNext.htmlFile)
+      }
+    } finally {
+      isLoadingNextRef.current = false
+      setIsLoadingNext(false)
     }
   }, [visibleChapterIds, newsletter.chapters, loadChapter, preloadChapter])
 
@@ -188,12 +205,18 @@ export default function ChapterReader({
   // Determine if we have more chapters to load
   const lastVisibleId = visibleChapterIds[visibleChapterIds.length - 1];
   const lastVisibleIndex = newsletter.chapters.findIndex(c => c.id === lastVisibleId);
-  const hasMore = lastVisibleIndex !== -1 && lastVisibleIndex < newsletter.chapters.length - 1;
+  const hasMore = visibleChapterIds.length === 0
+    ? newsletter.chapters.length > 0
+    : lastVisibleIndex !== -1 && lastVisibleIndex < newsletter.chapters.length - 1
+
+  useEffect(() => {
+    onHasMoreChange?.(hasMore)
+  }, [hasMore, onHasMoreChange])
 
   const sentinelRef = useInfiniteScroll({
     onLoadNext: loadNextChapter,
     threshold: 200,
-    enabled: hasMore,
+    enabled: hasMore && !isLoadingNext,
   })
 
   const chapterMap = useMemo(
@@ -260,7 +283,14 @@ export default function ChapterReader({
 
       {/* Sentinel element for infinite scroll */}
       {hasMore && (
-        <div ref={sentinelRef} className="h-4" />
+        <>
+          <div ref={sentinelRef} className="h-4" />
+          <div className="flex min-h-[28vh] items-center justify-center px-6 pb-10 pt-6">
+            <div className="text-sm tracking-wide text-black/35">
+              正在載入下一章…
+            </div>
+          </div>
+        </>
       )}
     </div>
   )

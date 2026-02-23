@@ -21,6 +21,9 @@
         { "name": "邱筠婷", "role": "主編 設計" }
       ],
       "fallingElements": [
+        "/assets/menu-shapes/shape-1.png",
+        "/assets/menu-shapes/shape-2.png",
+        "/assets/menu-shapes/shape-3.png"
       ]
     },
     {

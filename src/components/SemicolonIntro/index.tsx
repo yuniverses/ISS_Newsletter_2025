@@ -5,42 +5,58 @@ import { SemicolonLogo } from "../ui/SemicolonLogo";
 
 interface SemicolonIntroProps {
   onComplete: () => void;
+  durationMode?: "normal" | "short";
 }
 
-const MARQUEE_TICKS = 40;
-const TRANSITION_TICKS = 40;
-const TOTAL_TICKS = MARQUEE_TICKS + TRANSITION_TICKS;
-const INTERVAL_MS = 60; // Slightly faster ticks for smoother animation feel
+const INTRO_PRESETS = {
+  normal: {
+    marqueeTicks: 40,
+    transitionTicks: 40,
+    intervalMs: 60,
+    endDelayMs: 500,
+  },
+  short: {
+    marqueeTicks: 20,
+    transitionTicks: 16,
+    intervalMs: 50,
+    endDelayMs: 180,
+  },
+} as const;
 
-const SemicolonIntro: React.FC<SemicolonIntroProps> = ({ onComplete }) => {
+const SemicolonIntro: React.FC<SemicolonIntroProps> = ({
+  onComplete,
+  durationMode = "normal",
+}) => {
+  const preset = INTRO_PRESETS[durationMode];
+  const totalTicks = preset.marqueeTicks + preset.transitionTicks;
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setTick((prev) => {
-        if (prev >= TOTAL_TICKS) {
+        if (prev >= totalTicks) {
           clearInterval(interval);
           return prev;
         }
         return prev + 1;
       });
-    }, INTERVAL_MS);
+    }, preset.intervalMs);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [totalTicks, preset.intervalMs]);
 
   useEffect(() => {
-    if (tick >= TOTAL_TICKS) {
+    if (tick >= totalTicks) {
       // Add a small delay before unmounting to ensure the "full white" or "transition" state is perceived
       const timeout = setTimeout(() => {
         onComplete();
-      }, 500);
+      }, preset.endDelayMs);
       return () => clearTimeout(timeout);
     }
-  }, [tick, onComplete]);
+  }, [tick, onComplete, totalTicks, preset.endDelayMs]);
 
   // Determine current phase
-  const isMarquee = tick < MARQUEE_TICKS;
+  const isMarquee = tick < preset.marqueeTicks;
 
   // Logic for Marquee Phase
   // Cycle through scenes based on tick
@@ -52,7 +68,7 @@ const SemicolonIntro: React.FC<SemicolonIntroProps> = ({ onComplete }) => {
   // Logic for Transition Phase
   const transitionProgress = isMarquee
     ? 0
-    : Math.min(1, (tick - MARQUEE_TICKS) / TRANSITION_TICKS);
+    : Math.min(1, (tick - preset.marqueeTicks) / preset.transitionTicks);
 
   // Easing function for smoother zoom
   const easeInExpo = (x: number): number => {
@@ -65,7 +81,7 @@ const SemicolonIntro: React.FC<SemicolonIntroProps> = ({ onComplete }) => {
   return (
     <div
       className="fixed inset-0 z-50 bg-black text-white flex items-center justify-center cursor-pointer overflow-hidden select-none"
-      onClick={tick >= TOTAL_TICKS ? onComplete : undefined}
+      onClick={tick >= totalTicks ? onComplete : undefined}
     >
       <div
         className={cn(
