@@ -5,6 +5,7 @@ import {
   CHAPTER_GROUPS,
   getGroupByChapterId,
 } from '@/config/chapterGroups'
+import { X } from 'lucide-react'
 
 interface ProgressNavProps {
   chapters: Chapter[]
@@ -21,6 +22,8 @@ export default function ProgressNav({
   const [isAlumniExpanded, setIsAlumniExpanded] = useState(false)
   const [isAlumniAutoExpanded, setIsAlumniAutoExpanded] = useState(false)
   const [displayTrackId, setDisplayTrackId] = useState<string | null>(null)
+  const [isMobileTocOpen, setIsMobileTocOpen] = useState(false)
+  const [isMobileTocClosing, setIsMobileTocClosing] = useState(false)
   const alumniSwitchTimerRef = useRef<number | null>(null)
   const alumniCollapseTimerRef = useRef<number | null>(null)
   const chapterMap = new Map(chapters.map((chapter) => [chapter.id, chapter]))
@@ -36,6 +39,19 @@ export default function ProgressNav({
     if (groupChapterIds.length === 0) return
     onChapterClick(groupChapterIds[0])
   }
+
+  const handleMobileChapterClick = (chapterId: string) => {
+    onChapterClick(chapterId)
+    closeMobileToc()
+  }
+
+  const closeMobileToc = useCallback(() => {
+    setIsMobileTocClosing(true)
+    setTimeout(() => {
+      setIsMobileTocOpen(false)
+      setIsMobileTocClosing(false)
+    }, 200)
+  }, [])
 
   const showAlumniTrack = activeGroupId === 'alumni'
   const activeTrackItem =
@@ -195,6 +211,92 @@ export default function ProgressNav({
           </div>
         </div>
       </nav>
+
+      {/* Mobile Floating TOC Button */}
+      {showNav && (
+        <button
+          onClick={() => setIsMobileTocOpen(true)}
+          className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2 rounded-full bg-black/80 backdrop-blur-sm text-white text-[10px] tracking-[0.2em] uppercase border border-white/10 shadow-lg transition-opacity duration-300 ${
+            isMobileTocOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
+          aria-label="開啟目錄"
+        >
+          目錄
+        </button>
+      )}
+
+      {/* Mobile TOC Overlay */}
+      {isMobileTocOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="md:hidden fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm"
+            onClick={closeMobileToc}
+          />
+          {/* Panel */}
+          <div
+            className={`md:hidden fixed bottom-6 left-1/2 z-[80] w-[calc(100%-3rem)] max-w-sm rounded-2xl border border-white/10 bg-black/90 backdrop-blur-md p-5 shadow-2xl ${
+              isMobileTocClosing ? 'mobile-toc-exit' : 'mobile-toc-enter'
+            }`}
+            style={{ transform: 'translate(-50%, 0)' }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-white/50 font-light">
+                目錄
+              </span>
+              <button
+                onClick={closeMobileToc}
+                className="min-h-[36px] min-w-[36px] flex items-center justify-center rounded-full text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors"
+                aria-label="關閉目錄"
+              >
+                <X size={16} />
+              </button>
+            </div>
+            <div className="space-y-1 max-h-[50vh] overflow-y-auto">
+              {CHAPTER_GROUPS.map((group) => {
+                const isActive = group.id === activeGroupId
+                const groupChapters = group.chapters
+                  .map((cId) => chapterMap.get(cId))
+                  .filter((ch): ch is Chapter => Boolean(ch))
+
+                return (
+                  <div key={group.id} className="space-y-0.5">
+                    <div
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
+                        isActive ? 'text-white' : 'text-white/45'
+                      }`}
+                    >
+                      <span className="text-base font-black leading-none">{group.symbol}</span>
+                      <span className="font-semibold tracking-wide text-xs">{group.title}</span>
+                    </div>
+                    {groupChapters.length > 0 && (
+                      <div className="ml-7 space-y-0.5 border-l border-white/10 pl-2">
+                        {groupChapters.map((chapter) => {
+                          const isCurrent = chapter.id === currentChapterId
+
+                          return (
+                            <button
+                              key={chapter.id}
+                              onClick={() => handleMobileChapterClick(chapter.id)}
+                              className={`block w-full min-h-[40px] rounded-md px-2 py-1.5 text-left transition-colors ${
+                                isCurrent
+                                  ? 'bg-white/10 text-white'
+                                  : 'text-white/55 active:bg-white/5'
+                              }`}
+                            >
+                              <span className="text-[11px] leading-relaxed">{chapter.title}</span>
+                            </button>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </>
+      )}
 
       {showAlumniTrack && (
         <div

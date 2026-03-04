@@ -282,7 +282,7 @@ export default function ChapterHero({
       <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
       </svg>
-      <span>已收集</span>
+      <span>\u5DF2\u6536\u96C6 \u00B7 \u5728\u5C01\u5E95\u7B49\u4F60</span>
     `;
     document.body.appendChild(toast);
 
@@ -298,7 +298,7 @@ export default function ChapterHero({
         duration: 0.3,
         onComplete: () => toast.remove()
       });
-    }, 1500);
+    }, 2500);
   }, []);
 
   // Copy link without React state

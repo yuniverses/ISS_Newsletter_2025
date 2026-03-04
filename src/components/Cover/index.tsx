@@ -142,6 +142,8 @@ export default function Cover({ onEnter }: CoverProps) {
   const heroContentRef = useRef<HTMLDivElement>(null);
   const cardOverlayRef = useRef<HTMLDivElement>(null);
 
+  const scrollHintRef = useRef<HTMLDivElement>(null);
+
   const mousePosRef = useRef({ x: 0.5, y: 0.5 });
   const mousePos2Ref = useRef({ x: 0.5, y: 0.5 });
   const scrollProgressRef = useRef(0);
@@ -327,6 +329,39 @@ export default function Cover({ onEnter }: CoverProps) {
           },
         })
         .to(heroContentRef.current, { opacity: 0, y: -50, duration: 0.1 }, 0);
+
+      // P0-A: Scroll hint appears after Preface is read, fades out before relay card
+      if (scrollHintRef.current) {
+        // Fade in when user scrolls past ~25% (Preface area)
+        gsap.fromTo(
+          scrollHintRef.current,
+          { opacity: 0, y: 10 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.15,
+            ease: "none",
+            scrollTrigger: {
+              trigger: container,
+              start: "22% top",
+              end: "28% top",
+              scrub: true,
+            },
+          }
+        );
+        // Fade out before the relay card area
+        gsap.to(scrollHintRef.current, {
+          opacity: 0,
+          duration: 0.1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: container,
+            start: "60% top",
+            end: "70% top",
+            scrub: true,
+          },
+        });
+      }
     }, container);
 
     const tick = () => {
@@ -585,6 +620,9 @@ export default function Cover({ onEnter }: CoverProps) {
                       你現在讀到的這句話，來自另一位在不同時間、不同空間閱讀的讀者。
                       請接著寫下你的下一句，讓這條分號跨越距離，繼續連結下一位讀者。
                     </p>
+                    <p className="text-[10px] md:text-xs text-white/45 leading-relaxed font-light mt-2 tracking-wide">
+                      你的句子，將成為下一位讀者看到的第一句話。
+                    </p>
                   </div>
                   <div className="relative group max-w-2xl mx-auto">
                     <textarea
@@ -829,6 +867,37 @@ export default function Cover({ onEnter }: CoverProps) {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* P0-A: Scroll Hint — nudge user to keep scrolling toward relay */}
+        <div
+          ref={scrollHintRef}
+          className="flex flex-col items-center gap-3 py-16 opacity-0 pointer-events-none select-none"
+        >
+          <p className="text-white/40 text-[11px] md:text-[13px] tracking-[0.2em] font-light">
+            {"\u7E7C\u7E8C\u5F80\u4E0B\uFF0C\u6709\u4E00\u4EF6\u4E8B\u5728\u7B49\u4F60"}
+          </p>
+          <span className="text-white/25 text-[9px] tracking-[0.3em] uppercase font-light">
+            Keep scrolling
+          </span>
+          <div className="animate-scroll-hint-bounce mt-1">
+            <svg
+              width="16"
+              height="24"
+              viewBox="0 0 16 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-white/30"
+            >
+              <path
+                d="M8 2L8 20M8 20L2 14M8 20L14 14"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </div>
         </div>
 
