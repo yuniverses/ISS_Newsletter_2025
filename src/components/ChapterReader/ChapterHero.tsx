@@ -12,7 +12,7 @@ import { useReadingMemories } from "@/hooks/useReadingMemories";
 gsap.registerPlugin(ScrollTrigger);
 
 const FALLING_HINT_STORAGE_KEY = "iss_hint_falling_elements_seen";
-const FALLING_HINT_CHAPTER_ID = "chapter-01";
+// Hint shows on any chapter with falling elements (not limited to chapter-01)
 
 interface ChapterHeroProps {
   chapterNumber: string;
@@ -111,7 +111,6 @@ export default function ChapterHero({
   }, [markFallingHintSeen]);
 
   const maybeShowFallingHint = useCallback(() => {
-    if (chapterId !== FALLING_HINT_CHAPTER_ID) return;
     if (hasSeenFallingHintRef.current) return;
 
     const firstTarget = particles.find((p) => !collectedIdsRef.current.has(p.id));
@@ -119,7 +118,7 @@ export default function ChapterHero({
 
     fallingHintTargetIdRef.current = firstTarget.id;
     setShowFallingHint(true);
-  }, [chapterId, particles]);
+  }, [particles]);
 
   const updateFallingHintPosition = useCallback(() => {
     if (!showFallingHintRef.current) return;
@@ -177,18 +176,33 @@ export default function ChapterHero({
     });
   }, [particles, isElementCollected]);
 
-  // Handle hover - shake effect
+  // Handle hover - shake + glow effect
   const handleMouseEnter = useCallback((id: number) => {
     const el = shapeRefs.current[id];
     if (!el || collectedIdsRef.current.has(id)) return;
 
-    // Shake animation
+    // Shake animation + glow
     gsap.to(el, {
       rotation: "+=15",
       duration: 0.1,
       ease: "power1.inOut",
       yoyo: true,
       repeat: 3,
+    });
+    gsap.to(el, {
+      filter: 'drop-shadow(0 0 16px rgba(255,255,255,0.4))',
+      duration: 0.2,
+    });
+  }, []);
+
+  // Handle hover leave
+  const handleMouseLeave = useCallback((id: number) => {
+    const el = shapeRefs.current[id];
+    if (!el || collectedIdsRef.current.has(id)) return;
+
+    gsap.to(el, {
+      filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.15))',
+      duration: 0.3,
     });
   }, []);
 
@@ -601,10 +615,10 @@ export default function ChapterHero({
             style={{ transform: 'translate(-9999px, -9999px)' }}
           >
             <p className="text-[10px] tracking-[0.18em] uppercase text-white/70">
-              小提示
+              互動提示
             </p>
             <p className="mt-1.5 text-[11px] leading-relaxed md:text-xs">
-              點一下掉落元素可收藏，封底會再看到它。
+              看到掉落的圖片了嗎？點擊它就能收藏，你收集的元素會出現在最後的封底頁面。
             </p>
             <button
               type="button"
@@ -626,8 +640,9 @@ export default function ChapterHero({
               alt=""
               onClick={() => handleCollectElement(p.id, p.src)}
               onMouseEnter={() => handleMouseEnter(p.id)}
-              className="absolute opacity-0 object-contain cursor-pointer will-change-transform pointer-events-auto hover:brightness-110 transition-[filter]"
-              style={{ top: 0, left: 0 }}
+              onMouseLeave={() => handleMouseLeave(p.id)}
+              className="absolute opacity-0 object-contain cursor-pointer will-change-transform pointer-events-auto hover:brightness-125 hover:scale-110 transition-all duration-200"
+              style={{ top: 0, left: 0, filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.15))' }}
             />
           ))}
         </div>
