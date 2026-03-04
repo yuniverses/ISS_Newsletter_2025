@@ -23,6 +23,7 @@
     display: none;
   }
 
+  /* Paragraph spacing */
   .ch11-container p {
     margin-bottom: 1rem;
   }
@@ -33,103 +34,284 @@
     }
   }
 
-  /* ===== Timeline Styles ===== */
-  .timeline {
-    position: relative;
-    padding-left: 2rem;
+  /* ===== Image Styles ===== */
+  .img-full {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 3rem 0;
   }
 
-  .timeline::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background-color: #1a1a1a;
+  .img-large {
+    width: 80%;
+    max-width: 900px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 2.5rem auto;
+    display: block;
   }
 
-  .timeline-month {
-    position: relative;
-    padding-bottom: 2.5rem;
+  .img-medium {
+    width: 60%;
+    max-width: 600px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 2rem auto;
+    display: block;
   }
 
-  .timeline-month:last-child {
-    padding-bottom: 0;
+  .img-small {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 1.5rem auto;
+    display: block;
   }
 
-  .timeline-month::before {
-    content: "";
-    position: absolute;
-    left: -2rem;
-    top: 0.6rem;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background-color: #1a1a1a;
-    transform: translateX(-3px);
+  .img-small-left {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    float: left;
+    margin: 0.5rem 2rem 1.5rem 0;
   }
 
-  .timeline-month-label {
-    font-family: "Noto Sans TC", sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    color: #9ca3af;
-    margin-bottom: 0.5rem;
+  .img-small-right {
+    width: 40%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    float: right;
+    margin: 0.5rem 0 1.5rem 2rem;
   }
 
-  .timeline-event {
-    font-size: 1rem;
-    line-height: 2;
-    color: #374151;
-    font-weight: 300;
+  .img-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2.5rem 0;
   }
 
-  .timeline-event-highlight {
-    font-weight: 500;
-    color: #1a1a1a;
+  .img-grid-2 img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
   }
 
-  .timeline-tag {
-    display: inline-block;
-    font-family: "Noto Sans TC", sans-serif;
-    font-size: 0.625rem;
-    letter-spacing: 0.1em;
-    color: #9ca3af;
-    border: 1px solid #d1d5db;
-    padding: 0.125rem 0.5rem;
-    margin-left: 0.5rem;
-    vertical-align: middle;
+  .img-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+
+  .img-grid-3 img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
   }
 
   @media (max-width: 768px) {
-    .timeline {
-      padding-left: 1.5rem;
+    .img-large,
+    .img-medium {
+      width: 90%;
     }
-    .timeline-month::before {
-      left: -1.5rem;
+
+    .img-small,
+    .img-small-left,
+    .img-small-right {
+      width: 100%;
+      float: none;
+      margin: 1.5rem auto;
+    }
+
+    .img-grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .img-grid-3 {
+      grid-template-columns: 1fr;
+    }
+
+    .img-grid-2 img,
+    .img-grid-3 img {
+      height: 200px;
+    }
+  }
+  .img-caption {
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.75rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+  }
+
+  /* ===== Chronicle-specific Styles ===== */
+
+  /* Season section divider */
+  .season-divider {
+    width: 100%;
+    height: 1px;
+    background: #1a1a1a;
+    margin: 4rem 0 3rem;
+  }
+
+  .season-divider-thin {
+    width: 100%;
+    height: 1px;
+    background: #d1d5db;
+    margin: 2.5rem 0 2rem;
+  }
+
+  /* Month marker */
+  .month-marker {
+    display: inline-block;
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+    padding: 0.25rem 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Event tag */
+  .event-tag {
+    display: inline-block;
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: #9ca3af;
+    border: 1px solid #e5e7eb;
+    padding: 0.15rem 0.5rem;
+    margin-right: 0.35rem;
+    margin-bottom: 0.35rem;
+    line-height: 1.6;
+  }
+
+  /* Award card */
+  .award-card {
+    border: 1px solid #1a1a1a;
+    padding: 1.25rem 1.5rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .award-card:hover {
+    background-color: #fafafa;
+  }
+
+  /* Alumni highlight block */
+  .alumni-highlight {
+    border-left: 3px solid #1a1a1a;
+    padding: 1.5rem 0 1.5rem 1.5rem;
+    margin: 2rem 0;
+  }
+
+  /* Timeline dot */
+  .timeline-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    display: inline-block;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 0.5rem;
+  }
+
+  .timeline-dot-hollow {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid #1a1a1a;
+    background: transparent;
+    display: inline-block;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 0.5rem;
+  }
+
+  /* Season label */
+  .season-label {
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    color: #9ca3af;
+    text-transform: uppercase;
+  }
+
+  /* Large year number */
+  .year-display {
+    font-family: "Shippori Mincho", serif;
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #f3f4f6;
+    letter-spacing: -0.02em;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Event list item */
+  .event-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 1.25rem;
+  }
+
+  .event-item:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .season-divider {
+      margin: 3rem 0 2rem;
+    }
+
+    .alumni-highlight {
+      padding-left: 1rem;
     }
   }
 </style>
 
 <div class="ch11-container not-prose pb-24 overflow-visible">
+
+  <!-- ============================================================ -->
   <!-- INTRO SECTION -->
+  <!-- ============================================================ -->
   <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+
       <!-- Vertical Title (Desktop) -->
       <div
-        class="col-span-2 hidden lg:flex h-[680px] justify-center items-start pt-16"
+        class="col-span-2 hidden lg:flex h-[600px] justify-center items-start pt-16"
       >
         <div class="h-full border-r border-gray-900 pr-6">
           <h2
             class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900"
           >
-            活動現場
+            年度大事紀
           </h2>
           <p
             class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans"
           >
-            大事紀／2025
+            活動現場／114 學年
           </p>
         </div>
       </div>
@@ -138,30 +320,30 @@
       <div
         class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl"
       >
-        <!-- Lead -->
-        <div class="space-y-6">
-          <div
-            class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt"
+        <!-- Opening Quote -->
+        <div class="relative py-12 md:py-20">
+          <p class="year-display text-center" aria-hidden="true">2025</p>
+          <h3
+            class="text-3xl md:text-5xl font-black text-center leading-tight tracking-tight px-4 mt-6"
           >
-            <p>
-              一整年的光景，濃縮在這些日期裡。從春酒的歡聲到畢典的淚光，
-              從溯溪的濕透到論文的定稿——每一個時刻，都是服科所這一年留下的足跡。
-            </p>
-            <p>
-              以下是民國 114 年（2025）的所上大事紀，
-              記錄我們共同走過的每一段路。
-            </p>
-          </div>
+            「一年之間，<br class="hidden md:block" />
+            每一個分號都在延續故事」
+          </h3>
+          <p
+            class="mt-6 text-center text-sm md:text-base text-gray-600 ch11-sans tracking-widest"
+          >
+            —— 服科所 2025 年度紀事
+          </p>
         </div>
 
-        <!-- Big Quote -->
-        <div class="relative py-12 md:py-16">
-          <h3
-            class="text-3xl md:text-5xl font-black text-center leading-tight tracking-tight px-4"
-          >
-            一年的足跡，<br class="hidden md:block" />
-            都是我們走過的證明。
-          </h3>
+        <!-- Lead paragraph -->
+        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
+          <p>
+            2025 年，服科所的故事從春酒的歡聲中開啟，在論文發表會的思辨中收束。
+            這一年，教授們屢獲殊榮，校友們在各自的場域綻放光芒，
+            而新一屆的學生也在迎新與實習中，開始書寫屬於自己的篇章。
+            以下，是這一年值得記住的每一個時刻。
+          </p>
         </div>
       </div>
 
@@ -172,7 +354,15 @@
             <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
             <p class="mt-2 text-sm leading-7 text-gray-800">
               年度大事紀<br />
-              活動 × 榮譽 × 里程碑
+              114 學年活動回顧
+            </p>
+          </div>
+          <div class="border-t border-black pt-6">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans">
+              PERIOD
+            </p>
+            <p class="mt-2 text-sm leading-7 text-gray-800">
+              114.02 — 114.12
             </p>
           </div>
           <div class="border-t border-black pt-6">
@@ -180,7 +370,7 @@
               KEYWORDS
             </p>
             <p class="mt-2 text-sm leading-7 text-gray-800">
-              114年度、學術成就、社群活動、師生榮譽
+              學術榮譽、社群活動、<br />招生、實習、教授獎項
             </p>
           </div>
         </div>
@@ -188,273 +378,631 @@
     </div>
   </div>
 
-  <!-- SECTION: 上半年 (Spring Semester) -->
+  <!-- ============================================================ -->
+  <!-- SPRING: 2-4 月 -->
+  <!-- ============================================================ -->
   <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- Season sidebar (Desktop) -->
       <div class="lg:col-span-3 hidden lg:block">
         <div class="sticky top-10">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            SPRING SEMESTER
-          </p>
+          <p class="season-label">SPRING</p>
           <h3
-            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[480px]"
           >
-            春季學期
+            春季篇
           </h3>
+          <p class="mt-4 text-xs text-gray-400 ch11-sans tracking-wider">114.02 — 114.04</p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <!-- Mobile season header -->
+        <div class="lg:hidden">
+          <p class="season-label">SPRING</p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">春季篇</h3>
+          <p class="mt-1 text-xs text-gray-400 ch11-sans tracking-wider">114.02 — 114.04</p>
+        </div>
+
+        <!-- Pull Quote for Spring -->
+        <div class="py-6 md:py-8">
+          <p
+            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
+          >
+            「春天是啟程的季節，<br class="hidden md:block" />
+            也是交棒的時刻」
+          </p>
+        </div>
+
+        <!-- 114.02 -->
+        <div>
+          <span class="month-marker">114.02</span>
+
+          <div class="event-item mt-4">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">社群活動</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                2025 春酒暨所學會交接
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                新春伊始，服科所師生齊聚一堂。在歡笑與祝福中，所學會完成世代交接，
+                新一屆幹部正式接下傳承的責任，為即將展開的一年揭開序幕。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="season-divider-thin"></div>
+
+        <!-- 114.03 -->
+        <div>
+          <span class="month-marker">114.03</span>
+
+          <div class="event-item mt-4">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">招生相關</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                碩士班考試入學複試暨招生座談會
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                面對新一批懷抱跨領域夢想的考生，服科所敞開大門，
+                透過複試與座談讓未來的學弟妹深入認識這個獨特的學術社群。
+              </p>
+            </div>
+          </div>
+
+          <div class="event-item mt-6">
+            <span class="timeline-dot-hollow"></span>
+            <div>
+              <span class="event-tag">實習/職涯</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                2025 實習學長姐座談分享會
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                歷屆實習學長姐帶著一線實戰經驗回到課堂，
+                為即將踏入產業的學弟妹分享從服科課堂到職場現場的銜接心法。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="season-divider-thin"></div>
+
+        <!-- 114.04 -->
+        <div>
+          <span class="month-marker">114.04</span>
+
+          <div class="event-item mt-4">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">社群活動</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                2025 服科所友回娘家 ISS Alumni Party
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                散落在各行各業的服科人重新匯聚。從科技業到文化產業，
+                從新創到大企業，校友們帶著各自的故事回到這個起點，
+                讓「服科家族」的連結再次被點亮。
+              </p>
+            </div>
+          </div>
+
+          <!-- Professor awards: card grid -->
+          <div class="mt-8 mb-4">
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans mb-4">FACULTY HONORS</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="award-card">
+                <span class="event-tag">教授獎項</span>
+                <h4 class="text-lg font-bold tracking-wider mt-2">許裴舫 教授</h4>
+                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
+                  榮獲 113 學年度<br />科管院傑出教學獎
+                </p>
+              </div>
+              <div class="award-card">
+                <span class="event-tag">教授獎項</span>
+                <h4 class="text-lg font-bold tracking-wider mt-2">林福仁 教授</h4>
+                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
+                  榮獲清華大學<br />第十七屆傑出導師獎
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SUMMER: 5-6 月 -->
+  <!-- ============================================================ -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="season-label">SUMMER</p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[480px]"
+          >
+            夏季篇
+          </h3>
+          <p class="mt-4 text-xs text-gray-400 ch11-sans tracking-wider">114.05 — 114.06</p>
         </div>
       </div>
 
       <div class="lg:col-span-9 space-y-8 max-w-4xl">
         <div class="lg:hidden">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            SPRING SEMESTER
+          <p class="season-label">SUMMER</p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">夏季篇</h3>
+          <p class="mt-1 text-xs text-gray-400 ch11-sans tracking-wider">114.05 — 114.06</p>
+        </div>
+
+        <div class="py-6 md:py-8">
+          <p
+            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
+          >
+            「畢業不是結束，<br class="hidden md:block" />
+            是另一段旅程的分號」
           </p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">
-            春季學期
-          </h3>
         </div>
 
-        <div class="timeline">
-          <!-- 二月 -->
-          <div class="timeline-month">
-            <p class="timeline-month-label">114.02 — FEB</p>
-            <p class="timeline-event">
-              <span class="timeline-event-highlight">2025 春酒暨所學會交接</span>
-              <span class="timeline-tag">社群</span>
-            </p>
+        <!-- 114.05 -->
+        <div>
+          <span class="month-marker">114.05</span>
+
+          <!-- Alumni Award -->
+          <div class="event-item mt-4">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">學術榮譽</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                103 級廖健妤學姐榮獲 2025 科管院傑出校友獎
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                傑出校友的肯定，不只是個人成就的認可，
+                更是服科所培育人才的最佳見證。
+              </p>
+            </div>
           </div>
 
-          <!-- 三月 -->
-          <div class="timeline-month">
-            <p class="timeline-month-label">114.03 — MAR</p>
-            <p class="timeline-event">
-              碩士班考試入學複試
-              <span class="timeline-tag">招生</span>
-            </p>
-            <p class="timeline-event">
-              實習學長姐座談分享會
-              <span class="timeline-tag">職涯</span>
-            </p>
+          <!-- Graduation -->
+          <div class="event-item mt-6">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">社群活動</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                2025 科管院小畢典
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                學位帽拋向天際的那一刻，是句點也是分號。
+                祝福每一位畢業的服科人，帶著這裡的養分走向更遠的地方。
+              </p>
+            </div>
           </div>
 
-          <!-- 四月 -->
-          <div class="timeline-month">
-            <p class="timeline-month-label">114.04 — APR</p>
-            <p class="timeline-event">
-              <span class="timeline-event-highlight">所友回娘家</span>
-              <span class="timeline-tag">社群</span>
-            </p>
-            <p class="timeline-event">
-              許裴舫教授——傑出教學獎
-              <span class="timeline-tag">榮譽</span>
-            </p>
-            <p class="timeline-event">
-              林福仁教授——傑出導師獎
-              <span class="timeline-tag">榮譽</span>
-            </p>
+          <!-- PTK Honor -->
+          <div class="event-item mt-6">
+            <span class="timeline-dot-hollow"></span>
+            <div>
+              <span class="event-tag">學術榮譽</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                114 年度服科所斐陶斐榮譽會員
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                碩士班張博彥同學獲選為斐陶斐榮譽會員，
+                以學術表現獲得肯定，為在校生樹立典範。
+              </p>
+            </div>
           </div>
 
-          <!-- 五月 -->
-          <div class="timeline-month">
-            <p class="timeline-month-label">114.05 — MAY</p>
-            <p class="timeline-event">
-              <span class="timeline-event-highlight">小畢典</span>
-              <span class="timeline-tag">里程碑</span>
+          <div class="season-divider-thin"></div>
+
+          <!-- Cultural Base Alumni Highlight -->
+          <div>
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans mb-4">SPECIAL FEATURE</p>
+            <h4 class="text-xl md:text-2xl font-bold tracking-wider mb-4">
+              「第一屆百大文化基地」<br class="md:hidden" />四位服科校友脫穎而出
+            </h4>
+            <p class="text-base leading-8 text-gray-700 font-light text-justify-palt mb-6">
+              從宜蘭到新竹，服科校友用服務創新的視角深耕地方，
+              在全國百大文化基地的評選中展現跨域人才的影響力。
             </p>
-            <p class="timeline-event">
-              廖健妤——傑出校友獎
-              <span class="timeline-tag">榮譽</span>
-            </p>
-            <p class="timeline-event">
-              斐陶斐榮譽會員
-              <span class="timeline-tag">榮譽</span>
-            </p>
-            <p class="timeline-event">
-              百大文化基地（4 位校友入選）
-              <span class="timeline-tag">榮譽</span>
-            </p>
-            <p class="timeline-event">
-              許裴舫、雷松亞——研究獎
-              <span class="timeline-tag">學術</span>
-            </p>
-            <p class="timeline-event">
-              徐茉莉——研究獎
-              <span class="timeline-tag">學術</span>
-            </p>
-            <p class="timeline-event">
-              兪在元——新進人員研究獎
-              <span class="timeline-tag">學術</span>
-            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="alumni-highlight">
+                <p class="text-sm text-gray-400 ch11-sans tracking-wider mb-1">宜蘭</p>
+                <h5 class="text-lg font-bold tracking-wider">彭仁鴻</h5>
+                <p class="mt-1 text-base leading-7 text-gray-600">「小鎮職人」</p>
+              </div>
+              <div class="alumni-highlight">
+                <p class="text-sm text-gray-400 ch11-sans tracking-wider mb-1">新竹</p>
+                <h5 class="text-lg font-bold tracking-wider">莊凱詠</h5>
+                <p class="mt-1 text-base leading-7 text-gray-600">「大山北月」</p>
+              </div>
+              <div class="alumni-highlight">
+                <p class="text-sm text-gray-400 ch11-sans tracking-wider mb-1">新竹</p>
+                <h5 class="text-lg font-bold tracking-wider">陳泓維</h5>
+                <p class="mt-1 text-base leading-7 text-gray-600">「東門市場」</p>
+              </div>
+              <div class="alumni-highlight">
+                <p class="text-sm text-gray-400 ch11-sans tracking-wider mb-1">新竹</p>
+                <h5 class="text-lg font-bold tracking-wider">吳君薇</h5>
+                <p class="mt-1 text-base leading-7 text-gray-600">「見域工作室」</p>
+              </div>
+            </div>
           </div>
 
-          <!-- 六月 -->
-          <div class="timeline-month">
-            <p class="timeline-month-label">114.06 — JUN</p>
-            <p class="timeline-event">
-              博士班研究發表會
-              <span class="timeline-tag">學術</span>
-            </p>
-            <p class="timeline-event">
-              <span class="timeline-event-highlight">實習始業式</span>
-              <span class="timeline-tag">職涯</span>
-            </p>
+          <div class="season-divider-thin"></div>
+
+          <!-- Faculty Research Awards -->
+          <div>
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans mb-4">RESEARCH EXCELLENCE</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="award-card">
+                <span class="event-tag">教授獎項</span>
+                <h4 class="text-base font-bold tracking-wider mt-2">許裴舫 教授</h4>
+                <h4 class="text-base font-bold tracking-wider">雷松亞 特聘教授</h4>
+                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
+                  114 學年度科管院<br />厚德會傑出研究獎
+                </p>
+              </div>
+              <div class="award-card">
+                <span class="event-tag">教授獎項</span>
+                <h4 class="text-base font-bold tracking-wider mt-2">徐茉莉 講座教授</h4>
+                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
+                  114 年<br />科管院研究獎
+                </p>
+              </div>
+              <div class="award-card">
+                <span class="event-tag">教授獎項</span>
+                <h4 class="text-base font-bold tracking-wider mt-2">兪在元 助理教授</h4>
+                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
+                  114 年<br />新進人員研究獎
+                </p>
+              </div>
+            </div>
           </div>
         </div>
+
+        <div class="season-divider-thin"></div>
+
+        <!-- 114.06 -->
+        <div>
+          <span class="month-marker">114.06</span>
+
+          <div class="event-item mt-4">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">學術榮譽</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                2025 服科博士班年度研究發表會
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                博士班同學發表年度研究成果，
+                展現服科所在學術前沿的深度與廣度。
+              </p>
+            </div>
+          </div>
+
+          <div class="event-item mt-6">
+            <span class="timeline-dot-hollow"></span>
+            <div>
+              <span class="event-tag">實習/職涯</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                2025 實習始業式
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                透過 Gather Town 線上舉辦實習始業式，
+                以數位方式為即將踏入產業現場的同學們壯行。
+              </p>
+              <p class="text-sm text-gray-400 ch11-sans mt-2 tracking-wider">via Gather Town</p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- Pull Quote -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-20">
-    <div class="py-8 md:py-10">
-      <p
-        class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
-      >
-        「每一份榮譽的背後，<br class="hidden md:block" />
-        都是無數個日夜的累積」
-      </p>
-    </div>
-  </div>
-
-  <!-- SECTION: 下半年 (Fall Semester) -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-8 md:mt-16">
+  <!-- ============================================================ -->
+  <!-- AUTUMN: 9-10 月 -->
+  <!-- ============================================================ -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
       <div class="lg:col-span-3 hidden lg:block">
         <div class="sticky top-10">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            FALL SEMESTER
-          </p>
+          <p class="season-label">AUTUMN</p>
           <h3
-            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[520px]"
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[480px]"
           >
-            秋季學期
+            秋季篇
           </h3>
+          <p class="mt-4 text-xs text-gray-400 ch11-sans tracking-wider">114.09 — 114.10</p>
         </div>
       </div>
 
       <div class="lg:col-span-9 space-y-8 max-w-4xl">
         <div class="lg:hidden">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-            FALL SEMESTER
-          </p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">
-            秋季學期
-          </h3>
+          <p class="season-label">AUTUMN</p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">秋季篇</h3>
+          <p class="mt-1 text-xs text-gray-400 ch11-sans tracking-wider">114.09 — 114.10</p>
         </div>
 
-        <div class="timeline">
-          <!-- 九月 -->
-          <div class="timeline-month">
-            <p class="timeline-month-label">114.09 — SEP</p>
-            <p class="timeline-event">
-              <span class="timeline-event-highlight">迎新溯溪</span>
-              <span class="timeline-tag">社群</span>
-            </p>
-            <p class="timeline-event">
-              實習成果發表
-              <span class="timeline-tag">職涯</span>
-            </p>
-            <p class="timeline-event">
-              服務創新課程——迷客夏 × 信義房屋
-              <span class="timeline-tag">課程</span>
-            </p>
-            <p class="timeline-event">
-              王俊程、陳怡瑄——論文獎
-              <span class="timeline-tag">學術</span>
-            </p>
-            <p class="timeline-event">
-              歐怡君、卓宜蓁——論文獎
-              <span class="timeline-tag">學術</span>
-            </p>
-            <p class="timeline-event">
-              莊凱詠——永續青年獎
-              <span class="timeline-tag">榮譽</span>
-            </p>
+        <div class="py-6 md:py-8">
+          <p
+            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
+          >
+            「收穫與傳承，<br class="hidden md:block" />
+            在秋日裡同時發生」
+          </p>
+        </div>
+
+        <!-- 114.09 -->
+        <div>
+          <span class="month-marker">114.09</span>
+
+          <div class="event-item mt-4">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">社群活動</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                2025 迎新溯溪活動及迎新茶會
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                溯溪是服科所獨特的迎新傳統。在溪流中逆流而上的體驗，
+                恰如服科所鼓勵的精神 —— 跨出舒適圈，擁抱未知。
+              </p>
+            </div>
           </div>
 
-          <!-- 十月 -->
-          <div class="timeline-month">
-            <p class="timeline-month-label">114.10 — OCT</p>
-            <p class="timeline-event">
-              <span class="timeline-event-highlight">徐茉莉——全球前 2% 頂尖科學家</span>
-              <span class="timeline-tag">學術</span>
-            </p>
+          <div class="event-item mt-6">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">實習/職涯</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                2025 實習成果發表
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                一個暑假的產業歷練，化為舞台上的精彩報告。
+                從科技業到服務業，同學們帶回第一線的觀察與反思。
+              </p>
+            </div>
           </div>
 
-          <!-- 十一月 -->
-          <div class="timeline-month">
-            <p class="timeline-month-label">114.11 — NOV</p>
-            <p class="timeline-event">
-              碩博甄試招生說明會
-              <span class="timeline-tag">招生</span>
-            </p>
+          <div class="event-item mt-6">
+            <span class="timeline-dot-hollow"></span>
+            <div>
+              <span class="event-tag">社群活動</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                服務創新課程再次開課
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                與迷客夏及信義房屋企業合作共創，
+                將課堂知識直接對接產業需求，
+                讓學生在真實情境中實踐服務創新。
+              </p>
+              <p class="text-sm text-gray-400 ch11-sans mt-2 tracking-wider">企業合作夥伴：迷客夏、信義房屋</p>
+            </div>
           </div>
 
-          <!-- 十二月 -->
-          <div class="timeline-month">
-            <p class="timeline-month-label">114.12 — DEC</p>
-            <p class="timeline-event">
-              博士生研究獎
-              <span class="timeline-tag">學術</span>
-            </p>
-            <p class="timeline-event">
-              雷松亞——傑出導師獎
-              <span class="timeline-tag">榮譽</span>
-            </p>
-            <p class="timeline-event">
-              碩士班論文提案發表會
-              <span class="timeline-tag">學術</span>
-            </p>
+          <div class="season-divider-thin"></div>
+
+          <!-- Academic Awards -->
+          <div>
+            <p class="text-xs tracking-widest text-gray-500 ch11-sans mb-4">PAPER AWARDS</p>
+            <div class="space-y-4">
+              <div class="award-card">
+                <span class="event-tag">學術榮譽</span>
+                <div class="mt-2">
+                  <h4 class="text-base font-bold tracking-wider">王俊程 教授 與 112 級陳怡瑄同學</h4>
+                  <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
+                    榮獲 2025 台灣管理學會論文大賞 AI 應用競賽佳作
+                  </p>
+                </div>
+              </div>
+              <div class="award-card">
+                <span class="event-tag">學術榮譽</span>
+                <div class="mt-2">
+                  <h4 class="text-base font-bold tracking-wider">歐怡君 副教授 與 112 級卓宜蓁同學</h4>
+                  <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
+                    榮獲 2025 富邦人壽管理碩博士論文獎行銷組優等（第二名）
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="season-divider-thin"></div>
+
+          <!-- Alumni Sustainability Award -->
+          <div class="event-item">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">學術榮譽</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                莊凱詠學長榮獲 2025 台灣傑出永續青年獎
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                從「大山北月」到永續青年獎，
+                莊凱詠學長以地方創生的實踐，
+                展現服科人在社會創新領域的深遠影響力。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="season-divider-thin"></div>
+
+        <!-- 114.10 -->
+        <div>
+          <span class="month-marker">114.10</span>
+
+          <div class="event-item mt-4">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">教授獎項</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                徐茉莉講座教授再次榮登史丹佛大學全球前 2% 頂尖科學家榜單
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                在全球頂尖科學家的行列中，
+                徐茉莉教授持續代表服科所站上國際學術的最高舞台。
+                這份榮譽不僅屬於個人，更是整個研究團隊努力的結晶。
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- WINTER: 11-12 月 -->
+  <!-- ============================================================ -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <div class="lg:col-span-3 hidden lg:block">
+        <div class="sticky top-10">
+          <p class="season-label">WINTER</p>
+          <h3
+            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[480px]"
+          >
+            冬季篇
+          </h3>
+          <p class="mt-4 text-xs text-gray-400 ch11-sans tracking-wider">114.11 — 114.12</p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 space-y-8 max-w-4xl">
+        <div class="lg:hidden">
+          <p class="season-label">WINTER</p>
+          <h3 class="mt-2 text-3xl font-black tracking-tight">冬季篇</h3>
+          <p class="mt-1 text-xs text-gray-400 ch11-sans tracking-wider">114.11 — 114.12</p>
+        </div>
+
+        <div class="py-6 md:py-8">
+          <p
+            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
+          >
+            「年末的回望，<br class="hidden md:block" />
+            是為了更好的出發」
+          </p>
+        </div>
+
+        <!-- 114.11 -->
+        <div>
+          <span class="month-marker">114.11</span>
+
+          <div class="event-item mt-4">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">招生相關</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                碩博甄試入學暨碩士班招生說明會
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                為下一屆的服科人開啟大門。
+                招生說明會不只介紹課程與師資，更傳遞服科所獨特的跨域精神，
+                讓對服務科學有興趣的學子找到方向。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="season-divider-thin"></div>
+
+        <!-- 114.12 -->
+        <div>
+          <span class="month-marker">114.12</span>
+
+          <div class="event-item mt-4">
+            <span class="timeline-dot"></span>
+            <div>
+              <span class="event-tag">學術榮譽</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                博士生何捷睿、馬博淵榮獲 2025 科管院博士生研究獎
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                兩位博士生以優異的研究表現獲得肯定，
+                為服科所的博士班研究能量再添佳績。
+              </p>
+            </div>
+          </div>
+
+          <!-- Faculty Award -->
+          <div class="mt-6 mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+              <div class="award-card">
+                <span class="event-tag">教授獎項</span>
+                <h4 class="text-lg font-bold tracking-wider mt-2">雷松亞 教授</h4>
+                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
+                  榮獲 114 學年度科管院傑出導師獎
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="event-item mt-6">
+            <span class="timeline-dot-hollow"></span>
+            <div>
+              <span class="event-tag">學術榮譽</span>
+              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
+                113 級碩士班論文提案發表會
+              </h4>
+              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
+                碩士班同學在年末發表論文提案，
+                在師長與同儕的回饋中打磨研究方向，
+                為接下來的論文撰寫奠定基礎。
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- OUTRO -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
+  <!-- ============================================================ -->
+  <!-- CLOSING -->
+  <!-- ============================================================ -->
+  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-20 md:mt-32">
+    <div class="season-divider"></div>
     <div class="pt-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div class="lg:col-span-4">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">OUTRO</p>
+          <p class="text-xs tracking-widest text-gray-500 ch11-sans">EPILOGUE</p>
           <h3 class="mt-3 text-3xl md:text-4xl font-black tracking-tight">
-            這一年，<br />我們一起走過
+            未完待續
           </h3>
           <p class="mt-6 text-base leading-8 text-gray-700 ch11-sans">
-            從迎新到送舊，從課堂到實習現場。
-            每一個活動背後，都是服科人共同編織的記憶。
+            從二月的春酒到十二月的論文提案，
+            2025 年的服科所走過了完整而豐盛的一年。
+            每一場活動、每一項榮譽，
+            都是這個社群持續生長的證明。
           </p>
         </div>
 
         <div class="lg:col-span-8 space-y-8 max-w-4xl">
-          <div
-            class="text-lg leading-10 text-gray-800 font-light text-justify-palt"
-          >
-            <p>
-              回望 2025，服科所的日常從未只是課業與研究。
-              春酒裡的笑聲、溯溪時的尖叫、論文提案前的徹夜、
-              得獎時的驚喜——這些碎片拼成了我們這一年的模樣。
-              每位同學、每位老師，都在這張時間表裡留下了自己的印記。
-            </p>
-          </div>
-
           <div class="p-6 md:p-8">
             <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-              SUMMARY
+              LOOKING FORWARD
             </p>
-            <h4 class="mt-2 text-2xl font-bold tracking-wider">
-              114 年度紀要
-            </h4>
             <p
               class="mt-6 text-2xl md:text-3xl font-black leading-snug tracking-tight"
             >
-              社群凝聚，<br class="hidden md:block" />
-              學術發光，<br class="hidden md:block" />
-              每一步都算數。
+              故事不會在這裡結束。<br class="hidden md:block" />
+              分號之後，<br class="hidden md:block" />
+              還有更多篇章等待書寫。
             </p>
           </div>
         </div>
       </div>
     </div>
   </div>
+
 </div>
