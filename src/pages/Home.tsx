@@ -150,11 +150,11 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
       {/* Back Cover */}
       {!hasMoreChapters && <BackCover />}
 
-      {/* Text Selection Handler */}
-      <TextSelection
+      {/* Text Selection Handler — temporarily hidden, keep code for future use */}
+      {/* <TextSelection
         chapters={newsletter.chapters}
         currentChapterId={currentChapterId}
-      />
+      /> */}
     </div>
   )
 }
