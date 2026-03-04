@@ -208,7 +208,7 @@ export default function RelayOverview({ ownText }: RelayOverviewProps) {
   const segments = clamp(6 + Math.ceil(relayCount / 2), 8, 24)
 
   return (
-    <section className="relative min-h-screen w-full bg-[#050505] text-white overflow-hidden">
+    <div className="relative w-full h-full min-h-screen text-white overflow-hidden">
       <div className="absolute inset-0 opacity-15 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)]" />
 
       <div ref={containerRef} className="relative z-10 h-screen w-full">
@@ -274,12 +274,6 @@ export default function RelayOverview({ ownText }: RelayOverviewProps) {
         )}
       </div>
 
-      <div className="absolute bottom-6 left-6 text-[10px] tracking-[0.3em] uppercase text-white/40">
-        文字接力總覽
-      </div>
-      <div className="absolute bottom-6 right-6 text-[10px] tracking-[0.3em] uppercase text-[#A6FF00]/70">
-        Your Line
-      </div>
-    </section>
+    </div>
   )
 }

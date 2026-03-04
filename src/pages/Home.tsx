@@ -6,7 +6,7 @@ import TableOfContents from '../components/TableOfContents'
 import ChapterReader from '../components/ChapterReader'
 import ProgressNav from '../components/ProgressNav'
 import BackCover from '../components/BackCover'
-import TextSelection from '../components/TextSelection'
+// import TextSelection from '../components/TextSelection'
 import { Newsletter } from '../types'
 import chaptersConfig from '../config/chapters.json'
 
