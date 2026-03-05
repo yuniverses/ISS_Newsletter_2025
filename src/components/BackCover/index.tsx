@@ -1,15 +1,36 @@
 import { useRef, useEffect, useState } from 'react'
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { db } from '@/lib/firebase'
 import { useReadingMemories } from '@/hooks/useReadingMemories'
 import { SemicolonLogo } from '@/components/ui/SemicolonLogo'
 import FallingElements from './FallingElements'
 import RelayOverview from './RelayOverview'
 import Noise from '@/components/Noise'
 
+interface RelaySentence {
+  id: string
+  text: string
+}
+
 export default function BackCover() {
   const { coverContribution, collectedElements } = useReadingMemories()
   const sectionRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [resetKey, setResetKey] = useState(0)
+  const [relaySentences, setRelaySentences] = useState<RelaySentence[]>([])
+
+  // Subscribe to coverSentences for Bottom CTA relay chain
+  useEffect(() => {
+    const q = query(collection(db, 'coverSentences'), orderBy('createdAt', 'asc'))
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as { text?: string }),
+      })) as RelaySentence[]
+      setRelaySentences(data.filter((item) => item.text))
+    })
+    return () => unsubscribe()
+  }, [])
 
   useEffect(() => {
     const section = sectionRef.current
@@ -121,34 +142,75 @@ export default function BackCover() {
             </div>
           </div>
 
-          {/* Bottom CTA — "接龍；下一句要是你" */}
+          {/* Bottom CTA — Dynamic relay chain from coverSentences */}
           <div className="absolute bottom-[6%] left-[8%] md:left-[12%] right-[8%]">
             <div className="flex items-baseline gap-1 flex-wrap">
-              {coverContribution ? (
-                <>
-                  <span className="text-[11px] md:text-sm text-white/40" style={{ fontFamily: "'Noto Sans TC', sans-serif" }}>
-                    {coverContribution.received ? `${coverContribution.received.slice(0, 15)}…` : ''}
-                  </span>
-                  <span className="text-sm md:text-base text-white/50 mx-1">;</span>
-                  <span className="text-lg md:text-2xl text-white/60" style={{ fontFamily: "'Noto Sans TC', sans-serif" }}>
-                    接龍
-                  </span>
-                  <span className="text-lg md:text-2xl text-white/50 mx-1">;</span>
-                  <span className="text-3xl md:text-[50px] font-bold text-white leading-none">
-                    下一句要是你
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="text-lg md:text-2xl text-white/60" style={{ fontFamily: "'Noto Sans TC', sans-serif" }}>
-                    接龍
-                  </span>
-                  <span className="text-lg md:text-2xl text-white/50 mx-1">;</span>
-                  <span className="text-3xl md:text-[50px] font-bold text-white leading-none">
-                    下一句要是你
-                  </span>
-                </>
-              )}
+              {(() => {
+                // Take last 4 sentences for the cascade
+                const display = relaySentences.slice(-4)
+
+                // Fallback: no sentences at all
+                if (display.length === 0) {
+                  return (
+                    <>
+                      <span
+                        className="text-lg md:text-2xl text-white/60"
+                        style={{ fontFamily: "'Noto Sans TC', sans-serif" }}
+                      >
+                        接龍
+                      </span>
+                      <span className="text-lg md:text-2xl text-white/50 mx-1">;</span>
+                      <span
+                        className="text-3xl md:text-[50px] font-bold text-white leading-none"
+                        style={{ fontFamily: "'Noto Serif TC', 'Noto Sans TC', serif" }}
+                      >
+                        下一句要是你
+                      </span>
+                    </>
+                  )
+                }
+
+                // Progressive style tiers — last item always gets the largest style
+                const tiers = [
+                  'text-[11px] md:text-sm text-white/40',
+                  'text-sm md:text-lg text-white/50',
+                  'text-lg md:text-2xl text-white/60',
+                  'text-3xl md:text-[50px] font-bold text-white leading-none',
+                ]
+
+                // Align tiers so the last sentence always uses the last (largest) tier
+                const offset = tiers.length - display.length
+
+                return display.map((sentence, i) => {
+                  const tierIndex = offset + i
+                  const tierClass = tiers[tierIndex] ?? tiers[0]
+                  const isLast = i === display.length - 1
+                  const truncated =
+                    sentence.text.length > 20
+                      ? sentence.text.slice(0, 20) + '\u2026'
+                      : sentence.text
+
+                  return (
+                    <span key={sentence.id} className="inline-flex items-baseline">
+                      <span
+                        className={tierClass}
+                        style={{
+                          fontFamily: isLast
+                            ? "'Noto Serif TC', 'Noto Sans TC', serif"
+                            : "'Noto Sans TC', sans-serif",
+                        }}
+                      >
+                        {truncated}
+                      </span>
+                      {!isLast && (
+                        <span className="text-white/30 mx-1.5 md:mx-2 text-sm md:text-base select-none">
+                          ;
+                        </span>
+                      )}
+                    </span>
+                  )
+                })
+              })()}
             </div>
           </div>
         </div>
