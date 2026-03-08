@@ -21,10 +21,13 @@
         { "name": "邱筠婷", "role": "主編 設計" }
       ],
       "fallingElements": [
-        "/assets/menu-shapes/shape-1.png",
-        "/assets/menu-shapes/shape-2.png",
-        "/assets/menu-shapes/shape-3.png"
-      ]
+        "public/assets/chapter-01/teacher img/王貞雅 老師.png",
+        "public/assets/chapter-01/teacher img/兪在元老師.png",
+        "public/assets/chapter-01/teacher img/陳巧莛 Chiao-Ting Chen 老師.png",
+        "public/assets/chapter-01/teacher img/Galit 徐茉莉 老師.png",
+        "public/assets/chapter-01/teacher img/Patricia 郭珮宜 老師.png",
+        "public/assets/chapter-01/teacher img/Pei-Fang Hsu 許裴舫 老師.png",
+        "public/assets/chapter-01/teacher img/Soumya.png"      ]
     },
     {
       "id": "chapter-02",
