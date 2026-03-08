@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useMemo, useState } from 'react'
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import { useReadingMemories } from '@/hooks/useReadingMemories'
@@ -7,30 +7,39 @@ import FallingElements from './FallingElements'
 import RelayOverview from './RelayOverview'
 import Noise from '@/components/Noise'
 
-interface RelaySentence {
-  id: string
-  text: string
-}
-
 export default function BackCover() {
   const { coverContribution, collectedElements } = useReadingMemories()
   const sectionRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [resetKey, setResetKey] = useState(0)
-  const [relaySentences, setRelaySentences] = useState<RelaySentence[]>([])
+  const [crescendoTexts, setCrescendoTexts] = useState<string[]>([])
 
-  // Subscribe to coverSentences for Bottom CTA relay chain
+  // Firebase subscription for crescendo overlay
   useEffect(() => {
     const q = query(collection(db, 'coverSentences'), orderBy('createdAt', 'asc'))
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as { text?: string }),
-      })) as RelaySentence[]
-      setRelaySentences(data.filter((item) => item.text))
+    const unsub = onSnapshot(q, (snap) => {
+      const texts = snap.docs
+        .map((d) => (d.data() as { text?: string }).text?.trim())
+        .filter(Boolean) as string[]
+      setCrescendoTexts(texts.slice(-4))
     })
-    return () => unsubscribe()
+    return () => unsub()
   }, [])
+
+  const crescendoItems = useMemo(() => {
+    const sizes = [14, 24, 36, 50]
+    const opacities = [0.5, 0.65, 0.8, 0.95]
+    const count = crescendoTexts.length
+    return crescendoTexts.map((text, i) => {
+      const tierIdx = sizes.length - count + i
+      return {
+        text,
+        fontSize: sizes[Math.max(0, tierIdx)],
+        opacity: opacities[Math.max(0, tierIdx)],
+        fontWeight: i === count - 1 ? 'bold' : 'normal' as const,
+      }
+    })
+  }, [crescendoTexts])
 
   useEffect(() => {
     const section = sectionRef.current
@@ -61,27 +70,13 @@ export default function BackCover() {
     >
       {/* ====== SECTION 1: Full-screen Relay Visualization ====== */}
       <div className="relative min-h-screen">
-        {/* Noise Overlay */}
-        <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-15 z-[5]">
-          <Noise
-            patternSize={250}
-            patternAlpha={20}
-            patternRefreshInterval={4}
-          />
+
+        {/* z[1]: RelayOverview — serpentine zigzag text (behind card) */}
+        <div className="absolute inset-0 z-[1]">
+          <RelayOverview ownText={coverContribution?.mine} />
         </div>
 
-        {/* Green gradient panel — decorative background */}
-        <div className="absolute inset-0 flex items-start justify-center pointer-events-none z-[1]">
-          <div
-            className="w-[55%] max-w-[900px] h-[85%] mt-[5%] rounded-[26px] opacity-60"
-            style={{
-              background: 'linear-gradient(180deg, rgba(30,60,30,0.7) 0%, rgba(50,80,40,0.5) 40%, rgba(60,90,40,0.4) 70%, rgba(80,110,50,0.3) 100%)',
-              filter: 'blur(1px)',
-            }}
-          />
-        </div>
-
-        {/* Background: Falling collected elements */}
+        {/* z[2]: Falling collected elements */}
         <div className="absolute inset-0 z-[2]">
           {collectedElements.length > 0 && isVisible && (
             <FallingElements
@@ -92,128 +87,111 @@ export default function BackCover() {
           )}
         </div>
 
-        {/* Relay text visualization (full-screen SVG) */}
-        <div className="absolute inset-0 z-[3]">
-          <RelayOverview ownText={coverContribution?.mine} />
+        {/* z[3]: Green gradient card background (above serpentine) */}
+        <div className="absolute inset-0 flex items-start justify-center pointer-events-none z-[3]">
+          <div
+            className="w-[55%] max-w-[900px] h-[85%] mt-[5%] rounded-[26px]"
+            style={{
+              background: 'linear-gradient(180deg, #1e3c1e 0%, #263e24 40%, #2e4a28 70%, #354f2c 100%)',
+            }}
+          />
         </div>
 
-        {/* Foreground: Header branding overlay */}
-        <div className="absolute inset-0 z-[10] pointer-events-none">
-          {/* Top header — "服務 聲" + ISS Community Annual Newsletter */}
-          <div className="absolute top-[8%] left-[8%] md:left-[12%]">
-            <div className="flex items-start gap-4 md:gap-6">
-              <img
-                src="/assets/title.svg"
-                alt="服務聲"
-                className="h-12 md:h-16 lg:h-20 w-auto brightness-0 invert opacity-80"
-              />
-              <div className="pt-1">
-                <p className="text-[9px] md:text-[11px] leading-tight text-white/50 tracking-wide" style={{ fontFamily: "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif" }}>
-                  ISS Community<br />
-                  Annual Newsletter
+        {/* z[4]: Crescendo text — above card */}
+        {crescendoItems.length > 0 && (
+          <div className="absolute inset-0 flex items-start justify-center pointer-events-none z-[4]">
+            <div className="relative w-[55%] max-w-[900px] h-[85%] mt-[5%]">
+              <div
+                className="absolute bottom-[5%] left-[6%] right-[6%] flex items-baseline flex-wrap gap-x-2"
+                style={{ fontFamily: "'Noto Sans TC', sans-serif" }}
+              >
+                {crescendoItems.map((item, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      fontSize: item.fontSize,
+                      fontWeight: item.fontWeight,
+                      color: `rgba(255,255,255,${item.opacity})`,
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {item.text}
+                    {i < crescendoItems.length - 1 && (
+                      <span style={{ fontSize: item.fontSize * 0.8, opacity: 0.4 }}>{' ; '}</span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* z[5]: Branding elements — above serpentine text */}
+        <div className="absolute inset-0 flex items-start justify-center pointer-events-none z-[5]">
+          <div className="relative w-[55%] max-w-[900px] h-[85%] mt-[5%]">
+            {/* Top-left: title + ISS Community */}
+            <div className="absolute top-[8%] left-[6%]">
+              <div className="flex items-start gap-4 md:gap-6">
+                <img
+                  src="/assets/title.svg"
+                  alt="服務聲"
+                  className="h-12 md:h-16 lg:h-20 w-auto brightness-0 invert opacity-80"
+                />
+                <div className="pt-1">
+                  <p
+                    className="text-[9px] md:text-[11px] leading-tight text-white/50 tracking-wide"
+                    style={{ fontFamily: "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif" }}
+                  >
+                    ISS Community<br />
+                    Annual Newsletter
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Left: 2025 */}
+            <div className="absolute top-[40%] left-[6%]">
+              <p
+                className="text-2xl md:text-3xl font-bold text-white/70 tracking-wider"
+                style={{ fontFamily: "'Zen Kaku Gothic New', 'Noto Sans TC', sans-serif" }}
+              >
+                2025
+              </p>
+            </div>
+
+            {/* Right: semicolon + vertical text */}
+            <div className="hidden md:block absolute top-[40%] right-[6%]">
+              <p
+                className="text-xl lg:text-2xl text-white/60 mb-4"
+                style={{ fontFamily: "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif" }}
+              >
+                分號
+              </p>
+              <div className="w-[52px] h-[300px] flex items-center justify-center">
+                <p
+                  className="text-[11px] lg:text-[13px] text-white/40 leading-relaxed whitespace-pre-wrap"
+                  style={{
+                    writingMode: 'vertical-rl',
+                    textOrientation: 'mixed',
+                    fontFamily: "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif",
+                  }}
+                >
+                  Since 2008, the institute has adopted unique educational practices to embed humanity into the learning environment.
                 </p>
               </div>
             </div>
           </div>
-
-          {/* Year — "2025" */}
-          <div className="absolute top-[35%] left-[8%] md:left-[12%]">
-            <p className="text-2xl md:text-3xl font-bold text-white/70 tracking-wider" style={{ fontFamily: "'Zen Kaku Gothic New', 'Noto Sans TC', sans-serif" }}>
-              2025
-            </p>
-          </div>
-
-          {/* Right side — "分號" label + ISS description */}
-          <div className="hidden md:block absolute top-[35%] right-[8%] lg:right-[10%]">
-            <p className="text-xl lg:text-2xl text-white/60 mb-4" style={{ fontFamily: "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif" }}>
-              分號
-            </p>
-            <div className="w-[52px] h-[300px] flex items-center justify-center">
-              <p
-                className="text-[11px] lg:text-[13px] text-white/40 leading-relaxed whitespace-pre-wrap"
-                style={{
-                  writingMode: 'vertical-rl',
-                  textOrientation: 'mixed',
-                  fontFamily: "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif",
-                }}
-              >
-                Since 2008, the institute has adopted unique educational practices to embed humanity into the learning environment.
-              </p>
-            </div>
-          </div>
-
-          {/* Bottom CTA — Dynamic relay chain from coverSentences */}
-          <div className="absolute bottom-[6%] left-[8%] md:left-[12%] right-[8%]">
-            <div className="flex items-baseline gap-1 flex-wrap">
-              {(() => {
-                // Take last 4 sentences for the cascade
-                const display = relaySentences.slice(-4)
-
-                // Fallback: no sentences at all
-                if (display.length === 0) {
-                  return (
-                    <>
-                      <span
-                        className="text-lg md:text-2xl text-white/60"
-                        style={{ fontFamily: "'Noto Sans TC', sans-serif" }}
-                      >
-                        接龍
-                      </span>
-                      <span className="text-lg md:text-2xl text-white/50 mx-1">;</span>
-                      <span
-                        className="text-3xl md:text-[50px] font-bold text-white leading-none"
-                        style={{ fontFamily: "'Noto Serif TC', 'Noto Sans TC', serif" }}
-                      >
-                        下一句要是你
-                      </span>
-                    </>
-                  )
-                }
-
-                // Progressive style tiers — last item always gets the largest style
-                const tiers = [
-                  'text-[11px] md:text-sm text-white/40',
-                  'text-sm md:text-lg text-white/50',
-                  'text-lg md:text-2xl text-white/60',
-                  'text-3xl md:text-[50px] font-bold text-white leading-none',
-                ]
-
-                // Align tiers so the last sentence always uses the last (largest) tier
-                const offset = tiers.length - display.length
-
-                return display.map((sentence, i) => {
-                  const tierIndex = offset + i
-                  const tierClass = tiers[tierIndex] ?? tiers[0]
-                  const isLast = i === display.length - 1
-                  const truncated =
-                    sentence.text.length > 20
-                      ? sentence.text.slice(0, 20) + '\u2026'
-                      : sentence.text
-
-                  return (
-                    <span key={sentence.id} className="inline-flex items-baseline">
-                      <span
-                        className={tierClass}
-                        style={{
-                          fontFamily: isLast
-                            ? "'Noto Serif TC', 'Noto Sans TC', serif"
-                            : "'Noto Sans TC', sans-serif",
-                        }}
-                      >
-                        {truncated}
-                      </span>
-                      {!isLast && (
-                        <span className="text-white/30 mx-1.5 md:mx-2 text-sm md:text-base select-none">
-                          ;
-                        </span>
-                      )}
-                    </span>
-                  )
-                })
-              })()}
-            </div>
-          </div>
         </div>
+
+        {/* z[6]: Noise overlay */}
+        <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-15 z-[6]">
+          <Noise
+            patternSize={250}
+            patternAlpha={20}
+            patternRefreshInterval={4}
+          />
+        </div>
+
       </div>
 
       {/* ====== SECTION 2: Relay Card + Stats ====== */}
