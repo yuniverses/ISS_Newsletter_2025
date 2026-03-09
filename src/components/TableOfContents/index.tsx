@@ -51,13 +51,8 @@ export default function TableOfContents({ chapters, onChapterClick }: TableOfCon
   const hasFiredBatch5 = useRef(false)
 
   const handleChapterClick = (chapterId: string) => {
+    // Let ChapterReader be the single source of scroll control
     onChapterClick(chapterId)
-    setTimeout(() => {
-      const chapterElement = document.getElementById(chapterId)
-      if (chapterElement) {
-        chapterElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
-    }, 100)
   }
 
   // Exact 12 particles

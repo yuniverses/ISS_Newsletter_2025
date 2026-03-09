@@ -130,25 +130,20 @@ export default function FallingElements({ elements, isVisible }: FallingElements
     }
   }, [elements.length])
 
-  // 根據數量計算縮放倍數
-  // 1個 = 2倍, 逐漸遞減到 14+ 個 = 1倍
-  const sizeMultiplier = (() => {
+  // 根據數量 + 螢幕大小計算元素尺寸
+  const computeSize = () => {
+    const vw = containerRef.current?.offsetWidth || window.innerWidth
+    // 螢幕越大，基礎尺寸越大
+    // <640: 70-100, 640-1024: 90-130, >1024: 110-160
+    const screenBase = vw < 640 ? 70 : vw < 1024 ? 90 : 110
+    const screenRange = vw < 640 ? 30 : vw < 1024 ? 40 : 50
+
+    // 數量倍率：1個=2.2x, 遞減到 14+=1x (1x 就是目前最小尺寸)
     const count = elements.length
-    if (count <= 1) return 2
-    if (count === 2) return 1.85
-    if (count === 3) return 1.7
-    if (count === 4) return 1.6
-    if (count === 5) return 1.5
-    if (count === 6) return 1.4
-    if (count === 7) return 1.3
-    if (count === 8) return 1.25
-    if (count === 9) return 1.2
-    if (count === 10) return 1.15
-    if (count === 11) return 1.1
-    if (count === 12) return 1.07
-    if (count === 13) return 1.03
-    return 1
-  })()
+    const multiplier = count >= 14 ? 1 : 1 + (1.2 * (14 - count)) / 13
+
+    return { screenBase, screenRange, multiplier }
+  }
 
   // 觸發掉落
   useEffect(() => {
@@ -167,9 +162,10 @@ export default function FallingElements({ elements, isVisible }: FallingElements
       setTimeout(() => {
         if (!engineRef.current) return
 
-        // 基礎大小 60-100px，乘以倍數
-        const baseSize = 60 + Math.random() * 40
-        const size = Math.round(baseSize * sizeMultiplier)
+        // 基礎大小根據螢幕 + 數量動態計算
+        const { screenBase, screenRange, multiplier } = computeSize()
+        const baseSize = screenBase + Math.random() * screenRange
+        const size = Math.round(baseSize * multiplier)
 
         // 分散在不同列生成
         const column = i % columns
@@ -213,7 +209,7 @@ export default function FallingElements({ elements, isVisible }: FallingElements
         <img
           key={element.id}
           ref={(el) => (elementRefs.current[element.id] = el)}
-          src={element.src}
+          src={element.src.replace(/^public\//, '/')}
           alt=""
           className="absolute top-0 left-0 opacity-0 object-contain"
           style={{ filter: 'brightness(0.6)' }}

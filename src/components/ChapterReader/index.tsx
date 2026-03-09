@@ -4,6 +4,7 @@ import { useChapterPreload } from '@/hooks/useChapterPreload'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { useChapterProgress } from '@/hooks/useChapterProgress'
 import { getGroupByChapterId, isGroupBoundary } from '@/config/chapterGroups'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import ChapterSection from './ChapterSection'
 import GroupTransitionSection from './GroupTransitionSection'
 
@@ -143,22 +144,20 @@ export default function ChapterReader({
   useEffect(() => {
     if (!scrollToChapterId) return
 
+    let cancelled = false
+
     const targetIndex = newsletter.chapters.findIndex(c => c.id === scrollToChapterId)
     if (targetIndex === -1) return
 
     // Ensure all chapters up to the target are in visibleChapterIds
-    const chaptersToAdd = newsletter.chapters
-      .slice(0, targetIndex + 1)
-      .map(c => c.id)
-      .filter(id => !visibleChapterIds.includes(id))
+    const allIdsNeeded = newsletter.chapters.slice(0, targetIndex + 1).map(c => c.id)
+    const chaptersToAdd = allIdsNeeded.filter(id => !visibleChapterIds.includes(id))
 
     if (chaptersToAdd.length > 0) {
-      // Add missing chapters
       setVisibleChapterIds(prev => {
         const newIds = [...prev]
         chaptersToAdd.forEach(id => {
           if (!newIds.includes(id)) {
-            // Insert in correct order
             const idx = newsletter.chapters.findIndex(c => c.id === id)
             const insertIdx = newIds.findIndex(existingId => {
               const existingIdx = newsletter.chapters.findIndex(c => c.id === existingId)
@@ -173,32 +172,54 @@ export default function ChapterReader({
         })
         return newIds
       })
+    }
 
-      // Load content for new chapters
-      chaptersToAdd.forEach(id => {
-        const ch = newsletter.chapters.find(c => c.id === id)
-        if (ch) loadChapter(ch.id, ch.htmlFile)
+    // Load ALL chapters up to the target and wait for them to finish
+    const loadPromises = allIdsNeeded.map(id => {
+      const ch = newsletter.chapters.find(c => c.id === id)
+      if (ch) return loadChapter(ch.id, ch.htmlFile)
+      return Promise.resolve(null)
+    })
+
+    Promise.all(loadPromises).then(() => {
+      if (cancelled) return
+
+      // Wait one frame for React to render the loaded content into the DOM
+      requestAnimationFrame(() => {
+        if (cancelled) return
+
+        const element = document.getElementById(scrollToChapterId)
+        if (element) {
+          // Instant jump (not smooth) — content is loaded, position is stable
+          element.scrollIntoView({ behavior: 'auto', block: 'start' })
+          ScrollTrigger.refresh()
+
+          // Re-scroll loop to correct for images / lazy layout shifts
+          let correctionAttempts = 0
+          const maxCorrections = 4
+          const correctScroll = () => {
+            if (cancelled || correctionAttempts >= maxCorrections) {
+              onScrollComplete?.()
+              return
+            }
+            correctionAttempts++
+            const el = document.getElementById(scrollToChapterId)
+            if (el) {
+              el.scrollIntoView({ behavior: 'auto', block: 'start' })
+              ScrollTrigger.refresh()
+            }
+            setTimeout(correctScroll, 250)
+          }
+          setTimeout(correctScroll, 250)
+        } else {
+          onScrollComplete?.()
+        }
       })
+    })
+
+    return () => {
+      cancelled = true
     }
-
-    // Poll for the element and scroll to it
-    const maxAttempts = 30
-    let attempts = 0
-
-    const tryScroll = () => {
-      const element = document.getElementById(scrollToChapterId)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        onScrollComplete?.()
-      } else if (attempts < maxAttempts) {
-        attempts++
-        setTimeout(tryScroll, 100)
-      } else {
-        onScrollComplete?.()
-      }
-    }
-
-    setTimeout(tryScroll, 50)
   }, [scrollToChapterId, newsletter.chapters, visibleChapterIds, loadChapter, onScrollComplete])
 
   // Set up infinite scroll

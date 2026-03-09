@@ -1,6 +1,6 @@
 {
   "title": "服務聲 2026",
-  "year": 2025,
+  "year": 2026,
   "chapters": [
     {
       "id": "chapter-01",
@@ -21,13 +21,14 @@
         { "name": "邱筠婷", "role": "主編 設計" }
       ],
       "fallingElements": [
-        "public/assets/chapter-01/teacher img/王貞雅 老師.png",
-        "public/assets/chapter-01/teacher img/兪在元老師.png",
-        "public/assets/chapter-01/teacher img/陳巧莛 Chiao-Ting Chen 老師.png",
-        "public/assets/chapter-01/teacher img/Galit 徐茉莉 老師.png",
-        "public/assets/chapter-01/teacher img/Patricia 郭珮宜 老師.png",
-        "public/assets/chapter-01/teacher img/Pei-Fang Hsu 許裴舫 老師.png",
-        "public/assets/chapter-01/teacher img/Soumya.png"      ]
+        "/assets/chapter-01/teacher img/王貞雅 老師.png",
+        "/assets/chapter-01/teacher img/兪在元老師.png",
+        "/assets/chapter-01/teacher img/陳巧莛 Chiao-Ting Chen 老師.png",
+        "/assets/chapter-01/teacher img/Galit 徐茉莉 老師.png",
+        "/assets/chapter-01/teacher img/Patricia 郭珮宜 老師.png",
+        "/assets/chapter-01/teacher img/Pei-Fang Hsu 許裴舫 老師.png",
+        "/assets/chapter-01/teacher img/Soumya.png"
+      ]
     },
     {
       "id": "chapter-02",
@@ -46,9 +47,7 @@
         { "name": "邱筠婷", "role": "主編 設計" }
       ],
       "fallingElements": [
-        "/assets/menu-shapes/shape-1.png",
-        "/assets/menu-shapes/shape-2.png",
-        "/assets/menu-shapes/shape-3.png"
+        "/assets/menu-shapes/薐嘉學姊.png"
       ]
     },
     {
@@ -68,9 +67,7 @@
         { "name": "邱筠婷", "role": "主編 設計" }
       ],
       "fallingElements": [
-        "/assets/menu-shapes/shape-1.png",
-        "/assets/menu-shapes/shape-2.png",
-        "/assets/menu-shapes/shape-3.png"
+        "/assets/menu-shapes/慈昱學姊.png"
       ]
     },
     {
@@ -90,9 +87,7 @@
         { "name": "邱筠婷", "role": "主編 設計" }
       ],
       "fallingElements": [
-        "/assets/menu-shapes/shape-1.png",
-        "/assets/menu-shapes/shape-2.png",
-        "/assets/menu-shapes/shape-3.png"
+        "/assets/menu-shapes/馮元詰.png"
       ]
     },
     {
@@ -112,9 +107,7 @@
         { "name": "邱筠婷", "role": "主編 設計" }
       ],
       "fallingElements": [
-        "/assets/menu-shapes/shape-1.png",
-        "/assets/menu-shapes/shape-2.png",
-        "/assets/menu-shapes/shape-3.png"
+        "/assets/menu-shapes/曾婉婷.png"
       ]
     },
     {
@@ -134,9 +127,7 @@
         { "name": "邱筠婷", "role": "主編 設計" }
       ],
       "fallingElements": [
-        "/assets/menu-shapes/shape-1.png",
-        "/assets/menu-shapes/shape-2.png",
-        "/assets/menu-shapes/shape-3.png"
+        "/assets/menu-shapes/徐子珺.png"
       ]
     },
     {
@@ -156,9 +147,7 @@
         { "name": "邱筠婷", "role": "主編 設計" }
       ],
       "fallingElements": [
-        "/assets/menu-shapes/shape-1.png",
-        "/assets/menu-shapes/shape-2.png",
-        "/assets/menu-shapes/shape-3.png"
+        "/assets/menu-shapes/陳旻.png"
       ]
     },
     {
@@ -178,9 +167,7 @@
         { "name": "邱筠婷", "role": "主編 設計" }
       ],
       "fallingElements": [
-        "/assets/menu-shapes/shape-1.png",
-        "/assets/menu-shapes/shape-2.png",
-        "/assets/menu-shapes/shape-3.png"
+        "/assets/menu-shapes/Sunny.png"
       ]
     },
     {
@@ -201,12 +188,8 @@
         { "name": "林柏緯", "role": "採訪" }
       ],
       "fallingElements": [
-        "https://www.aestheticell.org/wp-content/uploads/2020/12/%E7%BE%8E%E6%84%9F%E7%B4%B0%E8%83%9E_%E7%84%A1%E5%AD%97_logo.png",
-        "https://bankofculture.com/wp-content/uploads/2019/10/bankofculture_logo.png",
-        "https://storage.googleapis.com/tdri/designexpo/2025/exhibition/list_image/26/thumb_image_fc218b.png",
-        "/assets/menu-shapes/shape-1.png",
-        "/assets/menu-shapes/shape-2.png",
-        "/assets/menu-shapes/shape-3.png"
+        "/assets/menu-shapes/陳慕天.png",
+        "/assets/menu-shapes/陳慕天-1.png"
       ]
     },
     {
@@ -218,16 +201,15 @@
       "authors": ["徐千捷"],
       "category": "展開專訪",
       "theme": "light",
-      "coverImage": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2023/08/06/0/23799517.jpg&x=0&y=0&sw=0&sh=0&exp=3600",
+      "coverImage": "/assets/chapter-covers/chapter-10-coverImage.jpg",
       "date": "2025 . 11",
       "credits": [
         { "name": "陳冠宇", "role": "主編 設計" },
         { "name": "胡育慈", "role": "主編 設計" }
       ],
       "fallingElements": [
-        "/assets/menu-shapes/shape-1.png",
-        "/assets/menu-shapes/shape-2.png",
-        "/assets/menu-shapes/shape-3.png"
+        "/assets/menu-shapes/徐千捷.png",
+        "/assets/menu-shapes/徐千捷-1.png"
       ]
     },
     {
@@ -239,7 +221,7 @@
       "authors": [],
       "category": "活動現場",
       "theme": "light",
-      "coverImage": "/assets/IMG_6561.png",
+      "coverImage": "/assets/chapter-covers/397ECF3D-9624-474B-98BE-CA53AD269A56_1_105_c.jpeg",
       "date": "2026 . 02",
       "credits": [
         { "name": "陳冠宇", "role": "主編 設計" },

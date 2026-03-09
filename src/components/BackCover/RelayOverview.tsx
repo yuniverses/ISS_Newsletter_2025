@@ -9,6 +9,7 @@ interface SentenceDoc {
 
 interface RelayOverviewProps {
   ownText?: string
+  receivedText?: string
 }
 
 interface Size {
@@ -17,303 +18,262 @@ interface Size {
 }
 
 /**
- * Build a zigzag path where ALL segments go left→right for readable text.
- * Odd (RTL) segments are reversed via separate subpaths (M commands)
- * so text never appears mirrored.
- *
- *  L ────↘──── R   (seg 0, LTR)
- *  L ────↗──── R   (seg 1, reversed to LTR)
- *  L ────↘──── R   (seg 2, LTR)
+ * Build a gentle sine-wave SVG path for text to follow.
  */
-const buildSerpentinePath = (
-  width: number,
-  height: number,
-  rows: number,
-  paddingX: number,
-  paddingTop: number,
-  paddingBottom: number,
+const buildWavyPath = (
+  startX: number,
+  endX: number,
+  startY: number,
+  endY: number,
+  amplitude: number,
+  wavelength: number,
 ): string => {
-  const leftX = paddingX
-  const rightX = width - paddingX
-  const usableHeight = height - paddingTop - paddingBottom
-  const rowHeight = usableHeight / rows
+  const total = endX - startX
+  const step = 3
+  const steps = Math.ceil(total / step)
+  const parts: string[] = []
 
-  // Compute zigzag vertices: V0(left), V1(right), V2(left), V3(right), ...
-  const vertices: Array<[number, number]> = []
-  for (let i = 0; i <= rows; i++) {
-    const y = paddingTop + i * rowHeight
-    const x = i % 2 === 0 ? leftX : rightX
-    vertices.push([x, y])
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps
+    const x = startX + t * total
+    const baseY = startY + (endY - startY) * t
+    const wave = Math.sin(((x - startX) / wavelength) * Math.PI * 2) * amplitude
+    parts.push(`${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${(baseY + wave).toFixed(1)}`)
   }
 
-  // Build path — all segments go left→right
-  const segments: string[] = []
-  for (let i = 0; i < rows; i++) {
-    const [x1, y1] = vertices[i]
-    const [x2, y2] = vertices[i + 1]
-
-    if (i % 2 === 0) {
-      // Even: left→right, already LTR
-      segments.push(`M ${x1} ${y1} L ${x2} ${y2}`)
-    } else {
-      // Odd: would be right→left, reverse for readable text
-      segments.push(`M ${x2} ${y2} L ${x1} ${y1}`)
-    }
-  }
-
-  return segments.join(' ')
+  return parts.join(' ')
 }
 
 /**
- * Highlight the user's own text within the content string.
+ * Estimate rendered text width accounting for CJK full-width characters.
  */
-const buildTextSpans = (content: string, highlight?: string) => {
-  if (!highlight) {
-    return [{ text: content, isHighlight: false }]
-  }
-
-  const cleanHighlight = highlight.trim()
-  if (!cleanHighlight) {
-    return [{ text: content, isHighlight: false }]
-  }
-
-  const spans: Array<{ text: string; isHighlight: boolean }> = []
-  let cursor = 0
-
-  while (cursor < content.length) {
-    const index = content.indexOf(cleanHighlight, cursor)
-    if (index === -1) {
-      spans.push({ text: content.slice(cursor), isHighlight: false })
-      break
+const estimateTextWidth = (text: string, fontSize: number): number => {
+  let w = 0
+  for (const char of text) {
+    const code = char.charCodeAt(0)
+    if (code > 0x2e80) {
+      w += fontSize // CJK full-width
+    } else if (char === ' ') {
+      w += fontSize * 0.3
+    } else {
+      w += fontSize * 0.55 // Latin, digits, punctuation
     }
-
-    if (index > cursor) {
-      spans.push({ text: content.slice(cursor, index), isHighlight: false })
-    }
-
-    spans.push({ text: cleanHighlight, isHighlight: true })
-    cursor = index + cleanHighlight.length
   }
-
-  return spans
+  return w
 }
 
-export default function RelayOverview({ ownText }: RelayOverviewProps) {
+export default function RelayOverview({
+  ownText,
+  receivedText,
+}: RelayOverviewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [sentences, setSentences] = useState<SentenceDoc[]>([])
   const [size, setSize] = useState<Size>({ width: 0, height: 0 })
 
-  // ── Firebase subscription ──
   useEffect(() => {
-    const q = query(collection(db, 'coverSentences'), orderBy('createdAt', 'asc'))
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as { text?: string }),
+    const q = query(
+      collection(db, 'coverSentences'),
+      orderBy('createdAt', 'asc'),
+    )
+    const unsub = onSnapshot(q, (snap) => {
+      const data = snap.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as { text?: string }),
       })) as SentenceDoc[]
       setSentences(data.filter((item) => item.text))
     })
-    return () => unsubscribe()
+    return () => unsub()
   }, [])
 
-  // ── Container size tracking ──
   useEffect(() => {
     const node = containerRef.current
     if (!node) return
-
-    const updateSize = () => {
-      const rect = node.getBoundingClientRect()
-      setSize({ width: rect.width, height: rect.height })
+    const update = () => {
+      const r = node.getBoundingClientRect()
+      setSize({ width: r.width, height: r.height })
     }
-
-    updateSize()
-    const observer = new ResizeObserver(() => updateSize())
-    observer.observe(node)
-    return () => observer.disconnect()
+    update()
+    const obs = new ResizeObserver(update)
+    obs.observe(node)
+    return () => obs.disconnect()
   }, [])
 
   const isCompact = size.width < 640
 
-  // ── Crescendo config (last 4 sentences) ──
-  const crescendoConfig = useMemo(() => {
-    const last4 = sentences.slice(-4)
-    const sizesDesktop = [14, 24, 36, 50]
-    const sizesCompact = [12, 18, 26, 36]
-    const opacities = [0.5, 0.65, 0.8, 0.95]
-    const sizes = isCompact ? sizesCompact : sizesDesktop
-    const count = last4.length
+  // Font sizes
+  const baseFontSize = isCompact ? 12 : 16
+  const receivedFontSize = isCompact ? 16 : 20
+  const mineFontSize = isCompact ? 22 : 26
+  const labelFontSize = isCompact ? 7 : 10
 
-    return last4.map((s, i) => {
-      const tierIdx = sizes.length - count + i
-      const fontSize = sizes[Math.max(0, tierIdx)]
-      const opacity = opacities[Math.max(0, tierIdx)]
-      const isLast = i === count - 1
-      return {
-        text: s.text.trim(),
-        fontSize,
-        opacity,
-        fontWeight: isLast ? ('bold' as const) : ('normal' as const),
-      }
-    })
-  }, [sentences, isCompact])
+  // Wave parameters — mobile: wave crosses through card area; desktop: lower card area
+  const pathStartX = -size.width * 0.15
+  const pathEndX = size.width * 1.5
+  const waveStartY = isCompact ? size.height * 0.58 : size.height * 0.82
+  const waveEndY = isCompact ? size.height * 0.44 : size.height * 0.66
+  const amplitude = isCompact ? 8 : 20
+  const wavelength = isCompact ? 160 : 320
 
-  // ── Build the continuous text blob ──
-  const { normalText, crescendoText } = useMemo(() => {
+  // Only show labels when actual user contribution data exists
+  const showLabels = Boolean(receivedText?.trim() || ownText?.trim())
+
+  // Build crescendo items
+  const crescendoItems = useMemo(() => {
     const allTexts = sentences.map((s) => s.text.trim()).filter(Boolean)
-    const joined = allTexts.length > 0 ? allTexts.join(' ; ') : 'Waiting for the next voice ;'
-    return {
-      normalText: joined,
-      crescendoText: crescendoConfig,
-    }
-  }, [sentences, crescendoConfig])
+    const items: Array<{ text: string; type: 'received' | 'mine' }> = []
 
-  // ── Path & text layout computation ──
-  const pathData = useMemo(() => {
+    if (receivedText?.trim() || ownText?.trim()) {
+      if (receivedText?.trim())
+        items.push({ text: receivedText.trim(), type: 'received' })
+      if (ownText?.trim())
+        items.push({ text: ownText.trim(), type: 'mine' })
+    } else if (allTexts.length > 0) {
+      const last = allTexts.slice(-2)
+      last.forEach((t, i) =>
+        items.push({ text: t, type: i === last.length - 1 ? 'mine' : 'received' }),
+      )
+    }
+
+    return items
+  }, [sentences, receivedText, ownText])
+
+  // Build layout — mine text always centered
+  const layout = useMemo(() => {
     if (size.width === 0 || size.height === 0) return null
 
-    // Odd rows ensure the last segment goes left-to-right, keeping crescendo text readable
-    const rows = isCompact ? 9 : 11
-    const paddingX = Math.round(size.width * 0.05)
-    const paddingTop = Math.round(size.height * 0.04)
-    // Extra bottom padding to accommodate crescendo large text
-    const paddingBottom = Math.round(size.height * 0.08)
+    const allTexts = sentences.map((s) => s.text.trim()).filter(Boolean)
+    const base =
+      allTexts.length > 0
+        ? allTexts.join(' ; ') + ' ; '
+        : 'Waiting for the next voice ; '
 
-    const serpentinePath = buildSerpentinePath(
-      size.width,
-      size.height,
-      rows,
-      paddingX,
-      paddingTop,
-      paddingBottom,
+    // Calculate mine text width to center it (CJK-aware)
+    const mineItem = crescendoItems.find((i) => i.type === 'mine')
+    const receivedItem = crescendoItems.find((i) => i.type === 'received')
+    const mineTextWidth = mineItem ? estimateTextWidth(mineItem.text, mineFontSize) : 0
+    const receivedTextWidth = receivedItem
+      ? estimateTextWidth(receivedItem.text, receivedFontSize) + estimateTextWidth(' ; ', baseFontSize)
+      : 0
+
+    // Mine text center = viewport center
+    const mineStartX = size.width * 0.5 - mineTextWidth / 2
+    // Work backwards: history fills everything before received + mine
+    const crescendoStartX = mineStartX - receivedTextWidth
+    const historyWidth = crescendoStartX - pathStartX
+    const avgHistoryCharWidth = estimateTextWidth(base, baseFontSize) / base.length
+    const historyCharsNeeded = Math.max(20, Math.ceil(historyWidth / avgHistoryCharWidth))
+
+    // Repeat history text to fill
+    let history = base
+    while (history.length < historyCharsNeeded) {
+      history += base
+    }
+    if (history.length > historyCharsNeeded + 50) {
+      let cutIdx = history.lastIndexOf(' ; ', historyCharsNeeded)
+      if (cutIdx < historyCharsNeeded * 0.5) {
+        cutIdx = history.lastIndexOf(' ', historyCharsNeeded)
+      }
+      if (cutIdx > 0) history = history.slice(0, cutIdx)
+    }
+    history += ' ; '
+
+    // Wavy path (text only, no deco)
+    const textPath = buildWavyPath(
+      pathStartX, pathEndX, waveStartY, waveEndY, amplitude, wavelength,
     )
 
-    // Calculate path length to determine how much text is needed
-    const leftX = paddingX
-    const rightX = size.width - paddingX
-    const usableHeight = size.height - paddingTop - paddingBottom
-    const rowHeight = usableHeight / rows
-    const legLength = Math.sqrt(
-      Math.pow(rightX - leftX, 2) + Math.pow(rowHeight, 2),
-    )
-    const totalPathLength = legLength * rows
+    return { history, textPath }
+  }, [
+    size, sentences, crescendoItems, baseFontSize, receivedFontSize, mineFontSize,
+    pathStartX, pathEndX, waveStartY, waveEndY, amplitude, wavelength,
+  ])
 
-    // Estimate characters needed to fill the path
-    const baseFontSize = isCompact ? 10 : 12
-    const charWidth = baseFontSize * 0.6
-    // Reserve some path length for crescendo (roughly last 15-20% of path)
-    const crescendoReserve = crescendoText.reduce((acc, span) => {
-      return acc + span.text.length * span.fontSize * 0.6 + span.fontSize // extra for separator
-    }, 0)
-    const normalPathLength = totalPathLength - crescendoReserve
-    const totalCharsNeeded = Math.max(1, Math.floor(normalPathLength / charWidth))
+  if (!layout || size.width === 0) {
+    return <div ref={containerRef} className="w-full h-full" />
+  }
 
-    // Repeat the normal text to fill the path
-    let expandedNormalText = normalText
-    while (expandedNormalText.length < totalCharsNeeded) {
-      expandedNormalText += ' ; ' + normalText
-    }
-    // Trim to approximately fit
-    if (expandedNormalText.length > totalCharsNeeded + 50) {
-      // Cut at a sensible boundary
-      let cutIdx = expandedNormalText.lastIndexOf(' ; ', totalCharsNeeded)
-      if (cutIdx < totalCharsNeeded * 0.5) {
-        cutIdx = expandedNormalText.lastIndexOf(' ', totalCharsNeeded)
-      }
-      if (cutIdx > 0) {
-        expandedNormalText = expandedNormalText.slice(0, cutIdx)
-      }
-    }
-    // Add separator before crescendo
-    expandedNormalText += ' ; '
-
-    return {
-      serpentinePath,
-      expandedNormalText,
-      baseFontSize,
-      totalPathLength,
-    }
-  }, [size, isCompact, normalText, crescendoText])
-
-  // ── Build all text spans for the textPath ──
-  const allSpans = useMemo(() => {
-    if (!pathData) return { normalSpans: [], crescendoSpans: crescendoText }
-
-    const normalSpans = buildTextSpans(pathData.expandedNormalText, ownText)
-    return { normalSpans, crescendoSpans: crescendoText }
-  }, [pathData, ownText, crescendoText])
+  // dy offsets for inline labels
+  // RECEIVED: shift up above the received text baseline
+  const receivedLabelDy = -(receivedFontSize * 1.0 + 8)
+  // YOU WROTE: shift down below the mine text baseline
+  const mineLabelDy = isCompact ? 20 : 28
 
   return (
-    <div ref={containerRef} className="h-full w-full">
-      {size.width > 0 && size.height > 0 && pathData && (
-        <svg
-          width={size.width}
-          height={size.height}
-          viewBox={`0 0 ${size.width} ${size.height}`}
-          className="w-full h-full"
-          aria-hidden="true"
+    <div ref={containerRef} className="relative w-full h-full">
+      <svg
+        className="absolute inset-0 w-full h-full"
+        viewBox={`0 0 ${size.width} ${size.height}`}
+        style={{ overflow: 'visible' }}
+        aria-hidden="true"
+      >
+        {/* Text wave path */}
+        <path id="wavy-relay" d={layout.textPath} fill="none" />
+
+        {/* All text flows along the wavy path — labels are INLINE */}
+        <text
+          fontFamily="'Noto Sans TC', sans-serif"
+          fill="rgba(255,255,255,0.25)"
+          fontSize={baseFontSize}
         >
-          <defs>
-            <filter id="relayGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feDropShadow
-                dx="0"
-                dy="0"
-                stdDeviation="4"
-                floodColor="#A6FF00"
-                floodOpacity="0.85"
-              />
-              <feDropShadow
-                dx="0"
-                dy="0"
-                stdDeviation="8"
-                floodColor="#A6FF00"
-                floodOpacity="0.6"
-              />
-            </filter>
-          </defs>
+          <textPath href="#wavy-relay" startOffset="0%">
+            {/* History text */}
+            <tspan>{layout.history}</tspan>
 
-          {/* Single serpentine path */}
-          <path
-            id="relay-serpentine"
-            d={pathData.serpentinePath}
-            fill="none"
-          />
+            {/* Crescendo: labels + received + mine */}
+            {crescendoItems.map((item, i) => {
+              const isReceived = item.type === 'received'
+              const isMine = item.type === 'mine'
+              const fs = isReceived ? receivedFontSize : mineFontSize
+              const op = isReceived ? 0.7 : 0.95
+              const fw = isMine ? 'bold' : 'normal'
+              const sep = i < crescendoItems.length - 1 ? ' ; ' : ''
+              const labelDy = isReceived ? receivedLabelDy : mineLabelDy
+              const labelText = isReceived ? 'RECEIVED' : 'YOU WROTE'
+              const labelOp = isReceived ? 0.4 : 0.45
+              // Estimate label width (with 0.2em letter-spacing) to pull back with dx
+              const labelWidth = labelText.length * labelFontSize * 0.82
 
-          {/* All text flows along the single path */}
-          <text
-            fill="rgba(255,255,255,0.45)"
-            fontSize={pathData.baseFontSize}
-            fontFamily="'Noto Sans TC', sans-serif"
-          >
-            <textPath href="#relay-serpentine" startOffset="0%">
-              {/* Normal text spans */}
-              {allSpans.normalSpans.map((span, i) => (
-                <tspan
-                  key={`n-${i}`}
-                  fontSize={pathData.baseFontSize}
-                  fill={span.isHighlight ? '#A6FF00' : undefined}
-                  style={span.isHighlight ? { filter: 'url(#relayGlow)' } : undefined}
-                >
-                  {span.text}
-                </tspan>
-              ))}
-              {/* Crescendo spans — last sentences with increasing size */}
-              {allSpans.crescendoSpans.map((span, i) => {
-                const separator = i < allSpans.crescendoSpans.length - 1 ? ' ; ' : ''
-                return (
+              return showLabels ? (
+                <tspan key={i}>
+                  {/* Label: offset vertically via dy */}
                   <tspan
-                    key={`c-${i}`}
-                    fontSize={span.fontSize}
-                    fontWeight={span.fontWeight}
-                    fill={`rgba(255,255,255,${span.opacity})`}
+                    dy={labelDy}
+                    fontSize={labelFontSize}
+                    fill={`rgba(255,255,255,${labelOp})`}
+                    letterSpacing="0.2em"
                   >
-                    {span.text}{separator}
+                    {labelText}
                   </tspan>
-                )
-              })}
-            </textPath>
-          </text>
-        </svg>
-      )}
+                  {/* Reset baseline + pull back horizontally so text doesn't gap */}
+                  <tspan
+                    dy={-labelDy}
+                    dx={-labelWidth}
+                    fontSize={fs}
+                    fontWeight={fw}
+                    fill={`rgba(255,255,255,${op})`}
+                  >
+                    {item.text}{sep}
+                  </tspan>
+                </tspan>
+              ) : (
+                <tspan
+                  key={i}
+                  fontSize={fs}
+                  fontWeight={fw}
+                  fill={`rgba(255,255,255,${op})`}
+                >
+                  {item.text}{sep}
+                </tspan>
+              )
+            })}
+
+            {/* Trailing decorative */}
+            <tspan fontSize={baseFontSize} fill="rgba(255,255,255,0.08)">
+              {'；' + '×'.repeat(60)}
+            </tspan>
+          </textPath>
+        </text>
+      </svg>
     </div>
   )
 }

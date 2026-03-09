@@ -1,1008 +1,1047 @@
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600;900&family=ZCOOL+QingKe+HuangYou&display=swap");
 
-  .ch11-container {
-    font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  .ch11 {
+    font-family: "Noto Sans TC", "Inter", sans-serif;
     color: #1a1a1a;
     width: 100%;
-    background-color: #ffffff;
+    background: #fff;
   }
-  .ch11-sans {
-    font-family: "Noto Sans TC", sans-serif;
+  .ch11 *, .ch11 *::before, .ch11 *::after { box-sizing: border-box; }
+  .ch11 p { margin-bottom: 0; }
+
+  /* ── Top Decoration Stripes ── */
+  .ch11-top-deco {
+    position: relative;
+    max-width: 1230px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: 100px;
+    overflow: hidden;
   }
-  .vertical-text {
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
+  .ch11-stripe-bar {
+    position: absolute;
+    height: 13px;
+    border-radius: 1px;
   }
-  .text-justify-palt {
+  .ch11-top-text {
+    position: absolute;
+    bottom: 10px;
+    left: 1.5rem;
+    z-index: 2;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .ch11-top-year {
+    font-family: "ZCOOL QingKe HuangYou", "Inter", sans-serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #fff;
+    letter-spacing: 0.05em;
+  }
+  .ch11-top-desc {
+    font-family: "Inter", sans-serif;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ── Intro ── */
+  .ch11-intro {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    text-align: center;
+  }
+  .ch11-year {
+    font-family: "Inter", sans-serif;
+    font-size: clamp(5rem, 14vw, 10rem);
+    font-weight: 700;
+    line-height: 1;
+    color: #f0f0f0;
+    letter-spacing: -0.04em;
+    user-select: none;
+    pointer-events: none;
+  }
+  .ch11-title {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    margin-top: -1.5rem;
+    position: relative;
+  }
+  .ch11-subtitle {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    letter-spacing: 0.25em;
+    margin-top: 1rem;
+    text-transform: uppercase;
+  }
+  .ch11-lead {
+    font-size: 1rem;
+    line-height: 2;
+    color: #555;
+    max-width: 640px;
+    margin: 2.5rem auto 0;
     text-align: justify;
     font-feature-settings: "palt";
   }
 
-  .ch11-container::-webkit-scrollbar {
-    display: none;
+  /* ── Calendar + Timeline Layout ── */
+  .ch11-main {
+    max-width: 1230px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    gap: 3rem;
+    position: relative;
   }
 
-  /* Paragraph spacing */
-  .ch11-container p {
-    margin-bottom: 1rem;
-  }
-
-  @media (min-width: 768px) {
-    .ch11-container p {
-      margin-bottom: 1rem;
-    }
-  }
-
-  /* ===== Image Styles ===== */
-  .img-full {
-    width: 100%;
+  /* ── Calendar Panel (sticky left) ── */
+  .cal-panel {
+    width: 380px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 14vh;
+    align-self: flex-start;
     height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 3rem 0;
+  }
+  .cal-panel-inner {
+    border: 1.5px solid #1a1a1a;
+    border-radius: 13px;
+    padding: 16px 24px 12px 24px;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
   }
 
-  .img-large {
-    width: 80%;
-    max-width: 900px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 2.5rem auto;
-    display: block;
+  /* Frames: only active visible — two months stacked */
+  .cal-frame { display: none; }
+  .cal-frame.is-active {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
 
-  .img-medium {
-    width: 60%;
-    max-width: 600px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 2rem auto;
-    display: block;
+  .cal-month-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .cal-month-name {
+    font-family: "Inter", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #344054;
+  }
+  .cal-month-year {
+    font-family: "Inter", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #9ca3af;
+    letter-spacing: 0.05em;
   }
 
-  .img-small {
-    width: 40%;
-    max-width: 400px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 1.5rem auto;
-    display: block;
-  }
-
-  .img-small-left {
-    width: 40%;
-    max-width: 400px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    float: left;
-    margin: 0.5rem 2rem 1.5rem 0;
-  }
-
-  .img-small-right {
-    width: 40%;
-    max-width: 400px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    float: right;
-    margin: 0.5rem 0 1.5rem 2rem;
-  }
-
-  .img-grid-2 {
+  /* Calendar Grid */
+  .cal-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    text-align: center;
+  }
+  .cal-weekday {
+    font-family: "Inter", sans-serif;
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: #9ca3af;
+    padding: 0.3rem 0;
+    letter-spacing: 0.05em;
+  }
+  .cal-date {
+    font-family: "Inter", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: #344054;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto;
+    transition: all 0.2s;
+  }
+  .cal-date.has-event {
+    background: #E8F5FF;
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+
+  /* Month indicator below calendar */
+  .cal-indicator {
+    margin-top: 1.25rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .cal-indicator-num {
+    font-family: "Inter", sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #1a1a1a;
+  }
+  .cal-indicator-label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    letter-spacing: 0.15em;
+    line-height: 1.4;
+  }
+  .ch11 [data-story-label] { cursor: default; }
+
+  /* Progress dots */
+  .cal-progress {
+    display: flex;
+    gap: 6px;
+    margin-top: 0.75rem;
+  }
+  .cal-progress-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    transition: background 0.3s;
+  }
+  .cal-progress-dot.is-active { background: #1a1a1a; }
+
+  /* ── Timeline Panel ── */
+  .tl-panel {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    padding-bottom: 6rem;
+  }
+  /* Vertical timeline line through date boxes */
+  .tl-panel::before {
+    content: "";
+    position: absolute;
+    left: 32px;
+    top: 32px;
+    bottom: 6rem;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, #d1d5db 3%, #d1d5db 97%, transparent);
+    z-index: 0;
+  }
+
+  /* Section (month group) */
+  .tl-section { padding-bottom: 3rem; position: relative; }
+  .tl-section:last-child { padding-bottom: 0; }
+
+  /* Event Row with Date Box */
+  .tl-event-row {
+    display: flex;
     gap: 1.5rem;
-    margin: 2.5rem 0;
+    margin-bottom: 1.5rem;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+  }
+  .tl-event-row:last-child { margin-bottom: 0; }
+
+  /* Date Box — 64×64, rounded-10, border */
+  .tl-date-box {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border: 1.5px solid #1a1a1a;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    position: relative;
+    z-index: 2;
+    gap: 1px;
+  }
+  .tl-date-month {
+    font-family: "Inter", sans-serif;
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: #9ca3af;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tl-date-day {
+    font-family: "Inter", sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #1a1a1a;
   }
 
-  .img-grid-2 img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 8px;
+  /* Event Content */
+  .tl-event-content {
+    flex: 1;
+    min-width: 0;
+    padding-top: 0.25rem;
   }
-
-  .img-grid-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    margin: 2.5rem 0;
+  .tl-event-content h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+    margin: 0;
   }
-
-  .img-grid-3 img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 8px;
+  .tl-event-en {
+    font-family: "Inter", sans-serif;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 0.25rem;
+    line-height: 1.4;
   }
-
-  @media (max-width: 768px) {
-    .img-large,
-    .img-medium {
-      width: 90%;
-    }
-
-    .img-small,
-    .img-small-left,
-    .img-small-right {
-      width: 100%;
-      float: none;
-      margin: 1.5rem auto;
-    }
-
-    .img-grid-2 {
-      grid-template-columns: 1fr;
-    }
-
-    .img-grid-3 {
-      grid-template-columns: 1fr;
-    }
-
-    .img-grid-2 img,
-    .img-grid-3 img {
-      height: 200px;
-    }
-  }
-  .img-caption {
-    font-family: "Noto Sans TC", sans-serif;
+  .tl-event-desc {
     font-size: 0.875rem;
     color: #6b7280;
-    margin-top: 0.75rem;
-    text-align: center;
+    line-height: 1.8;
+    margin-top: 0.5rem;
+  }
+
+  /* Tags */
+  .tl-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: #6b7280;
+    border: 1px solid #e5e7eb;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-bottom: 0.4rem;
+  }
+
+  /* Award Cards */
+  .tl-award-label {
+    font-family: "Inter", sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: #9ca3af;
+    text-transform: uppercase;
+    margin: 0.75rem 0 0.5rem;
+  }
+  .tl-award-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  @media (min-width: 1200px) {
+    .tl-award-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    .tl-award-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .tl-award-card {
+    border: 1.5px solid #1a1a1a;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+  .tl-award-card:hover { background: #fafafa; }
+  .tl-award-name {
+    font-size: 0.9rem;
+    font-weight: 700;
     letter-spacing: 0.05em;
+  }
+  .tl-award-desc {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.15rem;
     line-height: 1.5;
   }
 
-  /* ===== Chronicle-specific Styles ===== */
-
-  /* Season section divider */
-  .season-divider {
-    width: 100%;
-    height: 1px;
-    background: #1a1a1a;
-    margin: 4rem 0 3rem;
+  /* Alumni Grid with Stars */
+  .tl-alumni-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
   }
-
-  .season-divider-thin {
-    width: 100%;
-    height: 1px;
-    background: #d1d5db;
-    margin: 2.5rem 0 2rem;
+  .tl-alumni-item {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding: 0.4rem 0;
   }
-
-  /* Month marker */
-  .month-marker {
-    display: inline-block;
-    font-family: "Noto Sans TC", sans-serif;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    color: #6b7280;
-    border: 1px solid #d1d5db;
-    padding: 0.25rem 0.75rem;
-    margin-bottom: 1rem;
+  .tl-star {
+    font-size: 1.4rem;
+    color: #1a1a1a;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
   }
-
-  /* Event tag */
-  .event-tag {
-    display: inline-block;
-    font-family: "Noto Sans TC", sans-serif;
+  .tl-alumni-location {
     font-size: 0.7rem;
-    font-weight: 400;
-    letter-spacing: 0.1em;
     color: #9ca3af;
-    border: 1px solid #e5e7eb;
-    padding: 0.15rem 0.5rem;
-    margin-right: 0.35rem;
-    margin-bottom: 0.35rem;
-    line-height: 1.6;
+    letter-spacing: 0.15em;
+  }
+  .tl-alumni-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: 0.1rem;
+  }
+  .tl-alumni-project {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin-top: 0.05rem;
   }
 
-  /* Award card */
-  .award-card {
-    border: 1px solid #1a1a1a;
-    padding: 1.25rem 1.5rem;
-    transition: background-color 0.2s ease;
+  /* ── Footer ── */
+  .ch11-footer {
+    max-width: 800px;
+    margin: 6rem auto 0;
+    padding: 0 1.5rem 4rem;
+    text-align: center;
   }
-
-  .award-card:hover {
-    background-color: #fafafa;
-  }
-
-  /* Alumni highlight block */
-  .alumni-highlight {
-    border-left: 3px solid #1a1a1a;
-    padding: 1.5rem 0 1.5rem 1.5rem;
-    margin: 2rem 0;
-  }
-
-  /* Timeline dot */
-  .timeline-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+  .ch11-footer-divider {
+    width: 60px;
+    height: 2px;
     background: #1a1a1a;
-    display: inline-block;
-    margin-right: 0.75rem;
-    flex-shrink: 0;
-    margin-top: 0.5rem;
+    margin: 0 auto 2.5rem;
   }
-
-  .timeline-dot-hollow {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: 1.5px solid #1a1a1a;
-    background: transparent;
-    display: inline-block;
-    margin-right: 0.75rem;
-    flex-shrink: 0;
-    margin-top: 0.5rem;
-  }
-
-  /* Season label */
-  .season-label {
-    font-family: "Noto Sans TC", sans-serif;
+  .ch11-footer-label {
+    font-family: "Inter", sans-serif;
     font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.35em;
+    letter-spacing: 0.3em;
     color: #9ca3af;
     text-transform: uppercase;
   }
-
-  /* Large year number */
-  .year-display {
-    font-family: "Shippori Mincho", serif;
-    font-size: clamp(4rem, 10vw, 8rem);
-    font-weight: 800;
-    line-height: 1;
-    color: #f3f4f6;
-    letter-spacing: -0.02em;
-    user-select: none;
-    pointer-events: none;
+  .ch11-footer-title {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 900;
+    margin-top: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+  .ch11-footer-text {
+    font-size: 1rem;
+    line-height: 2;
+    color: #6b7280;
+    margin-top: 1.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  /* Event list item */
-  .event-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0;
-    margin-bottom: 1.25rem;
-  }
-
-  .event-item:last-child {
-    margin-bottom: 0;
-  }
-
-  @media (max-width: 768px) {
-    .season-divider {
-      margin: 3rem 0 2rem;
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .ch11-main { flex-direction: column; gap: 0; }
+    .cal-panel {
+      width: 100%;
+      position: relative;
+      top: auto;
+      margin-bottom: 2rem;
     }
-
-    .alumni-highlight {
-      padding-left: 1rem;
+    .cal-panel-inner {
+      max-width: 400px;
+      margin: 0 auto;
     }
+    .ch11-top-deco { height: 80px; }
+  }
+  @media (max-width: 640px) {
+    .ch11-main { padding: 0 1rem; }
+    .cal-panel-inner { padding: 12px 14px; }
+    .tl-date-box { width: 52px; height: 52px; }
+    .tl-date-day { font-size: 1.1rem; }
+    .tl-date-month { font-size: 0.5rem; }
+    .tl-panel::before { left: 26px; top: 26px; }
+    .tl-event-row { gap: 0.75rem; }
+    .tl-event-content h4 { font-size: 0.95rem; }
+    .tl-alumni-grid { grid-template-columns: 1fr; }
   }
 </style>
 
-<div class="ch11-container not-prose pb-24 overflow-visible">
+<div class="ch11 not-prose">
 
-  <!-- ============================================================ -->
-  <!-- INTRO SECTION -->
-  <!-- ============================================================ -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 relative">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+  <!-- ═══════════════════════════════════════ -->
+  <!-- TOP DECORATION — 8 BLACK STRIPE BARS -->
+  <!-- ═══════════════════════════════════════ -->
 
-      <!-- Vertical Title (Desktop) -->
-      <div
-        class="col-span-2 hidden lg:flex h-[600px] justify-center items-start pt-16"
-      >
-        <div class="h-full border-r border-gray-900 pr-6">
-          <h2
-            class="vertical-text text-4xl font-bold tracking-[0.2em] text-gray-900"
-          >
-            年度大事紀
-          </h2>
-          <p
-            class="vertical-text mt-6 text-sm tracking-[0.3em] text-gray-500 ch11-sans"
-          >
-            活動現場／114 學年
-          </p>
-        </div>
-      </div>
-
-      <!-- Main Content -->
-      <div
-        class="col-span-1 md:col-span-12 lg:col-span-8 space-y-10 md:space-y-12 max-w-4xl"
-      >
-        <!-- Opening Quote -->
-        <div class="relative py-12 md:py-20">
-          <p class="year-display text-center" aria-hidden="true">2025</p>
-          <h3
-            class="text-3xl md:text-5xl font-black text-center leading-tight tracking-tight px-4 mt-6"
-          >
-            「一年之間，<br class="hidden md:block" />
-            每一個分號都在延續故事」
-          </h3>
-          <p
-            class="mt-6 text-center text-sm md:text-base text-gray-600 ch11-sans tracking-widest"
-          >
-            —— 服科所 2025 年度紀事
-          </p>
-        </div>
-
-        <!-- Lead paragraph -->
-        <div class="space-y-6 md:space-y-8 text-lg leading-10 text-gray-800 font-light text-justify-palt">
-          <p>
-            2025 年，服科所的故事從春酒的歡聲中開啟，在論文發表會的思辨中收束。
-            這一年，教授們屢獲殊榮，校友們在各自的場域綻放光芒，
-            而新一屆的學生也在迎新與實習中，開始書寫屬於自己的篇章。
-            以下，是這一年值得記住的每一個時刻。
-          </p>
-        </div>
-      </div>
-
-      <!-- Right Rail (Meta) -->
-      <div class="col-span-2 hidden lg:block pt-20">
-        <div class="sticky top-10 space-y-6">
-          <div class="border border-black p-4">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">FORM</p>
-            <p class="mt-2 text-sm leading-7 text-gray-800">
-              年度大事紀<br />
-              114 學年活動回顧
-            </p>
-          </div>
-          <div class="border-t border-black pt-6">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-              PERIOD
-            </p>
-            <p class="mt-2 text-sm leading-7 text-gray-800">
-              114.02 — 114.12
-            </p>
-          </div>
-          <div class="border-t border-black pt-6">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-              KEYWORDS
-            </p>
-            <p class="mt-2 text-sm leading-7 text-gray-800">
-              學術榮譽、社群活動、<br />招生、實習、教授獎項
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- ═══════════════════════════════════════ -->
+  <!-- INTRO -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="ch11-intro">
+       <p class="ch11-lead">
+      2025 年，服科所的故事從春酒的歡聲中開啟，在論文發表會的思辨中收束。
+      教授們屢獲殊榮，校友們在各自的場域綻放光芒，
+      新一屆學生在迎新與實習中，開始書寫屬於自己的篇章。
+    </p>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- SPRING: 2-4 月 -->
-  <!-- ============================================================ -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+  <!-- ═══════════════════════════════════════ -->
+  <!-- CALENDAR + TIMELINE (data-story-sync) -->
+  <!-- ═══════════════════════════════════════ -->
+  <div data-story-sync class="ch11-main">
 
-      <!-- Season sidebar (Desktop) -->
-      <div class="lg:col-span-3 hidden lg:block">
-        <div class="sticky top-10">
-          <p class="season-label">SPRING</p>
-          <h3
-            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[480px]"
-          >
-            春季篇
-          </h3>
-          <p class="mt-4 text-xs text-gray-400 ch11-sans tracking-wider">114.02 — 114.04</p>
-        </div>
-      </div>
+    <!-- ─── Calendar Panel (Sticky Left) ─── -->
+    <div class="cal-panel">
+      <div class="cal-panel-inner">
 
-      <div class="lg:col-span-9 space-y-8 max-w-4xl">
-        <!-- Mobile season header -->
-        <div class="lg:hidden">
-          <p class="season-label">SPRING</p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">春季篇</h3>
-          <p class="mt-1 text-xs text-gray-400 ch11-sans tracking-wider">114.02 — 114.04</p>
-        </div>
-
-        <!-- Pull Quote for Spring -->
-        <div class="py-6 md:py-8">
-          <p
-            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
-          >
-            「春天是啟程的季節，<br class="hidden md:block" />
-            也是交棒的時刻」
-          </p>
-        </div>
-
-        <!-- 114.02 -->
-        <div>
-          <span class="month-marker">114.02</span>
-
-          <div class="event-item mt-4">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">社群活動</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                2025 春酒暨所學會交接
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                新春伊始，服科所師生齊聚一堂。在歡笑與祝福中，所學會完成世代交接，
-                新一屆幹部正式接下傳承的責任，為即將展開的一年揭開序幕。
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="season-divider-thin"></div>
-
-        <!-- 114.03 -->
-        <div>
-          <span class="month-marker">114.03</span>
-
-          <div class="event-item mt-4">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">招生相關</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                碩士班考試入學複試暨招生座談會
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                面對新一批懷抱跨領域夢想的考生，服科所敞開大門，
-                透過複試與座談讓未來的學弟妹深入認識這個獨特的學術社群。
-              </p>
-            </div>
-          </div>
-
-          <div class="event-item mt-6">
-            <span class="timeline-dot-hollow"></span>
-            <div>
-              <span class="event-tag">實習/職涯</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                2025 實習學長姐座談分享會
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                歷屆實習學長姐帶著一線實戰經驗回到課堂，
-                為即將踏入產業的學弟妹分享從服科課堂到職場現場的銜接心法。
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="season-divider-thin"></div>
-
-        <!-- 114.04 -->
-        <div>
-          <span class="month-marker">114.04</span>
-
-          <div class="event-item mt-4">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">社群活動</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                2025 服科所友回娘家 ISS Alumni Party
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                散落在各行各業的服科人重新匯聚。從科技業到文化產業，
-                從新創到大企業，校友們帶著各自的故事回到這個起點，
-                讓「服科家族」的連結再次被點亮。
-              </p>
-            </div>
-          </div>
-
-          <!-- Professor awards: card grid -->
-          <div class="mt-8 mb-4">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans mb-4">FACULTY HONORS</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="award-card">
-                <span class="event-tag">教授獎項</span>
-                <h4 class="text-lg font-bold tracking-wider mt-2">許裴舫 教授</h4>
-                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
-                  榮獲 113 學年度<br />科管院傑出教學獎
-                </p>
-              </div>
-              <div class="award-card">
-                <span class="event-tag">教授獎項</span>
-                <h4 class="text-lg font-bold tracking-wider mt-2">林福仁 教授</h4>
-                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
-                  榮獲清華大學<br />第十七屆傑出導師獎
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================================================ -->
-  <!-- SUMMER: 5-6 月 -->
-  <!-- ============================================================ -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-      <div class="lg:col-span-3 hidden lg:block">
-        <div class="sticky top-10">
-          <p class="season-label">SUMMER</p>
-          <h3
-            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[480px]"
-          >
-            夏季篇
-          </h3>
-          <p class="mt-4 text-xs text-gray-400 ch11-sans tracking-wider">114.05 — 114.06</p>
-        </div>
-      </div>
-
-      <div class="lg:col-span-9 space-y-8 max-w-4xl">
-        <div class="lg:hidden">
-          <p class="season-label">SUMMER</p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">夏季篇</h3>
-          <p class="mt-1 text-xs text-gray-400 ch11-sans tracking-wider">114.05 — 114.06</p>
-        </div>
-
-        <div class="py-6 md:py-8">
-          <p
-            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
-          >
-            「畢業不是結束，<br class="hidden md:block" />
-            是另一段旅程的分號」
-          </p>
-        </div>
-
-        <!-- 114.05 -->
-        <div>
-          <span class="month-marker">114.05</span>
-
-          <!-- Alumni Award -->
-          <div class="event-item mt-4">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">學術榮譽</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                103 級廖健妤學姐榮獲 2025 科管院傑出校友獎
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                傑出校友的肯定，不只是個人成就的認可，
-                更是服科所培育人才的最佳見證。
-              </p>
-            </div>
-          </div>
-
-          <!-- Graduation -->
-          <div class="event-item mt-6">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">社群活動</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                2025 科管院小畢典
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                學位帽拋向天際的那一刻，是句點也是分號。
-                祝福每一位畢業的服科人，帶著這裡的養分走向更遠的地方。
-              </p>
-            </div>
-          </div>
-
-          <!-- PTK Honor -->
-          <div class="event-item mt-6">
-            <span class="timeline-dot-hollow"></span>
-            <div>
-              <span class="event-tag">學術榮譽</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                114 年度服科所斐陶斐榮譽會員
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                碩士班張博彥同學獲選為斐陶斐榮譽會員，
-                以學術表現獲得肯定，為在校生樹立典範。
-              </p>
-            </div>
-          </div>
-
-          <div class="season-divider-thin"></div>
-
-          <!-- Cultural Base Alumni Highlight -->
+        <!-- FRAME 0: Feb + Mar -->
+        <div data-story-frame class="cal-frame">
           <div>
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans mb-4">SPECIAL FEATURE</p>
-            <h4 class="text-xl md:text-2xl font-bold tracking-wider mb-4">
-              「第一屆百大文化基地」<br class="md:hidden" />四位服科校友脫穎而出
+            <div class="cal-month-header"><span class="cal-month-name">February</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:7">1</span>
+              <span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span>
+              <span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span>
+              <span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span>
+              <span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span>
+            </div>
+          </div>
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">March</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:7">1</span>
+              <span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span>
+              <span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span>
+              <span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span>
+              <span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span>
+              <span class="cal-date">30</span><span class="cal-date">31</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 1: Mar + Apr -->
+        <div data-story-frame class="cal-frame">
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">March</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:7">1</span>
+              <span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span>
+              <span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span>
+              <span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span>
+              <span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span>
+              <span class="cal-date">30</span><span class="cal-date">31</span>
+            </div>
+          </div>
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">April</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:3">1</span><span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span>
+              <span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span>
+              <span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span>
+              <span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span>
+              <span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span><span class="cal-date">30</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 2: Apr + May -->
+        <div data-story-frame class="cal-frame">
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">April</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:3">1</span><span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span>
+              <span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span>
+              <span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span>
+              <span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span>
+              <span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span><span class="cal-date">30</span>
+            </div>
+          </div>
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">May</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:5">1</span><span class="cal-date">2</span><span class="cal-date">3</span>
+              <span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span>
+              <span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span>
+              <span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span>
+              <span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span><span class="cal-date">30</span><span class="cal-date">31</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 3: May + Jun -->
+        <div data-story-frame class="cal-frame">
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">May</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:5">1</span><span class="cal-date">2</span><span class="cal-date">3</span>
+              <span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span>
+              <span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span>
+              <span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span>
+              <span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span><span class="cal-date">30</span><span class="cal-date">31</span>
+            </div>
+          </div>
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">June</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date">1</span><span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span>
+              <span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span>
+              <span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span>
+              <span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span>
+              <span class="cal-date">29</span><span class="cal-date">30</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 4: Jun + Sep (skip summer) -->
+        <div data-story-frame class="cal-frame">
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">June</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date">1</span><span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span>
+              <span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span>
+              <span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span>
+              <span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span>
+              <span class="cal-date">29</span><span class="cal-date">30</span>
+            </div>
+          </div>
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">September</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:2">1</span><span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span>
+              <span class="cal-date">7</span><span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span>
+              <span class="cal-date">14</span><span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span>
+              <span class="cal-date">21</span><span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span>
+              <span class="cal-date">28</span><span class="cal-date">29</span><span class="cal-date">30</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 5: Sep + Oct -->
+        <div data-story-frame class="cal-frame">
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">September</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:2">1</span><span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span>
+              <span class="cal-date">7</span><span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span>
+              <span class="cal-date">14</span><span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span>
+              <span class="cal-date">21</span><span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span>
+              <span class="cal-date">28</span><span class="cal-date">29</span><span class="cal-date">30</span>
+            </div>
+          </div>
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">October</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:4">1</span><span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span>
+              <span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span>
+              <span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span>
+              <span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span>
+              <span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span><span class="cal-date">30</span><span class="cal-date">31</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 6: Oct + Nov -->
+        <div data-story-frame class="cal-frame">
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">October</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:4">1</span><span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span>
+              <span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span>
+              <span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span>
+              <span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span>
+              <span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span><span class="cal-date">30</span><span class="cal-date">31</span>
+            </div>
+          </div>
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">November</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:7">1</span>
+              <span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span>
+              <span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span>
+              <span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span>
+              <span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span>
+              <span class="cal-date">30</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 7: Nov + Dec -->
+        <div data-story-frame class="cal-frame">
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">November</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:7">1</span>
+              <span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span>
+              <span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date">14</span><span class="cal-date">15</span>
+              <span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span>
+              <span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span>
+              <span class="cal-date">30</span>
+            </div>
+          </div>
+          <div>
+            <div class="cal-month-header"><span class="cal-month-name">December</span><span class="cal-month-year">2025</span></div>
+            <div class="cal-grid">
+              <span class="cal-weekday">Su</span><span class="cal-weekday">Mo</span><span class="cal-weekday">Tu</span><span class="cal-weekday">We</span><span class="cal-weekday">Th</span><span class="cal-weekday">Fr</span><span class="cal-weekday">Sa</span>
+              <span class="cal-date" style="grid-column-start:2">1</span><span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span>
+              <span class="cal-date">7</span><span class="cal-date">8</span><span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span>
+              <span class="cal-date">14</span><span class="cal-date">15</span><span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span>
+              <span class="cal-date">21</span><span class="cal-date">22</span><span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span>
+              <span class="cal-date">28</span><span class="cal-date">29</span><span class="cal-date">30</span><span class="cal-date">31</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Indicator + Progress (8 dots) -->
+        <div class="cal-indicator">
+          <span class="cal-indicator-num" data-story-label>02</span>
+          <div class="cal-indicator-label">月<br>114 學年</div>
+        </div>
+        <div class="cal-progress">
+          <div class="cal-progress-dot" data-story-progress></div>
+          <div class="cal-progress-dot" data-story-progress></div>
+          <div class="cal-progress-dot" data-story-progress></div>
+          <div class="cal-progress-dot" data-story-progress></div>
+          <div class="cal-progress-dot" data-story-progress></div>
+          <div class="cal-progress-dot" data-story-progress></div>
+          <div class="cal-progress-dot" data-story-progress></div>
+          <div class="cal-progress-dot" data-story-progress></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─── Timeline Panel ─── -->
+    <div class="tl-panel">
+
+      <!-- ▸ ENTRY 1 — Feb ──────────────────── -->
+      <div data-story-entry data-story-title="02" class="tl-section">
+        <div data-story-marker class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Feb</span>
+            <span class="tl-date-day">02</span>
+          </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">社群活動</span>
+            <h4>2025 春酒暨所學會交接</h4>
+            <p class="tl-event-en">2025 Spring Party</p>
+            <p class="tl-event-desc">新春伊始，服科所師生齊聚一堂。在歡笑與祝福中，所學會完成世代交接，新一屆幹部正式接下傳承的責任。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ ENTRY 2 — Mar ──────────────────── -->
+      <div data-story-entry data-story-title="03" class="tl-section">
+        <div data-story-marker class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Mar</span>
+            <span class="tl-date-day">03</span>
+          </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">招生相關</span>
+            <h4>碩士班考試入學複試暨招生座談會</h4>
+            <p class="tl-event-en">Master Oral Exam and Gathering of Applicants</p>
+          </div>
+        </div>
+        <div class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Mar</span>
+            <span class="tl-date-day">03</span>
+          </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">實習/職涯</span>
+            <h4>2025 實習學長姐座談分享會</h4>
+            <p class="tl-event-en">Internship Experience Sharing</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ ENTRY 3 — Apr ──────────────────── -->
+      <div data-story-entry data-story-title="04" class="tl-section">
+        <div data-story-marker class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Apr</span>
+            <span class="tl-date-day">04</span>
+          </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">社群活動</span>
+            <h4>2025 服科所友回娘家</h4>
+            <p class="tl-event-en">ISS Alumni Party</p>
+          </div>
+        </div>
+        <div class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Apr</span>
+            <span class="tl-date-day">04</span>
+          </div>
+          <div class="tl-event-content">
+            <div class="tl-award-label">Faculty Honors</div>
+            <div class="tl-award-grid cols-2">
+              <div class="tl-award-card">
+                <span class="tl-tag">教授獎項</span>
+                <p class="tl-award-name">許裴舫 教授</p>
+                <p class="tl-award-desc">113 學年度科管院傑出教學獎</p>
+              </div>
+              <div class="tl-award-card">
+                <span class="tl-tag">教授獎項</span>
+                <p class="tl-award-name">林福仁 教授</p>
+                <p class="tl-award-desc">清華大學第十七屆傑出導師獎</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ ENTRY 4 — May ──────────────────── -->
+      <div data-story-entry data-story-title="05" class="tl-section">
+        <div data-story-marker class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">May</span>
+            <span class="tl-date-day">05</span>
+          </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">學術榮譽</span>
+            <h4>103 級廖健妤學姐榮獲 2025 科管院傑出校友獎</h4>
+            <p class="tl-event-en">Alumna Chien-Yu Liao — CTM Outstanding Alumni Award</p>
+            <p class="tl-event-desc" style="margin-top:0.75rem">
+              <span class="tl-tag">社群活動</span> 2025 科管院小畢典<br>
+              <span class="tl-tag">學術榮譽</span> 114 年度斐陶斐榮譽會員：碩士班張博彥同學
+            </p>
+          </div>
+        </div>
+        <div class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">May</span>
+            <span class="tl-date-day">05</span>
+          </div>
+          <div class="tl-event-content">
+            <div class="tl-award-label">Special Feature</div>
+            <h4>「第一屆百大文化基地」四位服科校友脫穎而出</h4>
+            <p class="tl-event-desc">展現深耕地方、結合創新與文化的強大實力</p>
+            <div class="tl-alumni-grid">
+              <div class="tl-alumni-item">
+                <span class="tl-star">★</span>
+                <div>
+                  <p class="tl-alumni-location">宜蘭</p>
+                  <p class="tl-alumni-name">彭仁鴻</p>
+                  <p class="tl-alumni-project">「小鎮職人」</p>
+                </div>
+              </div>
+              <div class="tl-alumni-item">
+                <span class="tl-star">★</span>
+                <div>
+                  <p class="tl-alumni-location">新竹</p>
+                  <p class="tl-alumni-name">莊凱詠</p>
+                  <p class="tl-alumni-project">「大山北月」</p>
+                </div>
+              </div>
+              <div class="tl-alumni-item">
+                <span class="tl-star">★</span>
+                <div>
+                  <p class="tl-alumni-location">新竹</p>
+                  <p class="tl-alumni-name">陳泓維</p>
+                  <p class="tl-alumni-project">「東門市場」</p>
+                </div>
+              </div>
+              <div class="tl-alumni-item">
+                <span class="tl-star">★</span>
+                <div>
+                  <p class="tl-alumni-location">新竹</p>
+                  <p class="tl-alumni-name">吳君薇</p>
+                  <p class="tl-alumni-project">「見域工作室」</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">May</span>
+            <span class="tl-date-day">05</span>
+          </div>
+          <div class="tl-event-content">
+            <div class="tl-award-label">Research Excellence</div>
+            <div class="tl-award-grid cols-3">
+              <div class="tl-award-card">
+                <p class="tl-award-name">許裴舫 教授</p>
+                <p class="tl-award-name" style="margin-top:0.1rem">雷松亞 特聘教授</p>
+                <p class="tl-award-desc">114 學年度科管院厚德會傑出研究獎</p>
+              </div>
+              <div class="tl-award-card">
+                <p class="tl-award-name">徐茉莉 講座教授</p>
+                <p class="tl-award-desc">114 年科管院研究獎</p>
+              </div>
+              <div class="tl-award-card">
+                <p class="tl-award-name">兪在元 助理教授</p>
+                <p class="tl-award-desc">114 年新進人員研究獎</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ ENTRY 5 — Jun ──────────────────── -->
+      <div data-story-entry data-story-title="06" class="tl-section">
+        <div data-story-marker class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Jun</span>
+            <span class="tl-date-day">06</span>
+          </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">學術榮譽</span>
+            <h4>2025 服科博士班年度研究發表會</h4>
+            <p class="tl-event-en">PhD Student Year-End Evaluation Presentation</p>
+          </div>
+        </div>
+        <div class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Jun</span>
+            <span class="tl-date-day">06</span>
+          </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">實習/職涯</span>
+            <h4>2025 實習始業式</h4>
+            <p class="tl-event-en">Internship Yes Party — via Gather Town</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ ENTRY 6 — Sep + Oct (merged) ──────────────────── -->
+      <div data-story-entry data-story-title="09" class="tl-section">
+        <div data-story-marker class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Sep</span>
+            <span class="tl-date-day">09</span>
+          </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">社群活動</span>
+            <h4>2025 迎新溯溪活動及迎新茶會</h4>
+            <p class="tl-event-en">River Tracing &amp; Welcome Party</p>
+          </div>
+        </div>
+        <div class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Sep</span>
+            <span class="tl-date-day">09</span>
+          </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">實習/職涯</span>
+            <h4>2025 實習成果發表</h4>
+            <p class="tl-event-en">Internship Sharing</p>
+            <p class="tl-event-desc" style="margin-top:0.5rem">
+              <span class="tl-tag">社群活動</span> 服務創新課程再次開課 — with Milksha &amp; Sinyi Realty
+            </p>
+          </div>
+        </div>
+        <div class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Sep</span>
+            <span class="tl-date-day">09</span>
+          </div>
+          <div class="tl-event-content">
+            <div class="tl-award-label">Paper Awards</div>
+            <div class="tl-award-grid cols-2">
+              <div class="tl-award-card">
+                <span class="tl-tag">學術榮譽</span>
+                <p class="tl-award-name">王俊程 教授 &amp; 陳怡瑄</p>
+                <p class="tl-award-desc">2025 台灣管理學會論文大賞 AI 應用競賽佳作</p>
+              </div>
+              <div class="tl-award-card">
+                <span class="tl-tag">學術榮譽</span>
+                <p class="tl-award-name">歐怡君 副教授 &amp; 卓宜蓁</p>
+                <p class="tl-award-desc">2025 富邦人壽管理碩博士論文獎行銷組優等</p>
+              </div>
+            </div>
+            <h4 style="margin-top:0.75rem">
+              <span class="tl-tag">校友成就</span>
+              莊凱詠學長榮獲 2025 台灣傑出永續青年獎
             </h4>
-            <p class="text-base leading-8 text-gray-700 font-light text-justify-palt mb-6">
-              從宜蘭到新竹，服科校友用服務創新的視角深耕地方，
-              在全國百大文化基地的評選中展現跨域人才的影響力。
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="alumni-highlight">
-                <p class="text-sm text-gray-400 ch11-sans tracking-wider mb-1">宜蘭</p>
-                <h5 class="text-lg font-bold tracking-wider">彭仁鴻</h5>
-                <p class="mt-1 text-base leading-7 text-gray-600">「小鎮職人」</p>
-              </div>
-              <div class="alumni-highlight">
-                <p class="text-sm text-gray-400 ch11-sans tracking-wider mb-1">新竹</p>
-                <h5 class="text-lg font-bold tracking-wider">莊凱詠</h5>
-                <p class="mt-1 text-base leading-7 text-gray-600">「大山北月」</p>
-              </div>
-              <div class="alumni-highlight">
-                <p class="text-sm text-gray-400 ch11-sans tracking-wider mb-1">新竹</p>
-                <h5 class="text-lg font-bold tracking-wider">陳泓維</h5>
-                <p class="mt-1 text-base leading-7 text-gray-600">「東門市場」</p>
-              </div>
-              <div class="alumni-highlight">
-                <p class="text-sm text-gray-400 ch11-sans tracking-wider mb-1">新竹</p>
-                <h5 class="text-lg font-bold tracking-wider">吳君薇</h5>
-                <p class="mt-1 text-base leading-7 text-gray-600">「見域工作室」</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="season-divider-thin"></div>
-
-          <!-- Faculty Research Awards -->
-          <div>
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans mb-4">RESEARCH EXCELLENCE</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="award-card">
-                <span class="event-tag">教授獎項</span>
-                <h4 class="text-base font-bold tracking-wider mt-2">許裴舫 教授</h4>
-                <h4 class="text-base font-bold tracking-wider">雷松亞 特聘教授</h4>
-                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
-                  114 學年度科管院<br />厚德會傑出研究獎
-                </p>
-              </div>
-              <div class="award-card">
-                <span class="event-tag">教授獎項</span>
-                <h4 class="text-base font-bold tracking-wider mt-2">徐茉莉 講座教授</h4>
-                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
-                  114 年<br />科管院研究獎
-                </p>
-              </div>
-              <div class="award-card">
-                <span class="event-tag">教授獎項</span>
-                <h4 class="text-base font-bold tracking-wider mt-2">兪在元 助理教授</h4>
-                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
-                  114 年<br />新進人員研究獎
-                </p>
-              </div>
-            </div>
+            <p class="tl-event-en">Taiwan Outstanding Youth in Sustainability Award</p>
           </div>
         </div>
-
-        <div class="season-divider-thin"></div>
-
-        <!-- 114.06 -->
-        <div>
-          <span class="month-marker">114.06</span>
-
-          <div class="event-item mt-4">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">學術榮譽</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                2025 服科博士班年度研究發表會
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                博士班同學發表年度研究成果，
-                展現服科所在學術前沿的深度與廣度。
-              </p>
-            </div>
+        <div class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Oct</span>
+            <span class="tl-date-day">10</span>
           </div>
-
-          <div class="event-item mt-6">
-            <span class="timeline-dot-hollow"></span>
-            <div>
-              <span class="event-tag">實習/職涯</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                2025 實習始業式
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                透過 Gather Town 線上舉辦實習始業式，
-                以數位方式為即將踏入產業現場的同學們壯行。
-              </p>
-              <p class="text-sm text-gray-400 ch11-sans mt-2 tracking-wider">via Gather Town</p>
-            </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">教授獎項</span>
+            <h4>徐茉莉講座教授再次榮登史丹佛大學全球前 2% 頂尖科學家榜單</h4>
+            <p class="tl-event-en">Tsing Hua Chair Prof. Galit Shmueli — World's Top 2% Scientists 2025</p>
           </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================================================ -->
-  <!-- AUTUMN: 9-10 月 -->
-  <!-- ============================================================ -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-      <div class="lg:col-span-3 hidden lg:block">
-        <div class="sticky top-10">
-          <p class="season-label">AUTUMN</p>
-          <h3
-            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[480px]"
-          >
-            秋季篇
-          </h3>
-          <p class="mt-4 text-xs text-gray-400 ch11-sans tracking-wider">114.09 — 114.10</p>
         </div>
       </div>
 
-      <div class="lg:col-span-9 space-y-8 max-w-4xl">
-        <div class="lg:hidden">
-          <p class="season-label">AUTUMN</p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">秋季篇</h3>
-          <p class="mt-1 text-xs text-gray-400 ch11-sans tracking-wider">114.09 — 114.10</p>
+      <!-- ▸ ENTRY 7 — Nov ──────────────────── -->
+      <div data-story-entry data-story-title="11" class="tl-section">
+        <div data-story-marker class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Nov</span>
+            <span class="tl-date-day">11</span>
+          </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">招生相關</span>
+            <h4>碩博甄試入學暨碩士班招生說明會</h4>
+            <p class="tl-event-en">Master Oral Exam and Gathering of Applicants</p>
+          </div>
         </div>
+      </div>
 
-        <div class="py-6 md:py-8">
-          <p
-            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
-          >
-            「收穫與傳承，<br class="hidden md:block" />
-            在秋日裡同時發生」
-          </p>
-        </div>
-
-        <!-- 114.09 -->
-        <div>
-          <span class="month-marker">114.09</span>
-
-          <div class="event-item mt-4">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">社群活動</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                2025 迎新溯溪活動及迎新茶會
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                溯溪是服科所獨特的迎新傳統。在溪流中逆流而上的體驗，
-                恰如服科所鼓勵的精神 —— 跨出舒適圈，擁抱未知。
-              </p>
-            </div>
+      <!-- ▸ ENTRY 8 — Dec ──────────────────── -->
+      <div data-story-entry data-story-title="12" class="tl-section">
+        <div data-story-marker class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Dec</span>
+            <span class="tl-date-day">12</span>
           </div>
-
-          <div class="event-item mt-6">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">實習/職涯</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                2025 實習成果發表
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                一個暑假的產業歷練，化為舞台上的精彩報告。
-                從科技業到服務業，同學們帶回第一線的觀察與反思。
-              </p>
-            </div>
-          </div>
-
-          <div class="event-item mt-6">
-            <span class="timeline-dot-hollow"></span>
-            <div>
-              <span class="event-tag">社群活動</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                服務創新課程再次開課
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                與迷客夏及信義房屋企業合作共創，
-                將課堂知識直接對接產業需求，
-                讓學生在真實情境中實踐服務創新。
-              </p>
-              <p class="text-sm text-gray-400 ch11-sans mt-2 tracking-wider">企業合作夥伴：迷客夏、信義房屋</p>
-            </div>
-          </div>
-
-          <div class="season-divider-thin"></div>
-
-          <!-- Academic Awards -->
-          <div>
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans mb-4">PAPER AWARDS</p>
-            <div class="space-y-4">
-              <div class="award-card">
-                <span class="event-tag">學術榮譽</span>
-                <div class="mt-2">
-                  <h4 class="text-base font-bold tracking-wider">王俊程 教授 與 112 級陳怡瑄同學</h4>
-                  <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
-                    榮獲 2025 台灣管理學會論文大賞 AI 應用競賽佳作
-                  </p>
-                </div>
-              </div>
-              <div class="award-card">
-                <span class="event-tag">學術榮譽</span>
-                <div class="mt-2">
-                  <h4 class="text-base font-bold tracking-wider">歐怡君 副教授 與 112 級卓宜蓁同學</h4>
-                  <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
-                    榮獲 2025 富邦人壽管理碩博士論文獎行銷組優等（第二名）
-                  </p>
-                </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">學術榮譽</span>
+            <h4>博士生何捷睿、馬博淵榮獲 2025 科管院博士生研究獎</h4>
+            <p class="tl-event-en">PhD Students Chieh-Jui Ho &amp; Matthew Ray Bobea — CTM Doctoral Research Award</p>
+            <div class="tl-award-grid" style="margin-top:0.75rem">
+              <div class="tl-award-card">
+                <span class="tl-tag">教授獎項</span>
+                <p class="tl-award-name">雷松亞 特聘教授</p>
+                <p class="tl-award-desc">114 學年度科管院傑出導師獎</p>
               </div>
             </div>
           </div>
-
-          <div class="season-divider-thin"></div>
-
-          <!-- Alumni Sustainability Award -->
-          <div class="event-item">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">學術榮譽</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                莊凱詠學長榮獲 2025 台灣傑出永續青年獎
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                從「大山北月」到永續青年獎，
-                莊凱詠學長以地方創生的實踐，
-                展現服科人在社會創新領域的深遠影響力。
-              </p>
-            </div>
+        </div>
+        <div class="tl-event-row">
+          <div class="tl-date-box">
+            <span class="tl-date-month">Dec</span>
+            <span class="tl-date-day">12</span>
           </div>
-        </div>
-
-        <div class="season-divider-thin"></div>
-
-        <!-- 114.10 -->
-        <div>
-          <span class="month-marker">114.10</span>
-
-          <div class="event-item mt-4">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">教授獎項</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                徐茉莉講座教授再次榮登史丹佛大學全球前 2% 頂尖科學家榜單
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                在全球頂尖科學家的行列中，
-                徐茉莉教授持續代表服科所站上國際學術的最高舞台。
-                這份榮譽不僅屬於個人，更是整個研究團隊努力的結晶。
-              </p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================================================ -->
-  <!-- WINTER: 11-12 月 -->
-  <!-- ============================================================ -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-16 md:mt-24">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-      <div class="lg:col-span-3 hidden lg:block">
-        <div class="sticky top-10">
-          <p class="season-label">WINTER</p>
-          <h3
-            class="mt-3 vertical-text text-3xl font-bold tracking-[0.2em] border-r border-black pr-6 h-[480px]"
-          >
-            冬季篇
-          </h3>
-          <p class="mt-4 text-xs text-gray-400 ch11-sans tracking-wider">114.11 — 114.12</p>
-        </div>
-      </div>
-
-      <div class="lg:col-span-9 space-y-8 max-w-4xl">
-        <div class="lg:hidden">
-          <p class="season-label">WINTER</p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">冬季篇</h3>
-          <p class="mt-1 text-xs text-gray-400 ch11-sans tracking-wider">114.11 — 114.12</p>
-        </div>
-
-        <div class="py-6 md:py-8">
-          <p
-            class="text-2xl md:text-3xl font-bold leading-relaxed tracking-wide text-center px-4"
-          >
-            「年末的回望，<br class="hidden md:block" />
-            是為了更好的出發」
-          </p>
-        </div>
-
-        <!-- 114.11 -->
-        <div>
-          <span class="month-marker">114.11</span>
-
-          <div class="event-item mt-4">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">招生相關</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                碩博甄試入學暨碩士班招生說明會
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                為下一屆的服科人開啟大門。
-                招生說明會不只介紹課程與師資，更傳遞服科所獨特的跨域精神，
-                讓對服務科學有興趣的學子找到方向。
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="season-divider-thin"></div>
-
-        <!-- 114.12 -->
-        <div>
-          <span class="month-marker">114.12</span>
-
-          <div class="event-item mt-4">
-            <span class="timeline-dot"></span>
-            <div>
-              <span class="event-tag">學術榮譽</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                博士生何捷睿、馬博淵榮獲 2025 科管院博士生研究獎
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                兩位博士生以優異的研究表現獲得肯定，
-                為服科所的博士班研究能量再添佳績。
-              </p>
-            </div>
-          </div>
-
-          <!-- Faculty Award -->
-          <div class="mt-6 mb-4">
-            <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-              <div class="award-card">
-                <span class="event-tag">教授獎項</span>
-                <h4 class="text-lg font-bold tracking-wider mt-2">雷松亞 教授</h4>
-                <p class="mt-2 text-sm leading-7 text-gray-600 ch11-sans">
-                  榮獲 114 學年度科管院傑出導師獎
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="event-item mt-6">
-            <span class="timeline-dot-hollow"></span>
-            <div>
-              <span class="event-tag">學術榮譽</span>
-              <h4 class="text-xl md:text-2xl font-bold tracking-wider mt-2 mb-3">
-                113 級碩士班論文提案發表會
-              </h4>
-              <p class="text-base leading-8 text-gray-700 font-light text-justify-palt">
-                碩士班同學在年末發表論文提案，
-                在師長與同儕的回饋中打磨研究方向，
-                為接下來的論文撰寫奠定基礎。
-              </p>
-            </div>
+          <div class="tl-event-content">
+            <span class="tl-tag">學術榮譽</span>
+            <h4>113 級碩士班論文提案發表會</h4>
+            <p class="tl-event-en">Master Student Thesis Proposal Presentation</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- ============================================================ -->
-  <!-- CLOSING -->
-  <!-- ============================================================ -->
-  <div class="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 mt-20 md:mt-32">
-    <div class="season-divider"></div>
-    <div class="pt-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div class="lg:col-span-4">
-          <p class="text-xs tracking-widest text-gray-500 ch11-sans">EPILOGUE</p>
-          <h3 class="mt-3 text-3xl md:text-4xl font-black tracking-tight">
-            未完待續
-          </h3>
-          <p class="mt-6 text-base leading-8 text-gray-700 ch11-sans">
-            從二月的春酒到十二月的論文提案，
-            2025 年的服科所走過了完整而豐盛的一年。
-            每一場活動、每一項榮譽，
-            都是這個社群持續生長的證明。
-          </p>
-        </div>
+    </div><!-- / tl-panel -->
+  </div><!-- / data-story-sync -->
 
-        <div class="lg:col-span-8 space-y-8 max-w-4xl">
-          <div class="p-6 md:p-8">
-            <p class="text-xs tracking-widest text-gray-500 ch11-sans">
-              LOOKING FORWARD
-            </p>
-            <p
-              class="mt-6 text-2xl md:text-3xl font-black leading-snug tracking-tight"
-            >
-              故事不會在這裡結束。<br class="hidden md:block" />
-              分號之後，<br class="hidden md:block" />
-              還有更多篇章等待書寫。
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- ═══════════════════════════════════════ -->
+  <!-- FOOTER -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="ch11-footer">
+    <div class="ch11-footer-divider"></div>
+    <p class="ch11-footer-text">
+      未完待續
+    </p>
   </div>
 
 </div>

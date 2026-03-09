@@ -437,7 +437,7 @@ export default function ChapterSection({
               "prose-li:my-2"
             )}
           >
-            <div className="flex items-center justify-center py-24">
+            <div className="flex items-center justify-center min-h-[60vh]">
               <div className="text-gray-400">載入中...</div>
             </div>
           </article>

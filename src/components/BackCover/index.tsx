@@ -1,46 +1,187 @@
-import { useRef, useEffect, useMemo, useState } from 'react'
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
-import { db } from '@/lib/firebase'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import { useReadingMemories } from '@/hooks/useReadingMemories'
 import { SemicolonLogo } from '@/components/ui/SemicolonLogo'
 import FallingElements from './FallingElements'
 import RelayOverview from './RelayOverview'
 import Noise from '@/components/Noise'
+import { gsap } from 'gsap'
+
+// --- Polygon clip-path generator (from Cover) ---
+
+const generatePolygonPath = (
+  sides: number,
+  rotation: number = 0,
+  radius: number = 45,
+): string => {
+  sides = Math.max(3, sides)
+  const points: string[] = []
+  for (let i = 0; i < sides; i++) {
+    const angle =
+      (i * 2 * Math.PI) / sides - Math.PI / 2 + (rotation * Math.PI) / 180
+    const x = 50 + radius * Math.cos(angle)
+    const y = 50 + radius * Math.sin(angle)
+    points.push(`${x}% ${y}%`)
+  }
+  return `polygon(${points.join(', ')})`
+}
+
+const lerp = (start: number, end: number, t: number) =>
+  start * (1 - t) + end * t
+
+// --- CrossfadeLoop for seamless video looping ---
+
+const CrossfadeLoop = ({
+  src,
+  className,
+  style,
+}: {
+  src: string
+  className?: string
+  style?: React.CSSProperties
+}) => {
+  const video1Ref = useRef<HTMLVideoElement>(null)
+  const video2Ref = useRef<HTMLVideoElement>(null)
+  const [activeVideo, setActiveVideo] = useState<1 | 2>(1)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+
+  useEffect(() => {
+    const v1 = video1Ref.current
+    const v2 = video2Ref.current
+    if (!v1 || !v2) return
+    const TRANSITION_DURATION = 1.0
+    const handleTimeUpdate = () => {
+      const current = activeVideo === 1 ? v1 : v2
+      const next = activeVideo === 1 ? v2 : v1
+      if (!current.duration) return
+      if (
+        current.currentTime >= current.duration - TRANSITION_DURATION &&
+        !isTransitioning
+      ) {
+        setIsTransitioning(true)
+        next.currentTime = 0
+        next.play().catch((e) => console.log(e))
+        setActiveVideo((prev) => (prev === 1 ? 2 : 1))
+        setTimeout(() => {
+          setIsTransitioning(false)
+          current.pause()
+          current.currentTime = 0
+        }, TRANSITION_DURATION * 1000)
+      }
+    }
+    const onTimeUpdate1 = () => {
+      if (activeVideo === 1) handleTimeUpdate()
+    }
+    const onTimeUpdate2 = () => {
+      if (activeVideo === 2) handleTimeUpdate()
+    }
+    v1.addEventListener('timeupdate', onTimeUpdate1)
+    v2.addEventListener('timeupdate', onTimeUpdate2)
+    v1.play().catch((e) => console.log(e))
+    return () => {
+      v1.removeEventListener('timeupdate', onTimeUpdate1)
+      v2.removeEventListener('timeupdate', onTimeUpdate2)
+    }
+  }, [activeVideo, isTransitioning])
+
+  return (
+    <div className={className} style={style}>
+      <video
+        ref={video1Ref}
+        src={src}
+        autoPlay
+        muted
+        playsInline
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${
+          activeVideo === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0'
+        }`}
+      />
+      <video
+        ref={video2Ref}
+        src={src}
+        autoPlay
+        muted
+        playsInline
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-linear ${
+          activeVideo === 2 ? 'opacity-100 z-10' : 'opacity-0 z-0'
+        }`}
+      />
+    </div>
+  )
+}
 
 export default function BackCover() {
   const { coverContribution, collectedElements } = useReadingMemories()
   const sectionRef = useRef<HTMLDivElement>(null)
+  const videoInnerRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [resetKey, setResetKey] = useState(0)
-  const [crescendoTexts, setCrescendoTexts] = useState<string[]>([])
 
-  // Firebase subscription for crescendo overlay
-  useEffect(() => {
-    const q = query(collection(db, 'coverSentences'), orderBy('createdAt', 'asc'))
-    const unsub = onSnapshot(q, (snap) => {
-      const texts = snap.docs
-        .map((d) => (d.data() as { text?: string }).text?.trim())
-        .filter(Boolean) as string[]
-      setCrescendoTexts(texts.slice(-4))
-    })
-    return () => unsub()
+  // Mouse tracking for polygon clip-path
+  const mousePosRef = useRef({ x: 0.5, y: 0.5 })
+  const isHoveringRef = useRef(false)
+  const currentVisualsRef = useRef({
+    sides: 4,
+    rotation: 45,
+    radius: 80,
+  })
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect()
+      mousePosRef.current = {
+        x: (e.clientX - rect.left) / rect.width,
+        y: (e.clientY - rect.top) / rect.height,
+      }
+      isHoveringRef.current = true
+    },
+    [],
+  )
+
+  const handleMouseLeave = useCallback(() => {
+    isHoveringRef.current = false
+    mousePosRef.current = { x: 0.5, y: 0.5 }
   }, [])
 
-  const crescendoItems = useMemo(() => {
-    const sizes = [14, 24, 36, 50]
-    const opacities = [0.5, 0.65, 0.8, 0.95]
-    const count = crescendoTexts.length
-    return crescendoTexts.map((text, i) => {
-      const tierIdx = sizes.length - count + i
-      return {
-        text,
-        fontSize: sizes[Math.max(0, tierIdx)],
-        opacity: opacities[Math.max(0, tierIdx)],
-        fontWeight: i === count - 1 ? 'bold' : 'normal' as const,
-      }
-    })
-  }, [crescendoTexts])
+  // GSAP ticker for smooth polygon animation
+  useEffect(() => {
+    const tick = () => {
+      const el = videoInnerRef.current
+      if (!el) return
 
+      const cv = currentVisualsRef.current
+      let targetSides = 4
+      let targetRotation = 45
+      let targetRadius = 80
+
+      if (isHoveringRef.current) {
+        const { x, y } = mousePosRef.current
+        targetSides =
+          3 +
+          (1 -
+            Math.sqrt(Math.pow(x - 0.5, 2) + Math.pow(y - 0.5, 2)) * 2) *
+            17
+        targetRotation = Math.atan2(y - 0.5, x - 0.5) * (180 / Math.PI)
+        targetRadius = 45
+      }
+
+      cv.sides = lerp(cv.sides, targetSides, 0.1)
+      cv.rotation = lerp(cv.rotation, targetRotation, 0.1)
+      cv.radius = lerp(cv.radius, targetRadius, 0.1)
+
+      el.style.clipPath = generatePolygonPath(
+        Math.round(cv.sides),
+        cv.rotation,
+        cv.radius,
+      )
+    }
+
+    gsap.ticker.add(tick)
+    return () => {
+      gsap.ticker.remove(tick)
+    }
+  }, [])
+
+  // Intersection observer for visibility
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -49,14 +190,14 @@ export default function BackCover() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setResetKey(prev => prev + 1)
+            setResetKey((prev) => prev + 1)
             setIsVisible(true)
           } else {
             setIsVisible(false)
           }
         })
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     )
 
     observer.observe(section)
@@ -68,67 +209,42 @@ export default function BackCover() {
       ref={sectionRef}
       className="relative bg-black text-white overflow-hidden"
     >
-      {/* ====== SECTION 1: Full-screen Relay Visualization ====== */}
+      {/* ====== Full-screen section ====== */}
       <div className="relative min-h-screen">
-
-        {/* z[1]: RelayOverview — serpentine zigzag text (behind card) */}
-        <div className="absolute inset-0 z-[1]">
-          <RelayOverview ownText={coverContribution?.mine} />
-        </div>
-
-        {/* z[2]: Falling collected elements */}
-        <div className="absolute inset-0 z-[2]">
-          {collectedElements.length > 0 && isVisible && (
-            <FallingElements
-              key={`elements-${resetKey}`}
-              elements={collectedElements}
-              isVisible={isVisible}
-            />
-          )}
-        </div>
-
-        {/* z[3]: Green gradient card background (above serpentine) */}
-        <div className="absolute inset-0 flex items-start justify-center pointer-events-none z-[3]">
+        {/* z[1]: Interactive Video Card */}
+        <div className="absolute inset-0 flex items-start justify-center pointer-events-none z-[1]">
           <div
-            className="w-[55%] max-w-[900px] h-[85%] mt-[5%] rounded-[26px]"
-            style={{
-              background: 'linear-gradient(180deg, #1e3c1e 0%, #263e24 40%, #2e4a28 70%, #354f2c 100%)',
-            }}
-          />
-        </div>
-
-        {/* z[4]: Crescendo text — above card */}
-        {crescendoItems.length > 0 && (
-          <div className="absolute inset-0 flex items-start justify-center pointer-events-none z-[4]">
-            <div className="relative w-[55%] max-w-[900px] h-[85%] mt-[5%]">
+            className="relative w-[88%] md:w-[50%] max-w-[900px] h-[72%] md:h-[78%] mt-[3%] md:mt-[5%] rounded-[26px] overflow-hidden pointer-events-auto cursor-crosshair"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div
+              ref={videoInnerRef}
+              className="absolute inset-0 transition-none"
+              style={{
+                clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+              }}
+            >
+              <CrossfadeLoop
+                src="/assets/vul.mp4"
+                className="relative w-full h-full overflow-hidden"
+                style={{ filter: 'blur(8px)' }}
+              />
+              {/* Green tint overlay */}
               <div
-                className="absolute bottom-[5%] left-[6%] right-[6%] flex items-baseline flex-wrap gap-x-2"
-                style={{ fontFamily: "'Noto Sans TC', sans-serif" }}
-              >
-                {crescendoItems.map((item, i) => (
-                  <span
-                    key={i}
-                    style={{
-                      fontSize: item.fontSize,
-                      fontWeight: item.fontWeight,
-                      color: `rgba(255,255,255,${item.opacity})`,
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    {item.text}
-                    {i < crescendoItems.length - 1 && (
-                      <span style={{ fontSize: item.fontSize * 0.8, opacity: 0.4 }}>{' ; '}</span>
-                    )}
-                  </span>
-                ))}
-              </div>
+                className="absolute inset-0"
+                style={{
+                  background:
+                    'linear-gradient(180deg, rgba(30,60,30,0.45) 0%, rgba(38,62,36,0.4) 40%, rgba(46,74,40,0.35) 70%, rgba(53,79,44,0.3) 100%)',
+                }}
+              />
             </div>
           </div>
-        )}
+        </div>
 
-        {/* z[5]: Branding elements — above serpentine text */}
-        <div className="absolute inset-0 flex items-start justify-center pointer-events-none z-[5]">
-          <div className="relative w-[55%] max-w-[900px] h-[85%] mt-[5%]">
+        {/* z[2]: Branding elements — overlaid on card */}
+        <div className="absolute inset-0 flex items-start justify-center pointer-events-none z-[2]">
+          <div className="relative w-[88%] md:w-[50%] max-w-[900px] h-[72%] md:h-[78%] mt-[3%] md:mt-[5%]">
             {/* Top-left: title + ISS Community */}
             <div className="absolute top-[8%] left-[6%]">
               <div className="flex items-start gap-4 md:gap-6">
@@ -140,22 +256,29 @@ export default function BackCover() {
                 <div className="pt-1">
                   <p
                     className="text-[9px] md:text-[11px] leading-tight text-white/50 tracking-wide"
-                    style={{ fontFamily: "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif" }}
+                    style={{
+                      fontFamily:
+                        "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif",
+                    }}
                   >
-                    ISS Community<br />
+                    ISS Community
+                    <br />
                     Annual Newsletter
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Left: 2025 */}
+            {/* Left: 2026 */}
             <div className="absolute top-[40%] left-[6%]">
               <p
                 className="text-2xl md:text-3xl font-bold text-white/70 tracking-wider"
-                style={{ fontFamily: "'Zen Kaku Gothic New', 'Noto Sans TC', sans-serif" }}
+                style={{
+                  fontFamily:
+                    "'Zen Kaku Gothic New', 'Noto Sans TC', sans-serif",
+                }}
               >
-                2025
+                2026
               </p>
             </div>
 
@@ -163,7 +286,10 @@ export default function BackCover() {
             <div className="hidden md:block absolute top-[40%] right-[6%]">
               <p
                 className="text-xl lg:text-2xl text-white/60 mb-4"
-                style={{ fontFamily: "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif" }}
+                style={{
+                  fontFamily:
+                    "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif",
+                }}
               >
                 分號
               </p>
@@ -173,101 +299,45 @@ export default function BackCover() {
                   style={{
                     writingMode: 'vertical-rl',
                     textOrientation: 'mixed',
-                    fontFamily: "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif",
+                    fontFamily:
+                      "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif",
                   }}
                 >
-                  Since 2008, the institute has adopted unique educational practices to embed humanity into the learning environment.
+                  Since 2008, the institute has adopted unique educational
+                  practices to embed humanity into the learning environment.
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* z[6]: Noise overlay */}
-        <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-15 z-[6]">
+        {/* z[3]: RelayOverview — diagonal text ON TOP of card */}
+        <div className="absolute inset-0 z-[3] pointer-events-none">
+          <RelayOverview
+            ownText={coverContribution?.mine}
+            receivedText={coverContribution?.received}
+          />
+        </div>
+
+        {/* z[4]: Falling collected elements */}
+        <div className="absolute inset-0 z-[4] pointer-events-none">
+          {collectedElements.length > 0 && isVisible && (
+            <FallingElements
+              key={`elements-${resetKey}`}
+              elements={collectedElements}
+              isVisible={isVisible}
+            />
+          )}
+        </div>
+
+        {/* z[5]: Noise overlay */}
+        <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-15 z-[5]">
           <Noise
             patternSize={250}
             patternAlpha={20}
             patternRefreshInterval={4}
           />
         </div>
-
-      </div>
-
-      {/* ====== SECTION 2: Relay Card + Stats ====== */}
-      <div className="relative z-20 px-6 py-20 flex flex-col items-center justify-center">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <SemicolonLogo className="h-10 md:h-12 mb-4 opacity-40 mx-auto" />
-          <h2 className="text-xl md:text-2xl font-serif mb-2 tracking-wide">
-            閱讀記憶
-          </h2>
-          <p className="text-[10px] text-white/30 tracking-[0.3em] uppercase">
-            Reading Memories
-          </p>
-        </div>
-
-        {/* Relay card */}
-        {coverContribution ? (
-          <div className="w-full max-w-lg">
-            <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-10 shadow-2xl">
-              <p className="text-[10px] text-white/40 tracking-[0.3em] uppercase text-center mb-8">
-                文字接力 · Text Relay
-              </p>
-
-              <div className="mb-8">
-                <p className="text-[10px] text-white/30 uppercase tracking-widest mb-3">
-                  你收到的句子
-                </p>
-                <div className="relative pl-4 border-l-2 border-white/20">
-                  <p className="text-base md:text-lg text-white/60 font-serif italic leading-relaxed">
-                    &ldquo;{coverContribution.received}&rdquo;
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-center gap-3 my-6">
-                <div className="flex-1 h-px bg-white/10" />
-                <SemicolonLogo className="h-4 opacity-30" />
-                <div className="flex-1 h-px bg-white/10" />
-              </div>
-
-              <div>
-                <p className="text-[10px] text-white/30 uppercase tracking-widest mb-3">
-                  你寫下的句子
-                </p>
-                <div className="relative pl-4 border-l-2 border-white/40">
-                  <p className="text-xl md:text-2xl text-white font-serif leading-relaxed">
-                    &ldquo;{coverContribution.mine}&rdquo;
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {collectedElements.length > 0 && (
-              <p className="text-[10px] text-white/20 text-center mt-6">
-                {collectedElements.length} 個元素已收集
-              </p>
-            )}
-          </div>
-        ) : (
-          <div className="text-center max-w-md">
-            <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8">
-              <p className="text-white/50 mb-4">
-                你還沒有參與文字接力
-              </p>
-              <p className="text-sm text-white/30">
-                回到封面，寫下你的句子吧
-              </p>
-            </div>
-
-            {collectedElements.length > 0 && (
-              <p className="text-[10px] text-white/20 mt-6">
-                {collectedElements.length} 個元素已收集
-              </p>
-            )}
-          </div>
-        )}
       </div>
 
       {/* ====== Credits Section ====== */}
