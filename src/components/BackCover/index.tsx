@@ -5,6 +5,7 @@ import FallingElements from './FallingElements'
 import RelayOverview from './RelayOverview'
 import Noise from '@/components/Noise'
 import { gsap } from 'gsap'
+import { PUBLICATION_ISSUE_MARK } from '@/config/publication'
 
 // --- Polygon clip-path generator (from Cover) ---
 
@@ -265,6 +266,26 @@ export default function BackCover() {
                     <br />
                     Annual Newsletter
                   </p>
+                  <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/25 px-3 py-1.5 text-white backdrop-blur-md">
+                    <span
+                      className="text-[9px] md:text-[10px] font-medium tracking-[0.24em] text-white/85"
+                      style={{
+                        fontFamily:
+                          "'Zen Kaku Gothic New', 'Noto Sans TC', sans-serif",
+                      }}
+                    >
+                      {PUBLICATION_ISSUE_MARK.label}
+                    </span>
+                    <span
+                      className="text-[8px] md:text-[9px] uppercase tracking-[0.28em] text-white/55"
+                      style={{
+                        fontFamily:
+                          "'Zen Kaku Gothic New', 'Noto Sans TC', sans-serif",
+                      }}
+                    >
+                      {PUBLICATION_ISSUE_MARK.volume}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -351,6 +372,14 @@ export default function BackCover() {
           <p className="text-xl md:text-2xl font-serif mb-1 tracking-wide">
             2026
           </p>
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-white/70 backdrop-blur-sm">
+            <span className="text-[9px] tracking-[0.24em] text-white/80">
+              {PUBLICATION_ISSUE_MARK.label}
+            </span>
+            <span className="text-[8px] uppercase tracking-[0.28em] text-white/45">
+              {PUBLICATION_ISSUE_MARK.volume}
+            </span>
+          </div>
           <p className="text-[10px] text-white/25 tracking-[0.2em] uppercase">
             ISS Community Annual Newsletter
           </p>

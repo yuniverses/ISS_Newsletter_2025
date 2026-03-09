@@ -13,6 +13,7 @@ import {
 import { SemicolonLogo } from "../ui/SemicolonLogo";
 import Noise from "../Noise";
 import ScrollReveal from "../ScrollReveal";
+import { PUBLICATION_ISSUE_MARK } from "@/config/publication";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -702,6 +703,14 @@ export default function Cover({ onEnter }: CoverProps) {
               <span className="text-white/80 text-[10px] md:text-[13px] tracking-[0.1em] font-light ml-1">
                 ISS Community Annual Newsletter
               </span>
+              <div className="ml-1 inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-black/30 px-3 py-1.5 text-white backdrop-blur-md">
+                <span className="text-[10px] md:text-[11px] font-medium tracking-[0.24em] text-white/90">
+                  {PUBLICATION_ISSUE_MARK.label}
+                </span>
+                <span className="text-[9px] md:text-[10px] uppercase tracking-[0.28em] text-white/55">
+                  {PUBLICATION_ISSUE_MARK.volume}
+                </span>
+              </div>
             </div>
 
             <div className="pointer-events-none absolute top-[50%] -translate-y-[50%] left-0 w-full px-[8vw]">
