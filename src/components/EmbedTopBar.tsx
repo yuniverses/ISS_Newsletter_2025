@@ -36,10 +36,10 @@ export default function EmbedTopBar({
       >
         <div className="min-w-0">
           <span className="block text-[10px] tracking-[0.32em] text-white/45">
-            EMBED VIEW
+            預覽
           </span>
-          <span className="block truncate text-sm font-semibold tracking-[0.14em] text-white/90">
-            服務聲 2026
+          <span className="block truncate text-sm font-semibold tracking-[0.08em] text-white/90">
+            服科所年度電子報　ISS Community Annual Newsletter
           </span>
         </div>
 
@@ -47,11 +47,11 @@ export default function EmbedTopBar({
           type="button"
           onClick={openStandalone}
           className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition duration-200 hover:bg-[#f3f1eb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
-          aria-label="在新分頁開啟完整網站"
+          aria-label="在新分頁開啟全螢幕檢視"
         >
           <Maximize2 size={16} className="shrink-0" aria-hidden="true" />
-          <span className="sm:hidden">全幕</span>
-          <span className="hidden sm:inline">全幕瀏覽</span>
+          <span className="sm:hidden">全螢幕</span>
+          <span className="hidden sm:inline">全螢幕檢視</span>
         </button>
       </nav>
     </div>
