@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useCallback } from 'react'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import Cover from '../components/Cover'
 import TableOfContents from '../components/TableOfContents'
@@ -12,11 +12,16 @@ import chaptersConfig from '../config/chapters.json'
 
 interface HomeProps {
   isIntroComplete?: boolean
+  onCurrentChapterIdChange?: (chapterId: string) => void
 }
 
-export default function Home({ isIntroComplete = true }: HomeProps) {
+export default function Home({
+  isIntroComplete = true,
+  onCurrentChapterIdChange,
+}: HomeProps) {
   const { chapterId } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
   const [newsletter, setNewsletter] = useState<Newsletter | null>(null)
   const [currentChapterId, setCurrentChapterId] = useState<string>('')
   const [hasMoreChapters, setHasMoreChapters] = useState(true)
@@ -27,6 +32,16 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
 
   // Track when user explicitly clicks to navigate to a chapter
   const [scrollToChapterId, setScrollToChapterId] = useState<string | null>(null)
+  const isEmbedMode = new URLSearchParams(location.search).get('embed') === '1'
+  const embedSearch = isEmbedMode ? location.search || '?embed=1' : ''
+
+  const buildNavigationTarget = useCallback(
+    (targetChapterId?: string | null) => {
+      const pathname = targetChapterId ? `/chapters/${targetChapterId}` : '/'
+      return `${pathname}${embedSearch}`
+    },
+    [embedSearch]
+  )
 
   
   // Load newsletter configuration
@@ -43,12 +58,16 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
         setCurrentChapterId(chapterId)
       } else {
         // Invalid chapter ID, redirect to first or home
-        navigate(`/chapters/${data.chapters[0].id}`, { replace: true })
+        navigate(buildNavigationTarget(data.chapters[0].id), { replace: true })
       }
     } 
     // ELSE: Do nothing! Let the user stay on "Home" (Cover) state.
     // The ProgressNav or other components might need to handle empty currentChapterId gracefully.
-  }, [chapterId, navigate])
+  }, [buildNavigationTarget, chapterId, navigate])
+
+  useEffect(() => {
+    onCurrentChapterIdChange?.(currentChapterId)
+  }, [currentChapterId, onCurrentChapterIdChange])
 
   // Handle chapter change from UI (scroll or click)
   const handleChapterChange = (newChapterId: string) => {
@@ -57,14 +76,14 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
     // If no chapter is active (e.g. at cover), revert to root URL
     if (!newChapterId) {
         if (chapterId) { // Only if we currently have a chapter param
-            navigate('/', { replace: true })
+            navigate(buildNavigationTarget(), { replace: true })
         }
         return
     }
 
     // Update URL without page reload
     if (newChapterId !== chapterId) {
-       navigate(`/chapters/${newChapterId}`, { replace: true })
+       navigate(buildNavigationTarget(newChapterId), { replace: true })
     }
   }
 
@@ -121,7 +140,7 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
         chapters={newsletter.chapters}
         onChapterClick={(id) => {
           setScrollToChapterId(id)
-          navigate(`/chapters/${id}`)
+          navigate(buildNavigationTarget(id))
         }}
       />
 
@@ -131,7 +150,7 @@ export default function Home({ isIntroComplete = true }: HomeProps) {
         currentChapterId={currentChapterId}
         onChapterClick={(id) => {
           setScrollToChapterId(id)
-          navigate(`/chapters/${id}`)
+          navigate(buildNavigationTarget(id))
         }}
       />
 

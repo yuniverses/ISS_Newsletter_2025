@@ -214,6 +214,35 @@ npm run build
 2. 如部署至子路徑，需調整 `vite.config.ts` 中的 `base` 選項
 3. 章節 HTML 檔案需放置在正確的 `chapters/` 目錄下
 
+## 內嵌模式
+
+本專案支援以 `iframe` 內嵌完整網站版，只要在既有路由後加上 `?embed=1` 即可。
+
+### 可用網址
+
+- 首頁完整流程：`https://iss-news-0f834ef85b23.herokuapp.com/?embed=1`
+- 指定章節進入：`https://iss-news-0f834ef85b23.herokuapp.com/chapters/chapter-08?embed=1`
+
+### iframe 範例
+
+```html
+<iframe
+  src="https://iss-news-0f834ef85b23.herokuapp.com/chapters/chapter-08?embed=1"
+  title="服務聲 2026"
+  width="100%"
+  height="900"
+  style="border: 0;"
+  loading="lazy"
+></iframe>
+```
+
+### 內嵌模式行為
+
+- 頂端會顯示內嵌模式控制列與 `全幕瀏覽` 按鈕
+- 使用者往下閱讀時，控制列會自動隱藏
+- 使用者往上滑動或停止滑動一段時間後，控制列會再次顯示
+- 點擊 `全幕瀏覽` 會用新分頁打開正式網站；如果目前正在閱讀某一章，會直接帶到對應章節
+
 ## 瀏覽器支援
 
 - Chrome（最新版本）
