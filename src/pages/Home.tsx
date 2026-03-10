@@ -123,6 +123,7 @@ export default function Home({
         <meta property="og:description" content={pageDescription} />
         <meta property="og:image" content={ogImage} />
         <meta property="og:site_name" content={newsletter.title} />
+        <meta property="og:locale" content="zh_TW" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
