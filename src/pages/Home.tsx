@@ -100,9 +100,9 @@ export default function Home({
   const pageTitle = currentChapter ? `${currentChapter.title} | ${newsletter.title}` : newsletter.title
   const pageDescription = currentChapter?.description || `服務科學研究所 2025 電子期刊 - ${currentChapter?.title || ''}`
   const canonicalUrl = currentChapterId
-    ? `https://iss-newsletter-2026.web.app/chapters/${currentChapterId}`
-    : 'https://iss-newsletter-2026.web.app/'
-  const ogImage = 'https://iss-newsletter-2026.web.app/assets/og-image.jpg'
+    ? `https://iss-news-0f834ef85b23.herokuapp.com/chapters/${currentChapterId}`
+    : 'https://iss-news-0f834ef85b23.herokuapp.com/'
+  const ogImage = 'https://iss-news-0f834ef85b23.herokuapp.com/assets/og-image.jpg'
   const authors = currentChapter?.authors?.join(', ') || 'ISS 服務科學研究所'
 
   return (

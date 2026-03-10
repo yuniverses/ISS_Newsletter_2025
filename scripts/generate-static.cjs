@@ -24,8 +24,8 @@ function injectSEO(html, chapter, config, content) {
 
   const title = `${chapter.title} | ${config.title}`;
   const description = chapter.description || `${config.title} - ${chapter.title}`;
-  const url = `https://iss-newsletter-2026.web.app/chapters/${chapter.id}`;
-  const image = 'https://iss-newsletter-2026.web.app/assets/og-image.jpg';
+  const url = `https://iss-news-0f834ef85b23.herokuapp.com/chapters/${chapter.id}`;
+  const image = 'https://iss-news-0f834ef85b23.herokuapp.com/assets/og-image.jpg';
   const authors = chapter.authors && chapter.authors.length > 0 ? chapter.authors.join(', ') : 'ISS 服務科學研究所';
 
   // Replace Title
@@ -80,7 +80,7 @@ function injectSEO(html, chapter, config, content) {
         "name": "${escapeQuotes(config.title)}",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://iss-newsletter-2026.web.app/assets/semicolon-logo.png"
+          "url": "https://iss-news-0f834ef85b23.herokuapp.com/assets/semicolon-logo.png"
         }
       }
     }
@@ -93,17 +93,15 @@ function injectSEO(html, chapter, config, content) {
   // Inject all SEO tags before </head>
   newHtml = newHtml.replace('</head>', `${seoTags}\n  </head>`);
 
-  // Inject Content into a hidden div or noscript for crawlers
-  // This ensures the content is physically present in the file
+  // Inject Content into a visually hidden div for crawlers
+  // This ensures the content is physically present and visible to all crawlers
   const seoContent = `
-  <noscript>
-    <div id="seo-content-static">
-      <h1>${title}</h1>
-      <div class="chapter-content">
-        ${content}
-      </div>
+  <div id="seo-content-static" style="position:absolute;left:-9999px;overflow:hidden;width:1px;height:1px">
+    <h1>${title}</h1>
+    <div class="chapter-content">
+      ${content}
     </div>
-  </noscript>
+  </div>
   `;
 
   // Inject before body end
@@ -145,5 +143,52 @@ chapters.forEach(chapter => {
   fs.writeFileSync(path.join(chapterDir, 'index.html'), finalHtml);
   console.log(`Generated: chapters/${chapter.id}/index.html`);
 });
+
+// 5. Generate home page SEO
+const BASE_URL = process.env.SITE_URL || 'https://iss-news-0f834ef85b23.herokuapp.com';
+const homeTitle = config.title;
+const homeDesc = '服務科學研究所 2025 年度電子期刊 — 11 篇深度專訪，探索服務設計、數位轉型與產業創新。';
+const homeUrl = `${BASE_URL}/`;
+
+let homeHtml = indexTemplate;
+homeHtml = homeHtml.replace(/<title>.*?<\/title>/, `<title>${homeTitle}</title>`);
+
+// Remove existing meta description if present
+homeHtml = homeHtml.replace(/<meta name="description" content=".*?">/g, '');
+
+const homeSeoTags = `
+    <!-- Primary Meta Tags -->
+    <meta name="description" content="${homeDesc}">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="${homeUrl}">
+    <meta property="og:title" content="${homeTitle}">
+    <meta property="og:description" content="${homeDesc}">
+    <meta property="og:image" content="${BASE_URL}/assets/og-image.jpg">
+    <meta property="og:locale" content="zh_TW">
+    <meta property="og:site_name" content="${homeTitle}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${homeTitle}">
+    <meta name="twitter:description" content="${homeDesc}">
+    <meta name="twitter:image" content="${BASE_URL}/assets/og-image.jpg">
+    <link rel="canonical" href="${homeUrl}">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "${homeTitle}",
+      "url": "${homeUrl}",
+      "description": "${homeDesc}",
+      "publisher": {
+        "@type": "EducationalOrganization",
+        "name": "國立清華大學服務科學研究所",
+        "url": "https://www.iss.nthu.edu.tw/"
+      }
+    }
+    </script>
+`;
+homeHtml = homeHtml.replace('</head>', `${homeSeoTags}\n  </head>`);
+fs.writeFileSync(path.join(distDir, 'index.html'), homeHtml);
+console.log('Generated: index.html (home with SEO)');
 
 console.log('Static generation complete.');

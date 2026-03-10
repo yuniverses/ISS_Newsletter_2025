@@ -11,7 +11,7 @@
       "authors": [],
       "category": "服科的入口",
       "theme": "light",
-      "coverImage": "/assets/chapter-01/494175350_1105442078280929_6806699222731462401_n.jpg",
+      "coverImage": "/assets/chapter-01/494175350_1105442078280929_6806699222731462401_n.webp",
       "heroVariant": "scene-html",
       "heroSceneHtml": "/assets/chapter-01/voxel-scene-1771816161824.html",
       "date": "2026 . 02",
@@ -22,7 +22,7 @@
       ],
       "fallingElements": [
         "/assets/chapter-01/teacher img/王貞雅 老師.png",
-        "/assets/chapter-01/teacher img/兪在元老師.png",
+        "/assets/chapter-01/teacher img/兪在元老師.webp",
         "/assets/chapter-01/teacher img/陳巧莛 Chiao-Ting Chen 老師.png",
         "/assets/chapter-01/teacher img/Galit 徐茉莉 老師.png",
         "/assets/chapter-01/teacher img/Patricia 郭珮宜 老師.png",
@@ -39,7 +39,7 @@
       "authors": ["黃薐嘉"],
       "category": "在校服科人",
       "theme": "light",
-      "coverImage": "/assets/chapter-covers/jimeng-2026-03-11-2417-tiny.png",
+      "coverImage": "/assets/chapter-covers/jimeng-2026-03-11-2417-tiny.webp",
       "date": "2026 . 02",
       "credits": [
         { "name": "邱筠婷", "role": "採訪 撰文" },
@@ -78,7 +78,7 @@
       "authors": ["馮元詰"],
       "category": "服科前輩們",
       "theme": "light",
-      "coverImage": "/assets/chapter-04-feng/feng-01.jpg",
+      "coverImage": "/assets/chapter-04-feng/feng-01.webp",
       "date": "2026 . 02",
       "credits": [
         { "name": "李芸甄", "role": "採訪" },
@@ -101,7 +101,7 @@
       "authors": ["曾婉婷"],
       "category": "服科前輩們",
       "theme": "light",
-      "coverImage": "/assets/chapter-covers/def.png",
+      "coverImage": "/assets/chapter-covers/def.webp",
       "date": "2026 . 02",
       "credits": [
         { "name": "朱庭萱", "role": "採訪" },
@@ -121,7 +121,7 @@
       "authors": ["徐子珺"],
       "category": "服科前輩們",
       "theme": "light",
-      "coverImage": "/assets/chapter-covers/def.png",
+      "coverImage": "/assets/chapter-covers/def.webp",
       "date": "2026 . 02",
       "credits": [
         { "name": "林柏緯", "role": "採訪 撰文" },
@@ -142,7 +142,7 @@
       "authors": ["陳旻"],
       "category": "服科前輩們",
       "theme": "light",
-      "coverImage": "/assets/chapter-covers/def.png",
+      "coverImage": "/assets/chapter-covers/def.webp",
       "date": "2026 . 02",
       "credits": [
         { "name": "邱筠婷", "role": "採訪" },
@@ -162,7 +162,7 @@
       "authors": ["Sunny 鄭晴元"],
       "category": "展開專訪",
       "theme": "light",
-      "coverImage": "/assets/chapter-08-sunny/sunny-01.jpg",
+      "coverImage": "/assets/chapter-08-sunny/sunny-01.webp",
       "date": "2026 . 02",
       "credits": [
         { "name": "李芸甄", "role": "採訪" },
@@ -185,7 +185,7 @@
       "authors": ["陳慕天"],
       "category": "展開專訪",
       "theme": "light",
-      "coverImage": "/assets/chapter-covers/chapter-08-陳慕天-coverImage.jpg",
+      "coverImage": "/assets/chapter-covers/chapter-08-陳慕天-coverImage.webp",
       "date": "2025 . 11",
       "credits": [
         { "name": "陳冠宇", "role": "採訪 撰文" },
@@ -206,7 +206,7 @@
       "authors": ["徐千捷"],
       "category": "展開專訪",
       "theme": "light",
-      "coverImage": "/assets/chapter-covers/chapter-10-coverImage.jpg",
+      "coverImage": "/assets/chapter-covers/chapter-10-coverImage.webp",
       "date": "2025 . 11",
       "credits": [
         { "name": "邱筠婷", "role": "採訪 撰文" },

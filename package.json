@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && node scripts/generate-static.cjs && node scripts/generate-sitemap.cjs",
-    "start": "serve dist -l ${PORT:-3000} -c ../serve.json -n",
+    "start": "serve dist -l ${PORT:-3000} -c serve.json -n",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
@@ -43,6 +43,7 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "postcss": "^8.4.49",
     "shadcn": "^3.6.2",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.15",
     "typescript": "^5.6.3",
     "vite": "^6.0.1"
