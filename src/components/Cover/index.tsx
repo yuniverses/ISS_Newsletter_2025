@@ -627,8 +627,8 @@ export default function Cover({ onEnter }: CoverProps) {
                   </div>
                   <div className="relative group max-w-2xl mx-auto">
                     <textarea
-                      className="w-full h-32 md:h-40 bg-transparent border-none p-0 text-xl md:text-3xl font-light text-white/90 placeholder-white/10 focus:ring-0 focus:outline-none transition-all resize-none text-center font-serif leading-relaxed tracking-wide"
-                      placeholder="Continue the story..."
+                      className="w-full h-32 md:h-40 bg-transparent border-b border-white/20 p-0 pb-2 text-xl md:text-3xl font-light text-white/90 placeholder-white/15 focus:ring-0 focus:outline-none focus:border-white/40 transition-all resize-none text-center font-serif leading-relaxed tracking-wide"
+                      placeholder="Click here to continue the story..."
                       value={inputText}
                       onChange={(e) => setInputText(e.target.value)}
                       disabled={isSubmitting}
