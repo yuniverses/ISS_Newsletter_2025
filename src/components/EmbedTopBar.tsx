@@ -24,10 +24,10 @@ export default function EmbedTopBar({
   return (
     <div
       className={cn(
-        'pointer-events-none fixed inset-x-0 top-0 z-[90] flex justify-center px-3 pt-3 transition-all duration-300 motion-reduce:transition-none sm:px-6 sm:pt-4',
+        'pointer-events-none fixed inset-x-0 bottom-0 z-[90] flex justify-center px-3 pb-3 transition-all duration-300 motion-reduce:transition-none sm:px-6 sm:pb-4',
         isVisible
           ? 'translate-y-0 opacity-100'
-          : '-translate-y-[calc(100%+1rem)] opacity-0'
+          : 'translate-y-[calc(100%+1rem)] opacity-0'
       )}
     >
       <nav

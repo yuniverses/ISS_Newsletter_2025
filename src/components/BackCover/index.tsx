@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { useReadingMemories } from '@/hooks/useReadingMemories'
-import { SemicolonLogo } from '@/components/ui/SemicolonLogo'
+
 import FallingElements from './FallingElements'
 import RelayOverview from './RelayOverview'
 import Noise from '@/components/Noise'
@@ -252,20 +252,10 @@ export default function BackCover() {
                 <img
                   src="/assets/title.svg"
                   alt="服務聲"
-                  className="h-12 md:h-16 lg:h-20 w-auto brightness-0 invert opacity-80"
+                  className="h-12 md:h-16 lg:h-12 w-auto brightness-0 invert opacity-80"
                 />
                 <div className="pt-1">
-                  <p
-                    className="text-[9px] md:text-[11px] leading-tight text-white/50 tracking-wide"
-                    style={{
-                      fontFamily:
-                        "'ZCOOL QingKe HuangYou', 'Noto Sans TC', sans-serif",
-                    }}
-                  >
-                    ISS Community
-                    <br />
-                    Annual Newsletter
-                  </p>
+
                   <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/25 px-3 py-1.5 text-white backdrop-blur-md">
                     <span
                       className="text-[9px] md:text-[10px] font-medium tracking-[0.24em] text-white/85"
@@ -290,7 +280,7 @@ export default function BackCover() {
               </div>
             </div>
 
-            {/* Left: 2026 */}
+            {/* Left: 2025 */}
             <div className="absolute top-[40%] left-[6%]">
               <p
                 className="text-2xl md:text-3xl font-bold text-white/70 tracking-wider"
@@ -299,7 +289,7 @@ export default function BackCover() {
                     "'Zen Kaku Gothic New', 'Noto Sans TC', sans-serif",
                 }}
               >
-                2026
+                2025
               </p>
             </div>
 
@@ -369,43 +359,32 @@ export default function BackCover() {
             alt="服務聲"
             className="h-6 md:h-8 w-auto mx-auto brightness-0 invert opacity-60 mb-3"
           />
-          <p className="text-xl md:text-2xl font-serif mb-1 tracking-wide">
-            2026
-          </p>
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-white/70 backdrop-blur-sm">
-            <span className="text-[9px] tracking-[0.24em] text-white/80">
-              {PUBLICATION_ISSUE_MARK.label}
-            </span>
-            <span className="text-[8px] uppercase tracking-[0.28em] text-white/45">
-              {PUBLICATION_ISSUE_MARK.volume}
-            </span>
-          </div>
-          <p className="text-[10px] text-white/25 tracking-[0.2em] uppercase">
-            ISS Community Annual Newsletter
+          <p className="text-xl md:text-2xl text-white/50 font-serif mb-1 tracking-wide">
+            2025
           </p>
         </div>
 
-        <div className="mb-12">
-          <p className="text-[9px] text-white/20 uppercase tracking-widest mb-4">
-            主編 設計
-          </p>
-          <p className="text-xs text-white/50 tracking-wide">
-            陳冠宇 · 胡育慈 · 邱筠婷
-          </p>
-        </div>
 
-        <div className="pt-6 border-t border-white/5">
-          <SemicolonLogo className="h-10 mx-auto mb-6 opacity-25" />
-
-          <div className="text-[11px] text-white/15 font-serif italic space-y-1">
-            <p>Services continue;</p>
-            <p>Stories continue;</p>
-            <p>And so do we.</p>
+        {/* ====== Publication Info ====== */}
+        <div className="mt-16 pt-8 border-t border-white/5 max-w-lg mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left text-[11px] text-white/50 leading-relaxed tracking-wide">
+            <div className="space-y-1">
+              <p className="text-white/60 font-medium">2025年度服務聲電子報編輯團隊</p>
+              <p>召集人｜劉軒妏</p>
+              <p>編輯團隊｜<a href="https://www.yuniverses.com/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/80 transition-colors">陳冠宇</a> · 胡育慈 · 邱筠婷</p>
+            </div>
+            <div className="space-y-1">
+              <p>執行單位｜國立清華大學服務科學研究所</p>
+              <p>電話｜03-5162116</p>
+              <p>信箱｜office@iss.nthu.edu.tw</p>
+              <p>地址｜新竹市東區光復路二段101號台積館540室</p>
+              <p>出版｜2026.02</p>
+            </div>
           </div>
         </div>
 
         <p className="text-[9px] text-white/10 mt-12 tracking-widest">
-          © 2026 Institute of Service Science, NTHU
+          © 2025 Institute of Service Science, NTHU
         </p>
       </footer>
     </section>

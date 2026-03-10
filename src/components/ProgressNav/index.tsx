@@ -11,12 +11,14 @@ interface ProgressNavProps {
   chapters: Chapter[]
   currentChapterId: string
   onChapterClick: (chapterId: string) => void
+  isEmbedMode?: boolean
 }
 
 export default function ProgressNav({
   chapters,
   currentChapterId,
   onChapterClick,
+  isEmbedMode = false,
 }: ProgressNavProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isAlumniExpanded, setIsAlumniExpanded] = useState(false)
@@ -64,6 +66,8 @@ export default function ProgressNav({
       ? ALUMNI_TRACK.filter((item) => item.chapterId === highlightedTrackId)
       : []
   const showExpanded = showNav && isExpanded
+  const mobileBottomOffsetClass = isEmbedMode ? 'bottom-24' : 'bottom-6'
+  const desktopBottomOffsetClass = isEmbedMode ? 'bottom-24' : 'bottom-6'
 
   const handleBlurCapture = (event: FocusEvent<HTMLElement>) => {
     const nextFocused = event.relatedTarget as Node | null
@@ -216,7 +220,7 @@ export default function ProgressNav({
       {showNav && (
         <button
           onClick={() => setIsMobileTocOpen(true)}
-          className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2 rounded-full bg-black/80 backdrop-blur-sm text-white text-[10px] tracking-[0.2em] uppercase border border-white/10 shadow-lg transition-opacity duration-300 ${
+          className={`md:hidden fixed left-1/2 -translate-x-1/2 z-[60] px-4 py-2 rounded-full bg-black/80 backdrop-blur-sm text-white text-[10px] tracking-[0.2em] uppercase border border-white/10 shadow-lg transition-opacity duration-300 ${mobileBottomOffsetClass} ${
             isMobileTocOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'
           }`}
           aria-label="開啟目錄"
@@ -235,7 +239,7 @@ export default function ProgressNav({
           />
           {/* Panel */}
           <div
-            className={`md:hidden fixed bottom-6 left-1/2 z-[80] w-[calc(100%-3rem)] max-w-sm rounded-2xl border border-white/10 bg-black/90 backdrop-blur-md p-5 shadow-2xl ${
+            className={`md:hidden fixed left-1/2 z-[80] w-[calc(100%-3rem)] max-w-sm rounded-2xl border border-white/10 bg-black/90 backdrop-blur-md p-5 shadow-2xl ${mobileBottomOffsetClass} ${
               isMobileTocClosing ? 'mobile-toc-exit' : 'mobile-toc-enter'
             }`}
             style={{ transform: 'translate(-50%, 0)' }}
@@ -300,7 +304,7 @@ export default function ProgressNav({
 
       {showAlumniTrack && (
         <div
-          className="hidden md:flex fixed bottom-6 right-6 z-40"
+          className={`hidden md:flex fixed right-6 z-40 ${desktopBottomOffsetClass}`}
           onMouseEnter={() => {
             clearAlumniTimers()
             setIsAlumniAutoExpanded(false)

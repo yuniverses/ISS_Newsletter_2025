@@ -1,4 +1,4 @@
-# 服務聲 2026 電子期刊
+# 服務聲 2025 電子期刊
 
 一個創新的互動式數位期刊閱讀平台，專為服務科學研究所（ISS）社群打造。
 
@@ -56,7 +56,7 @@
 ## 專案結構
 
 ```
-ISS_Newsletter_2026/
+ISS_Newsletter_2025/
 ├── public/
 │   ├── assets/              # 靜態資源（圖片、SVG 等）
 │   └── chapters/            # 章節 HTML 內容檔案
@@ -101,7 +101,7 @@ ISS_Newsletter_2026/
 1. **複製專案**
 ```bash
 git clone <repository-url>
-cd ISS_Newsletter_2026
+cd ISS_Newsletter_2025
 ```
 
 2. **安裝依賴**
@@ -170,7 +170,7 @@ const [sentences, setSentences] = useState<string[]>([
 ```typescript
 {
   "title": "期刊標題",
-  "year": 2026,
+  "year": 2025,
   "chapters": [
     {
       "id": "chapter-01",           // 唯一識別碼
@@ -228,7 +228,7 @@ npm run build
 ```html
 <iframe
   src="https://iss-news-0f834ef85b23.herokuapp.com/chapters/chapter-08?embed=1"
-  title="服務聲 2026"
+  title="服務聲 2025"
   width="100%"
   height="900"
   style="border: 0;"

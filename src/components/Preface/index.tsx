@@ -136,7 +136,7 @@ export default function Preface() {
                 textClassName="text-xs md:text-sm text-gray-300 leading-loose font-light"
               >
                 當不同的句子彼此靠近，世界就開始變得更完整、更深刻。
-                《服務聲》第三期以「分號」作為主題， 它傳遞了一種服務科學的精神：
+                《服務聲》服務聲第十五期以「分號」作為主題， 它傳遞了一種服務科學的精神：
                 個體之間保持差異，但在關係中創造價值；
                 片段彼此獨立，但在系統裡形成新的循環。
               </ScrollReveal>

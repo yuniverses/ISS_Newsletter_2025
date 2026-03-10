@@ -1,6 +1,6 @@
 {
-  "title": "服務聲 2026",
-  "year": 2026,
+  "title": "服務聲 2025",
+  "year": 2025,
   "chapters": [
     {
       "id": "chapter-01",
@@ -33,18 +33,18 @@
     {
       "id": "chapter-02",
       "order": 2,
-      "title": "薐嘉學姊",
+      "title": "穿梭多重身分的創業修煉，把服務科學說成企業語言",
       "description": "穿梭多重身分的創業修煉，把服務科學說成企業語言。",
       "htmlFile": "/chapters/chapter-02.html",
-      "authors": ["薐嘉學姊"],
+      "authors": ["黃薐嘉"],
       "category": "在校服科人",
       "theme": "light",
-      "coverImage": "/assets/IMG_6561.png",
+      "coverImage": "/assets/chapter-covers/jimeng-2026-03-11-2417-tiny.png",
       "date": "2026 . 02",
       "credits": [
-        { "name": "陳冠宇", "role": "主編 設計" },
-        { "name": "胡育慈", "role": "主編 設計" },
-        { "name": "邱筠婷", "role": "主編 設計" }
+        { "name": "邱筠婷", "role": "採訪 撰文" },
+        { "name": "陳冠宇", "role": "陪訪" },
+        { "name": "林柏緯", "role": "陪訪" }
       ],
       "fallingElements": [
         "/assets/menu-shapes/薐嘉學姊.png"
@@ -56,15 +56,14 @@
       "title": "在多重角色間，找到收斂的關鍵字",
       "description": "—— 專訪慈昱學姊",
       "htmlFile": "/chapters/chapter-03.html",
-      "authors": ["慈昱學姊"],
+      "authors": ["鄭慈昱"],
       "category": "在校服科人",
       "theme": "light",
       "coverImage": "/assets/chapter-03-ciyu/ciyu-01.jpg",
       "date": "2026 . 02",
       "credits": [
-        { "name": "陳冠宇", "role": "主編 設計" },
-        { "name": "胡育慈", "role": "主編 設計" },
-        { "name": "邱筠婷", "role": "主編 設計" }
+        { "name": "邱筠婷", "role": "採訪" },
+        { "name": "胡育慈", "role": "撰文" }
       ],
       "fallingElements": [
         "/assets/menu-shapes/慈昱學姊.png"
@@ -82,9 +81,12 @@
       "coverImage": "/assets/chapter-04-feng/feng-01.jpg",
       "date": "2026 . 02",
       "credits": [
-        { "name": "陳冠宇", "role": "主編 設計" },
-        { "name": "胡育慈", "role": "主編 設計" },
-        { "name": "邱筠婷", "role": "主編 設計" }
+        { "name": "李芸甄", "role": "採訪" },
+        { "name": "邱筠婷", "role": "採訪 撰文" },
+        { "name": "胡育慈", "role": "採訪 攝影" },
+        { "name": "朱庭萱", "role": "紀錄" },
+        { "name": "林柏緯", "role": "陪訪" },
+        { "name": "陳冠宇", "role": "司機" }
       ],
       "fallingElements": [
         "/assets/menu-shapes/馮元詰.png"
@@ -99,12 +101,12 @@
       "authors": ["曾婉婷"],
       "category": "服科前輩們",
       "theme": "light",
-      "coverImage": "/assets/IMG_6561.png",
+      "coverImage": "/assets/chapter-covers/def.png",
       "date": "2026 . 02",
       "credits": [
-        { "name": "陳冠宇", "role": "主編 設計" },
-        { "name": "胡育慈", "role": "主編 設計" },
-        { "name": "邱筠婷", "role": "主編 設計" }
+        { "name": "朱庭萱", "role": "採訪" },
+        { "name": "邱筠婷", "role": "採訪" },
+        { "name": "胡育慈", "role": "採訪 撰文" }
       ],
       "fallingElements": [
         "/assets/menu-shapes/曾婉婷.png"
@@ -119,12 +121,13 @@
       "authors": ["徐子珺"],
       "category": "服科前輩們",
       "theme": "light",
-      "coverImage": "/assets/IMG_6561.png",
+      "coverImage": "/assets/chapter-covers/def.png",
       "date": "2026 . 02",
       "credits": [
-        { "name": "陳冠宇", "role": "主編 設計" },
-        { "name": "胡育慈", "role": "主編 設計" },
-        { "name": "邱筠婷", "role": "主編 設計" }
+        { "name": "林柏緯", "role": "採訪 撰文" },
+        { "name": "邱筠婷", "role": "陪訪" },
+        { "name": "胡育慈", "role": "陪訪" },
+        { "name": "陳冠宇", "role": "陪訪" }
       ],
       "fallingElements": [
         "/assets/menu-shapes/徐子珺.png"
@@ -139,12 +142,12 @@
       "authors": ["陳旻"],
       "category": "服科前輩們",
       "theme": "light",
-      "coverImage": "/assets/IMG_6561.png",
+      "coverImage": "/assets/chapter-covers/def.png",
       "date": "2026 . 02",
       "credits": [
-        { "name": "陳冠宇", "role": "主編 設計" },
-        { "name": "胡育慈", "role": "主編 設計" },
-        { "name": "邱筠婷", "role": "主編 設計" }
+        { "name": "邱筠婷", "role": "採訪" },
+        { "name": "胡育慈", "role": "陪訪 撰文" },
+        { "name": "陳冠宇", "role": "陪訪" }
       ],
       "fallingElements": [
         "/assets/menu-shapes/陳旻.png"
@@ -162,9 +165,12 @@
       "coverImage": "/assets/chapter-08-sunny/sunny-01.jpg",
       "date": "2026 . 02",
       "credits": [
-        { "name": "陳冠宇", "role": "主編 設計" },
-        { "name": "胡育慈", "role": "主編 設計" },
-        { "name": "邱筠婷", "role": "主編 設計" }
+        { "name": "李芸甄", "role": "採訪" },
+        { "name": "邱筠婷", "role": "採訪 撰文" },
+        { "name": "胡育慈", "role": "採訪 攝影" },
+        { "name": "朱庭萱", "role": "紀錄" },
+        { "name": "林柏緯", "role": "陪訪" },
+        { "name": "陳冠宇", "role": "司機" }
       ],
       "fallingElements": [
         "/assets/menu-shapes/Sunny.png"
@@ -182,10 +188,9 @@
       "coverImage": "/assets/chapter-covers/chapter-08-陳慕天-coverImage.jpg",
       "date": "2025 . 11",
       "credits": [
-        { "name": "陳冠宇", "role": "採訪 編輯" },
-        { "name": "邱筠婷", "role": "採訪" },
-        { "name": "胡育慈", "role": "採訪" },
-        { "name": "林柏緯", "role": "採訪" }
+        { "name": "陳冠宇", "role": "採訪 撰文" },
+        { "name": "邱筠婷", "role": "陪訪" },
+        { "name": "朱庭萱", "role": "陪訪" }
       ],
       "fallingElements": [
         "/assets/menu-shapes/陳慕天.png",
@@ -204,8 +209,9 @@
       "coverImage": "/assets/chapter-covers/chapter-10-coverImage.jpg",
       "date": "2025 . 11",
       "credits": [
-        { "name": "陳冠宇", "role": "主編 設計" },
-        { "name": "胡育慈", "role": "主編 設計" }
+        { "name": "邱筠婷", "role": "採訪 撰文" },
+        { "name": "朱庭萱", "role": "陪訪" },
+        { "name": "陳冠宇", "role": "陪訪" }
       ],
       "fallingElements": [
         "/assets/menu-shapes/徐千捷.png",
