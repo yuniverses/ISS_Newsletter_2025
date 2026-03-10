@@ -50,7 +50,6 @@ function injectSEO(html, chapter, config, content) {
     <meta property="og:description" content="${safeDesc}">
     <meta property="og:image" content="${image}">
     <meta property="og:site_name" content="${escapeQuotes(config.title)}">
-    <meta property="og:locale" content="zh_TW">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
